@@ -1,6 +1,4 @@
 import './App.css'
-
-import { LogInCard } from '@/components/cards/LogInCard'
 import { SignUpCard } from '@/components/cards/SignUpCard'
 
 function App() {
