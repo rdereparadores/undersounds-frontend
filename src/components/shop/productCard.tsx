@@ -1,7 +1,7 @@
 import { Card, CardContent } from '@/components/ui/card.tsx';
 import { Button } from '@/components/ui/button.tsx';
 import { useCart } from '@/hooks/cartContext.tsx';
-import { Product } from '../../Shop';
+import { Product } from '../../routes/Shop';
 
 type ProductCardProps = {
     product: Product;
