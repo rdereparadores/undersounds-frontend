@@ -1,7 +1,7 @@
-import TopBar from './components/shop/topBar.tsx';
-import ProductCard from './components/shop/productCard.tsx';
-import Filters from './components/shop/filters.tsx';
-import CartPanel from './components/shop/cartPanel.tsx';
+import TopBar from '@/components/shop/topBar.tsx';
+import ProductCard from '@/components/shop/productCard.tsx';
+import Filters from '@/components/shop/filters.tsx';
+import CartPanel from '@/components/shop/cartPanel.tsx';
 import { useCart } from '@/hooks/cartContext.tsx';
 import { motion } from 'framer-motion';
 import './Shop.css';
