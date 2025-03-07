@@ -1,4 +1,4 @@
-import {LikeButton} from "../like-button.tsx";
+import {LikeButton} from "@/components/album/like-button.tsx";
 
 const SongInfo = () => {
   return (

@@ -1,9 +1,10 @@
-import { Navbar } from "@/components/navbar.tsx";
-import { TrackList } from "@/components/music/track-list.tsx";
-import { PurchaseOptions } from "@/components/purchase-options.tsx";
-import { RecommendedSection } from "@/components/recommended-section.tsx";
 import { Breadcrumb,BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbPage, BreadcrumbSeparator} from "@/components/ui/breadcrumb"
-import {LikeButton} from "@/components/like-button.tsx";
+import {LikeButton} from "@/components/album/like-button.tsx";
+import {Navbar} from "@/components/album/navbar.tsx";
+import {TrackList} from "@/components/album/track-list.tsx";
+import {PurchaseOptions} from "@/components/album/purchase-options.tsx";
+import {RecommendedSection} from "@/components/album/recommended-section.tsx";
+
 
 // Página principal del álbum
 export default function AlbumPage() {
