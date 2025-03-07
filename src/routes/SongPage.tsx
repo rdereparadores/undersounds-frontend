@@ -1,4 +1,3 @@
-import {Navbar} from "@/components/navbar.tsx";
 import {
     Breadcrumb,
     BreadcrumbItem,
@@ -6,16 +5,17 @@ import {
     BreadcrumbList, BreadcrumbPage,
     BreadcrumbSeparator
 } from "@/components/ui/breadcrumb.tsx";
-import {MusicPlayer} from "../music/MusicPlayer";
-import {PurchaseOptions} from "@/components/purchase-options.tsx";
-import {RecommendedSection} from "@/components/recommended-section.tsx";
-import {LikeButton} from "@/components/like-button.tsx";
+import {Navbar} from "@/components/album/navbar.tsx";
+import {LikeButton} from "@/components/album/like-button.tsx";
+import {MusicPlayer} from "@/components/song/MusicPlayer.tsx";
+import {PurchaseOptions} from "@/components/album/purchase-options.tsx";
+import {RecommendedSection} from "@/components/album/recommended-section.tsx";
 
 export default function SongPage() {
     return (
         <div className="min-h-screen">
             <div className="max-w-[1400px] mx-auto p-4">
-                <Navbar />
+                <Navbar/>
                 <div className="mt-6 pl-12">
                     <Breadcrumb>
                         <BreadcrumbList>
