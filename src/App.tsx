@@ -1,10 +1,10 @@
 import './App.css'
 
+import { Index } from './routes/Index.tsx'
+
 function App() {
   return (
-    <div className='flex items-center justify-center h-screen w-screen'>
-      
-    </div>
+      <Index/>
   )
 }
 
