@@ -1,6 +1,6 @@
 import './artistPanel.css';
 import OptionsPanel from '../../components/panel/panel_options/panelOptions.tsx';
-import MainBar from '../../components/panel/panel_bar/panelBar/panelBar.tsx';
+//import MainBar from '../../components/panel/panel_bar/panelBar/panelBar.tsx';
 import ProfileHeader from '../../components/panel/panel_profile/panelProfile.tsx';
 import SaleItem from '../../components/panel/panel_sale/panelSale.tsx';
 
