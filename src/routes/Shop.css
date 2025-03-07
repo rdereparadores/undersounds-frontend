@@ -1,0 +1,23 @@
+/* Shop.css */
+.productsGrid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    padding: 1rem;
+    flex: 1;
+}
+
+/* Vista tablet: 2 columnas */
+@media (max-width: 1024px) {
+    .productsGrid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Vista móvil: 1 columna, pero centrando los elementos */
+@media (max-width: 768px) {
+    .productsGrid {
+        grid-template-columns: 1fr;
+        justify-items: center;
+    }
+}

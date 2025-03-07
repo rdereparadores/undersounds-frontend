@@ -1,11 +1,14 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import { CartProvider } from './hooks/cartContext.tsx';
 import './index.css'
-import App from './App.tsx'
+import Shop from "@/routes/Shop.tsx"
 
-createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <App />
-  </StrictMode>,
-)
-
+const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
+root.render(
+    <React.StrictMode>
+        <CartProvider>
+            <Shop />
+        </CartProvider>
+    </React.StrictMode>
+);
