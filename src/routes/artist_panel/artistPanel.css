@@ -1,0 +1,87 @@
+.page-container {
+    background-color: #FFF;
+    width: 100%;
+    height: auto;
+    box-sizing: border-box;
+}
+
+/*
+.bar-container {
+    width: fit-content;
+    //box-sizing: border-box;
+}
+*/
+.main-content {
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+.panels-container {
+    display: flex;
+    gap: 30px;
+    width: 100%;
+    margin-top: 25px;
+}
+
+.panels-container > :first-child {
+    flex: 1;
+    min-width: 300px;
+}
+
+.panels-container > :last-child {
+    flex: 4;
+    min-width: 300px;
+}
+
+.sales-section {
+    width: 100%;
+    height: auto;
+    padding-right: 40px;
+    padding-left: 10px;
+    margin-right: 20px;
+}
+
+.sales-section h2 {
+    color: #000;
+    font-family: 'Inter', sans-serif;
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+}
+
+.sales-section .sales-grid {
+    display: grid;
+    gap: 1rem;
+    width: 100%;
+}
+
+@media (max-width: 1024px) {
+    .panels-container {
+        gap: 20px;
+        flex-wrap: wrap;
+    }
+
+    .panels-container > * {
+        flex: 1 1 100% !important;
+        min-width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    .main-content {
+        padding: 0 10px;
+    }
+
+    .sales-section h2 {
+        font-size: 1.75rem;
+        padding-right: 20px;
+        padding-left: 10px;
+        margin-right: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .sales-section .sales-grid {
+        grid-template-columns: 1fr;
+    }
+}
