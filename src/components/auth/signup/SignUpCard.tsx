@@ -1,17 +1,21 @@
-import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card.tsx";
-import {RiNeteaseCloudMusicFill} from "react-icons/ri";
-import {Label} from "@/components/ui/label.tsx";
-import {Input} from "@/components/ui/input.tsx";
-import {Button} from "@/components/ui/button.tsx";
-import {Separator} from "@/components/ui/separator.tsx";
-import {FaFacebookF, FaGoogle} from "react-icons/fa";
+import {Card, CardContent, CardDescription, CardHeader, CardFooter, CardTitle} from "@/components/ui/card"
+import {RiNeteaseCloudMusicFill} from "react-icons/ri"
+import {Label} from "@/components/ui/label"
+import {Input} from "@/components/ui/input"
+import {Button} from "@/components/ui/button"
+import {Separator} from "@/components/ui/separator"
+import {FaFacebookF, FaGoogle} from "react-icons/fa"
+
+import { Link } from 'react-router'
 
 function SignUpCard() {
     return (
         <Card className='w-[400px]'>
             <CardHeader>
                 <div className='flex flex-row w-full items-center justify-center'>
-                    <RiNeteaseCloudMusicFill className='size-28'/>
+                    <Link to='/'>
+                        <RiNeteaseCloudMusicFill className='size-28'/>
+                    </Link>
                 </div>
                 <CardTitle className='text-2xl'>Registro</CardTitle>
                 <CardDescription>Regístrate hoy en UnderSounds</CardDescription>
@@ -73,6 +77,15 @@ function SignUpCard() {
                     </Button>
                 </div>
             </CardContent>
+
+            <CardFooter>
+                <div className='flex flex-row items-center gap-2 w-full'>
+                    <span className='text-sm'>¿Ya tienes cuenta?</span>
+                    <Button asChild className='flex-grow' variant='outline'>
+                        <Link to='/auth/signin'>Iniciar sesión</Link>
+                    </Button>
+                </div>
+            </CardFooter>
         </Card>
     )
 }

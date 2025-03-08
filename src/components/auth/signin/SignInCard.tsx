@@ -4,14 +4,17 @@ import {Input} from "@/components/ui/input"
 import {Button} from "@/components/ui/button"
 import {Separator} from "@/components/ui/separator"
 import {FaFacebookF, FaGoogle} from "react-icons/fa"
-import {RiNeteaseCloudMusicFill} from "react-icons/ri";
+import {RiNeteaseCloudMusicFill} from "react-icons/ri"
+import { Link } from 'react-router'
 
-function LogInCard() {
+export const SignInCard = () => {
     return (
         <Card className='w-[400px]'>
             <CardHeader>
                 <div className='flex flex-row w-full items-center justify-center'>
-                    <RiNeteaseCloudMusicFill className='size-32'/>
+                    <Link to='/'>
+                        <RiNeteaseCloudMusicFill className='size-32'/>
+                    </Link>
                 </div>
                 <CardTitle className='text-2xl'>Iniciar sesión</CardTitle>
                 <CardDescription>Inicia sesión en tu cuenta de UnderSounds</CardDescription>
@@ -55,11 +58,11 @@ function LogInCard() {
             <CardFooter>
                 <div className='flex flex-row items-center gap-2 w-full'>
                     <span className='text-sm'>¿Aún sin cuenta?</span>
-                    <Button className='flex-grow' variant='outline'>Regístrate ahora</Button>
+                    <Button asChild className='flex-grow' variant='outline'>
+                        <Link to='/auth/signup'>Regístrate ahora</Link>
+                    </Button>
                 </div>
             </CardFooter>
         </Card>
     )
 }
-
-export { LogInCard }

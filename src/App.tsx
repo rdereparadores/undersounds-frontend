@@ -2,8 +2,8 @@ import { BrowserRouter, Routes, Route, Outlet } from 'react-router'
 
 import './App.css'
 import { Index } from './routes/Index.tsx'
-import { LogInCard } from './components/auth/login/LogInCard.tsx'
-import { SignUpCard } from './components/auth/signup/SignUpCard.tsx'
+import { SignIn } from '@/routes/SignIn'
+import { SignUp } from '@/routes/SignUp'
 import { PaginaCesta } from './routes/Cart.tsx'
 import { PaginaCheckout } from './routes/Checkout.tsx'
 import Shop from './routes/Shop.tsx'
@@ -21,8 +21,8 @@ function App() {
       <Routes>
         <Route index element={<Index />} />
         <Route path='auth' element={<Outlet />}>
-          <Route path='login' element={<LogInCard />} />
-          <Route path='signup' element={<SignUpCard />} />
+          <Route path='signin' element={<SignIn />} />
+          <Route path='signup' element={<SignUp />} />
         </Route>
 
         <Route path='shop' element={<Outlet />}>
