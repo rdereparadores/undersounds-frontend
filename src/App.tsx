@@ -14,7 +14,6 @@ import UserPanel from './routes/user_panel/userPanel.tsx'
 
 import { CartProvider } from './hooks/cartContext.tsx'
 
-
 function App() {
   return (
     <BrowserRouter>
