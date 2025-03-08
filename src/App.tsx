@@ -12,6 +12,8 @@ import AlbumPage from './routes/AlbumPage.tsx'
 import ArtistPanel from './routes/artist_panel/artistPanel.tsx'
 import UserPanel from './routes/user_panel/userPanel.tsx'
 
+import { CartProvider } from './hooks/cartContext.tsx'
+
 function App() {
   return (
     <BrowserRouter>
@@ -23,7 +25,7 @@ function App() {
         </Route>
 
         <Route path='shop' element={<Outlet />}>
-          <Route index element={<Shop />} />
+          <Route index element={<><CartProvider><Shop /></CartProvider></>} />
           <Route path='cart' element={<PaginaCesta />} />
           <Route path='checkout' element={<PaginaCheckout />} />
         </Route>
