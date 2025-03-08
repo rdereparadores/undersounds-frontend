@@ -41,6 +41,8 @@ function App() {
         <Route path='artist' element={<Outlet />}>
           <Route path='dashboard' element={<ArtistPanel />} />
         </Route>
+
+        <Route path='*' element={<></>} />
       </Routes>
     </BrowserRouter>
   )
