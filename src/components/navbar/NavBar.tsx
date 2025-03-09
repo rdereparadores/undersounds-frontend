@@ -1,5 +1,3 @@
-import { NavBarLogIn } from "./NavBarLogIn"
-import { NavBarSignIn } from "./NavBarSignIn"
 import { Avatar, AvatarFallback, AvatarImage } from '@radix-ui/react-avatar'
 import { IoAlbumsOutline, IoCartOutline } from 'react-icons/io5'
 import {
