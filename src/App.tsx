@@ -2,13 +2,13 @@ import { BrowserRouter, Routes, Route, Outlet } from 'react-router'
 
 import './App.css'
 import { Index } from './routes/Index.tsx'
-import { LogInCard } from './components/auth/login/LogInCard.tsx'
-import { SignUpCard } from './components/auth/signup/SignUpCard.tsx'
-import { PaginaCesta } from './routes/PaginaCesta.tsx'
-import { PaginaCheckout } from './routes/PaginaCheckout.tsx'
+import { SignIn } from '@/routes/SignIn'
+import { SignUp } from '@/routes/SignUp'
+import { PaginaCesta } from './routes/Cart.tsx'
+import { PaginaCheckout } from './routes/Checkout.tsx'
 import Shop from './routes/Shop.tsx'
-import SongPage from './routes/SongPage.tsx'
-import AlbumPage from './routes/AlbumPage.tsx'
+import SongPage from './routes/Song.tsx'
+import AlbumPage from './routes/Album.tsx'
 import ArtistPanel from './routes/artist_panel/artistPanel.tsx'
 import UserPanel from './routes/user_panel/userPanel.tsx'
 
@@ -42,8 +42,8 @@ function App() {
 
 
         <Route path='auth' element={<Outlet />}>
-          <Route path='login' element={<LogInCard />} />
-          <Route path='signup' element={<SignUpCard />} />
+          <Route path='signin' element={<SignIn />} />
+          <Route path='signup' element={<SignUp />} />
         </Route>
 
         <Route path='*' element={<></>} />
