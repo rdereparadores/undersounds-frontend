@@ -1,6 +1,5 @@
 import { Breadcrumb,BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbPage, BreadcrumbSeparator} from "@/components/ui/breadcrumb"
 import {LikeButton} from "@/components/album/like-button.tsx";
-import {Navbar} from "@/components/album/navbar.tsx";
 import {TrackList} from "@/components/album/track-list.tsx";
 import {PurchaseOptions} from "@/components/album/purchase-options.tsx";
 import {RecommendedSection} from "@/components/album/recommended-section.tsx";
@@ -11,7 +10,6 @@ export default function AlbumPage() {
   return (
       <div className="min-h-screen">
         <div className="max-w-[1400px] mx-auto p-4">
-          <Navbar />
           <div className="mt-6 pl-12">
             <Breadcrumb>
               <BreadcrumbList>
