@@ -38,7 +38,7 @@ const infoCards = [
 ]
 
 export const Index = () => (
-    <div className='bg-gradient-to-b from-blue-200 to-blue-400'>
+    <div className=''>
         <div className='flex flex-col items-center justify-center gap-6 h-[60dvh] w-full px-5'>
             <h1 className='bg-gradient-to-r from-black to-blue-500 leading-tight text-transparent bg-clip-text font-extrabold text-6xl text-center'>Descubre. Escucha. Repite.</h1>
             <h2 className='font-medium text-2xl text-center'>Conoce a los artistas del momento.</h2>
