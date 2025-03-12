@@ -6,6 +6,9 @@ import {
     CarouselPrevious,
 } from '@/components/ui/carousel'
 
+import { Skeleton } from '@/components/ui/skeleton'
+import { useState } from 'react'
+
 interface IndexPopularCarouselItemProps {
     title: string,
     artist: string,
@@ -13,16 +16,30 @@ interface IndexPopularCarouselItemProps {
     imgUrl: string
 }
 
-const IndexPopularCarouselItem = ({ title, artist, popularNo, imgUrl }: IndexPopularCarouselItemProps) => (
-    <div className='flex flex-none items-center'>
-        <p className='font-bold text-9xl -mr-6 -mt-16 select-none'>{popularNo}</p>
-        <div className='text-center'>
-            <img className='w-48 h-48 rounded-xl hover:brightness-50 transition hover:cursor-pointer' src={imgUrl} />
-            <p className='font-medium'>{title}</p>
-            <p>{artist}</p>
+const IndexPopularCarouselItem = ({ title, artist, popularNo, imgUrl }: IndexPopularCarouselItemProps) => {
+    const [imgLoaded, setImgLoaded] = useState(false)
+
+    return (
+        <div className='flex flex-none items-center'>
+            <p className='font-bold text-9xl -mr-6 -mt-16 select-none'>{popularNo}</p>
+            <div className='text-center'>
+                <Skeleton hidden={imgLoaded} className='w-48 h-48' />
+                <img 
+                    hidden={!imgLoaded}
+                    className='w-48 h-48 rounded-xl hover:brightness-50 transition hover:cursor-pointer'
+                    onLoad={() => setImgLoaded(true)}
+                    src={imgUrl}
+                />
+                
+                <Skeleton hidden={imgLoaded} className='w-full h-4 mt-1' />
+                <Skeleton hidden={imgLoaded} className='w-full h-4 mt-1' />
+
+                <p hidden={!imgLoaded} className='font-medium'>{title}</p>
+                <p hidden={!imgLoaded}>{artist}</p>
+            </div>
         </div>
-    </div>
-)
+    )
+}
 
 export const IndexPopularCarousel = () => (
     <div className='w-5/6 h-fit'>
