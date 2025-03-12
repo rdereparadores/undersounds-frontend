@@ -26,8 +26,6 @@ export const Album = () => {
                     </Breadcrumb>
                 </div>
 
-
-
                 <div className="ml-12 mt-2 flex flex-col lg:flex-row gap-8">
                     <div className="flex-1">
                         <div className="flex flex-col md:flex-row gap-8">

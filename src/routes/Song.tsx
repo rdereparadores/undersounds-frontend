@@ -5,17 +5,16 @@ import {
     BreadcrumbList, BreadcrumbPage,
     BreadcrumbSeparator
 } from "@/components/ui/breadcrumb.tsx";
-import {Navbar} from "@/components/album/navbar.tsx";
-import {LikeButton} from "@/components/album/like-button.tsx";
-import {MusicPlayer} from "@/components/song/MusicPlayer.tsx";
-import {PurchaseOptions} from "@/components/album/purchase-options.tsx";
-import {RecommendedSection} from "@/components/album/recommended-section.tsx";
+import { LikeButton } from "@/components/album/like-button.tsx";
+import { MusicPlayer } from "@/components/song/MusicPlayer.tsx";
+import { PurchaseOptions } from "@/components/album/purchase-options.tsx";
+import { RecommendedSection } from "@/components/album/recommended-section.tsx";
 
-export default function SongPage() {
+export const Song = () => {
+
     return (
         <div className="min-h-screen">
             <div className="max-w-[1400px] mx-auto p-4">
-                <Navbar/>
                 <div className="mt-6 pl-12">
                     <Breadcrumb>
                         <BreadcrumbList>
@@ -81,6 +80,5 @@ export default function SongPage() {
                 </div>
             </div>
         </div>
-    );
+    )
 }
-

@@ -29,7 +29,7 @@ export const NavBarContainer = () => {
                 }}
                 className='fixed top-0 w-full z-50'
             >
-                <NavBar logIn floating={scroll > 0} />
+                <NavBar logIn={false} floating={scroll > 0} />
             </motion.nav>
             <div className='pt-20'>
                 <Outlet />

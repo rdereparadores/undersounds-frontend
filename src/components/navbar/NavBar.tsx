@@ -24,7 +24,7 @@ import {
 
 interface NavBarProps { logIn: boolean, floating: boolean }
 
-const NavBarGuestSection = () => (
+const NavBarLoggedInSection = () => (
     <>
         <DropdownMenu modal={false}>
             <DropdownMenuTrigger asChild>
@@ -69,7 +69,7 @@ const NavBarGuestSection = () => (
     </>
 )
 
-const NavBarLoggedInSection = () => (
+const NavBarGuestSection = () => (
     <>
         <Button asChild variant='outline'>
             <Link to='/auth/signin'>Iniciar sesión</Link>
