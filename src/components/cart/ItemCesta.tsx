@@ -2,22 +2,24 @@ import {Card} from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 
-function ItemCesta() {
+export interface ItemsCestaProps {nombre:string, formato:string, precio:number, url:string}
+
+function ItemCesta({nombre,formato,precio,url}:ItemsCestaProps) {
   return (
      <Card className="w-[100%] flex p-4 gap-2">
-      <img className="w-32 h-32 flex rounded-lg" src="https://picsum.photos/200"></img>
+      <img className="w-32 h-32 flex rounded-lg" src={url}></img>
 
       <div className="flex flex-col grow">
 
         <div className="flex justify-between grow">
 
           <div>
-            <p>Nombre articulo</p>
-            <p>Formato: CD</p>
+            <p>Nombre {nombre}</p>
+            <p>Formato: {formato}</p>
             <p>En stock</p>
           </div>
 
-          <p>$25.99</p>
+          <p>${precio}</p>
 
         </div>
 

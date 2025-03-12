@@ -4,16 +4,15 @@ import './App.css'
 import { Index } from './routes/Index.tsx'
 import { SignIn } from '@/routes/SignIn'
 import { SignUp } from '@/routes/SignUp'
-import { PaginaCesta } from './routes/Cart.tsx'
 import { PaginaCheckout } from './routes/Checkout.tsx'
 import Shop from './routes/Shop.tsx'
 import { Song } from './routes/Song.tsx'
 import AlbumPage from './routes/Album.tsx'
 import ArtistPanel from './routes/artist_panel/artistPanel.tsx'
 import UserPanel from './routes/user_panel/userPanel.tsx'
-
 import { CartProvider } from './hooks/cartContext.tsx'
 import { NavBarContainer } from '@/components/navbar/NavBarContainer.tsx'
+import { Cart } from './routes/Cart.tsx'
 
 function App() {
   return (
@@ -24,7 +23,7 @@ function App() {
 
           <Route path='shop' element={<Outlet />}>
             <Route index element={<><CartProvider><Shop /></CartProvider></>} />
-            <Route path='cart' element={<PaginaCesta />} />
+            <Route path='cart' element={<Cart />} />
             <Route path='checkout' element={<PaginaCheckout />} />
           </Route>
 
