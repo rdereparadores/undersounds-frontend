@@ -2,10 +2,11 @@ import {
     Sheet,
     SheetContent,
     SheetTrigger,
+    SheetHeader
 } from "@/components/ui/sheet"
 import { Button } from "../ui/button"
 import { PiVinylRecord } from "react-icons/pi"
-import { IoStatsChartOutline } from 'react-icons/io5'
+import { IoCartOutline, IoStatsChartOutline } from 'react-icons/io5'
 import { IoIosLogOut } from 'react-icons/io'
 import { Link } from 'react-router'
 import { Avatar, AvatarFallback, AvatarImage } from '@radix-ui/react-avatar'
@@ -32,11 +33,19 @@ const NavBarPhoneLoggedInSection = () => (
 
 const NavBarPhoneGuestSection = () => (
     <>
-        <Button variant='outline'>
-            Iniciar sesión
+        <Button asChild variant="ghost">
+            <Link to='/shop'>Tienda</Link>
         </Button>
-        <Button>
-            Registrarse
+        <Button asChild variant="outline">
+            <Link to='/auth/signin'>Iniciar sesión</Link>
+        </Button>
+        <Button asChild>
+            <Link to='/auth/signup'>Registrarse</Link>
+        </Button>
+        <Button asChild >
+            <Link to='/shop/cart'>
+                <IoCartOutline/>Carrito
+            </Link>
         </Button>
     </>
 )
@@ -47,9 +56,12 @@ export function NavBarPhone({ logIn }: NavBarProps) {
             <SheetTrigger>
                 <Button variant="outline"><GiHamburgerMenu /></Button>
             </SheetTrigger>
+            
             <SheetContent className="flex flex-col">
-                {logIn ? <NavBarPhoneLoggedInSection/> : <NavBarPhoneGuestSection/>}
+                <SheetHeader></SheetHeader>
+                {logIn ? <NavBarPhoneLoggedInSection /> : <NavBarPhoneGuestSection />}
             </SheetContent>
         </Sheet>
+
     )
 }
