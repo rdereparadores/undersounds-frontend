@@ -1,11 +1,10 @@
-import TopBar from '@/components/shop/topBar.tsx';
-import ProductCard from '@/components/shop/productCard.tsx';
-import Filters from '@/components/shop/filters.tsx';
-import CartPanel from '@/components/shop/cartPanel.tsx';
-import { useCart } from '@/hooks/cartContext.tsx';
-import { motion } from 'framer-motion';
+import ProductCard from '@/components/shop/productCard.tsx'
+import Filters from '@/components/shop/filters.tsx'
+import CartPanel from '@/components/shop/cartPanel.tsx'
+import { useCart } from '@/hooks/cartContext.tsx'
+import { motion } from 'framer-motion'
 import './Shop.css';
-import {useState} from "react";
+import { useState } from "react"
 
 export type Product = {
     id: number;
@@ -38,7 +37,6 @@ export default function Shop() {
 
     return (
         <div className="flex flex-col min-h-screen">
-            <TopBar />
             <div className="flex flex-1 p-4 gap-4">
                 {/* Filtros: siempre ocupan 1/5 del ancho */}
                 <div className="w-1/5 h-full">
