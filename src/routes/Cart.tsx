@@ -24,7 +24,7 @@ const ejemplo = [
 
 export function Cart(){
     return(
-        <div className="flex p-2 gap-4 flex-wrap">
+        <div className="flex pt-2 gap-4 flex-wrap">
             <Carrito items={ejemplo}></Carrito>
             <SubTotal></SubTotal>
         </div>
