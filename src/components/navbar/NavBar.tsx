@@ -21,6 +21,7 @@ import {
     TooltipProvider,
     TooltipTrigger,
 } from "@/components/ui/tooltip"
+import { NavBarPhone } from './NavBarPhone'
 
 interface NavBarProps { logIn: boolean, floating: boolean }
 
@@ -87,11 +88,11 @@ function NavBar({ logIn, floating }: NavBarProps) {
     return (
 
         <Card className={`${floating ? '' : 'rounded-none'} w-full h-fit flex items-center justify-between p-2`}>
-            <div className='grow flex gap-2 items-center justify-start'>
+            <div className='grow flex gap-2 pr-2 items-center justify-start'>
                 <Button asChild>
                     <Link to='/'>Under<br />Sounds</Link>
                 </Button>
-                <Input className='w-[50%]' type='search' placeholder='Buscar'></Input>
+                <Input className='sm:w-[50%]' type='search' placeholder='Buscar'></Input>
             </div>
 
             <div className='items-center gap-2 justify-end hidden sm:flex'>
@@ -113,6 +114,10 @@ function NavBar({ logIn, floating }: NavBarProps) {
                         <TooltipContent>Carrito</TooltipContent>
                     </Tooltip>
                 </TooltipProvider>
+            </div>
+
+            <div className='sm:hidden'>
+                <NavBarPhone logIn={false}></NavBarPhone>
             </div>
         </Card>
 
