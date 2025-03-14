@@ -38,7 +38,7 @@ const NavBarCestaEmpty = () => (
 
 const NavBarCestaNotEmpty = () => ( /* {items}:ItemsCestaProps*/
     <>
-        <ScrollArea className=" h-[60%] pr-4">
+        <ScrollArea className="mt-2 h-[60%] pr-4">
             <div className="flex flex-col gap-2">
                 <ItemCesta nombre="YHLQMDG" formato="CD" precio={17} url="" ></ItemCesta>
                 <ItemCesta nombre="YHLQMDG" formato="CD" precio={17} url=""></ItemCesta>
@@ -70,13 +70,11 @@ const NavBarCestaNotEmpty = () => ( /* {items}:ItemsCestaProps*/
                 </Button>
             </SheetClose>
         </SheetFooter>
-
     </>
 )
 
 
-export function NavBarCesta({ emptyCart }: CartProps) {
-    {/*{emptyCart}: CartProps, {items}:ItemsProps*/ }
+export function NavBarCart({ emptyCart }: CartProps) {
     return (
         <Sheet>
 
