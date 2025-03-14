@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Para prevenir que la página se descoloque con Dropdowns */
+html body[data-scroll-locked] {
+    overflow: visible !important;
+    margin-right: 0 !important;
+} 
+
 @layer base {
   :root {
     --background: 0 0% 100%;
