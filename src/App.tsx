@@ -4,7 +4,7 @@ import './App.css'
 import { Index } from './routes/Index.tsx'
 import { SignIn } from '@/routes/SignIn'
 import { SignUp } from '@/routes/SignUp'
-import { PaginaCheckout } from './routes/Checkout.tsx'
+import { Checkout } from './routes/Checkout.tsx'
 import Shop from './routes/Shop.tsx'
 import { Song } from './routes/Song.tsx'
 import AlbumPage from './routes/Album.tsx'
@@ -23,8 +23,9 @@ function App() {
 
           <Route path='shop' element={<Outlet />}>
             <Route index element={<><CartProvider><Shop /></CartProvider></>} />
+
             <Route path='cart' element={<Cart />} />
-            <Route path='checkout' element={<PaginaCheckout />} />
+            <Route path='checkout' element={<Checkout />} />
           </Route>
 
           <Route path='song' element={<Song />} />
