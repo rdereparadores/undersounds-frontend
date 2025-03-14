@@ -2,7 +2,9 @@ import {
     Sheet,
     SheetContent,
     SheetTrigger,
-    SheetHeader
+    SheetHeader,
+    SheetTitle,
+    SheetDescription
 } from "@/components/ui/sheet"
 import { Button } from "../ui/button"
 import { PiVinylRecord } from "react-icons/pi"
@@ -53,12 +55,15 @@ const NavBarPhoneGuestSection = () => (
 export function NavBarPhone({ logIn }: NavBarProps) {
     return (
         <Sheet>
-            <SheetTrigger>
+            <SheetTrigger asChild>
                 <Button variant="outline"><GiHamburgerMenu /></Button>
             </SheetTrigger>
             
             <SheetContent className="flex flex-col">
-                <SheetHeader></SheetHeader>
+                <SheetHeader>
+                    <SheetTitle></SheetTitle>
+                </SheetHeader>
+                <SheetDescription></SheetDescription>
                 {logIn ? <NavBarPhoneLoggedInSection /> : <NavBarPhoneGuestSection />}
             </SheetContent>
         </Sheet>

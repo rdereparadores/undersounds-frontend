@@ -1,5 +1,5 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@radix-ui/react-avatar'
-import { IoAlbumsOutline, IoCartOutline } from 'react-icons/io5'
+import { IoAlbumsOutline } from 'react-icons/io5'
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -22,6 +22,7 @@ import {
     TooltipTrigger,
 } from "@/components/ui/tooltip"
 import { NavBarPhone } from './NavBarPhone'
+import { NavBarCesta } from './NavBarCesta'
 
 interface NavBarProps { logIn: boolean, floating: boolean }
 
@@ -105,11 +106,7 @@ function NavBar({ logIn, floating }: NavBarProps) {
                 <TooltipProvider>
                     <Tooltip>
                         <TooltipTrigger asChild>
-                            <Button asChild>
-                                <Link to='/shop/cart'>
-                                    <IoCartOutline />
-                                </Link>
-                            </Button>
+                            <NavBarCesta emptyCart={false}></NavBarCesta>
                         </TooltipTrigger>
                         <TooltipContent>Carrito</TooltipContent>
                     </Tooltip>
