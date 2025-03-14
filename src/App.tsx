@@ -6,8 +6,8 @@ import { SignIn } from '@/routes/SignIn'
 import { SignUp } from '@/routes/SignUp'
 import { PaginaCheckout } from './routes/Checkout.tsx'
 import Shop from './routes/Shop.tsx'
+import { Album } from './routes/Album.tsx'
 import { Song } from './routes/Song.tsx'
-import AlbumPage from './routes/Album.tsx'
 import ArtistPanel from './routes/artist_panel/artistPanel.tsx'
 import UserPanel from './routes/user_panel/userPanel.tsx'
 import { CartProvider } from './hooks/cartContext.tsx'
@@ -27,8 +27,8 @@ function App() {
             <Route path='checkout' element={<PaginaCheckout />} />
           </Route>
 
+          <Route path='album' element={<Album />} />
           <Route path='song' element={<Song />} />
-          <Route path='album' element={<AlbumPage />} />
 
           <Route path='user' element={<Outlet />}>
             <Route path='dashboard' element={<UserPanel />} />
