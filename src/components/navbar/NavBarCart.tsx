@@ -77,7 +77,6 @@ const NavBarCestaNotEmpty = () => ( /* {items}:ItemsCestaProps*/
 export function NavBarCart({ emptyCart }: CartProps) {
     return (
         <Sheet>
-
             <SheetTrigger asChild>
                 <Button>
                     <IoCartOutline />

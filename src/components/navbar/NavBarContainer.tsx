@@ -30,7 +30,7 @@ export const NavBarContainer = () => {
                 }}
                 className='fixed top-0 w-full z-50'
             >
-                <NavBar userRole={UserRole.ARTIST} floating={scroll > 0} />
+                <NavBar userRole={UserRole.USER} floating={scroll > 0} />
             </motion.nav>
             <div className='pt-20 px-[20px] min-h-screen'>
                 <Outlet />

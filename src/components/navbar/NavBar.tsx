@@ -14,9 +14,11 @@ import {
     SheetDescription,
     SheetHeader,
     SheetTitle,
-    SheetTrigger
+    SheetTrigger,
+    SheetClose
 } from "@/components/ui/sheet"
 import { GiHamburgerMenu } from "react-icons/gi"
+import { IoCartOutline } from "react-icons/io5"
 
 import { NavBarCart } from './NavBarCart'
 
@@ -28,6 +30,7 @@ import { NavBarGuestSectionMobile } from "./NavBarGuestSectionMobile"
 import { NavBarArtistSectionMobile } from "./NavBarArtistSectionMobile"
 
 import { UserRole } from '@/constants.ts'
+import { Separator } from "@/components/ui/separator"
 
 interface NavBarProps { userRole: UserRole, floating: boolean }
 
@@ -80,6 +83,22 @@ export const NavBar = ({ userRole, floating }: NavBarProps) => {
                             <SheetTitle />
                             <SheetDescription />
                         </SheetHeader>
+
+                        <SheetClose asChild>
+                            <Button asChild variant="outline">
+                                <Link to='/shop'>Tienda</Link>
+                            </Button>
+                        </SheetClose>
+                        <SheetClose asChild>
+                            <Button asChild>
+                                <Link to='/shop/cart'>
+                                    <IoCartOutline /> Carrito
+                                </Link>
+                            </Button>
+                        </SheetClose>
+                        
+                        <Separator />
+
                         {(() => {
                             switch (userRole) {
                                 case UserRole.GUEST:

@@ -3,7 +3,7 @@ import { PiVinylRecord } from "react-icons/pi"
 import { IoStatsChartOutline } from 'react-icons/io5'
 import { IoIosLogOut } from 'react-icons/io'
 import { Avatar, AvatarFallback, AvatarImage } from '@radix-ui/react-avatar'
-import { IoAlbumsOutline, } from 'react-icons/io5'
+import { IoAlbumsOutline } from 'react-icons/io5'
 
 export const NavBarUserSectionMobile = () => (
     <>

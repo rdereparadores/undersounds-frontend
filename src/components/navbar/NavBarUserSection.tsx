@@ -14,7 +14,7 @@ import { IoIosLogOut } from 'react-icons/io'
 import { Button } from "../ui/button"
 
 export const NavBarUserSection = () => (
-    <DropdownMenu modal={false}>
+    <DropdownMenu>
         <DropdownMenuTrigger asChild>
             <Button variant="outline">
                 <Avatar>
