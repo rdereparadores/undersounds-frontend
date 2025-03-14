@@ -4,7 +4,9 @@ import {
     SheetTrigger,
     SheetHeader,
     SheetTitle,
-    SheetDescription
+    SheetDescription,
+    SheetFooter,
+    SheetClose
 } from "@/components/ui/sheet"
 import { Button } from "../ui/button"
 import { PiVinylRecord } from "react-icons/pi"
@@ -35,20 +37,38 @@ const NavBarPhoneLoggedInSection = () => (
 
 const NavBarPhoneGuestSection = () => (
     <>
-        <Button asChild variant="ghost">
-            <Link to='/shop'>Tienda</Link>
-        </Button>
-        <Button asChild variant="outline">
-            <Link to='/auth/signin'>Iniciar sesión</Link>
-        </Button>
-        <Button asChild>
-            <Link to='/auth/signup'>Registrarse</Link>
-        </Button>
-        <Button asChild >
-            <Link to='/shop/cart'>
-                <IoCartOutline/>Carrito
-            </Link>
-        </Button>
+        <SheetFooter>
+            <SheetClose asChild>
+                <Button asChild variant="ghost">
+                    <Link to='/shop'>Tienda</Link>
+                </Button>
+            </SheetClose>
+        </SheetFooter>
+
+        <SheetFooter>
+            <SheetClose asChild>
+                <Button asChild variant="outline">
+                    <Link to='/auth/signin'>Iniciar sesión</Link>
+                </Button>
+            </SheetClose>
+        </SheetFooter>
+
+        <SheetFooter>
+            <SheetClose asChild>
+                <Button asChild>
+                    <Link to='/auth/signup'>Registrarse</Link>
+                </Button>
+            </SheetClose>
+        </SheetFooter>
+        <SheetFooter>
+            <SheetClose asChild>
+                <Button asChild >
+                    <Link to='/shop/cart'>
+                        <IoCartOutline />Carrito
+                    </Link>
+                </Button>
+            </SheetClose>
+        </SheetFooter>
     </>
 )
 
@@ -58,7 +78,7 @@ export function NavBarPhone({ logIn }: NavBarProps) {
             <SheetTrigger asChild>
                 <Button variant="outline"><GiHamburgerMenu /></Button>
             </SheetTrigger>
-            
+
             <SheetContent className="flex flex-col">
                 <SheetHeader>
                     <SheetTitle></SheetTitle>

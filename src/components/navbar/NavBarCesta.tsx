@@ -3,7 +3,9 @@ import {
     SheetContent,
     SheetTrigger,
     SheetHeader,
-    SheetTitle
+    SheetTitle,
+    SheetFooter,
+    SheetClose
 } from "@/components/ui/sheet"
 import { Button } from "../ui/button"
 import { Link } from "react-router"
@@ -19,14 +21,18 @@ interface CartProps { emptyCart: boolean }
 const NavBarCestaEmpty = () => (
     <>
         <div className="flex flex-col items-center gap-2">
-            <img src="icons/NoSeEncuentra.svg" width="100" height="100" />
+            <img src="icons/carritoVacio.svg" width="100" height="100" />
             <p className="font-bold">Tu carrito esta vacío</p>
             <p className="text-center">Explora multitud de artículos a buen precio desde nuestra página principal</p>
-            <Button>
-                <Link to="/shop">
-                    Explorar Articulos
-                </Link>
-            </Button>
+            <SheetFooter>
+                <SheetClose asChild>
+                    <Button asChild>
+                        <Link to="/shop">
+                            Explorar Articulos
+                        </Link>
+                    </Button>
+                </SheetClose>
+            </SheetFooter>
         </div>
     </>
 )
@@ -56,11 +62,15 @@ const NavBarCestaNotEmpty = () => ( /* {items}:ItemsCestaProps*/
             <p className="font-bold">PrecioTotal</p>
         </div>
 
-        <Button asChild className="mt-2 w-full h-fit">
-            <Link to='/shop/cart'>
-                Ver articulos en carrito
-            </Link>
-        </Button>
+        <SheetFooter>
+            <SheetClose asChild>
+                <Button asChild className="mt-2 w-full h-fit">
+                    <Link to='/shop/cart'>
+                        Ver articulos en carrito
+                    </Link>
+                </Button>
+            </SheetClose>
+        </SheetFooter>
 
     </>
 )
