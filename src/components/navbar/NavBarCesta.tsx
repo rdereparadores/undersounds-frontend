@@ -10,7 +10,6 @@ import {
 import { Button } from "../ui/button"
 import { Link } from "react-router"
 import { IoCartOutline } from "react-icons/io5"
-import { ItemsProps } from "@/components/cart/Carrito"
 import { ItemCesta } from "../cart/ItemCesta"
 import { DialogDescription } from "../ui/dialog"
 import { Separator } from "../ui/separator"
