@@ -19,6 +19,7 @@ import {
 } from "@/components/ui/sheet"
 import { GiHamburgerMenu } from "react-icons/gi"
 import { IoCartOutline } from "react-icons/io5"
+import { Skeleton } from "../ui/skeleton"
 
 import { NavBarCart } from './NavBarCart'
 
@@ -31,10 +32,14 @@ import { NavBarArtistSectionMobile } from "./NavBarArtistSectionMobile"
 
 import { UserRole } from '@/constants.ts'
 import { Separator } from "@/components/ui/separator"
+import { useAuth } from "@/hooks/auth/useAuth"
 
-interface NavBarProps { userRole: UserRole, floating: boolean }
+interface NavBarProps { floating: boolean }
 
-export const NavBar = ({ userRole, floating }: NavBarProps) => {
+export const NavBar = ({ floating }: NavBarProps) => {
+
+    const auth = useAuth()
+
     return (
         <Card className={`${floating ? '' : 'rounded-none'} w-full h-fit flex items-center justify-between p-2`}>
             <div className='grow flex gap-2 pr-2 items-center justify-start'>
@@ -45,13 +50,16 @@ export const NavBar = ({ userRole, floating }: NavBarProps) => {
             </div>
 
             {/* NavBar de PC */}
-            <div className='items-center gap-2 justify-end hidden sm:flex'>
+            <div className='items-stretch gap-2 justify-end hidden sm:flex'>
                 <Button asChild variant='ghost'>
                     <Link to='/shop'>Tienda</Link>
                 </Button>
 
                 {(() => {
-                    switch (userRole) {
+                    if (auth.token === undefined) {
+                        return <Skeleton className='w-56' />
+                    }
+                    switch (auth.userRole) {
                         case UserRole.GUEST:
                             return <NavBarGuestSection />
                         case UserRole.USER:
@@ -100,7 +108,10 @@ export const NavBar = ({ userRole, floating }: NavBarProps) => {
                         <Separator />
 
                         {(() => {
-                            switch (userRole) {
+                            if (auth.token === undefined) {
+                                return <Skeleton className='h-56' />
+                            }
+                            switch (auth.userRole) {
                                 case UserRole.GUEST:
                                     return <NavBarGuestSectionMobile />
                                 case UserRole.USER:
