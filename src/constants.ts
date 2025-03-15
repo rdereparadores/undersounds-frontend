@@ -1,6 +1,6 @@
 
 export enum UserRole {
-    GUEST,
-    USER,
-    ARTIST
+    GUEST = 0,
+    USER = 1,
+    ARTIST = 2
 }
