@@ -38,7 +38,7 @@ export const SignInCard = () => {
 
         if (result) {
             const redirectTo = searchParams.get('redirectTo')
-            navigate(redirectTo ? redirectTo : '/')
+            navigate(redirectTo ? redirectTo : '/user/dashboard')
         } else {
             setLogInButtonDisabled(false)
             toast.error('Email o contraseña incorrectos')
@@ -70,13 +70,13 @@ export const SignInCard = () => {
                     <div className='flex flex-col gap-4'>
                         <div className='grid gap-2'>
                             <Label htmlFor='email'>Correo electrónico</Label>
-                            <Input type='email' name='email' id='email' placeholder='user@example.com' onChange={onInputChange} />
+                            <Input required type='email' name='email' id='email' placeholder='user@example.com' onChange={onInputChange} />
                         </div>
 
                         <div className='grid gap-2'>
                             <Label htmlFor='password'>Contraseña</Label>
                             <div className='flex flex-col gap-0.5'>
-                                <Input id='password' name='password' type='password' onChange={onInputChange} />
+                                <Input required id='password' name='password' type='password' onChange={onInputChange} />
                                 <a href='#' className='ml-auto text-sm hover:underline'>¿Olvidaste tu contraseña?</a>
                             </div>
                         </div>

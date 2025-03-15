@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router'
-import { AuthContext, AuthContextLogInProps } from './AuthContext'
+import { AuthContext, AuthContextLogInProps, AuthContextSignUpArtistProps, AuthContextSignUpUserProps } from './AuthContext'
 import { UserRole } from '@/constants'
+import { toast } from 'sonner'
 
 interface AuthProviderProps {
     children: React.ReactNode
@@ -34,7 +35,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
             return false
         }
 
-        setUserName('AlejPagar')
+        setUserName(email)
         localStorage.setItem('jwt', 'example-token')
         setToken('example-token')
         setUserRole(UserRole.ARTIST)
@@ -42,14 +43,50 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     }
 
     const logOut = () => {
+        localStorage.removeItem('jwt')
         setToken(null)
         setUserRole(UserRole.GUEST)
-        localStorage.removeItem('jwt')
-        navigate('/')
+
+        setTimeout(() => navigate('/auth/signin'), 0)
     }
 
+    const signUpUser = async ({ userName, email, password }: AuthContextSignUpUserProps) => {
+        if (userName == 'usuario') {
+            toast.error('El nombre de usuario no está disponible')
+            return false
+        }
+        if (email == 'email@example.com') {
+            toast.error('Ya existe un usuario con esa dirección de correo')
+            return false
+        }
+        if (password == 'password') {
+            toast.error('Contraseña insegura')
+            return false
+        }
+        return true
+    }
+
+    const signUpArtist = async ({ userName, email, password, name, surname, artistName }: AuthContextSignUpArtistProps) => {
+        if (userName == 'usuario') {
+            toast.error('El nombre de usuario no está disponible')
+            return false
+        }
+        if (email == 'email@example.com') {
+            toast.error('Ya existe un usuario con esa dirección de correo')
+            return false
+        }
+        if (password == 'password') {
+            toast.error('Contraseña insegura')
+            return false
+        }
+        if (name == 'nombre' || surname == 'apellidos' || artistName == 'artista') {
+            toast.error('Campos no válidos')
+            return false
+        }
+        return true
+    }
     return (
-        <AuthContext.Provider value={{ token, userName, userRole, logIn, logOut }}>
+        <AuthContext.Provider value={{ token, userName, userRole, logIn, logOut, signUpUser, signUpArtist }}>
             { children }
         </AuthContext.Provider>
     )
