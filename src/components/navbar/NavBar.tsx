@@ -33,12 +33,27 @@ import { NavBarArtistSectionMobile } from "./NavBarArtistSectionMobile"
 import { UserRole } from '@/constants.ts'
 import { Separator } from "@/components/ui/separator"
 import { useAuth } from "@/hooks/auth/useAuth"
+import { useNavigate } from "react-router"
+import { ChangeEvent, FormEvent, useState } from "react"
+import { IoIosLogOut } from 'react-icons/io'
 
 interface NavBarProps { floating: boolean }
 
 export const NavBar = ({ floating }: NavBarProps) => {
 
     const auth = useAuth()
+    const navigate = useNavigate()
+    const [searchQuery, setSearchQuery] = useState('')
+
+    const onSearch = (e: FormEvent) => {
+        e.preventDefault()
+        navigate(`/shop/?query=${searchQuery}`)
+
+    }
+
+    const onSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
+        setSearchQuery(e.target.value)
+    }
 
     return (
         <Card className={`${floating ? '' : 'rounded-none'} w-full h-fit flex items-center justify-between p-2`}>
@@ -46,7 +61,9 @@ export const NavBar = ({ floating }: NavBarProps) => {
                 <Button asChild>
                     <Link to='/'>Under<br />Sounds</Link>
                 </Button>
-                <Input className='sm:w-[50%]' type='search' placeholder='Buscar'></Input>
+                <form className='w-full sm:w-[50%]' onSubmit={onSearch}>
+                    <Input name='search' type='search' placeholder='Buscar' onChange={onSearchChange}></Input>
+                </form>
             </div>
 
             {/* NavBar de PC */}
@@ -104,7 +121,7 @@ export const NavBar = ({ floating }: NavBarProps) => {
                                 </Link>
                             </Button>
                         </SheetClose>
-                        
+
                         <Separator />
 
                         {(() => {
@@ -120,6 +137,10 @@ export const NavBar = ({ floating }: NavBarProps) => {
                                     return <NavBarArtistSectionMobile />
                             }
                         })()}
+
+                        <Separator />
+
+                        <Button variant="ghost" onClick={auth.logOut}> <IoIosLogOut />Cerrar sesión</Button>
                     </SheetContent>
                 </Sheet>
             </div>
