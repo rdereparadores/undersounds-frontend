@@ -7,61 +7,46 @@ import {
 } from '@/components/ui/carousel'
 
 import { Skeleton } from '@/components/ui/skeleton'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { ApiContextSongProps } from '@/hooks/api/ApiContext'
+import { useApi } from '@/hooks/api/useApi'
+import { IndexPopularCarouselItem } from './IndexPopularCarouselItem'
 
-interface IndexPopularCarouselItemProps {
-    title: string,
-    artist: string,
-    popularNo: number,
-    imgUrl: string
-}
+export const IndexPopularCarousel = () => {
+    const api = useApi()
+    const [top10Songs, setTop10Songs] = useState<undefined | ApiContextSongProps[]>(undefined)
 
-const IndexPopularCarouselItem = ({ title, artist, popularNo, imgUrl }: IndexPopularCarouselItemProps) => {
-    const [imgLoaded, setImgLoaded] = useState(false)
+    useEffect(() => {
+        api.getTop10Songs().then(songs => setTop10Songs(songs))
+    }, [api])
 
     return (
-        <div className='flex flex-none items-center'>
-            <p className='font-bold text-9xl -mr-6 -mt-16 select-none'>{popularNo}</p>
-            <div className='text-center'>
-                <Skeleton hidden={imgLoaded} className='w-48 h-48' />
-                <img 
-                    hidden={!imgLoaded}
-                    className='w-48 h-48 rounded-xl hover:brightness-50 transition hover:cursor-pointer'
-                    onLoad={() => setImgLoaded(true)}
-                    src={imgUrl}
-                />
-                
-                <Skeleton hidden={imgLoaded} className='w-full h-4 mt-1' />
-                <Skeleton hidden={imgLoaded} className='w-full h-4 mt-1' />
-
-                <p hidden={!imgLoaded} className='font-medium'>{title}</p>
-                <p hidden={!imgLoaded}>{artist}</p>
-            </div>
+        <div className='w-5/6 h-fit'>
+            <h2 className='text-xl font-medium mb-2'>Popular ahora</h2>
+            <Carousel opts={{
+                align: 'center',
+                dragFree: true
+            }} className='w-full relative'>
+                <CarouselContent className='w-full'>
+                    {top10Songs !== undefined ?
+                        top10Songs?.map((song, index) => (
+                            <CarouselItem key={index} className='basis-auto'>
+                                <IndexPopularCarouselItem
+                                    title={song.title}
+                                    artist={song.artist}
+                                    popularNo={song.popularNo}
+                                    coverUrl={song.coverUrl}
+                                    songId={song.songId}
+                                />
+                            </CarouselItem>
+                        ))
+                    :
+                        <Skeleton className='w-full h-56' />
+                    }
+                </CarouselContent>
+                <CarouselPrevious className='max-sm:hidden' />
+                <CarouselNext className='max-sm:hidden' />
+            </Carousel>
         </div>
     )
 }
-
-export const IndexPopularCarousel = () => (
-    <div className='w-5/6 h-fit'>
-        <h2 className='text-xl font-medium mb-2'>Popular ahora</h2>
-        <Carousel opts={{
-            align: 'center',
-            dragFree: true
-        }} className='w-full relative'>
-            <CarouselContent className='w-full'>
-                {Array.from({ length: 10 }).map((_, index) => (
-                    <CarouselItem key={index} className='basis-auto'>
-                        <IndexPopularCarouselItem
-                            title='Titulo'
-                            artist='Artista'
-                            popularNo={index + 1}
-                            imgUrl='https://picsum.photos/200'
-                        />
-                    </CarouselItem>
-                ))}
-            </CarouselContent>
-            <CarouselPrevious className='max-sm:hidden' />
-            <CarouselNext className='max-sm:hidden' />
-        </Carousel>
-    </div>
-)
