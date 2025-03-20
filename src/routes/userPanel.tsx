@@ -3,7 +3,7 @@ import ProfileHeader from '@/components/panel/panelProfile';
 import OptionsPanel from '@/components/panel/panelOptions';
 import PurchaseItem from '@/components/panel/panelPurchase';
 import Purchase from '@/components/panel/panelPurchase';
-import Component from '@/components/panel/statistics';
+import Statistics from '@/components/panel/statistics';
 import {useState, useEffect} from 'react';
 
 
@@ -18,6 +18,41 @@ interface Purchase {
     type: 'cancion' | 'album';
 }
 
+const chartData = [
+    { browser: "top1", visitors: 27, fill: "var(--color-top1)" },
+    { browser: "top2", visitors: 20, fill: "var(--color-top2)" },
+    { browser: "top3", visitors: 18, fill: "var(--color-top3)" },
+    { browser: "top4", visitors: 17, fill: "var(--color-top4)" },
+    { browser: "top5", visitors: 9, fill: "var(--color-top5)" },
+];
+
+const chartConfig = {
+    visitors: {
+        label: "Compras",
+    },
+    top1: {
+        label: "Olivia Rodrigo",
+        color: "gray",
+    },
+    top2: {
+        label: "Dua Lipa",
+        color: "gray",
+    },
+    top3: {
+        label: "Bad Bunny",
+        color: "gray",
+    },
+    top4: {
+        label: "Drake",
+        color: "gray",
+    },
+    top5: {
+        label: "Harry Styles",
+        color: "gray",
+    },
+};
+
+const totalPurchases = 58;
 
 const UserPanel = () => {
     const [activeView, setActiveView] = useState('compras');
@@ -26,12 +61,11 @@ const UserPanel = () => {
 
     useEffect(() => {
         const dummyPurchases: Purchase[] = [
-            { title: 'Arcane Season 1 (Soundtrack from the Animated Series)', description: 'The New Us Variant', date: '25/08/2024', price: '39,99€', status: 'Entregado', provider: 'Diggers Factory', image: '', type: 'cancion' },
-            { title: 'KanYeWest-Graduation', description: 'Enjoy it', date: '20/02/2024', price: '29,99€', status: 'Entregado', provider: 'KanYeWest', image: "", type: 'album' },
-            { title: 'Dolce Vita', description: '', date: '26/05/2024', price: '10,50€', status: 'En proceso', provider: 'MusicWorld', image: '', type: 'cancion' },
-            { title: 'GNX - Album', description: 'Vinilo negro.', date: '06/12/2023', price: '9,99€', status: 'Entregado', provider: 'MusicWorld', image: '', type: 'album' },
-            { title: 'Californication (LP-Vinilo)', description: 'Californication es una canción del grupo musical Red Hot Chili Peppers incluida en su séptimo álbum de estudio.', date: '20/05/1999', price: '19,99€', status: 'Entregado', provider: 'Rick Rubin', image: '', type: 'album' },
-            { title: 'Gimme Love', description: 'By Joji', date: '15/01/2024', price: '4,99€', status: 'Entregado', provider: 'Nectar', image: '', type: 'cancion' },
+            { title: 'Arcane Season 1 (Soundtrack from the Animated Series)', description: 'The New Us Variant', date: '25/08/2024', price: '39,99€', status: 'Entregado', provider: 'Diggers Factory', image: '/images/compra1.jpg', type: 'cancion' },
+            { title: 'KanYeWest-Graduation', description: 'Enjoy it', date: '20/02/2024', price: '29,99€', status: 'Entregado', provider: 'KanYeWest', image: "./images/KanYe.jpg", type: 'album' },
+            { title: 'Dolce Vita', description: '', date: '26/05/2024', price: '29,99€', status: 'En proceso', provider: 'MusicWorld', image: '/images/compra2.jpg', type: 'cancion' },
+            { title: 'GNX - Album', description: 'Vinilo negro.', date: '06/12/2023', price: '29,99€', status: 'Entregado', provider: 'MusicWorld', image: '../../../images/ken.webp', type: 'album' },
+
         ];
         setPurchases(dummyPurchases);
     }, []);
@@ -45,7 +79,7 @@ const UserPanel = () => {
 
     return (
         <div className="w-full">
-            {/*<MainBar />*/}
+            {/*<MainBar /> */}
             <ProfileHeader />
 
             <div className="flex flex-wrap p-5">
@@ -56,8 +90,13 @@ const UserPanel = () => {
 
                 {/* Prueba estadísticas */}
                 {activeView === 'statistics' &&(
-                    <div className="w-4/5">
-                        <Component/>
+                    <div className="lg:w-4/5 w-[100%]">
+                        <Statistics
+                            chartData={chartData}
+                            chartConfig={chartConfig}
+                            totalPurchases={totalPurchases}
+                            userType="usuario"
+                        />
                     </div>
                 )}
 

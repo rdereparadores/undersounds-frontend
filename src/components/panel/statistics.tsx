@@ -1,7 +1,4 @@
-"use client"
-
 import { Bar, BarChart, XAxis, YAxis } from "recharts"
-
 import {
     Card,
     CardContent,
@@ -16,43 +13,22 @@ import {
     ChartTooltip,
     ChartTooltipContent,
 } from "@/components/ui/chart"
-const chartData = [
-    { browser: "top1", visitors: 27, fill: "var(--color-top1)" },
-    { browser: "top2", visitors: 20, fill: "var(--color-top2)" },
-    { browser: "top3", visitors: 18, fill: "var(--color-top3)" },
-    { browser: "top4", visitors: 17, fill: "var(--color-top4)" },
-    { browser: "top5", visitors: 9, fill: "var(--color-top5)" },
-]
 
-const chartConfig = {
-    visitors: {
-        label: "Compras",
-    },
-    top1: {
-        label: "Olivia Rodrigo",
-        color: "gray",
-    },
-    top2: {
-        label: "Dua Lipa",
-        color: "gray",
-    },
-    top3: {
-        label: "Bad Bunny",
-        color: "gray",
-    },
-    top4: {
-        label: "Drake",
-        color: "gray",
-    },
-    top5: {
-        label: "Harry Styles",
-        color: "gray",
-    },
-} satisfies ChartConfig
+interface StatisticsProps {
+    chartData: { browser: string; visitors: number; fill: string }[];
+    chartConfig: ChartConfig;
+    totalPurchases: number;
+    userType: 'usuario' | 'artista';
+}
 
-export function Component() {
+export function Statistics({
+                               chartData,
+                               chartConfig,
+                               totalPurchases,
+                               userType,
+                           }: StatisticsProps) {
     return (
-        <Card>
+        <Card className="p-5">
             <CardHeader>
                 <CardTitle>Top Artistas favoritos</CardTitle>
                 <CardDescription>Ártículos comprados a tus artistas favoritos</CardDescription>
@@ -60,24 +36,25 @@ export function Component() {
             <CardContent>
                 <ChartContainer config={chartConfig}>
                     <BarChart
-                        barSize={80}
+                        barSize={90}
                         barGap={0}
                         accessibilityLayer
                         data={chartData}
                         layout="vertical"
                         margin={{
-                            left: 0,
+                            left: 4,
                         }}
                     >
                         <YAxis
                             dataKey="browser"
                             type="category"
                             tickLine={false}
-                            tickMargin={10}
+                            tickMargin={0}
                             axisLine={false}
-                            tickFormatter={(value) =>
-                                chartConfig[value as keyof typeof chartConfig]?.label
-                            }
+                            tickFormatter={(value) => {
+                                const label = chartConfig[value as keyof typeof chartConfig]?.label;
+                                return typeof label === "string" ? label : String(value);
+                            }}
                         />
                         <XAxis dataKey="visitors" type="number" hide />
                         <ChartTooltip
@@ -88,16 +65,27 @@ export function Component() {
                     </BarChart>
                 </ChartContainer>
             </CardContent>
-            <CardFooter className="flex-col items-start gap-2 text-sm">
-                <div className="flex gap-2 font-medium leading-none">
-                    Compras realizadas en total
-                </div>
-                <div className="leading-none text-muted-foreground">
-                    Haz realizado un total de {/*Variabel*/} 58 compras
-                </div>
-            </CardFooter>
+            {userType === 'usuario' ? (
+                <CardFooter className="flex-col items-start gap-2 text-sm">
+                    <div className="flex gap-2 font-medium leading-none">
+                        Compras realizadas en total
+                    </div>
+                    <div className="leading-none text-muted-foreground">
+                        Haz realizado un total de {totalPurchases} compras
+                    </div>
+                </CardFooter>
+            ) : (
+                <CardFooter className="flex-col items-start gap-2 text-sm">
+                    <div className="flex gap-2 font-medium leading-none">
+                        Ventas realizadas en total
+                    </div>
+                    <div className="leading-none text-muted-foreground">
+                        Haz realizado un total de {totalPurchases} ventas
+                    </div>
+                </CardFooter>
+            )}
         </Card>
     )
 }
 
-export default Component;
+export default Statistics;
