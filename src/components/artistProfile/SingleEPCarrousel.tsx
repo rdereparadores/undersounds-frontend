@@ -14,17 +14,17 @@ export function SingleEPCarrousel() {
 
             <Carousel className="w-full relative">
                 <CarouselContent>
-                    <CarouselItem className="md:basis-1/2 lg:basis-1/4 basis-auto"><SingleEP></SingleEP></CarouselItem>
-                    <CarouselItem className="md:basis-1/2 lg:basis-1/4 basis-auto"><SingleEP></SingleEP></CarouselItem>
-                    <CarouselItem className="md:basis-1/2 lg:basis-1/4 basis-auto"><SingleEP></SingleEP></CarouselItem>
-                    <CarouselItem className="md:basis-1/2 lg:basis-1/4 basis-auto"><SingleEP></SingleEP></CarouselItem>
-                    <CarouselItem className="md:basis-1/2 lg:basis-1/4 basis-auto"><SingleEP></SingleEP></CarouselItem>
-                    <CarouselItem className="md:basis-1/2 lg:basis-1/4 basis-auto"><SingleEP></SingleEP></CarouselItem>
-                    <CarouselItem className="md:basis-1/2 lg:basis-1/4 basis-auto"><SingleEP></SingleEP></CarouselItem>
-                    <CarouselItem className="md:basis-1/2 lg:basis-1/4 basis-auto"><SingleEP></SingleEP></CarouselItem>
+                    <CarouselItem className=" basis-auto"><SingleEP></SingleEP></CarouselItem>
+                    <CarouselItem className=" basis-auto"><SingleEP></SingleEP></CarouselItem>
+                    <CarouselItem className=" basis-auto"><SingleEP></SingleEP></CarouselItem>
+                    <CarouselItem className=" basis-auto"><SingleEP></SingleEP></CarouselItem>
+                    <CarouselItem className=" basis-auto"><SingleEP></SingleEP></CarouselItem>
+                    <CarouselItem className=" basis-auto"><SingleEP></SingleEP></CarouselItem>
+                    <CarouselItem className=" basis-auto"><SingleEP></SingleEP></CarouselItem>
+                    <CarouselItem className=" basis-auto"><SingleEP></SingleEP></CarouselItem>
                 </CarouselContent>
-                <CarouselPrevious />
-                <CarouselNext />
+                <CarouselPrevious className='max-sm:hidden'/>
+                <CarouselNext className='max-sm:hidden'/>
             </Carousel>
         </div>
 

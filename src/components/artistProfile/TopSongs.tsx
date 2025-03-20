@@ -84,7 +84,6 @@ export function TopSongs() {
     return (
         <>
             <div className="w-[90%] flex flex-col flex-wrap gap-2">
-                <p className="font-bold h-14 flex">Nombre autor</p>
                 <p className="font-bold text-2xl">Top Canciones</p>
                 {ejemplo.map((item, index) =>
                     <Song key={index} songName={item.songName} imgURL={item.imageUrl}

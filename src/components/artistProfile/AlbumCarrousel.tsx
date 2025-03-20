@@ -14,17 +14,17 @@ export function AlbumCarrousel() {
 
             <Carousel className="w-full relative">
                 <CarouselContent>
-                    <CarouselItem className="md:basis-1/2 lg:basis-1/4 basis-auto"><Album></Album></CarouselItem>
-                    <CarouselItem className="md:basis-1/2 lg:basis-1/4 basis-auto"><Album></Album></CarouselItem>
-                    <CarouselItem className="md:basis-1/2 lg:basis-1/4 basis-auto"><Album></Album></CarouselItem>
-                    <CarouselItem className="md:basis-1/2 lg:basis-1/4 basis-auto"><Album></Album></CarouselItem>
-                    <CarouselItem className="md:basis-1/2 lg:basis-1/4 basis-auto"><Album></Album></CarouselItem>
-                    <CarouselItem className="md:basis-1/2 lg:basis-1/4 basis-auto"><Album></Album></CarouselItem>
-                    <CarouselItem className="md:basis-1/2 lg:basis-1/4 basis-auto"><Album></Album></CarouselItem>
-                    <CarouselItem className="md:basis-1/2 lg:basis-1/4 basis-auto"><Album></Album></CarouselItem>
+                    <CarouselItem className=" basis-auto"><Album></Album></CarouselItem>
+                    <CarouselItem className=" basis-auto"><Album></Album></CarouselItem>
+                    <CarouselItem className=" basis-auto"><Album></Album></CarouselItem>
+                    <CarouselItem className=" basis-auto"><Album></Album></CarouselItem>
+                    <CarouselItem className=" basis-auto"><Album></Album></CarouselItem>
+                    <CarouselItem className=" basis-auto"><Album></Album></CarouselItem>
+                    <CarouselItem className=" basis-auto"><Album></Album></CarouselItem>
+                    <CarouselItem className=" basis-auto"><Album></Album></CarouselItem>
                 </CarouselContent>
-                <CarouselPrevious />
-                <CarouselNext />
+                <CarouselPrevious className='max-sm:hidden'/>
+                <CarouselNext className='max-sm:hidden'/>
             </Carousel>
         </div>
 
