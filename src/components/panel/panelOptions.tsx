@@ -11,7 +11,7 @@ interface PanelOptionsProps {
 
 const OptionsPanel: React.FC<PanelOptionsProps> = ({ setActiveView, setFilterType }) => {
     return (
-        <div className="flex flex-row gap-4 xl:flex-col block max-sm:hidden">
+        <div className="flex flex-row gap-4 xl:flex-col max-sm:hidden">
             <Button onClick={() => { setActiveView('compras'); setFilterType(''); }}>Perfil</Button>
             <Button onClick={() => { setActiveView('compras'); setFilterType('cancion'); }}>Mis canciones</Button>
             <Button onClick={() => { setActiveView('compras'); setFilterType('album'); }}>Mis álbums</Button>
