@@ -10,7 +10,7 @@ import {
 
 export function Footer() {
     return (
-            <Card className="bg-black border-black rounded-none outline-black flex flex-col flex-wrap gap-5">
+            <Card className="bg-black border-black rounded-none outline-black flex flex-col flex-wrap gap-5 mt-4">
                 <CardHeader>
                     <CardTitle></CardTitle>
                     <CardDescription></CardDescription>
