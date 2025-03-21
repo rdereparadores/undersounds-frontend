@@ -50,7 +50,7 @@ const chartConfig = {
     },
 };
 
-const ArtistPanel = () => {
+export const ArtistPanel = () => {
     const [activeView, setActiveView] = useState('compras');
     const [filter, setFilter] = useState<string>('');
     const [sales, setSales] = useState<Sale[]>([]);
@@ -158,4 +158,3 @@ const ArtistPanel = () => {
     );
 };
 
-export default ArtistPanel;
