@@ -54,7 +54,7 @@ const chartConfig = {
 
 const totalPurchases = 58;
 
-const UserPanel = () => {
+export const UserPanel = () => {
     const [activeView, setActiveView] = useState('compras');
     const [filterType, setFilterType] = useState<string>('');
     const [purchases, setPurchases] = useState<Purchase[]>([]);
@@ -119,4 +119,3 @@ const UserPanel = () => {
 
 };
 
-export default UserPanel;
