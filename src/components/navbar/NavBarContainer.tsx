@@ -3,6 +3,7 @@ import { NavBar } from './NavBar'
 
 import { motion } from 'framer-motion'
 import { useState, useEffect } from 'react'
+import { Footer } from '../footer/Footer'
 
 export const NavBarContainer = () => {
     const [scroll, setScroll] = useState(20)
@@ -34,6 +35,7 @@ export const NavBarContainer = () => {
             <div className='pt-20 px-[20px] min-h-screen'>
                 <Outlet />
             </div>
+            <Footer></Footer>
         </>
     )
 }
