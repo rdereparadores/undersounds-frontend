@@ -4,12 +4,12 @@ import { Index } from './routes/Index.tsx'
 import { SignIn } from '@/routes/SignIn'
 import { SignUp } from '@/routes/SignUp'
 import { Checkout } from './routes/Checkout.tsx'
-import Shop from './routes/Shop.tsx'
+import { Shop } from './routes/Shop.tsx'
 import { Album } from './routes/Album.tsx'
 import { Song } from './routes/Song.tsx'
 import ArtistPanel from './routes/artist_panel/artistPanel.tsx'
 import UserPanel from './routes/user_panel/userPanel.tsx'
-import { CartProvider } from './hooks/cartContext.tsx'
+import { ShopProvider } from './hooks/shop/ShopProvider.tsx'
 import { NavBarContainer } from '@/components/navbar/NavBarContainer.tsx'
 import { Cart } from './routes/Cart.tsx'
 import { GuestOnlyRoute } from './components/auth/GuestOnlyRoute.tsx'
@@ -23,7 +23,7 @@ function App() {
                 <Route index element={<Index />} />
 
                 <Route path='shop' element={<Outlet />}>
-                    <Route index element={<><CartProvider><Shop /></CartProvider></>} />
+                    <Route index element={<ShopProvider><Shop /></ShopProvider>} />
 
                     <Route path='cart' element={<Cart />} />
                     <Route element={<ProtectedRoute requiredRole={UserRole.USER} redirectTo='/shop/checkout' />}>
@@ -31,8 +31,8 @@ function App() {
                     </Route>
                 </Route>
 
-                <Route path='album' element={<Album />} />
-                <Route path='song' element={<Song />} />
+                <Route path='album/:id' element={<Album />} />
+                <Route path='song/:id' element={<Song />} />
 
                 <Route path='user' element={<ProtectedRoute requiredRole={UserRole.USER} redirectTo='/user/dashboard' />}>
                     <Route path='dashboard' element={<UserPanel />} />
