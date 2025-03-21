@@ -13,7 +13,7 @@ export function Footer(){
                 <CardTitle></CardTitle>
                 <CardDescription></CardDescription>
             </CardHeader>
-            <CardContent className="flex gap-32 flex-wrap justify-center">
+            <CardContent className="flex gap-32 md:flex-wrap justify-center">
                 <p className="text-white">Logo UnderSounds</p>
                 <div className="flex flex-col gap-4  justify-start">
                     <Button variant="link" className="text-gray-400  font-mono font-semibold">EMPRESA</Button>
