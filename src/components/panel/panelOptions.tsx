@@ -26,7 +26,7 @@ const OptionsPanel: React.FC<PanelOptionsProps> = ({ setActiveView, setFilterTyp
                         <DialogDescription>
                             Realiza cambios en tu perfil aquí. No olvides guardar los cambios.
                         </DialogDescription>
-                </DialogHeader>
+                    </DialogHeader>
                     <div className="grid gap-4 py-4">
                         <div className="grid grid-cols-4 items-center gap-4">
                             <Label htmlFor="name" className="text-right">
