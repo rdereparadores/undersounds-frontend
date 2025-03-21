@@ -9,6 +9,5 @@ export default defineConfig({
     alias: {
       "@": path.resolve(__dirname, "./src"),
     },
-  },
-  base: '/undersounds-frontend/' // Para que funcione con GitHub Pages
+  }
 })

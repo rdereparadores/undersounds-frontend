@@ -1,11 +1,24 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
+import ReactDOM from 'react-dom/client'
+import App from './App'
+import { SpeedInsights } from "@vercel/speed-insights/react"
 import './index.css'
-import App from './App.tsx'
 
-createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <App />
-  </StrictMode>,
-)
+import { AuthProvider } from './hooks/auth/AuthProvider'
+import { ApiProvider } from './hooks/api/ApiProvider'
+import { BrowserRouter } from 'react-router'
+import { Toaster } from '@/components/ui/sonner'
+import { ScrollToTop } from '@/lib/utils'
 
+const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
+root.render(
+    <BrowserRouter>
+        <ScrollToTop />
+        <AuthProvider>
+            <ApiProvider>
+                <App />
+                <Toaster richColors />
+            </ApiProvider>
+        </AuthProvider>
+        <SpeedInsights />
+    </BrowserRouter>
+);
