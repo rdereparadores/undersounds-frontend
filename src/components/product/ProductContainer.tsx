@@ -1,4 +1,6 @@
-import { useProduct } from "@/hooks/product/useProduct"
+import { Button } from "../ui/button"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card"
+import { Skeleton } from "../ui/skeleton"
 import { ProductContainerInfo } from "./ProductContainerInfo"
 import { ProductContainerRatings } from "./ProductContainerRatings"
 import { ProductContainerRelatedCarousel } from "./ProductContainerRelatedCarousel"
@@ -29,7 +31,8 @@ export const ProductContainer = ({ type }: ProductContainerProps) => {
                     <ProductContainerRatings />
                 </div>
                 <ProductContainerRelatedCarousel />
-            </div>
+                <ProductContainerRatingPopUp></ProductContainerRatingPopUp>
+                </div>
         </div>
     )
 }
