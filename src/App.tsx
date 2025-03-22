@@ -5,8 +5,6 @@ import { SignIn } from '@/routes/SignIn'
 import { SignUp } from '@/routes/SignUp'
 import { Checkout } from './routes/Checkout.tsx'
 import { Shop } from './routes/Shop.tsx'
-import { Album } from './routes/Album.tsx'
-import { Song } from './routes/Song.tsx'
 import ArtistPanel from './routes/artist_panel/artistPanel.tsx'
 import UserPanel from './routes/user_panel/userPanel.tsx'
 import { ShopProvider } from './hooks/shop/ShopProvider.tsx'
@@ -15,6 +13,7 @@ import { Cart } from './routes/Cart.tsx'
 import { GuestOnlyRoute } from './components/auth/GuestOnlyRoute.tsx'
 import { ProtectedRoute } from './components/auth/ProtectedRoute.tsx'
 import { UserRole } from './constants.ts'
+import { ProductContainer } from './components/product/ProductContainer.tsx'
 
 function App() {
     return (
@@ -31,8 +30,8 @@ function App() {
                     </Route>
                 </Route>
 
-                <Route path='album/:id' element={<Album />} />
-                <Route path='song/:id' element={<Song />} />
+                <Route path='album/:id' element={<ProductContainer type='album' />} />
+                <Route path='song/:id' element={<ProductContainer type='song' />} />
 
                 <Route path='user' element={<ProtectedRoute requiredRole={UserRole.USER} redirectTo='/user/dashboard' />}>
                     <Route path='dashboard' element={<UserPanel />} />
