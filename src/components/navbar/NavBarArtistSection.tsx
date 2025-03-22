@@ -48,10 +48,10 @@ export const NavBarArtistSection = () => {
                         <Link to='/artist/dashboard'><RxDashboard />Panel</Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>
-                        <Link to='/artist/dashboard/songs'><PiVinylRecord />Mis canciones</Link>
+                        <Link to='/artist/dashboard/songPanel'><PiVinylRecord />Mis canciones</Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>
-                        <Link to='/artist/dashboard/albums'><IoAlbumsOutline />Mis álbumes</Link>
+                        <Link to='/artist/dashboard/albumPanel'><IoAlbumsOutline />Mis álbumes</Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>
                         <Link to='/artist/dashboard/sales'><IoStatsChartOutline />Ventas</Link>
