@@ -17,7 +17,7 @@ export function Song({songName,imgURL,artists,album}:SongProps){
                 <img 
                     hidden={!imgLoaded}
                     onLoad={() => setImgLoaded(true)}
-                    src="https://picsum.photos/75/75"
+                    src={imgURL}
                     className="flex rounded-lg p-1" 
                 ></img>
                 <Button asChild variant="link">
