@@ -32,7 +32,7 @@ export const NavBarContainer = () => {
             >
                 <NavBar floating={scroll > 0} />
             </motion.nav>
-            <div className='pt-20 px-[20px]'>
+            <div className='pt-20 px-[20px]  min-h-screen'>
                 <Outlet />
             </div>
             <Footer></Footer>
