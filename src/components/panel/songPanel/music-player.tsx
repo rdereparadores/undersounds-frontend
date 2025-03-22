@@ -1,7 +1,4 @@
-"use client"
-
 import type React from "react"
-
 import { useState, useEffect } from "react"
 import { SongPagination } from "./song-pagination"
 import { SongCard } from "./song-card"
@@ -23,47 +20,6 @@ const Input = ({ className, ...props }: React.InputHTMLAttributes<HTMLInputEleme
             className={`flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 ${className}`}
             {...props}
         />
-    )
-}
-
-// Button component
-const Button = ({
-                    className,
-                    variant = "default",
-                    size = "default",
-                    children,
-                    ...props
-                }: React.ButtonHTMLAttributes<HTMLButtonElement> & {
-    variant?: "default" | "ghost"
-    size?: "default" | "sm" | "icon"
-}) => {
-    const getVariantClasses = () => {
-        switch (variant) {
-            case "ghost":
-                return "hover:bg-accent hover:text-accent-foreground"
-            default:
-                return "bg-primary text-primary-foreground hover:bg-primary/90"
-        }
-    }
-
-    const getSizeClasses = () => {
-        switch (size) {
-            case "sm":
-                return "h-9 px-3 rounded-md"
-            case "icon":
-                return "h-10 w-10 p-0"
-            default:
-                return "h-10 px-4 py-2 rounded-md"
-        }
-    }
-
-    return (
-        <button
-            className={`inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 ${getVariantClasses()} ${getSizeClasses()} ${className}`}
-            {...props}
-        >
-            {children}
-        </button>
     )
 }
 
@@ -144,7 +100,6 @@ export default function MusicPlayer({ songs = sampleSongs }: { songs?: Song[] })
                                     song={song}
                                     isPlaying={playingSongId === indexOfFirstItem + index}
                                     onTogglePlay={() => togglePlay(indexOfFirstItem + index)}
-                                    Button={Button}
                                 />
                             ))
                         )}
@@ -156,7 +111,6 @@ export default function MusicPlayer({ songs = sampleSongs }: { songs?: Song[] })
                             songs={filteredSongs}
                             currentPage={currentPage}
                             onPageChange={handlePageChange}
-                            Button={Button}
                         />
                     )}
                 </div>
@@ -181,4 +135,3 @@ export default function MusicPlayer({ songs = sampleSongs }: { songs?: Song[] })
         </div>
     )
 }
-

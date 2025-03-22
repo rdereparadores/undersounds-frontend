@@ -1,9 +1,6 @@
-"use client"
-
-import type React from "react"
-
 import { useState } from "react"
 import { Play, Pause, Download } from "lucide-react"
+import { Button } from "./button" // Import the Button component
 
 interface Song {
     artist: string
@@ -13,24 +10,13 @@ interface Song {
     downloadUrl: string
 }
 
-interface ButtonProps {
-    variant: 'default' | 'outline' | string;
-    size: 'icon' | string;
-    className?: string;
-    onClick?: () => void;
-    disabled?: boolean;
-    style?: React.CSSProperties;
-    children?: React.ReactNode;
-}
-
 interface SongCardProps {
     song: Song
     isPlaying: boolean
     onTogglePlay: () => void
-    Button: React.ComponentType<ButtonProps>;
 }
 
-export function SongCard({ song, isPlaying, onTogglePlay, Button }: SongCardProps) {
+export function SongCard({ song, isPlaying, onTogglePlay }: SongCardProps) {
     const [isHovered, setIsHovered] = useState(false)
 
     // Generar barras para la onda de sonido
@@ -164,4 +150,3 @@ export function SongCard({ song, isPlaying, onTogglePlay, Button }: SongCardProp
         </div>
     )
 }
-

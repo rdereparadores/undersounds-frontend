@@ -1,7 +1,5 @@
-"use client"
-
-import type React from "react"
 import { ChevronLeft, ChevronRight } from "lucide-react"
+import { Button } from "./button" // Import the Button component
 
 interface Song {
     artist: string
@@ -11,24 +9,13 @@ interface Song {
     downloadUrl: string
 }
 
-interface ButtonProps {
-    variant: 'default' | 'outline' | string;
-    size: 'icon' | string;
-    className?: string;
-    onClick?: () => void;
-    disabled?: boolean;
-    style?: React.CSSProperties;
-    children?: React.ReactNode;
-}
-
 interface SongPaginationProps {
     songs: Song[];
     currentPage: number;
     onPageChange: (page: number) => void;
-    Button: React.ComponentType<ButtonProps>;
 }
 
-export const SongPagination = ({ songs, currentPage, onPageChange, Button }: SongPaginationProps) => {
+export const SongPagination = ({ songs, currentPage, onPageChange }: SongPaginationProps) => {
     const itemsPerPage = 4
     const totalPages = Math.ceil(songs.length / itemsPerPage)
 
@@ -158,4 +145,3 @@ export const SongPagination = ({ songs, currentPage, onPageChange, Button }: Son
         </div>
     )
 }
-
