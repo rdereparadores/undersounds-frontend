@@ -2,18 +2,18 @@
 
 import { useState } from "react"
 import { motion } from "framer-motion"
-import { User, Music, Album, ShoppingCart, BarChart2 } from "lucide-react"
+import { User, Music, Album, DollarSign, BarChart2 } from "lucide-react"
 import { Link } from "react-router"
 
-const OptionsPanel = () => {
+const ArtistPanelOptions = () => {
     const [activeButton, setActiveButton] = useState<string | null>(null)
     const [hoveredButton, setHoveredButton] = useState<string | null>(null)
 
     const buttons = [
-        { id: "userProfile", label: "Perfil", icon: <User size={16} className="mr-3" />, path: "userProfile" },
+        { id: "artistProfile", label: "Perfil", icon: <User size={16} className="mr-3" />, path: "artistProfile" },
         { id: "songPanel", label: "Mis canciones", icon: <Music size={16} className="mr-3" />, path: "songPanel" },
         { id: "albumPanel", label: "Mis álbumes", icon: <Album size={16} className="mr-3" />, path: "albumPanel" },
-        { id: "purchases", label: "Compras", icon: <ShoppingCart size={16} className="mr-3" />, path: "purchases" },
+        { id: "sales", label: "Ventas", icon: <DollarSign size={16} className="mr-3" />, path: "sales" },
         { id: "statistics", label: "Estadísticas", icon: <BarChart2 size={16} className="mr-3" />, path: "statistics" },
     ]
 
@@ -90,4 +90,4 @@ const OptionsPanel = () => {
     )
 }
 
-export default OptionsPanel
+export default ArtistPanelOptions

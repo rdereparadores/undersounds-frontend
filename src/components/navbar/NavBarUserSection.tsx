@@ -45,13 +45,13 @@ export const NavBarUserSection = () => {
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
                     <DropdownMenuItem asChild>
-                        <Link to='/user/dashboard'><RxDashboard />Panel</Link>
+                        <Link to='/user/dashboard'><RxDashboard />Perfil</Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>
-                        <Link to='/user/dashboard/songs'><PiVinylRecord />Canciones</Link>
+                        <Link to='/user/dashboard/songPanel'><PiVinylRecord />Canciones</Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>
-                        <Link to='/user/dashboard/albums'><IoAlbumsOutline />Álbumes</Link>
+                        <Link to='/user/dashboard/albumPanel'><IoAlbumsOutline />Álbumes</Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>
                         <Link to='/user/dashboard/stats'><IoStatsChartOutline />Estadísticas</Link>
