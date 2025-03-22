@@ -28,6 +28,7 @@ import ArtistStatisticsPanel from "@/components/panel/artistStatistics/artist-st
 import SalePanel from "@/components/panel/salePanel/sale-panel.tsx";
 import {salesData} from "@/components/panel/salePanel/salesData.tsx";
 import ArtistProfileCard from "@/components/panel/profilePanel/artistProfileCard.tsx";
+import { ArtistProfile } from './components/artistProfile/ArtistProfile.tsx';
 
 function App() {
     return (
@@ -46,6 +47,7 @@ function App() {
 
                 <Route path='album/:id' element={<Album />} />
                 <Route path='song/:id' element={<Song />} />
+                <Route path='profile/artist/:id' element={<ArtistProfile />} />
 
                 <Route path='user' element={<ProtectedRoute requiredRole={UserRole.USER} redirectTo='/user/dashboard' />}>
                     <Route path='dashboard' element={<UserPanel/>}>
