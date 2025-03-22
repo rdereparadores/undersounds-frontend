@@ -1,8 +1,16 @@
+import { useState } from "react";
+import { Skeleton } from "../ui/skeleton";
 
 export function ArtistImage (){
+    const [imgLoaded, setImgLoaded] = useState(false)
     return( 
-        <div className="flex h-96 ">
-            <img src="https://picsum.photos/1920/1080" className="grow"></img>
+        <div>
+            <Skeleton hidden={imgLoaded} className='w-[1900px] h-[400px]' />
+           <img 
+                hidden={!imgLoaded}
+                onLoad={() => setImgLoaded(true)}
+                     src="https://picsum.photos/1900/500"
+                    className="rounded-lg"></img> 
         </div>
     )
 
