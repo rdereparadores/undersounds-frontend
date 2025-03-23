@@ -44,7 +44,7 @@ export function AlbumCard({ album, isExpanded, onToggleExpand, Button }: AlbumCa
 
     return (
         <div
-            className={`relative rounded-xl overflow-hidden transition-all duration-300 
+            className={`relative rounded-xl overflow-hidden
             ${
                 isExpanded
                     ? "bg-blue-100 shadow-lg border border-blue-300/50"
@@ -66,7 +66,7 @@ export function AlbumCard({ album, isExpanded, onToggleExpand, Button }: AlbumCa
                             alt={album.name}
                             width={120}
                             height={120}
-                            className={`object-cover w-full h-full transition-transform duration-700 ${isExpanded ? "scale-110" : ""}`}
+                            className={`object-cover w-full h-full ${isExpanded ? "scale-110" : ""}`}
                         />
                         {isExpanded && <div className="absolute inset-0 bg-gradient-to-t from-blue-500/30 to-transparent"></div>}
                     </div>

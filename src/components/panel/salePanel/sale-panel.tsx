@@ -1,9 +1,8 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { motion, AnimatePresence } from "framer-motion"
 import { Calendar, ShoppingCart, ChevronLeft, ChevronRight, Receipt } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
@@ -18,13 +17,7 @@ interface Sale {
 
 export default function SalePanel({ sales = [] }: { sales?: Sale[] }) {
   const [currentPage, setCurrentPage] = useState(1)
-  const [isLoaded, setIsLoaded] = useState(false)
   const itemsPerPage = 6
-
-  // Efecto para activar la animación de carga
-  useEffect(() => {
-    setIsLoaded(true)
-  }, [])
 
   // Calcular los elementos que deben mostrarse en la página actual
   const indexOfLastItem = currentPage * itemsPerPage
@@ -123,165 +116,78 @@ export default function SalePanel({ sales = [] }: { sales?: Sale[] }) {
     }
   }
 
-  // Animaciones para el contenedor principal
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        when: "beforeChildren",
-        staggerChildren: 0.1,
-        delayChildren: 0.3,
-      },
-    },
-  }
-
-  // Animaciones para el título
-  const titleVariants = {
-    hidden: { opacity: 0, y: -20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        type: "spring",
-        stiffness: 300,
-        damping: 24,
-      },
-    },
-  }
-
-  // Animaciones para cada tarjeta
-  const cardVariants = {
-    hidden: { opacity: 0, y: 20, scale: 0.95 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      scale: 1,
-      transition: {
-        type: "spring",
-        stiffness: 260,
-        damping: 20,
-      },
-    },
-    exit: {
-      opacity: 0,
-      scale: 0.95,
-      transition: { duration: 0.2 },
-    },
-  }
-
-  // Animaciones para la paginación
-  const paginationVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        delay: 0.5,
-        duration: 0.5,
-      },
-    },
-  }
 
   return (
-    <motion.div
+    <div
       className="w-full bg-gradient-to-br from-slate-50 to-blue-50 dark:from-slate-900 dark:to-blue-950 p-4 rounded-xl shadow-lg overflow-hidden"
-      initial="hidden"
-      animate={isLoaded ? "visible" : "hidden"}
-      variants={containerVariants}
     >
-      <motion.div className="flex items-center justify-between mb-4" variants={titleVariants}>
+      <div className="flex items-center justify-between mb-4" >
         <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-sky-500 bg-clip-text text-transparent relative">
           Últimas ventas
-          <motion.span
+          <span
             className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-600 to-sky-500"
-            initial={{ width: "0%" }}
-            animate={{ width: "100%" }}
-            transition={{ delay: 0.8, duration: 0.8 }}
           />
         </h1>
-        <motion.div
-          initial={{ scale: 0, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ delay: 0.6, type: "spring", stiffness: 500 }}
-        >
+        <div>
           <Badge variant="outline" className="px-2 py-0.5 text-xs font-medium">
             {sales.length} productos
           </Badge>
-        </motion.div>
-      </motion.div>
+        </div>
+      </div>
 
       {currentItems.length === 0 ? (
-        <motion.div className="text-center py-12 bg-white dark:bg-slate-800 rounded-lg shadow" variants={cardVariants}>
+        <div className="text-center py-12 bg-white dark:bg-slate-800 rounded-lg shadow">
           <ShoppingCart className="mx-auto h-12 w-12 text-slate-400" />
           <p className="mt-4 text-lg text-slate-600 dark:text-slate-400">No hay ventas disponibles</p>
-        </motion.div>
+        </div>
       ) : (
         <div className="space-y-2">
-          <AnimatePresence mode="wait">
             {currentItems.map((sale, index) => (
-              <motion.div
+              <div
                 key={`${sale.title}-${index}-${currentPage}`}
-                variants={cardVariants}
-                initial="hidden"
-                animate="visible"
-                exit="exit"
-                layout
                 className="group"
               >
-                <Card className="overflow-hidden border-0 hover:shadow-xl transition-all duration-300 bg-white dark:bg-slate-800 group-hover:translate-y-[-4px]">
+                <Card className="overflow-hidden border-0 bg-white dark:bg-slate-800 group-hover:translate-y-[-4px]">
                   <CardContent className="p-0">
                     <div className="flex flex-row">
                       {/* Imagen con animación de hover */}
                       <div className="relative w-[100px] h-[100px] overflow-hidden bg-gradient-to-br from-blue-100 to-sky-100 dark:from-blue-900 dark:to-sky-900">
-                        <motion.div
-                          className="absolute inset-0 bg-gradient-to-tr from-blue-500/20 to-sky-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10"
-                          whileHover={{ opacity: 1 }}
+                        <div
+                          className="absolute inset-0 bg-gradient-to-tr from-blue-500/20 to-sky-500/20 opacity-0 z-10"
                         />
-                        <motion.img
+                        <img
                           src={sale.imageUrl || "/placeholder.svg"}
                           alt={sale.title}
                           className="w-full h-full object-cover mix-blend-multiply dark:mix-blend-lighten opacity-90"
-                          whileHover={{
-                            scale: 1.15,
-                            transition: { duration: 0.5 },
-                          }}
                         />
                       </div>
 
                       {/* Información del producto con animaciones de hover */}
                       <div className="flex-1 p-3 relative overflow-hidden">
-                        <motion.div
-                          className="absolute inset-0 bg-gradient-to-r from-blue-50 to-sky-50 dark:from-blue-900/10 dark:to-sky-900/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                          initial={{ opacity: 0 }}
-                          whileHover={{ opacity: 1 }}
+                        <div
+                          className="absolute inset-0 bg-gradient-to-r from-blue-50 to-sky-50 dark:from-blue-900/10 dark:to-sky-900/10 opacity-0 group-hover:opacity-100"
                         />
 
                         <div className="flex flex-row justify-between items-start relative z-10">
                           <div>
-                            <h2 className="text-base font-bold text-slate-800 dark:text-slate-100 line-clamp-1 group-hover:text-blue-700 dark:group-hover:text-blue-300 transition-colors duration-300">
+                            <h2 className="text-base font-bold text-slate-800 dark:text-slate-100 line-clamp-1 group-hover:text-blue-700 dark:group-hover:text-blue-300">
                               {sale.title}
                             </h2>
-                            <p className="text-xs text-slate-500 dark:text-slate-400 group-hover:text-slate-700 dark:group-hover:text-slate-300 transition-colors duration-300">
+                            <p className="text-xs text-slate-500 dark:text-slate-400 group-hover:text-slate-700 dark:group-hover:text-slate-300">
                               {sale.cliente}
                             </p>
                           </div>
-                          <motion.p
+                          <p
                             className="text-lg font-bold text-slate-800 dark:text-slate-100"
-                            whileHover={{
-                              scale: 1.1,
-                              color: "#0284c7",
-                              transition: { duration: 0.2 },
-                            }}
                           >
                             {sale.precio}
-                          </motion.p>
+                          </p>
                         </div>
 
                         <div className="mt-2 flex flex-wrap gap-2 items-center relative z-10">
                           <div className="flex items-center">
-                            <Calendar className="h-3 w-3 mr-1 text-slate-500 group-hover:text-blue-500 transition-colors duration-300" />
-                            <span className="text-xs text-slate-600 dark:text-slate-300 group-hover:text-slate-800 dark:group-hover:text-white transition-colors duration-300">
+                            <Calendar className="h-3 w-3 mr-1 text-slate-500 group-hover:text-blue-500" />
+                            <span className="text-xs text-slate-600 dark:text-slate-300 group-hover:text-slate-800 dark:group-hover:text-white">
                               {sale.fecha_venta}
                             </span>
                           </div>
@@ -300,21 +206,17 @@ export default function SalePanel({ sales = [] }: { sales?: Sale[] }) {
                     </div>
                   </CardContent>
                 </Card>
-              </motion.div>
+              </div>
             ))}
-          </AnimatePresence>
         </div>
       )}
 
       {/* Componente de paginación integrado */}
       {sales.length > 0 && (
-        <motion.div
+        <div
           className="flex justify-center items-center gap-2 mt-4"
-          variants={paginationVariants}
-          initial="hidden"
-          animate="visible"
         >
-          <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}>
+          <div>
             <Button
               variant="outline"
               size="icon"
@@ -325,12 +227,12 @@ export default function SalePanel({ sales = [] }: { sales?: Sale[] }) {
               <ChevronLeft className="h-3 w-3" />
               <span className="sr-only">Página anterior</span>
             </Button>
-          </motion.div>
+          </div>
 
           <div className="flex gap-1">
             {getPageNumbers().map((page, index) =>
               typeof page === "number" ? (
-                <motion.div key={index} whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}>
+                <div key={index}>
                   <Button
                     variant={currentPage === page ? "default" : "outline"}
                     size="sm"
@@ -343,7 +245,7 @@ export default function SalePanel({ sales = [] }: { sales?: Sale[] }) {
                   >
                     {page}
                   </Button>
-                </motion.div>
+                </div>
               ) : (
                 <span key={index} className="flex items-center justify-center w-7 h-7 text-xs">
                   {page}
@@ -352,7 +254,7 @@ export default function SalePanel({ sales = [] }: { sales?: Sale[] }) {
             )}
           </div>
 
-          <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}>
+          <div>
             <Button
               variant="outline"
               size="icon"
@@ -363,10 +265,10 @@ export default function SalePanel({ sales = [] }: { sales?: Sale[] }) {
               <ChevronRight className="h-3 w-3" />
               <span className="sr-only">Página siguiente</span>
             </Button>
-          </motion.div>
-        </motion.div>
+          </div>
+        </div>
       )}
-    </motion.div>
+    </div>
   )
 }
 

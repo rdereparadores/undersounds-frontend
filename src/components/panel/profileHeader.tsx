@@ -36,7 +36,7 @@ const ProfileHeader = ({ isArtist = false, username = "Usuario", avatarUrl = "" 
                         onMouseLeave={() => setIsHovered(false)}
                     >
                         <h1
-                            className={`text-2xl font-bold text-blue-600 transition-all duration-500 ${
+                            className={`text-2xl font-bold text-blue-600 ${
                                 isHovered ? "tracking-wider scale-105" : ""
                             }`}
                         >
@@ -45,9 +45,7 @@ const ProfileHeader = ({ isArtist = false, username = "Usuario", avatarUrl = "" 
 
                         {isArtist && (
                             <div
-                                className={`ml-0 md:ml-2 text-blue-500 transition-all duration-300 ${
-                                    isHovered ? "rotate-12 scale-110" : ""
-                                }`}
+                                className={`ml-2 text-blue-500${isHovered ? "rotate-12 scale-110" : ""}`}
                             >
                                 <Music className="w-6 h-6" />
                             </div>

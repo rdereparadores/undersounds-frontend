@@ -38,9 +38,7 @@ export function AlbumSongList({ songs, playingSongId, onTogglePlay, Button }: Al
                     key={i}
                     className={`w-1 rounded-full ${isPlaying ? "bg-blue-400" : "bg-blue-300/60"}`}
                     style={{
-                        height: `${height}%`,
-                        animationDelay: `${i * 0.02}s`,
-                        animation: isPlaying ? "fastSoundWave 0.4s linear infinite alternate" : "none",
+                        height: `${height}%`
                     }}
                 />,
             )
@@ -58,7 +56,7 @@ export function AlbumSongList({ songs, playingSongId, onTogglePlay, Button }: Al
             {songs.map((song, index) => (
                 <div
                     key={index}
-                    className={`relative rounded-xl overflow-hidden transition-all duration-300 
+                    className={`relative rounded-xl overflow-hidden
                         ${
                         playingSongId === index
                             ? "bg-blue-100 shadow-lg border border-blue-300/50"
@@ -79,7 +77,7 @@ export function AlbumSongList({ songs, playingSongId, onTogglePlay, Button }: Al
                             <img
                                 src={song.imageUrl || "/placeholder.svg?height=50&width=50"}
                                 alt={song.name}
-                                className={`w-full h-full object-cover transition-transform duration-700 ${playingSongId === index ? "scale-110" : ""}`}
+                                className={`w-full h-full object-cover${playingSongId === index ? "scale-110" : ""}`}
                             />
                             {playingSongId === index && (
                                 <div className="absolute inset-0 bg-gradient-to-t from-blue-500/30 to-transparent"></div>
