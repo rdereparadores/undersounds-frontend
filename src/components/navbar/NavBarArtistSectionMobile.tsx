@@ -25,17 +25,17 @@ export const NavBarArtistSectionMobile = () => {
             </Button>
             <SheetClose asChild>
                 <Button asChild variant="ghost">
-                    <Link to='/artist/dashboard'><RxDashboard />Panel</Link>
+                    <Link to='/artist/dashboard'><RxDashboard />Perfil</Link>
                 </Button>
             </SheetClose>
             <SheetClose asChild>
                 <Button asChild variant="ghost">
-                    <Link to='/artist/dashboard/songs'><PiVinylRecord />Mis canciones</Link>
+                    <Link to='/artist/dashboard/songPanel'><PiVinylRecord />Mis canciones</Link>
                 </Button>
             </SheetClose>
             <SheetClose asChild>
                 <Button asChild variant="ghost">
-                    <Link to='/artist/dashboard/albums'><IoAlbumsOutline />Mis álbumes</Link>
+                    <Link to='/artist/dashboard/albumPanel'><IoAlbumsOutline />Mis álbumes</Link>
                 </Button>
             </SheetClose>
             <SheetClose asChild>

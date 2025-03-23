@@ -141,7 +141,7 @@ export const SignUpCard = () => {
                             <Label htmlFor='terms'>Acepto los términos y condiciones</Label>
                         </div>
 
-                        <Button type='submit' disabled={!termsAgreed || signUpButtonDisabled}>Registrarse</Button>
+                        <Button type='submit' disabled={!termsAgreed || signUpButtonDisabled} className="transition">Registrarse</Button>
                     </div>
                 </form>
 

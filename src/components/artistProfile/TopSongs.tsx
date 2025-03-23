@@ -83,8 +83,7 @@ const ejemplo = [
 export function TopSongs() {
     return (
         <>
-            <div className="w-[90%] flex flex-col flex-wrap gap-2">
-                <p className="font-bold text-2xl">Top Canciones</p>
+            <div className="h-full w-full flex flex-col flex-wrap gap-2">
                 {ejemplo.map((item, index) =>
                     <Song key={index} songName={item.songName} imgURL={item.imageUrl}
                         artists={item.artists} album={item.album} />

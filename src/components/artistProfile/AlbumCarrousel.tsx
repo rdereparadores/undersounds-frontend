@@ -9,7 +9,7 @@ import { Album } from "./Album"
 
 export function AlbumCarrousel() {
     return (
-        <div className="w-[90%] h-fit flex flex-col flex-wrap gap-2">
+        <div className="w-[95%] h-fit flex flex-col flex-wrap gap-2">
             <p className="font-bold text-2xl">Álbumes</p>        
 
             <Carousel className="w-full relative">
