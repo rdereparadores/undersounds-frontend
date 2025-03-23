@@ -29,7 +29,7 @@ export function Footer() {
 
                     <div className="flex flex-col gap-4">
                         <p className="text-gray-400 font-mono font-semibold">COMUNIDAD</p>
-                        <Link to="auth/singup"><p className="hover:underline text-white text-start">UnderSounds para artistas</p></Link>
+                         <Link to="auth/signup"><p className="hover:underline text-white text-start">UnderSounds para artistas</p></Link>
                         <p  className="hover:underline text-white text-start">Desarrolladores</p>
                         <p  className="hover:underline text-white text-start">Publicidad</p>
                         <p  className="hover:underline text-white text-start">Inversores</p>
