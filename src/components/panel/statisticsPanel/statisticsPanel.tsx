@@ -70,7 +70,7 @@ export default function StatisticsDashboard() {
     const activeData = getActiveData()
 
     return (
-        <Card className="w-full overflow-hidden border-border/10 shadow-lg bg-gradient-to-br from-blue-50 to-white dark:from-blue-950/30 dark:to-blue-900/10 dark:bg-blue-950 animate-in fade-in-50 duration-700 slide-in-from-bottom-5">
+        <Card className="w-full overflow-hidden border-border/10 shadow-lg bg-gradient-to-br from-blue-50 to-white dark:from-blue-950/30 dark:to-blue-900/10 dark:bg-blue-950">
             <CardHeader className="pb-0 bg-blue-500/5 dark:bg-blue-800/10 backdrop-blur-sm">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                     <div>
@@ -86,7 +86,7 @@ export default function StatisticsDashboard() {
                     </div>
                     <Badge
                         variant="outline"
-                        className="px-3 py-1.5 bg-blue-500 text-white border-blue-400 animate-in fade-in-0 duration-700 hover:bg-blue-600 transition-colors self-start sm:self-auto"
+                        className="px-3 py-1.5 bg-blue-500 text-white border-blue-400 fade-in-0 duration-700 hover:bg-blue-600"
                     >
                         {activeData.period}
                     </Badge>
@@ -102,21 +102,21 @@ export default function StatisticsDashboard() {
                     <TabsList className="grid grid-cols-3 mb-6 bg-blue-100/50 dark:bg-blue-900/30 p-1">
                         <TabsTrigger
                             value="purchases"
-                            className="flex items-center gap-2 transition-all duration-300 hover:bg-blue-200/50 dark:hover:bg-blue-800/50 data-[state=active]:bg-blue-600 data-[state=active]:text-white"
+                            className="flex items-center gap-2 hover:bg-blue-200/50 dark:hover:bg-blue-800/50 data-[state=active]:bg-blue-600 data-[state=active]:text-white"
                         >
                             <ShoppingBag className="h-4 w-4" />
                             <span className="hidden sm:inline">Compras</span>
                         </TabsTrigger>
                         <TabsTrigger
                             value="playTime"
-                            className="flex items-center gap-2 transition-all duration-300 hover:bg-blue-200/50 dark:hover:bg-blue-800/50 data-[state=active]:bg-blue-600 data-[state=active]:text-white"
+                            className="flex items-center gap-2 hover:bg-blue-200/50 dark:hover:bg-blue-800/50 data-[state=active]:bg-blue-600 data-[state=active]:text-white"
                         >
                             <Clock className="h-4 w-4" />
                             <span className="hidden sm:inline">Reproducciones</span>
                         </TabsTrigger>
                         <TabsTrigger
                             value="artists"
-                            className="flex items-center gap-2 transition-all duration-300 hover:bg-blue-200/50 dark:hover:bg-blue-800/50 data-[state=active]:bg-blue-600 data-[state=active]:text-white"
+                            className="flex items-center gap-2 hover:bg-blue-200/50 dark:hover:bg-blue-800/50 data-[state=active]:bg-blue-600 data-[state=active]:text-white"
                         >
                             <Music2 className="h-4 w-4" />
                             <span className="hidden sm:inline">Artistas</span>
@@ -134,10 +134,10 @@ export default function StatisticsDashboard() {
                     </TabsContent>
                 </Tabs>
             </CardContent>
-            <CardFooter className="bg-blue-100/30 dark:bg-blue-800/20 border-t border-blue-200/50 dark:border-blue-700/30 px-6 py-4 animate-in fade-in-50 duration-1000 delay-500">
+            <CardFooter className="bg-blue-100/30 dark:bg-blue-800/20 border-t border-blue-200/50 dark:border-blue-700/30 px-6 py-4 fade-in-50 duration-1000 delay-500">
                 <div className="flex items-center justify-between w-full">
                     <div className="flex items-center gap-2">
-                        <TrendingUp className="h-4 w-4 text-blue-600 dark:text-blue-400 animate-pulse" />
+                        <TrendingUp className="h-4 w-4 text-blue-600 dark:text-blue-400" />
                         <span className="text-sm font-medium text-blue-700 dark:text-blue-300">{activeData.trend}</span>
                     </div>
                     <span className="text-sm text-blue-600/70 dark:text-blue-400/70">
@@ -214,28 +214,13 @@ function StatisticsContent({ data, type }: StatisticsContentProps) {
     }
 
     return (
-        <div className="space-y-4 animate-in fade-in-50 duration-500 slide-in-from-bottom-3">
+        <div className="space-y-4">
             <div>
                 <h3 className="text-lg font-semibold text-blue-700 dark:text-blue-300">{data.title}</h3>
                 <p className="text-sm text-blue-600/70 dark:text-blue-400/70">{makeBold(data.description)}</p>
             </div>
 
-            <div className="h-[300px] mt-4 animate-in fade-in-50 duration-1000 delay-300">
-                <style>{`
-                    .recharts-bar-rectangle path {
-                        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), filter 0.3s ease;
-                        transform-origin: left center;
-                    }
-
-                    .recharts-bar-rectangle:hover path {
-                        transform: scaleX(1.05);
-                        filter: drop-shadow(0 8px 16px rgb(37 99 235 / 0.2)) brightness(1.1);
-                    }
-                    
-                    .dark .recharts-bar-rectangle:hover path {
-                        filter: drop-shadow(0 8px 16px rgb(37 99 235 / 0.4)) brightness(1.2);
-                    }
-                `}</style>
+            <div className="h-[300px] mt-4 duration-1000 delay-300">
                 <ChartContainer config={data.chartConfig || {}} className="h-full">
                     <BarChart
                         width={533}

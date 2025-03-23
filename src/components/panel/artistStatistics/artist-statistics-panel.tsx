@@ -3,7 +3,6 @@
 import type React from "react"
 
 import { useState } from "react"
-import { motion, LayoutGroup } from "framer-motion"
 import { Bar, BarChart, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts"
 import { BarChart3, Music2, Play, Album } from "lucide-react"
 
@@ -61,22 +60,7 @@ function SongChart({ data }: { data: SongData[] }) {
         </CardDescription>
       </CardHeader>
       <CardContent className="p-4 flex flex-col flex-1">
-        <div className="h-[250px] mt-2 animate-in fade-in-50 duration-1000">
-          <style>{`
-            .recharts-bar-rectangle path {
-              transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), filter 0.3s ease;
-              transform-origin: left center;
-            }
-
-            .recharts-bar-rectangle:hover path {
-              transform: scaleX(1.05);
-              filter: drop-shadow(0 8px 16px rgb(37 99 235 / 0.2)) brightness(1.1);
-            }
-            
-            .dark .recharts-bar-rectangle:hover path {
-              filter: drop-shadow(0 8px 16px rgb(37 99 235 / 0.4)) brightness(1.2);
-            }
-          `}</style>
+        <div className="h-[250px] mt-2">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={data} layout="vertical" margin={{ left: 80 }}>
               <Bar dataKey="revenue" fill="#2563eb" radius={[0, 6, 6, 0]} barSize={30} className="cursor-pointer" />
@@ -156,11 +140,11 @@ function AlbumChart({ data }: { data: AlbumData[] }) {
         </CardDescription>
       </CardHeader>
       <CardContent className="p-4 flex flex-col flex-1">
-        <div className="space-y-4 mt-2 animate-in fade-in-50 duration-1000">
+        <div className="space-y-4 mt-2">
           {data.map((album) => (
             <div
               key={album.albumId}
-              className="flex items-center gap-4 p-3 rounded-lg transition-all hover:bg-blue-100/50 dark:hover:bg-blue-800/20"
+              className="flex items-center gap-4 p-3 rounded-lg hover:bg-blue-100/50 dark:hover:bg-blue-800/20"
             >
               <img
                 src={album.image || "/placeholder.svg"}
@@ -201,11 +185,11 @@ function PlaybackChart({ data }: { data: PlaybackData[] }) {
         <CardDescription className="text-blue-600/70 dark:text-blue-400/70">Reproducciones mensuales</CardDescription>
       </CardHeader>
       <CardContent className="p-4 flex flex-col flex-1">
-        <div className="space-y-4 mt-2 animate-in fade-in-50 duration-1000">
+        <div className="space-y-4 mt-2">
           {data.map((item) => (
             <div
               key={item.songId}
-              className="flex items-center gap-4 p-3 rounded-lg transition-all hover:bg-blue-100/50 dark:hover:bg-blue-800/20"
+              className="flex items-center gap-4 p-3 rounded-lg hover:bg-blue-100/50 dark:hover:bg-blue-800/20"
             >
               <img
                 src={item.image || "/placeholder.svg"}
@@ -266,7 +250,7 @@ export default function ArtistStatisticsPanel({
   const chartMapping = getChartMapping(songChartData, albumChartData, playbackChartData)
 
   return (
-    <Card className="w-full overflow-hidden border-border/10 shadow-lg bg-gradient-to-br from-blue-50 to-white dark:from-blue-950/30 dark:to-blue-900/10 dark:bg-blue-950 animate-in fade-in-50 duration-700 slide-in-from-bottom-5">
+    <Card className="w-full overflow-hidden border-border/10 shadow-lg bg-gradient-to-br from-blue-50 to-white dark:from-blue-950/30 dark:to-blue-900/10 dark:bg-blue-950">
       <CardHeader className="pb-0 bg-blue-500/5 dark:bg-blue-800/10 backdrop-blur-sm">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
@@ -282,21 +266,15 @@ export default function ArtistStatisticsPanel({
           </div>
           <Badge
             variant="outline"
-            className="px-3 py-1.5 bg-blue-500 text-white border-blue-400 animate-in fade-in-0 duration-700 hover:bg-blue-600 transition-colors self-start sm:self-auto"
+            className="px-3 py-1.5 bg-blue-500 text-white border-blue-400 hover:bg-blue-600 transition-colors self-start sm:self-auto"
           >
             {period}
           </Badge>
         </div>
       </CardHeader>
       <CardContent className="p-6">
-        <LayoutGroup>
           <div
             className="grid gap-6"
-            style={{
-              gridTemplateRows: "420px 400px",
-              gridTemplateColumns: "1fr 1fr",
-              gap: "24px",
-            }}
           >
             {chartOrder.map((id, index) => {
               let styleProps: React.CSSProperties = {
@@ -325,26 +303,22 @@ export default function ArtistStatisticsPanel({
               }
 
               return (
-                <motion.div
+                <div
                   key={id}
-                  layout
-                  layoutId={id}
-                  transition={{ duration: 0.5, ease: "easeInOut" }}
                   onClick={() => handleChartClick(id)}
                   style={styleProps}
-                  className="hover:ring-2 hover:ring-blue-300 dark:hover:ring-blue-700 hover:ring-offset-2 hover:ring-offset-white dark:hover:ring-offset-blue-950 rounded-lg transition-all"
+                  className="hover:ring-2 hover:ring-blue-300 dark:hover:ring-blue-700 hover:ring-offset-2 hover:ring-offset-white dark:hover:ring-offset-blue-950 rounded-lg"
                 >
                   {chartMapping[id as keyof typeof chartMapping]}
-                </motion.div>
+                </div>
               )
             })}
           </div>
-        </LayoutGroup>
       </CardContent>
-      <CardFooter className="bg-blue-100/30 dark:bg-blue-800/20 border-t border-blue-200/50 dark:border-blue-700/30 px-6 py-4 animate-in fade-in-50 duration-1000 delay-500">
+      <CardFooter className="bg-blue-100/30 dark:bg-blue-800/20 border-t border-blue-200/50 dark:border-blue-700/30 px-6 py-4">
         <div className="flex items-center justify-between w-full">
           <div className="flex items-center gap-2">
-            <Music2 className="h-4 w-4 text-blue-600 dark:text-blue-400 animate-pulse" />
+            <Music2 className="h-4 w-4 text-blue-600 dark:text-blue-400 " />
             <span className="text-sm font-medium text-blue-700 dark:text-blue-300 whitespace-normal">{trend}</span>
           </div>
           <span className="text-sm font-medium text-blue-700 dark:text-blue-300 whitespace-normal">

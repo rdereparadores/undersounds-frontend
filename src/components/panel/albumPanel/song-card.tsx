@@ -26,7 +26,7 @@ const SongCard: React.FC<SongCardProps> = ({
 
     return (
         <div
-            className="relative group w-64 h-80 rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300"
+            className="relative group w-64 h-80 rounded-lg overflow-hidden shadow-md hover:shadow-lg"
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
         >

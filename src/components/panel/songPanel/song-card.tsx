@@ -1,4 +1,3 @@
-import { useState } from "react"
 import { Play, Pause, Download } from "lucide-react"
 import { Button } from "./button" // Import the Button component
 
@@ -17,8 +16,6 @@ interface SongCardProps {
 }
 
 export function SongCard({ song, isPlaying, onTogglePlay }: SongCardProps) {
-    const [isHovered, setIsHovered] = useState(false)
-
     // Generar barras para la onda de sonido
     const generateSoundWaveBars = () => {
         const bars = []
@@ -34,8 +31,6 @@ export function SongCard({ song, isPlaying, onTogglePlay }: SongCardProps) {
                     className={`w-1 rounded-full ${isPlaying ? "bg-blue-400" : "bg-blue-300/60"}`}
                     style={{
                         height: `${height}%`,
-                        animationDelay: `${i * 0.02}s`,
-                        animation: isPlaying ? "fastSoundWave 0.4s linear infinite alternate" : "none",
                     }}
                 />,
             )
@@ -51,33 +46,27 @@ export function SongCard({ song, isPlaying, onTogglePlay }: SongCardProps) {
 
     return (
         <div
-            className={`relative rounded-xl overflow-hidden transition-all duration-300 
-        ${
-                isPlaying
+            className={`relative rounded-xl overflow-hidden 
+        ${isPlaying
                     ? "bg-blue-100 shadow-lg border border-blue-300/50"
                     : "bg-white hover:bg-blue-50 border border-transparent hover:border-blue-300/30"
-            }
+                }
         transform hover:scale-[1.02] hover:shadow-xl cursor-pointer
       `}
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => {
-                setIsHovered(false)
-            }}
         >
             <div className="p-4 bg-blue-50">
                 <div className="flex items-center gap-4">
                     {/* Album art with glow effect when playing */}
                     <div
-                        className={`relative min-w-[80px] w-[80px] h-[80px] rounded-lg overflow-hidden flex-shrink-0 ${
-                            isPlaying ? "shadow-[0_0_15px_rgba(96,165,250,0.5)]" : "shadow-md"
-                        }`}
+                        className={`relative min-w-[80px] w-[80px] h-[80px] rounded-lg overflow-hidden flex-shrink-0 ${isPlaying ? "shadow-[0_0_15px_rgba(96,165,250,0.5)]" : "shadow-md"
+                            }`}
                     >
                         <img
                             src={song.imageUrl || "/placeholder.svg?height=80&width=80"}
                             alt={song.name}
                             width={80}
                             height={80}
-                            className={`object-cover w-full h-full transition-transform duration-700 ${isPlaying ? "scale-110" : ""}`}
+                            className={`object-cover w-full h-full ${isPlaying ? "scale-110" : ""}`}
                         />
                         {isPlaying && <div className="absolute inset-0 bg-gradient-to-t from-blue-500/30 to-transparent"></div>}
                     </div>
@@ -106,18 +95,17 @@ export function SongCard({ song, isPlaying, onTogglePlay }: SongCardProps) {
                         <Button
                             variant="ghost"
                             size="icon"
-                            className={`rounded-full ${
-                                isPlaying
+                            className={`rounded-full ${isPlaying
                                     ? "bg-blue-400 text-white hover:bg-blue-500 hover:text-white"
                                     : "text-blue-600 hover:text-white hover:bg-blue-500"
-                            }`}
+                                }`}
                             onClick={onTogglePlay}
                         >
                             {isPlaying ? <Pause className="h-5 w-5" /> : <Play className="h-5 w-5" />}
                         </Button>
 
                         {/* Download button - only show on hover */}
-                        {isHovered && (
+                        {
                             <Button
                                 variant="ghost"
                                 size="icon"
@@ -126,7 +114,7 @@ export function SongCard({ song, isPlaying, onTogglePlay }: SongCardProps) {
                             >
                                 <Download className="h-5 w-5" />
                             </Button>
-                        )}
+                        }
                     </div>
                 </div>
             </div>
@@ -137,11 +125,9 @@ export function SongCard({ song, isPlaying, onTogglePlay }: SongCardProps) {
                     {Array.from({ length: 20 }).map((_, i) => (
                         <div
                             key={i}
-                            className="w-1 bg-blue-400 rounded-t-sm animate-fast-equalizer"
+                            className="w-1 bg-blue-400 rounded-t-sm "
                             style={{
                                 height: `${Math.random() * 100}%`,
-                                animationDelay: `${i * 0.05}s`,
-                                animationDuration: `0.3s`,
                             }}
                         />
                     ))}

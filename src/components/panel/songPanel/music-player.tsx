@@ -117,21 +117,7 @@ export default function MusicPlayer({ songs = sampleSongs }: { songs?: Song[] })
             </div>
 
             {/* CSS para animaciones */}
-            <style>{`
-        @keyframes equalizer {
-          0% { height: 5%; }
-          100% { height: 100%; }
-        }
-        
-        @keyframes fastSoundWave {
-          0% { height: 20%; }
-          100% { height: 90%; }
-        }
-        
-        .animate-fast-equalizer {
-          animation: equalizer 0.3s linear infinite alternate;
-        }
-      `}</style>
+            
         </div>
     )
 }
