@@ -40,7 +40,7 @@ const OptionsPanel = () => {
 
     return (
         <motion.div
-            className="flex flex-col gap-2 p-3 rounded-xl shadow-lg w-48"
+            className="flex flex-col gap-2 p-3 rounded-xl shadow-lg w-full md:w-48"
             style={{
                 backgroundColor: "rgba(255, 255, 255, 0.5)",
                 backdropFilter: "blur(8px)",

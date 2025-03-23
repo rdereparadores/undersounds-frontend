@@ -50,39 +50,27 @@ function App() {
                 <Route path='user' element={<ProtectedRoute requiredRole={UserRole.USER} redirectTo='/user/dashboard' />}>
                     <Route path='dashboard' element={<UserPanel/>}>
                         <Route index element={
-                            <div className="lg:w-4/5 w-[100%]">
                                 <ProfileCard/>
-                            </div>
                         }
                         />
                         <Route path="userProfile" element={
-                            <div className="lg:w-4/5 w-[100%]">
                                 <ProfileCard/>
-                            </div>
                         }
                         />
                         <Route path='purchases' element={
-                            <div className="lg:w-4/5 w-[100%]">
                                 <PurchasePanel purchases={purchasesData}/>
-                            </div>
                         }
                         />
                         <Route path='statistics' element={
-                            <div className="lg:w-4/5 w-[100%]">
                                 <StatisticsPanel />
-                            </div>
                         }
                         />
                         <Route path='songPanel' element={
-                            <div className="lg:w-4/5 w-[100%]">
                                 <MusicPlayer songs={sampleSongs} />
-                            </div>
                         }
                         />
                         <Route path='albumPanel' element={
-                            <div className="lg:w-4/5 w-[100%]">
                                 <AlbumPlayer albums={sampleAlbums} />
-                            </div>
                         }
                         />
                     </Route>

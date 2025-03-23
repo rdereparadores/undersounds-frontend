@@ -32,7 +32,7 @@ const ArtistPanelOptions = () => {
         show: { y: 0, opacity: 1, transition: { type: "spring", stiffness: 300, damping: 24 } },
     }
 
-    // Button styles
+    // Estilos base para el botón
     const buttonBaseStyle =
         "relative overflow-hidden w-full py-2 px-3 text-sm font-medium rounded-lg shadow-md text-white flex items-center transition-all duration-300 ease-in-out transform hover:-translate-y-1 active:translate-y-0"
     const buttonGradient = "bg-gradient-to-r from-[#0076ff] to-[#005ecc] hover:from-[#005ecc] hover:to-[#004799]"
@@ -40,7 +40,7 @@ const ArtistPanelOptions = () => {
 
     return (
         <motion.div
-            className="flex flex-col gap-2 p-3 rounded-xl shadow-lg w-48"
+            className="flex flex-col gap-2 p-3 rounded-xl shadow-lg w-full md:w-48"
             style={{
                 backgroundColor: "rgba(255, 255, 255, 0.5)",
                 backdropFilter: "blur(8px)",
