@@ -5,7 +5,7 @@ import { useState, useEffect } from "react"
 import { AlbumCard } from "./album-card"
 import { AlbumPagination } from "./album-pagination"
 import { Search } from "lucide-react"
-import { Button } from "./button" // Import the Button component
+import { Button } from "./button"
 
 interface Song {
     artist: string
@@ -22,17 +22,19 @@ interface Album {
     songs: Song[]
 }
 
-// Input component
+// Componente Input responsivo
 const Input = ({ className, ...props }: React.InputHTMLAttributes<HTMLInputElement>) => {
     return (
         <input
-            className={`flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 ${className}`}
+            className={`flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm
+      placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring
+      focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 ${className}`}
             {...props}
         />
     )
 }
 
-// Sample album data
+// Datos de ejemplo
 const sampleAlbums: Album[] = [
     {
         artist: "Artista 1",
@@ -106,7 +108,6 @@ export default function AlbumPlayer({ albums = sampleAlbums }: { albums?: Album[
     const [filteredAlbums, setFilteredAlbums] = useState<Album[]>(albums)
     const itemsPerPage = 3
 
-    // Filter albums based on search term
     useEffect(() => {
         if (searchTerm.trim() === "") {
             setFilteredAlbums(albums)
@@ -126,31 +127,32 @@ export default function AlbumPlayer({ albums = sampleAlbums }: { albums?: Album[
         setCurrentPage(1)
     }, [searchTerm, albums])
 
-    // Calculate items to show on current page
     const indexOfLastItem = currentPage * itemsPerPage
     const indexOfFirstItem = indexOfLastItem - itemsPerPage
-    const currentItems = Array.isArray(filteredAlbums) ? filteredAlbums.slice(indexOfFirstItem, indexOfLastItem) : []
+    const currentItems = Array.isArray(filteredAlbums)
+        ? filteredAlbums.slice(indexOfFirstItem, indexOfLastItem)
+        : []
 
-    // Handle page change
     const handlePageChange = (pageNumber: number) => {
         setCurrentPage(pageNumber)
-        setExpandedAlbumId(null) // Collapse all albums when changing page
+        setExpandedAlbumId(null)
     }
 
-    // Toggle album expansion
     const toggleAlbumExpansion = (index: number) => {
         setExpandedAlbumId(expandedAlbumId === index ? null : index)
     }
 
     return (
-        <div className="w-full mx-auto">
+        <div className="w-full mx-auto px-4 sm:px-6">
             <div className="relative bg-white rounded-3xl shadow-xl overflow-hidden border border-blue-200">
-                <div className="relative z-10 p-8">
-                    {/* Header */}
-                    <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
-                        <h1 className="text-4xl font-bold text-blue-800 tracking-tight">
+                <div className="relative z-10 p-6 sm:p-8">
+                    {/* Cabecera */}
+                    <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6 sm:mb-8">
+                        <h1 className="text-3xl sm:text-4xl font-bold text-blue-800 tracking-tight">
                             Mis{" "}
-                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-blue-400">Álbumes</span>
+                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-blue-400">
+                Álbumes
+              </span>
                         </h1>
 
                         <div className="relative w-full md:w-64">
@@ -159,12 +161,12 @@ export default function AlbumPlayer({ albums = sampleAlbums }: { albums?: Album[
                                 placeholder="Buscar álbumes..."
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
-                                className="pl-10 bg-blue-50 border-blue-200 text-blue-800 placeholder:text-blue-400 focus-visible:ring-blue-300 w-full"
+                                className="pl-10 bg-blue-50 border-blue-200 text-blue-800 placeholder:text-blue-400 focus-visible:ring-blue-300"
                             />
                         </div>
                     </div>
 
-                    {/* Album list */}
+                    {/* Lista de álbumes */}
                     <div className="space-y-6 w-full flex flex-col">
                         {currentItems.length === 0 ? (
                             <div className="flex flex-col items-center justify-center py-12 text-blue-800/80">
@@ -184,7 +186,7 @@ export default function AlbumPlayer({ albums = sampleAlbums }: { albums?: Album[
                         )}
                     </div>
 
-                    {/* Pagination component */}
+                    {/* Paginación */}
                     {filteredAlbums.length > itemsPerPage && (
                         <AlbumPagination
                             albums={filteredAlbums}
@@ -198,4 +200,3 @@ export default function AlbumPlayer({ albums = sampleAlbums }: { albums?: Album[
         </div>
     )
 }
-

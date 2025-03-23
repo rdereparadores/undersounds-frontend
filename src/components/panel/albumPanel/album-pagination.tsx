@@ -2,7 +2,7 @@
 
 import type React from "react"
 import { ChevronLeft, ChevronRight } from "lucide-react"
-import type { ButtonProps } from "./button" // Import from the button file
+import type { ButtonProps } from "./button"
 
 interface Song {
     artist: string
@@ -42,47 +42,37 @@ export const AlbumPagination = ({ albums, currentPage, onPageChange, Button }: A
         }
     }
 
-    // Generar array de páginas a mostrar
     const getPageNumbers = () => {
         const pageNumbers = []
         const maxPagesToShow = 5
 
         if (totalPages <= maxPagesToShow) {
-            // Si hay menos páginas que el máximo a mostrar, mostrar todas
             for (let i = 1; i <= totalPages; i++) {
                 pageNumbers.push(i)
             }
         } else {
-            // Siempre mostrar la primera página
             pageNumbers.push(1)
-
-            // Calcular el rango de páginas a mostrar alrededor de la página actual
             let startPage = Math.max(2, currentPage - 1)
             let endPage = Math.min(totalPages - 1, currentPage + 1)
 
-            // Ajustar si estamos cerca del inicio o final
             if (currentPage <= 2) {
                 endPage = 4
             } else if (currentPage >= totalPages - 1) {
                 startPage = totalPages - 3
             }
 
-            // Añadir ellipsis si es necesario
             if (startPage > 2) {
                 pageNumbers.push("...")
             }
 
-            // Añadir páginas intermedias
             for (let i = startPage; i <= endPage; i++) {
                 pageNumbers.push(i)
             }
 
-            // Añadir ellipsis si es necesario
             if (endPage < totalPages - 1) {
                 pageNumbers.push("...")
             }
 
-            // Siempre mostrar la última página
             if (totalPages > 1) {
                 pageNumbers.push(totalPages)
             }
@@ -92,11 +82,11 @@ export const AlbumPagination = ({ albums, currentPage, onPageChange, Button }: A
     }
 
     return (
-        <div className="mt-8 w-full flex justify-center items-center gap-3">
+        <div className="mt-4 sm:mt-8 w-full flex justify-center items-center gap-2 sm:gap-3">
             <Button
                 variant="outline"
                 size="icon"
-                className={`rounded-full w-10 h-10 bg-white border-gray-100 shadow-sm ${
+                className={`rounded-full w-8 h-8 sm:w-10 sm:h-10 bg-white border-gray-100 shadow-sm ${
                     currentPage <= 1 ? "opacity-50 cursor-not-allowed" : "hover:bg-blue-100 hover:border-blue-300"
                 }`}
                 onClick={previousPage}
@@ -107,14 +97,14 @@ export const AlbumPagination = ({ albums, currentPage, onPageChange, Button }: A
                 <span className="sr-only">Página anterior</span>
             </Button>
 
-            <div className="flex gap-3">
+            <div className="flex gap-2 sm:gap-3">
                 {getPageNumbers().map((page, index) =>
                         typeof page === "number" ? (
                             <Button
                                 key={index}
                                 variant={currentPage === page ? "default" : "outline"}
                                 size="icon"
-                                className={`w-10 h-10 rounded-full ${
+                                className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full ${
                                     currentPage === page
                                         ? "bg-gradient-to-r from-blue-600 to-sky-500 text-white"
                                         : "hover:bg-blue-100 hover:border-blue-300"
@@ -129,7 +119,7 @@ export const AlbumPagination = ({ albums, currentPage, onPageChange, Button }: A
                                 {page}
                             </Button>
                         ) : (
-                            <span key={index} className="flex items-center justify-center w-10 h-10 text-sm text-gray-500">
+                            <span key={index} className="flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 text-sm text-gray-500">
               {page}
             </span>
                         ),
@@ -139,7 +129,7 @@ export const AlbumPagination = ({ albums, currentPage, onPageChange, Button }: A
             <Button
                 variant="outline"
                 size="icon"
-                className={`rounded-full w-10 h-10 bg-white border-gray-100 shadow-sm ${
+                className={`rounded-full w-8 h-8 sm:w-10 sm:h-10 bg-white border-gray-100 shadow-sm ${
                     currentPage >= totalPages ? "opacity-50 cursor-not-allowed" : "hover:bg-blue-100 hover:border-blue-300"
                 }`}
                 onClick={nextPage}
@@ -152,4 +142,3 @@ export const AlbumPagination = ({ albums, currentPage, onPageChange, Button }: A
         </div>
     )
 }
-

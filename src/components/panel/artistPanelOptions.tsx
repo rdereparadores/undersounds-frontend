@@ -16,7 +16,7 @@ const ArtistPanelOptions = () => {
         { id: "statistics", label: "Estadísticas", icon: <BarChart2 size={16} className="mr-3" />, path: "statistics" },
     ]
 
-    // Button styles
+    // Clases base para los botones
     const buttonBaseStyle =
         "relative overflow-hidden w-full py-2 px-3 text-sm font-medium rounded-lg shadow-md text-white flex items-center"
     const buttonGradient = "bg-gradient-to-r from-[#0076ff] to-[#005ecc] hover:from-[#005ecc] hover:to-[#004799]"
@@ -24,13 +24,17 @@ const ArtistPanelOptions = () => {
 
     return (
         <div
-            className="flex flex-col gap-2 p-3 rounded-xl shadow-lg w-48"
-            style={{
-                backgroundColor: "rgba(255, 255, 255, 0.5)",
-                backdropFilter: "blur(8px)",
-            }}
+            className="
+        flex flex-col gap-2 p-3
+        rounded-xl shadow-lg
+        w-full
+        bg-white/50
+        dark:bg-slate-900/30
+        backdrop-blur-md
+    "
         >
-            {buttons.map((button) => (
+
+        {buttons.map((button) => (
                 <div key={button.id} className="w-full">
                     <Link
                         to={button.path}
@@ -40,11 +44,13 @@ const ArtistPanelOptions = () => {
                         onMouseLeave={() => setHoveredButton(null)}
                     >
                         <div
-                            className={`${buttonBaseStyle} ${buttonGradient} ${activeButton === button.id ? buttonActiveStyle : ""}`}
+                            className={`
+                ${buttonBaseStyle} 
+                ${buttonGradient} 
+                ${activeButton === button.id ? buttonActiveStyle : ""}
+              `}
                         >
-                            <span>
-                                {button.icon}
-                            </span>
+                            <span>{button.icon}</span>
                             <span>{button.label}</span>
                             {hoveredButton === button.id && (
                                 <div

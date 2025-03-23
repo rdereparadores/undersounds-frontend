@@ -1,5 +1,7 @@
+"use client"
+
 import { useState } from "react"
-import ProfileHeader from '@/components/panel/profileHeader.tsx'
+import ProfileHeader from "@/components/panel/profileHeader.tsx"
 import { Outlet } from "react-router"
 import ArtistPanelOptions from "@/components/panel/artistPanelOptions.tsx"
 
@@ -11,9 +13,9 @@ export const ArtistPanel = () => {
         <div className="w-full overflow-x-hidden">
             {/* Encabezado de perfil */}
             <ProfileHeader isArtist={true} username="Manahen Music" />
-            <div className="flex flex-col md:flex-row p-5">
+            <div className="flex flex-col md:flex-row p-3 sm:p-5">
                 {/* Panel de opciones */}
-                <div className="w-full md:w-1/5 min-w-[200px] p-5 relative">
+                <div className="w-full md:w-1/5 min-w-[200px] p-3 sm:p-5 relative">
                     {/* Botón "Menú" visible solo en móviles, fijo en esquina inferior derecha */}
                     <div className="md:hidden">
                         <button
@@ -29,7 +31,7 @@ export const ArtistPanel = () => {
                     </div>
                 </div>
                 {/* Contenido principal */}
-                <div className="flex-1 p-5">
+                <div className="flex-1 p-3 sm:p-5">
                     <Outlet />
                 </div>
             </div>
