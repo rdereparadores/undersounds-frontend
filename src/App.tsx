@@ -15,6 +15,7 @@ import { Cart } from './routes/Cart.tsx'
 import { GuestOnlyRoute } from './components/auth/GuestOnlyRoute.tsx'
 import { ProtectedRoute } from './components/auth/ProtectedRoute.tsx'
 import { UserRole } from './constants.ts'
+import { ProductContainer } from './components/product/ProductContainer.tsx'
 import PurchasePanel from "@/components/panel/purchasePanel/purchasePanel.tsx";
 import {purchasesData} from "@/components/panel/purchasePanel/purchaseData.tsx";
 import MusicPlayer from "@/components/panel/songPanel/music-player.tsx";
@@ -45,10 +46,10 @@ function App() {
                     </Route>
                 </Route>
 
-                <Route path='album/:id' element={<Album />} />
-                <Route path='song/:id' element={<Song />} />
+                <Route path='album/:id' element={<ProductContainer type='album' />} />
+                <Route path='song/:id' element={<ProductContainer type='song' />} />
                 <Route path='profile/artist/:id' element={<ArtistProfile />} />
-
+              
                 <Route path='user' element={<ProtectedRoute requiredRole={UserRole.USER} redirectTo='/user/dashboard' />}>
                     <Route path='dashboard' element={<UserPanel/>}>
                         <Route index element={
