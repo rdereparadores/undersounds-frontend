@@ -1,3 +1,4 @@
+import { Link } from "react-router";
 import { Button } from "../ui/button";
 import {
     Card,
@@ -20,28 +21,28 @@ export function Footer() {
                         <p className="text-white w-fit">Logo UnderSounds</p>
                     </div>
 
-                    <div className="flex flex-col gap-4  justify-start">
-                        <Button variant="link" className="text-gray-400 font-mono font-semibold">EMPRESA</Button>
-                        <Button variant="link" className="text-white text-start">Acerca de</Button>
-                        <Button variant="link" className="text-white text-start">Empleo</Button>
+                    <div className="flex flex-col gap-4">
+                        <p className="text-gray-400 font-mono font-semibold">EMPRESA</p>
+                        <p className="hover:underline text-white text-start">Acerca de</p>
+                        <p className="hover:underline text-white text-start">Empleo</p>
                     </div>
 
-                    <div className="flex flex-col gap-4 justify-start">
-                        <Button variant="link" className="text-gray-400 font-mono font-semibold">COMUNIDAD</Button>
-                        <Button variant="link" className="text-white text-start">UnderSounds para artistas</Button>
-                        <Button variant="link" className="text-white text-start">Desarrolladores</Button>
-                        <Button variant="link" className="text-white text-start">Publicidad</Button>
-                        <Button variant="link" className="text-white text-start">Inversores</Button>
-                        <Button variant="link" className="text-white text-start">Proveedores</Button>
+                    <div className="flex flex-col gap-4">
+                        <p className="text-gray-400 font-mono font-semibold">COMUNIDAD</p>
+                        <Link to="auth/singup"><p className="hover:underline text-white text-start">UnderSounds para artistas</p></Link>
+                        <p  className="hover:underline text-white text-start">Desarrolladores</p>
+                        <p  className="hover:underline text-white text-start">Publicidad</p>
+                        <p  className="hover:underline text-white text-start">Inversores</p>
+                        <p  className="hover:underline text-white text-start">Proveedores</p>
                     </div>
 
-                    <div className="flex flex-col gap-4 justify-start">
-                        <Button variant="link" className="text-gray-400 font-mono font-semibold">ENLACES ÚTILES</Button>
-                        <Button variant="link" className="text-white text-start">Asistencia</Button>
-                        <Button variant="link" className="text-white text-start">Privacidad</Button>
-                        <Button variant="link" className="text-white text-start">Copyright</Button>
-                        <Button variant="link" className="text-white text-start">Terminos de uso</Button>
-                        <Button variant="link" className="text-white text-start">Preferencias de cookies</Button>
+                    <div className="flex flex-col gap-4">
+                        <p className="text-gray-400 font-mono font-semibold">ENLACES ÚTILES</p>
+                        <p className="hover:underline text-white text-start">Asistencia</p>
+                        <p className="hover:underline text-white text-start">Privacidad</p>
+                        <p className="hover:underline text-white text-start">Copyright</p>
+                        <p className="hover:underline text-white text-start">Terminos de uso</p>
+                        <p className="hover:underline text-white text-start">Preferencias de cookies</p>
                     </div>
 
                 </CardContent>
