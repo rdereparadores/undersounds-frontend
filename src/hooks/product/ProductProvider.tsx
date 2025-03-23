@@ -33,7 +33,13 @@ export const ProductProvider = ({ children }: ProductProviderProps) => {
                         type: "song",
                         genres: ["Ambient", "Electronic"],
                         duration: 342,
-                        imgUrl: "https://picsum.photos/id/96/300/300"
+                        imgUrl: "https://picsum.photos/id/96/300/300",
+                        price: {
+                            digital: 8.99,
+                            cd: 13.50,
+                            vinyl: 26.99,
+                            cassette: 11.99
+                        }
                     },
                     {
                         title: "Digital Dreams",
@@ -45,7 +51,13 @@ export const ProductProvider = ({ children }: ProductProviderProps) => {
                         type: "song",
                         genres: ["Electronic", "Experimental"],
                         duration: 287,
-                        imgUrl: "https://picsum.photos/id/96/300/300"
+                        imgUrl: "https://picsum.photos/id/96/300/300",
+                        price: {
+                            digital: 8.99,
+                            cd: 13.50,
+                            vinyl: 26.99,
+                            cassette: 11.99
+                        }
                     },
                     {
                         title: "Northern Lights",
@@ -54,7 +66,13 @@ export const ProductProvider = ({ children }: ProductProviderProps) => {
                         type: "song",
                         genres: ["Ambient"],
                         duration: 423,
-                        imgUrl: "https://picsum.photos/id/96/300/300"
+                        imgUrl: "https://picsum.photos/id/96/300/300",
+                        price: {
+                            digital: 8.99,
+                            cd: 13.50,
+                            vinyl: 26.99,
+                            cassette: 11.99
+                        }
                     }
                 ],
                 price: {
@@ -125,7 +143,13 @@ export const ProductProvider = ({ children }: ProductProviderProps) => {
                 type: "song",
                 genres: ["Ambient", "Electronic"],
                 duration: 342,
-                imgUrl: "https://picsum.photos/id/96/300/300"
+                imgUrl: "https://picsum.photos/id/96/300/300",
+                price: {
+                    digital: 8.99,
+                    cd: 13.50,
+                    vinyl: 26.99,
+                    cassette: 11.99
+                }
             }]
         })
     }
@@ -141,7 +165,13 @@ export const ProductProvider = ({ children }: ProductProviderProps) => {
             type: type,
             genres: ["Electronic", "Deep House"],
             duration: 247,
-            imgUrl: "https://picsum.photos/id/64/300/300"
+            imgUrl: "https://picsum.photos/id/64/300/300",
+            price: {
+                digital: 8.99,
+                cd: 13.50,
+                vinyl: 26.99,
+                cassette: 11.99
+            }
         })
     }
 

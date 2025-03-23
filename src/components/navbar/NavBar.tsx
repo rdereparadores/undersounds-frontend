@@ -89,7 +89,7 @@ export const NavBar = ({ floating }: NavBarProps) => {
                 <TooltipProvider>
                     <Tooltip>
                         <TooltipTrigger asChild>
-                            <NavBarCart emptyCart={false} />
+                            <NavBarCart />
                         </TooltipTrigger>
                         <TooltipContent>Carrito</TooltipContent>
                     </Tooltip>

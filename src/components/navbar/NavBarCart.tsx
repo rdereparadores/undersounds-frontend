@@ -10,24 +10,81 @@ import {
 import { Button } from "../ui/button"
 import { Link } from "react-router"
 import { IoCartOutline } from "react-icons/io5"
-import { ItemCesta } from "../cart/ItemCesta"
 import { DialogDescription } from "../ui/dialog"
 import { Separator } from "../ui/separator"
 import { ScrollArea } from "@/components/ui/scroll-area"
+import { useCart } from "@/hooks/cart/useCart"
+import { ProductProvider } from "@/hooks/product/ProductProvider"
+import { Card } from "../ui/card"
+import { useEffect, useState } from "react"
+import { useProduct } from "@/hooks/product/useProduct"
+import { Badge } from "../ui/badge"
+import { FaRegTrashAlt } from "react-icons/fa"
 
-interface CartProps { emptyCart: boolean }
+interface NavBarCartItemProps { cartIndex: number }
 
-const NavBarCestaEmpty = () => (
+// Componente NavBarCartItem modificado
+const NavBarCartItem = ({ cartIndex }: NavBarCartItemProps) => {
+    const product = useProduct()
+    const cart = useCart()
+
+    useEffect(() => {
+        product.queryProductShort({
+            type: cart.cart!.items[cartIndex].type,
+            id: cart.cart!.items[cartIndex].id
+        })
+    }, [cart])
+
+    const getPrice = () => {
+        const itemFormat = cart.cart?.items?.[cartIndex]?.format && product.queryResultShort?.price
+            ? (cart.cart.items[cartIndex].format as keyof typeof product.queryResultShort.price)
+            : undefined;
+        return product.queryResultShort?.price?.[itemFormat!] ?? 0
+    }
+
+    return (
+        <Card className="flex p-4 gap-2">
+            <img className="w-28 h-28 flex rounded-lg" src={product.queryResultShort?.imgUrl}></img>
+            <div className="flex grow">
+                <div className="flex justify-between grow">
+                    <div>
+                        <p className="font-medium">{product.queryResultShort?.title}</p>
+                        <div className="flex gap-2 py-2">
+                            <Badge>{product.queryResultShort?.type == 'song' ? 'Canción' : 'Álbum'}</Badge>
+                            <Badge variant='outline'>{cart.cart!.items[cartIndex].format}</Badge>
+                        </div>
+                        <p className="text-sm">Unidades: {cart.cart!.items[cartIndex].quantity}</p>
+                        <p className="font-medium text-lg">{getPrice().toFixed(2)} €</p>
+                    </div>
+                </div>
+                
+                <div className="flex justify-end gap-2">
+                    <div>
+                        <Button variant="destructive"
+                            onClick={() => {
+                                cart.remove(cart.cart!.items[cartIndex])
+                            }}
+                        >
+                            <FaRegTrashAlt />
+                        </Button>
+                    </div>
+                </div>
+            </div>
+        </Card>
+    )
+}
+
+export const NavBarCartEmpty = () => (
     <>
-        <div className="flex flex-col items-center gap-2">
-            <img src="icons/carritoVacio.svg" width="100" height="100" />
+        <div className="flex flex-col items-center gap-3 mt-4">
+            <img src="/public/icons/carritoVacio.svg" width="100" height="100" />
             <p className="font-bold">Tu carrito esta vacío</p>
-            <p className="text-center">Explora multitud de artículos a buen precio desde nuestra página principal</p>
+            <p className="text-center">Visita la tienda, seguro que encuentras tu nuevo crush musical</p>
             <SheetFooter>
                 <SheetClose asChild>
                     <Button asChild>
                         <Link to="/shop">
-                            Explorar Articulos
+                            Explorar artículos
                         </Link>
                     </Button>
                 </SheetClose>
@@ -36,59 +93,75 @@ const NavBarCestaEmpty = () => (
     </>
 )
 
-const NavBarCestaNotEmpty = () => ( /* {items}:ItemsCestaProps*/
-    <>
-        <ScrollArea className="mt-2 h-[60%] pr-4">
-            <div className="flex flex-col gap-2">
-                <ItemCesta nombre="YHLQMDG" formato="CD" precio={17} url="" ></ItemCesta>
-                <ItemCesta nombre="YHLQMDG" formato="CD" precio={17} url=""></ItemCesta>
-                <ItemCesta nombre="YHLQMDG" formato="CD" precio={17} url=""></ItemCesta>
-                <ItemCesta nombre="YHLQMDG" formato="CD" precio={17} url="" ></ItemCesta>
-                <ItemCesta nombre="YHLQMDG" formato="CD" precio={17} url="" ></ItemCesta>
-                <ItemCesta nombre="YHLQMDG" formato="CD" precio={17} url="" ></ItemCesta>
-                <ItemCesta nombre="YHLQMDG" formato="CD" precio={17} url="" ></ItemCesta>
-                <ItemCesta nombre="YHLQMDG" formato="CD" precio={17} url="" ></ItemCesta>
-                {/* {items.map((items,index) => 
-                <ItemCesta key={index} nombre={items.nombre} formato={items.formato}
-                precio={items.precio} url={items.url}/>
-            )}*/}
+const NavBarCartFilled = () => {
+    const cart = useCart()
+    const [totalPrice, setTotalPrice] = useState(0)
+
+    useEffect(() => {
+        let newTotal = 0
+        const promisesArray = []
+
+        for (const item of cart.cart!.items) {
+            promisesArray.push(
+                cart.getUpdatedPrice(item).then(price => newTotal += price)
+            )
+        }
+
+        Promise.all(promisesArray).then(() => {
+            setTotalPrice(newTotal)
+        })
+    }, [cart.cart])
+
+    return (
+        <>
+            <ScrollArea className="mt-2 h-[60%]">
+                <div className="flex flex-col gap-2">
+                    {cart.cart?.items.map((_item, index) => (
+                        <ProductProvider key={`cart-item-${index}-${_item.id}`}>
+                            <NavBarCartItem
+                                cartIndex={index} 
+                            />
+                        </ProductProvider>
+                    ))}
+                </div>
+            </ScrollArea>
+
+            <Separator className="m-4" />
+            <div className="flex justify-between">
+                <p>Total</p>
+                <p className="font-bold">{totalPrice.toFixed(2)} €</p>
             </div>
-        </ScrollArea>
 
-        <Separator className="m-4" />
-        <div className="flex justify-between">
-            <p>Total</p>
-            <p className="font-bold">PrecioTotal</p>
-        </div>
-
-        <SheetFooter>
-            <SheetClose asChild>
-                <Button asChild className="mt-2 w-full h-fit">
-                    <Link to='/shop/cart'>
-                        Ver articulos en carrito
-                    </Link>
-                </Button>
-            </SheetClose>
-        </SheetFooter>
-    </>
-)
+            <SheetFooter>
+                <SheetClose asChild>
+                    <Button asChild className="mt-2 w-full h-fit">
+                        <Link to='/shop/cart'>
+                            Ver articulos en carrito
+                        </Link>
+                    </Button>
+                </SheetClose>
+            </SheetFooter>
+        </>
+    )
+}
 
 
-export function NavBarCart({ emptyCart }: CartProps) {
+export function NavBarCart() {
+    const cart = useCart()
     return (
         <Sheet>
             <SheetTrigger asChild>
-                <Button>
+                <Button id='navBarCartButton'>
                     <IoCartOutline />
                 </Button>
             </SheetTrigger>
-            <SheetContent>
+            <SheetContent className="min-w-[500px]">
                 <SheetHeader>
                     <SheetTitle>Mi cesta</SheetTitle>
                 </SheetHeader>
                 <DialogDescription></DialogDescription>
 
-                {emptyCart ? <NavBarCestaEmpty /> : <NavBarCestaNotEmpty />} {/*items={ejemplo}*/}
+                {cart.cart?.items.length == 0 ? <NavBarCartEmpty /> : <NavBarCartFilled />}
             </SheetContent>
         </Sheet>
     )
