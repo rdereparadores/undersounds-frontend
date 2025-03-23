@@ -15,7 +15,7 @@ export const ProductContainerInfo = () => {
     return (
         <div className='flex mt-3 gap-3 flex-wrap flex-grow justify-center'>
             {!imgLoaded && <Skeleton className="h-96 aspect-square rounded-md" />}
-            <img hidden={!imgLoaded} className='h-96 aspect-square rounded-md' src={product.queryResult?.product.imgUrl} onLoad={() => { setImgLoaded(true) }} />
+            <img alt="Imagen de un producto" hidden={!imgLoaded} className='h-96 aspect-square rounded-md' src={product.queryResult?.product.imgUrl} onLoad={() => { setImgLoaded(true) }} />
             <div className='flex flex-col grow-[2] flex-shrink'>
                 <h2 className='font-bold text-2xl'>{product.queryResult?.product.title}</h2>
                 <h3 className='text-xl mb-2'>{product.queryResult?.product.artists.map(artist => artist.name).join(', ')}</h3>

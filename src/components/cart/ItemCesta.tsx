@@ -7,7 +7,7 @@ export interface ItemsCestaProps {nombre:string, formato:string, precio:number, 
 function ItemCesta({nombre,formato,precio,url}:ItemsCestaProps) {
   return (
      <Card className="flex p-4 gap-2">
-      <img className="w-32 h-32 flex rounded-lg" src={url}></img>
+      <img alt="Imagen de un producto en la cesta" className="w-32 h-32 flex rounded-lg" src={url}></img>
 
       <div className="flex flex-col grow">
 

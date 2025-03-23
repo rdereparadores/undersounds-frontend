@@ -7,6 +7,7 @@ export function ArtistImage (){
         <div>
             <Skeleton hidden={imgLoaded} className='w-[1900px] h-[400px]' />
            <img 
+                alt="Imagen del artista"
                 hidden={!imgLoaded}
                 onLoad={() => setImgLoaded(true)}
                      src="https://picsum.photos/1900/500"

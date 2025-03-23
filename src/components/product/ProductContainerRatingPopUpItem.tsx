@@ -19,7 +19,7 @@ export const ProductContainerRatingPopUpItem = ({ username, imgUrl, rating, titl
                 <div className="flex flex-col gap-2">
                     <div className="pt-2 flex items-center gap-2">
                         {!imgLoaded && <Skeleton className="w-10 h-10"/>}
-                        <img hidden={!imgLoaded} className="rounded-full w-10 h-10" src={imgUrl} onLoad={() => {setImgLoaded(true)}} />
+                        <img alt="imagen del usuarios de la reseña" hidden={!imgLoaded} className="rounded-full w-10 h-10" src={imgUrl} onLoad={() => {setImgLoaded(true)}} />
                         <p className="text-sm">@{username}</p>
                     </div>
                     <div className="flex mb-2 w-full justify-start">

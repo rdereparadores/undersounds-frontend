@@ -24,7 +24,7 @@ export const ProductContainerTrackList = () => {
             <CardContent className="flex flex-col gap-3">
                 {product.queryResult?.product.trackList?.map((track, index) => (
                     <Card key={index} className="p-3 flex items-center justify-between">
-                        <img className="w-14 h-14 rounded-md" src={track.imgUrl} />
+                        <img alt="Imagen de cancion del album" className="w-14 h-14 rounded-md" src={track.imgUrl} />
                         <div className="flex w-full justify-between items-center">
                             <Button asChild variant='link' className="w-fit justify-start">
                                 <Link to={`/song/${track.id}`}>{track.title}</Link>

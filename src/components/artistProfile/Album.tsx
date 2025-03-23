@@ -9,6 +9,7 @@ export function Album() {
         <div className="flex flex-col gap-1">
             <Skeleton hidden={imgLoaded} className='w-[250px] h-[250px]' />
             <img 
+                alt="Imagen de un álbum"
                 hidden={!imgLoaded}
                 onLoad={() => setImgLoaded(true)}
                     src="https://picsum.photos/250/250"

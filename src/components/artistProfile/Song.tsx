@@ -15,6 +15,7 @@ export function Song({songName,imgURL,artists,album}:SongProps){
             <div className="flex items-center pl-2 visible ">   
                 <Skeleton hidden={imgLoaded} className='w-[75px] h-[75px]' />    
                 <img 
+                    alt="Imagen de una canción"
                     hidden={!imgLoaded}
                     onLoad={() => setImgLoaded(true)}
                     src={imgURL}

@@ -14,7 +14,7 @@ export const ProductContainerInfoArtistCard = () => {
             <CardHeader className='flex flex-col gap-2'>
                 <div className='flex gap-5 items-center justify-center'>
                     {!imgLoaded && <Skeleton className="rounded-full w-[48px] aspect-square" />}
-                    <img hidden={!imgLoaded} className='rounded-full w-[48px] aspect-square' src={product.queryResult?.artist.imgUrl} onLoad={() => {setImgLoaded(true)}} />
+                    <img alt="Imagen del artista" hidden={!imgLoaded} className='rounded-full w-[48px] aspect-square' src={product.queryResult?.artist.imgUrl} onLoad={() => {setImgLoaded(true)}} />
                     <div>
                         <p className="font-medium">{product.queryResult?.artist.name}</p>
                         <p className='text-sm'>{product.queryResult?.artist.followers} seguidores</p>
