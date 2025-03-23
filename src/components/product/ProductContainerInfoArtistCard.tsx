@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { Skeleton } from "../ui/skeleton";
 import { useProduct } from "@/hooks/product/useProduct";
+import { Link } from "react-router";
 
 export const ProductContainerInfoArtistCard = () => {
     const [imgLoaded, setImgLoaded] = useState(false)
@@ -22,7 +23,9 @@ export const ProductContainerInfoArtistCard = () => {
                     {product.queryResult?.artist.isFollowing ? 'Siguiendo' : '+ Seguir'}
                     </Button>
                 </div>
-                <Button variant='outline'>Ver perfil</Button>
+                <Button asChild variant='outline'>
+                    <Link to={`/profile/artist/${product.queryResult?.artist.id}`}>Ver perfil</Link>
+                </Button>
             </CardHeader>
         </Card>
     )

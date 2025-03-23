@@ -43,7 +43,7 @@ export interface ProductContextResultProps {
     },
     ratings: {
         average: number,
-        ratingCount: { 5: number, 4: number, 3: number, 2: number, 1: number },
+        ratingCount: { five: number, four: number, three: number, two: number, one: number },
         list: { userImgUrl: string, username: string, title: string, description: string, rating: number }[]
     },
     related: ProductContextResultShortProps[]

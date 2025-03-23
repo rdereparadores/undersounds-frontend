@@ -74,11 +74,11 @@ export const ProductProvider = ({ children }: ProductProviderProps) => {
             ratings: {
                 average: 4.7,
                 ratingCount: {
-                    5: 214,
-                    4: 68,
-                    3: 12,
-                    2: 5,
-                    1: 3
+                    five: 3,
+                    four: 1,
+                    three: 1,
+                    two: 0,
+                    one: 0
                 },
                 list: [
                     {

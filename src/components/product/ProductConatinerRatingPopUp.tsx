@@ -1,45 +1,43 @@
 import { Button } from "@/components/ui/button"
 import {
     Dialog,
-    DialogClose,
     DialogContent,
-    DialogDescription,
-    DialogFooter,
     DialogHeader,
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog"
 import { ProductContainerRatingPopUpItem } from "./ProductContainerRatingPopUpItem"
 import { ScrollArea } from "@/components/ui/scroll-area"
+import { useProduct } from "@/hooks/product/useProduct"
+import { DialogDescription } from "@radix-ui/react-dialog"
 
 
 export function ProductContainerRatingPopUp() {
+    const product = useProduct()
     return (
         <Dialog>
             <DialogTrigger asChild>
                 <Button>Ver valoraciones</Button>
             </DialogTrigger>
-            <DialogContent className="sm:w-screen">
-                <DialogHeader>
+            <DialogContent>
+                <DialogHeader className="-mt-2">
                     <DialogTitle>Valoraciones</DialogTitle>
-                    <DialogDescription>
-                    </DialogDescription>
-                </DialogHeader>    
-                    <ScrollArea className="max-h-96">   
-                        <div className="flex flex-col gap-2"> 
-                            <ProductContainerRatingPopUpItem></ProductContainerRatingPopUpItem>
-                            <ProductContainerRatingPopUpItem></ProductContainerRatingPopUpItem>
-                            <ProductContainerRatingPopUpItem></ProductContainerRatingPopUpItem>
-                            <ProductContainerRatingPopUpItem></ProductContainerRatingPopUpItem>
-                        </div>
-                    </ScrollArea>   
-                <DialogFooter className="sm:justify-end">
-                    <DialogClose asChild>
-                        <Button type="button" variant="secondary">
-                            Close
-                        </Button>
-                    </DialogClose>
-                </DialogFooter>
+                    <DialogDescription>{product.queryResult && product.queryResult!.ratings.list.length} valoraciones</DialogDescription>
+                </DialogHeader>
+                <ScrollArea className="max-h-96">
+                    <div className="flex flex-col gap-2">
+                        {product.queryResult?.ratings.list.map((rating, index) => (
+                            <ProductContainerRatingPopUpItem
+                                key={index}
+                                username={rating.username}
+                                imgUrl={rating.userImgUrl}
+                                title={rating.title}
+                                description={rating.description}
+                                rating={rating.rating}
+                            />
+                        ))}
+                    </div>
+                </ScrollArea>
             </DialogContent>
         </Dialog>
     )
