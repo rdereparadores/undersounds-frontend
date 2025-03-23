@@ -33,8 +33,6 @@ const cards = [
 export const Checkout = () => {
     return (
         <SubTotalContainer
-            articleCount={4}
-            price={25.99}
             purchaseButtonEnabled={false}
             purchaseButtonChildren={<p>Finalizar compra</p>}
             purchaseButtonOnClick={() => { alert("Compra realizada con éxito") }}
