@@ -10,9 +10,9 @@ interface Song {
 }
 
 interface SongPaginationProps {
-    songs: Song[];
-    currentPage: number;
-    onPageChange: (page: number) => void;
+    songs: Song[]
+    currentPage: number
+    onPageChange: (page: number) => void
 }
 
 export const SongPagination = ({ songs, currentPage, onPageChange }: SongPaginationProps) => {
@@ -35,47 +35,38 @@ export const SongPagination = ({ songs, currentPage, onPageChange }: SongPaginat
         onPageChange(page)
     }
 
-    // Generar array de páginas a mostrar
+    // Generar array de números de página a mostrar
     const getPageNumbers = () => {
         const pageNumbers = []
         const maxPagesToShow = 5
 
         if (totalPages <= maxPagesToShow) {
-            // Si hay menos páginas que el máximo a mostrar, mostrar todas
             for (let i = 1; i <= totalPages; i++) {
                 pageNumbers.push(i)
             }
         } else {
-            // Siempre mostrar la primera página
             pageNumbers.push(1)
-
-            // Calcular el rango de páginas a mostrar alrededor de la página actual
             let startPage = Math.max(2, currentPage - 1)
             let endPage = Math.min(totalPages - 1, currentPage + 1)
 
-            // Ajustar si estamos cerca del inicio o final
             if (currentPage <= 2) {
                 endPage = 4
             } else if (currentPage >= totalPages - 1) {
                 startPage = totalPages - 3
             }
 
-            // Añadir ellipsis si es necesario
             if (startPage > 2) {
                 pageNumbers.push("...")
             }
 
-            // Añadir páginas intermedias
             for (let i = startPage; i <= endPage; i++) {
                 pageNumbers.push(i)
             }
 
-            // Añadir ellipsis si es necesario
             if (endPage < totalPages - 1) {
                 pageNumbers.push("...")
             }
 
-            // Siempre mostrar la última página
             if (totalPages > 1) {
                 pageNumbers.push(totalPages)
             }
@@ -85,7 +76,7 @@ export const SongPagination = ({ songs, currentPage, onPageChange }: SongPaginat
     }
 
     return (
-        <div className="mt-8 w-full flex justify-center items-center gap-3">
+        <div className="mt-8 w-full flex flex-col sm:flex-row justify-center items-center gap-3">
             <Button
                 variant="outline"
                 size="icon"
@@ -110,7 +101,7 @@ export const SongPagination = ({ songs, currentPage, onPageChange }: SongPaginat
                                 className={`w-10 h-10 rounded-full ${
                                     currentPage === page
                                         ? "bg-gradient-to-r from-blue-600 to-sky-500 text-white"
-                                        : "hover:bg-blue-100 dark:hover:bg-blue-900 hover:border-blue-300a"
+                                        : "hover:bg-blue-100 dark:hover:bg-blue-900 hover:border-blue-300"
                                 }`}
                                 onClick={() => goToPage(page)}
                                 style={

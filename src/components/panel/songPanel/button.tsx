@@ -1,8 +1,9 @@
 import React from "react"
+
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-    variant?: "default" | "ghost" | "outline";
-    size?: "default" | "sm" | "icon";
-    className?: string;
+    variant?: "default" | "ghost" | "outline"
+    size?: "default" | "sm" | "icon"
+    className?: string
 }
 
 export const Button = ({
@@ -30,7 +31,8 @@ export const Button = ({
             case "icon":
                 return "h-10 w-10 p-0"
             default:
-                return "h-10 px-4 py-2 rounded-md"
+                // Se agregan clases responsivas para ajustar el padding y la altura en pantallas medianas o superiores.
+                return "h-10 px-4 py-2 rounded-md sm:h-11 sm:px-5"
         }
     }
 

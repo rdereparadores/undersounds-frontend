@@ -1,7 +1,6 @@
 "use client"
 
-import type React from "react"
-import { useState } from "react"
+import React, { useState } from "react"
 import { Play, Pause, Download } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
@@ -26,7 +25,7 @@ const SongCard: React.FC<SongCardProps> = ({
 
     return (
         <div
-            className="relative group w-64 h-80 rounded-lg overflow-hidden shadow-md hover:shadow-lg"
+            className="relative group w-full sm:w-64 aspect-[4/5] rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-200"
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
         >
@@ -36,9 +35,9 @@ const SongCard: React.FC<SongCardProps> = ({
                 className="w-full h-full object-cover"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-60"></div>
-            <div className="absolute bottom-0 left-0 p-4 text-white">
-                <h3 className="text-lg font-semibold">{songName}</h3>
-                <p className="text-sm">{artistName}</p>
+            <div className="absolute bottom-0 left-0 p-2 sm:p-4 text-white">
+                <h3 className="text-base sm:text-lg font-semibold">{songName}</h3>
+                <p className="text-xs sm:text-sm">{artistName}</p>
             </div>
             <div className="absolute top-2 right-2 flex space-x-2">
                 <Button
@@ -53,7 +52,6 @@ const SongCard: React.FC<SongCardProps> = ({
                 >
                     {isPlaying ? <Pause className="h-5 w-5" /> : <Play className="h-5 w-5" />}
                 </Button>
-
                 {isHovered && (
                     <Button
                         variant="ghost"
@@ -70,4 +68,3 @@ const SongCard: React.FC<SongCardProps> = ({
 }
 
 export default SongCard
-

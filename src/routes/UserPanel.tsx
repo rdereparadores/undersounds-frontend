@@ -1,20 +1,20 @@
 //import MainBar from '@/components/panel/panelBar';
-import ProfileHeader from '@/components/panel/profileHeader.tsx';
-import OptionsPanel from '@/components/panel/panelOptions';
-import { Outlet } from "react-router";
-import { useState } from "react";
+import ProfileHeader from "@/components/panel/profileHeader.tsx"
+import OptionsPanel from "@/components/panel/panelOptions"
+import { Outlet } from "react-router"
+import { useState } from "react"
 
 export const UserPanel = () => {
     // Estado para mostrar/ocultar las opciones en vista móvil
-    const [menuOpen, setMenuOpen] = useState(false);
+    const [menuOpen, setMenuOpen] = useState(false)
 
     return (
         <div className="w-full overflow-x-hidden">
             {/* <MainBar /> */}
             <ProfileHeader isArtist={false} username="Manahen Music" />
-            <div className="flex flex-col md:flex-row p-5">
+            <div className="flex flex-col md:flex-row p-3 sm:p-5">
                 {/* Panel de opciones */}
-                <div className="w-full md:w-1/5 min-w-[200px] p-5 relative">
+                <div className="w-full md:w-1/5 min-w-[200px] p-3 sm:p-5 relative">
                     {/* Botón "Menú" visible solo en móviles, fijo en esquina inferior derecha */}
                     <div className="md:hidden">
                         <button
@@ -30,12 +30,12 @@ export const UserPanel = () => {
                     </div>
                 </div>
                 {/* Contenido principal */}
-                <div className="flex-1 p-5">
+                <div className="flex-1 p-3 sm:p-5">
                     <div className="w-full dark:from-slate-900 dark:to-blue-950 p-4 rounded-xl overflow-hidden">
                         <Outlet />
                     </div>
                 </div>
             </div>
         </div>
-    );
-};
+    )
+}

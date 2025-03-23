@@ -155,9 +155,9 @@ export default function ArtistProfileCard() {
                 <User size={40} className="text-blue-500" />
               </div>
 
-              <div className="flex justify-between items-center">
+              <div className="flex flex-col justify-between items-center">
                 <h2
-                  className="text-xl font-bold text-blue-700 ml-24"
+                  className="text-xl font-bold text-blue-700 mb-5"
                 >
                   Perfil de Artista
                 </h2>

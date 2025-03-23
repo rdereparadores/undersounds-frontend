@@ -13,11 +13,11 @@ interface Song {
     downloadUrl: string
 }
 
-// Input component
+// Componente Input responsivo
 const Input = ({ className, ...props }: React.InputHTMLAttributes<HTMLInputElement>) => {
     return (
         <input
-            className={`flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 ${className}`}
+            className={`flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 ${className}`}
             {...props}
         />
     )
@@ -30,7 +30,7 @@ export default function MusicPlayer({ songs = sampleSongs }: { songs?: Song[] })
     const [filteredSongs, setFilteredSongs] = useState<Song[]>(songs)
     const itemsPerPage = 4
 
-    // Filter songs based on search term
+    // Filtrado de canciones según búsqueda
     useEffect(() => {
         if (searchTerm.trim() === "") {
             setFilteredSongs(songs)
@@ -45,30 +45,30 @@ export default function MusicPlayer({ songs = sampleSongs }: { songs?: Song[] })
         setCurrentPage(1)
     }, [searchTerm, songs])
 
-    // Calculate items to show on current page
+    // Calcular canciones de la página actual
     const indexOfLastItem = currentPage * itemsPerPage
     const indexOfFirstItem = indexOfLastItem - itemsPerPage
     const currentItems = Array.isArray(filteredSongs) ? filteredSongs.slice(indexOfFirstItem, indexOfLastItem) : []
 
-    // Handle page change
+    // Cambiar página
     const handlePageChange = (pageNumber: number) => {
         setCurrentPage(pageNumber)
-        setPlayingSongId(null) // Stop playing when changing page
+        setPlayingSongId(null) // Para detener la reproducción al cambiar página
     }
 
-    // Toggle play/pause (visual only)
+    // Toggle de play/pausa (solo visual)
     const togglePlay = (index: number) => {
         setPlayingSongId(playingSongId === index ? null : index)
     }
 
     return (
-        <div className="w-full mx-auto">
+        <div className="w-full mx-auto px-4 sm:px-6">
             <div className="relative bg-white rounded-3xl shadow-xl overflow-hidden border border-blue-200">
-                {/* Content */}
-                <div className="relative z-10 p-8">
-                    {/* Header */}
+                {/* Contenido */}
+                <div className="relative z-10 p-6 sm:p-8">
+                    {/* Cabecera */}
                     <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
-                        <h1 className="text-4xl font-bold text-blue-800 tracking-tight">
+                        <h1 className="text-3xl sm:text-4xl font-bold text-blue-800 tracking-tight">
                             Mis{" "}
                             <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-blue-400">
                 Canciones
@@ -81,12 +81,12 @@ export default function MusicPlayer({ songs = sampleSongs }: { songs?: Song[] })
                                 placeholder="Buscar canciones..."
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
-                                className="pl-10 bg-blue-50 border-blue-200 text-blue-800 placeholder:text-blue-400 focus-visible:ring-blue-300 w-full"
+                                className="pl-10 bg-blue-50 border-blue-200 text-blue-800 placeholder:text-blue-400 focus-visible:ring-blue-300"
                             />
                         </div>
                     </div>
 
-                    {/* Song list */}
+                    {/* Lista de canciones */}
                     <div className="space-y-4">
                         {currentItems.length === 0 ? (
                             <div className="flex flex-col items-center justify-center py-12 text-blue-800/80">
@@ -105,7 +105,7 @@ export default function MusicPlayer({ songs = sampleSongs }: { songs?: Song[] })
                         )}
                     </div>
 
-                    {/* Pagination */}
+                    {/* Paginación */}
                     {filteredSongs.length > itemsPerPage && (
                         <SongPagination
                             songs={filteredSongs}
@@ -115,9 +115,6 @@ export default function MusicPlayer({ songs = sampleSongs }: { songs?: Song[] })
                     )}
                 </div>
             </div>
-
-            {/* CSS para animaciones */}
-            
         </div>
     )
 }
