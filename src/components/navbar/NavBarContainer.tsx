@@ -3,6 +3,7 @@ import { NavBar } from './NavBar'
 
 import { motion } from 'framer-motion'
 import { useState, useEffect } from 'react'
+import { Footer } from '../footer/Footer'
 
 export const NavBarContainer = () => {
     const [scroll, setScroll] = useState(20)
@@ -29,11 +30,12 @@ export const NavBarContainer = () => {
                 }}
                 className='fixed top-0 w-full z-50'
             >
-                <NavBar logIn={false} floating={scroll > 0} />
+                <NavBar floating={scroll > 0} />
             </motion.nav>
-            <div className='pt-20 px-[20px] min-h-screen'>
+            <div className='pt-20 px-[20px]  min-h-screen'>
                 <Outlet />
             </div>
+            <Footer></Footer>
         </>
     )
 }

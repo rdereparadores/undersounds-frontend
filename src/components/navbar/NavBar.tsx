@@ -1,16 +1,3 @@
-import { Avatar, AvatarFallback, AvatarImage } from '@radix-ui/react-avatar'
-import { IoAlbumsOutline, IoCartOutline } from 'react-icons/io5'
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuGroup,
-    DropdownMenuItem,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { PiVinylRecord } from "react-icons/pi"
-import { IoStatsChartOutline } from 'react-icons/io5'
-import { IoIosLogOut } from 'react-icons/io'
 import { Button } from "../ui/button"
 import { Card } from "../ui/card"
 import { Input } from "../ui/input"
@@ -21,109 +8,142 @@ import {
     TooltipProvider,
     TooltipTrigger,
 } from "@/components/ui/tooltip"
-import { NavBarPhone } from './NavBarPhone'
+import {
+    Sheet,
+    SheetContent,
+    SheetDescription,
+    SheetHeader,
+    SheetTitle,
+    SheetTrigger,
+    SheetClose
+} from "@/components/ui/sheet"
+import { GiHamburgerMenu } from "react-icons/gi"
+import { IoCartOutline } from "react-icons/io5"
+import { Skeleton } from "../ui/skeleton"
 
-interface NavBarProps { logIn: boolean, floating: boolean }
+import { NavBarCart } from './NavBarCart'
 
-const NavBarLoggedInSection = () => (
-    <>
-        <DropdownMenu modal={false}>
-            <DropdownMenuTrigger asChild>
-                <Button variant="outline">
-                    <Avatar>
-                        <AvatarImage src="https://picsum.photos/30" width='25px' height='25px' alt="avatarUser" className='rounded-full'></AvatarImage>
-                        <AvatarFallback>User</AvatarFallback>
-                    </Avatar>
-                    Mi cuenta
-                </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className='w-44' align='end'>
-                <DropdownMenuGroup>
-                    <DropdownMenuItem>
-                        <Avatar>
-                            <AvatarImage src="https://picsum.photos/30" alt="avatarUser" className='rounded-full'></AvatarImage>
-                            <AvatarFallback>User</AvatarFallback>
-                        </Avatar>
-                        <p>Nombre Usuario</p>
-                    </DropdownMenuItem>
-                </DropdownMenuGroup>
-                <DropdownMenuSeparator />
-                <DropdownMenuGroup>
-                    <DropdownMenuItem>
-                        <PiVinylRecord />Canciones
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
-                        <IoAlbumsOutline />Álbumes
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
-                        <IoStatsChartOutline />Estadísticas
-                    </DropdownMenuItem>
-                </DropdownMenuGroup>
-                <DropdownMenuSeparator />
-                <DropdownMenuGroup>
-                    <DropdownMenuItem>
-                        <IoIosLogOut />Cerrar sesión
-                    </DropdownMenuItem>
-                </DropdownMenuGroup>
-            </DropdownMenuContent>
-        </DropdownMenu>
-    </>
-)
+import { NavBarUserSection } from './NavBarUserSection'
+import { NavBarGuestSection } from './NavBarGuestSection'
+import { NavBarArtistSection } from "./NavBarArtistSection"
+import { NavBarUserSectionMobile } from "./NavBarUserSectionMobile"
+import { NavBarGuestSectionMobile } from "./NavBarGuestSectionMobile"
+import { NavBarArtistSectionMobile } from "./NavBarArtistSectionMobile"
 
-const NavBarGuestSection = () => (
-    <>
-        <Button asChild variant='outline'>
-            <Link to='/auth/signin'>Iniciar sesión</Link>
-        </Button>
-        <Button asChild>
-            <Link to='/auth/signup'>Registrarse</Link>
-        </Button>
-        {/*<Button>
-            <IoCartOutline/>Carrito
-        </Button>*/}
-    </>
-)
+import { UserRole } from '@/constants.ts'
+import { Separator } from "@/components/ui/separator"
+import { useAuth } from "@/hooks/auth/useAuth"
+import { useNavigate } from "react-router"
+import { ChangeEvent, FormEvent, useState } from "react"
+import { IoIosLogOut } from 'react-icons/io'
 
-function NavBar({ logIn, floating }: NavBarProps) {
+interface NavBarProps { floating: boolean }
+
+export const NavBar = ({ floating }: NavBarProps) => {
+
+    const auth = useAuth()
+    const navigate = useNavigate()
+    const [searchQuery, setSearchQuery] = useState('')
+
+    const onSearch = (e: FormEvent) => {
+        e.preventDefault()
+        navigate(`/shop?query=${searchQuery}`)
+
+    }
+
+    const onSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
+        setSearchQuery(e.target.value)
+    }
+
     return (
-
         <Card className={`${floating ? '' : 'rounded-none'} w-full h-fit flex items-center justify-between p-2`}>
             <div className='grow flex gap-2 pr-2 items-center justify-start'>
                 <Button asChild>
                     <Link to='/'>Under<br />Sounds</Link>
                 </Button>
-                <Input className='sm:w-[50%]' type='search' placeholder='Buscar'></Input>
+                <form className='w-full sm:w-[50%]' onSubmit={onSearch}>
+                    <Input name='search' type='search' placeholder='Buscar' onChange={onSearchChange}></Input>
+                </form>
             </div>
 
-            <div className='items-center gap-2 justify-end hidden sm:flex'>
+            {/* NavBar de PC */}
+            <div className='items-stretch gap-2 justify-end hidden sm:flex'>
                 <Button asChild variant='ghost'>
                     <Link to='/shop'>Tienda</Link>
                 </Button>
 
-                {logIn ? <NavBarLoggedInSection /> : <NavBarGuestSection />}
+                {(() => {
+                    if (auth.token === undefined) {
+                        return <Skeleton className='w-56' />
+                    }
+                    switch (auth.userRole) {
+                        case UserRole.GUEST:
+                            return <NavBarGuestSection />
+                        case UserRole.USER:
+                            return <NavBarUserSection />
+                        case UserRole.ARTIST:
+                            return <NavBarArtistSection />
+                    }
+                })()}
 
                 <TooltipProvider>
                     <Tooltip>
                         <TooltipTrigger asChild>
-                            <Button asChild>
-                                <Link to='/shop/cart'>
-                                    <IoCartOutline />
-                                </Link>
-                            </Button>
+                            <NavBarCart emptyCart={false} />
                         </TooltipTrigger>
                         <TooltipContent>Carrito</TooltipContent>
                     </Tooltip>
                 </TooltipProvider>
             </div>
 
+            {/* NavBar de móvil */}
             <div className='sm:hidden'>
-                <NavBarPhone logIn={false}></NavBarPhone>
+                <Sheet>
+                    <SheetTrigger asChild>
+                        <Button variant="outline"><GiHamburgerMenu /></Button>
+                    </SheetTrigger>
+
+                    <SheetContent className="flex flex-col">
+                        <SheetHeader>
+                            <SheetTitle />
+                            <SheetDescription />
+                        </SheetHeader>
+
+                        <SheetClose asChild>
+                            <Button asChild variant="outline">
+                                <Link to='/shop'>Tienda</Link>
+                            </Button>
+                        </SheetClose>
+                        <SheetClose asChild>
+                            <Button asChild>
+                                <Link to='/shop/cart'>
+                                    <IoCartOutline /> Carrito
+                                </Link>
+                            </Button>
+                        </SheetClose>
+
+                        <Separator />
+
+                        {(() => {
+                            if (auth.token === undefined) {
+                                return <Skeleton className='h-56' />
+                            }
+                            switch (auth.userRole) {
+                                case UserRole.GUEST:
+                                    return <NavBarGuestSectionMobile />
+                                case UserRole.USER:
+                                    return <NavBarUserSectionMobile />
+                                case UserRole.ARTIST:
+                                    return <NavBarArtistSectionMobile />
+                            }
+                        })()}
+
+                        <Separator />
+
+                        <Button variant="ghost" onClick={auth.logOut}> <IoIosLogOut />Cerrar sesión</Button>
+                    </SheetContent>
+                </Sheet>
             </div>
         </Card>
-
     )
 }
-
-
-
-export { NavBar }
