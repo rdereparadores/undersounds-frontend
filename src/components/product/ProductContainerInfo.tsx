@@ -5,12 +5,16 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrig
 import { useState } from "react";
 import { Skeleton } from "../ui/skeleton";
 import { useProduct } from "@/hooks/product/useProduct";
+import { useCart } from "@/hooks/cart/useCart"
 import { ProductContainerInfoArtistCard } from "./ProductContainerInfoArtistCard";
+import { toast } from "sonner";
 
 export const ProductContainerInfo = () => {
 
     const product = useProduct()
+    const cart = useCart()
     const [imgLoaded, setImgLoaded] = useState(false)
+    const [selectedFormat, setSelectedFormat] = useState<null | string>(null)
 
     return (
         <div className='flex mt-3 gap-3 flex-wrap flex-grow justify-center'>
@@ -34,7 +38,7 @@ export const ProductContainerInfo = () => {
                         <CardDescription>Selecciona el formato deseado</CardDescription>
                     </CardHeader>
                     <CardContent className="flex flex-col gap-2">
-                        <Select>
+                        <Select onValueChange={(value) => setSelectedFormat(value)}>
                             <SelectTrigger>
                                 <SelectValue placeholder='Escoge un formato...' />
                             </SelectTrigger>
@@ -49,7 +53,21 @@ export const ProductContainerInfo = () => {
                             </SelectContent>
                         </Select>
 
-                        <Button className="w-full">Añadir al carrito</Button>
+                        <Button className="w-full" onClick={
+                            () => {
+                                if (!selectedFormat) {
+                                    toast.error('Debes seleccionar un formato')
+                                    return
+                                }
+                                cart.add({
+                                    type: product.queryResult!.product.type,
+                                    format: selectedFormat!,
+                                    quantity: 1,
+                                    id: product.queryResult!.product.id
+                                })
+                                document.getElementById('navBarCartButton')?.click()
+                            }
+                        }>Añadir al carrito</Button>
                     </CardContent>
                 </Card>
                 <ProductContainerInfoArtistCard />

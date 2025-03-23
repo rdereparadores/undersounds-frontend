@@ -12,7 +12,13 @@ export interface ProductContextResultShortProps {
     type: string,
     genres: string[],
     duration: number,
-    imgUrl: string
+    imgUrl: string,
+    price: {
+        digital: number,
+        cd: number,
+        vinyl: number,
+        cassette: number
+    }
 }
 
 export interface ProductContextResultProps {
