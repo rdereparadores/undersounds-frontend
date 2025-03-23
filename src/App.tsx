@@ -1,6 +1,6 @@
 import { Routes, Route, Outlet } from 'react-router'
 import './App.css'
-import {Index} from "@/routes/Index.tsx";
+import { Index } from "@/routes/Index.tsx";
 import { songChartData, albumChartData, playbackChartData } from '@/components/panel/artistStatistics/artist-chart-data.tsx'
 import { SignIn } from '@/routes/SignIn'
 import { SignUp } from '@/routes/SignUp'
@@ -15,17 +15,17 @@ import { ProtectedRoute } from './components/auth/ProtectedRoute.tsx'
 import { UserRole } from './constants.ts'
 import { ProductContainer } from './components/product/ProductContainer.tsx'
 import PurchasePanel from "@/components/panel/purchasePanel/purchasePanel.tsx";
-import {purchasesData} from "@/components/panel/purchasePanel/purchaseData.tsx";
+import { purchasesData } from "@/components/panel/purchasePanel/purchaseData.tsx";
 import MusicPlayer from "@/components/panel/songPanel/music-player.tsx";
-import {sampleSongs} from "@/components/panel/songPanel/sample-songs.tsx";
+import { sampleSongs } from "@/components/panel/songPanel/sample-songs.tsx";
 import AlbumPlayer from "@/components/panel/albumPanel/album-player.tsx";
-import {sampleAlbums} from "@/components/panel/albumPanel/sample-albums.tsx";
+import { sampleAlbums } from "@/components/panel/albumPanel/sample-albums.tsx";
 import ProfileCard from "@/components/panel/profilePanel/profileCard.tsx";
 import StatisticsPanel from "@/components/panel/statisticsPanel/statisticsPanel.tsx";
-import {ArtistPanel} from "@/routes/ArtistPanel.tsx";
+import { ArtistPanel } from "@/routes/ArtistPanel.tsx";
 import ArtistStatisticsPanel from "@/components/panel/artistStatistics/artist-statistics-panel.tsx";
 import SalePanel from "@/components/panel/salePanel/sale-panel.tsx";
-import {salesData} from "@/components/panel/salePanel/salesData.tsx";
+import { salesData } from "@/components/panel/salePanel/salesData.tsx";
 import ArtistProfileCard from "@/components/panel/profilePanel/artistProfileCard.tsx";
 import { ArtistProfile } from './components/artistProfile/ArtistProfile.tsx';
 import { NotFound404 } from './routes/404.tsx';
@@ -33,6 +33,12 @@ import { NotFound404 } from './routes/404.tsx';
 function App() {
     return (
         <Routes>
+
+            <Route path='auth' element={<GuestOnlyRoute />}>
+                <Route path='signin' element={<SignIn />} />
+                <Route path='signup' element={<SignUp />} />
+            </Route>
+
             <Route element={<NavBarContainer />}>
                 <Route index element={<Index />} />
 
@@ -48,31 +54,31 @@ function App() {
                 <Route path='album/:id' element={<ProductContainer type='album' />} />
                 <Route path='song/:id' element={<ProductContainer type='song' />} />
                 <Route path='profile/artist/:id' element={<ArtistProfile />} />
-              
+
                 <Route path='user' element={<ProtectedRoute requiredRole={UserRole.USER} redirectTo='/user/dashboard' />}>
-                    <Route path='dashboard' element={<UserPanel/>}>
+                    <Route path='dashboard' element={<UserPanel />}>
                         <Route index element={
-                                <ProfileCard/>
+                            <ProfileCard />
                         }
                         />
                         <Route path="userProfile" element={
-                                <ProfileCard/>
+                            <ProfileCard />
                         }
                         />
                         <Route path='purchases' element={
-                                <PurchasePanel purchases={purchasesData}/>
+                            <PurchasePanel purchases={purchasesData} />
                         }
                         />
                         <Route path='statistics' element={
-                                <StatisticsPanel />
+                            <StatisticsPanel />
                         }
                         />
                         <Route path='songPanel' element={
-                                <MusicPlayer songs={sampleSongs} />
+                            <MusicPlayer songs={sampleSongs} />
                         }
                         />
                         <Route path='albumPanel' element={
-                                <AlbumPlayer albums={sampleAlbums} />
+                            <AlbumPlayer albums={sampleAlbums} />
                         }
                         />
                     </Route>
@@ -88,32 +94,25 @@ function App() {
                         />
                     }
                 >
-                    <Route path="dashboard" element={<ArtistPanel/>}>
-                        <Route index element={<ArtistProfileCard/>} />
-                        <Route path="artistProfile" element={<ArtistProfileCard/>} />
+                    <Route path="dashboard" element={<ArtistPanel />}>
+                        <Route index element={<ArtistProfileCard />} />
+                        <Route path="artistProfile" element={<ArtistProfileCard />} />
                         <Route path="sales" element={<SalePanel sales={salesData} />} />
                         <Route path="statistics" element={
                             <ArtistStatisticsPanel
-                            songChartData={songChartData}
-                            albumChartData={albumChartData}
-                            playbackChartData={playbackChartData}
-                            period="Último mes"
-                            trend="↑ 15% más ingresos que el mes anterior"
-                            totalIncome={5950}
-                        />} />
+                                songChartData={songChartData}
+                                albumChartData={albumChartData}
+                                playbackChartData={playbackChartData}
+                                period="Último mes"
+                                trend="↑ 15% más ingresos que el mes anterior"
+                                totalIncome={5950}
+                            />} />
                         <Route path="songPanel" element={<MusicPlayer songs={sampleSongs} />} />
                         <Route path="albumPanel" element={<AlbumPlayer albums={sampleAlbums} />} />
                     </Route>
                 </Route>
-                <Route path='*' element={<NotFound404/>} />
+                <Route path='*' element={<NotFound404 />} />
             </Route>
-
-
-            <Route path='auth' element={<GuestOnlyRoute />}>
-                <Route path='signin' element={<SignIn />} />
-                <Route path='signup' element={<SignUp />} />
-            </Route>
-
         </Routes>
     )
 }
