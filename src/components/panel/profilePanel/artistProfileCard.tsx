@@ -1,7 +1,6 @@
 "use client"
 
 import type React from "react"
-
 import { useState, useRef } from "react"
 import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
@@ -23,13 +22,13 @@ import { Card, CardContent } from "@/components/ui/card"
 
 // Text field component with animation
 const TextAreaField = ({
-  icon,
-  label,
-  value,
-  onChange,
-  disabled,
-  rows = 1,
-}: {
+                         icon,
+                         label,
+                         value,
+                         onChange,
+                         disabled,
+                         rows = 1,
+                       }: {
   icon: React.ReactNode
   label: string
   value: string
@@ -313,4 +312,3 @@ export default function ArtistProfileCard() {
     </>
   )
 }
-
