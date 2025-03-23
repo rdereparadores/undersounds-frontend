@@ -28,6 +28,7 @@ import SalePanel from "@/components/panel/salePanel/sale-panel.tsx";
 import {salesData} from "@/components/panel/salePanel/salesData.tsx";
 import ArtistProfileCard from "@/components/panel/profilePanel/artistProfileCard.tsx";
 import { ArtistProfile } from './components/artistProfile/ArtistProfile.tsx';
+import { NotFound404 } from './routes/404.tsx';
 
 function App() {
     return (
@@ -104,6 +105,7 @@ function App() {
                         <Route path="albumPanel" element={<AlbumPlayer albums={sampleAlbums} />} />
                     </Route>
                 </Route>
+                <Route path='*' element={<NotFound404/>} />
             </Route>
 
 
@@ -112,7 +114,6 @@ function App() {
                 <Route path='signup' element={<SignUp />} />
             </Route>
 
-            <Route path='*' element={<></>} />
         </Routes>
     )
 }
