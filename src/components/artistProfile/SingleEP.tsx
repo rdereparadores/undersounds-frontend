@@ -8,6 +8,7 @@ export function SingleEP() {
         <div className="flex flex-col ">
             <Skeleton hidden={imgLoaded} className='w-[250px] h-[250px]' />
             <img 
+                alt="Imagen de un single"
                 onLoad={() => setImgLoaded(true)}
                 src="https://picsum.photos/250/250"
                 className="rounded-lg">

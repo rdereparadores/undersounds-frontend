@@ -12,6 +12,7 @@ export function NewestReleases() {
                 <Card className="flex flex-col p-2 gap-2">
                     <Skeleton hidden={imgLoaded} className='w-[350px] h-[350px]' />
                     <img 
+                        alt="Imagen del último lanzamiento"
                         hidden={!imgLoaded}
                         onLoad={() => setImgLoaded(true)}
                             src="https://picsum.photos/350/350"

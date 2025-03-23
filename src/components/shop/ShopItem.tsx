@@ -15,6 +15,7 @@ export const ShopItem = ({ title, artists, imgUrl, type, genreList, id }: ShopCo
                     <div className='relative w-full aspect-square'>
                         <Skeleton className='w-full h-full rounded-md' hidden={imgLoaded} />
                         <img
+                            alt="Iamgen de un producto"
                             hidden={!imgLoaded}
                             className='w-full h-full rounded-md hover:brightness-50 transition hover:cursor-pointer'
                             src={imgUrl}

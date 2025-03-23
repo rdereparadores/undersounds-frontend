@@ -2,7 +2,6 @@
 
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { motion } from "framer-motion"
 
 interface Purchase {
     title: string
@@ -89,13 +88,10 @@ export const PurchasePagination = ({ purchases, currentPage, onPageChange }: Pur
     }
 
     return (
-        <motion.div
+        <div
             className="flex justify-center items-center gap-2"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
         >
-            <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}>
+            <div>
                 <Button
                     variant="outline"
                     size="icon"
@@ -106,12 +102,12 @@ export const PurchasePagination = ({ purchases, currentPage, onPageChange }: Pur
                     <ChevronLeft className="h-3 w-3" />
                     <span className="sr-only">Página anterior</span>
                 </Button>
-            </motion.div>
+            </div>
 
             <div className="flex gap-1">
                 {getPageNumbers().map((page, index) =>
                         typeof page === "number" ? (
-                            <motion.div key={index} whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}>
+                            <div key={index}>
                                 <Button
                                     variant={currentPage === page ? "default" : "outline"}
                                     size="sm"
@@ -124,7 +120,7 @@ export const PurchasePagination = ({ purchases, currentPage, onPageChange }: Pur
                                 >
                                     {page}
                                 </Button>
-                            </motion.div>
+                            </div>
                         ) : (
                             <span key={index} className="flex items-center justify-center w-7 h-7 text-xs">
               {page}
@@ -133,7 +129,7 @@ export const PurchasePagination = ({ purchases, currentPage, onPageChange }: Pur
                 )}
             </div>
 
-            <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}>
+            <div >
                 <Button
                     variant="outline"
                     size="icon"
@@ -144,8 +140,8 @@ export const PurchasePagination = ({ purchases, currentPage, onPageChange }: Pur
                     <ChevronRight className="h-3 w-3" />
                     <span className="sr-only">Página siguiente</span>
                 </Button>
-            </motion.div>
-        </motion.div>
+            </div>
+        </div>
     )
 }
 

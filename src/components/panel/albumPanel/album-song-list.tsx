@@ -23,26 +23,22 @@ interface AlbumSongListProps {
 export function AlbumSongList({ songs, playingSongId, onTogglePlay, Button }: AlbumSongListProps) {
     const [hoveredSongId, setHoveredSongId] = useState<number | null>(null)
 
-    // Generar barras para la onda de sonido
+    // Genera las barras para la visualización de la onda de sonido
     const generateSoundWaveBars = (index: number) => {
         const bars = []
         const barCount = 20
         const isPlaying = playingSongId === index
 
         for (let i = 0; i < barCount; i++) {
-            // Altura aleatoria para cada barra cuando está reproduciéndose
-            const height = isPlaying ? Math.random() * 100 : 30 // Altura fija cuando está pausado (línea recta)
+            // Altura aleatoria para cada barra al reproducirse; altura fija si está pausado
+            const height = isPlaying ? Math.random() * 100 : 30
 
             bars.push(
                 <div
                     key={i}
                     className={`w-1 rounded-full ${isPlaying ? "bg-blue-400" : "bg-blue-300/60"}`}
-                    style={{
-                        height: `${height}%`,
-                        animationDelay: `${i * 0.02}s`,
-                        animation: isPlaying ? "fastSoundWave 0.4s linear infinite alternate" : "none",
-                    }}
-                />,
+                    style={{ height: `${height}%` }}
+                />
             )
         }
 
@@ -58,59 +54,58 @@ export function AlbumSongList({ songs, playingSongId, onTogglePlay, Button }: Al
             {songs.map((song, index) => (
                 <div
                     key={index}
-                    className={`relative rounded-xl overflow-hidden transition-all duration-300 
-                        ${
-                        playingSongId === index
-                            ? "bg-blue-100 shadow-lg border border-blue-300/50"
-                            : "bg-white hover:bg-blue-50 border border-transparent hover:border-blue-300/30"
+                    className={`relative rounded-xl overflow-hidden transition-transform duration-200 p-3
+            ${playingSongId === index
+                        ? "bg-blue-100 shadow-lg border border-blue-300/50"
+                        : "bg-white hover:bg-blue-50 border border-transparent hover:border-blue-300/30"
                     }
-                        transform hover:scale-[1.01] hover:shadow-lg cursor-pointer p-3
-                    `}
+            hover:scale-[1.01] hover:shadow-lg cursor-pointer`}
                     onMouseEnter={() => setHoveredSongId(index)}
                     onMouseLeave={() => setHoveredSongId(null)}
                 >
-                    <div className="flex items-center gap-3">
-                        {/* Song thumbnail */}
+                    <div className="flex flex-col sm:flex-row items-center gap-3">
+                        {/* Miniatura de la canción */}
                         <div
-                            className={`relative min-w-[50px] w-[50px] h-[50px] rounded-lg overflow-hidden flex-shrink-0 ${
-                                playingSongId === index ? "shadow-[0_0_15px_rgba(96,165,250,0.5)]" : "shadow-md"
-                            }`}
+                            className={`relative flex-shrink-0 rounded-lg overflow-hidden
+                w-12 h-12 sm:w-[50px] sm:h-[50px]
+                ${playingSongId === index ? "shadow-[0_0_15px_rgba(96,165,250,0.5)]" : "shadow-md"}
+              `}
                         >
                             <img
                                 src={song.imageUrl || "/placeholder.svg?height=50&width=50"}
                                 alt={song.name}
-                                className={`w-full h-full object-cover transition-transform duration-700 ${playingSongId === index ? "scale-110" : ""}`}
+                                className={`w-full h-full object-cover transition-transform duration-200 ${playingSongId === index ? "scale-110" : ""}`}
                             />
                             {playingSongId === index && (
                                 <div className="absolute inset-0 bg-gradient-to-t from-blue-500/30 to-transparent"></div>
                             )}
                         </div>
 
-                        {/* Song info */}
+                        {/* Información de la canción */}
                         <div className="flex-1 min-w-0">
-                            <p className="text-blue-800 font-medium truncate">{song.name}</p>
+                            <p className="text-blue-800 font-medium truncate text-sm sm:text-base">{song.name}</p>
                             <p className="text-xs text-blue-600/80 truncate">{song.artist}</p>
 
-                            {/* Sound wave visualization */}
-                            <div className="mt-2 h-5 flex items-center">
+                            {/* Visualización de la onda de sonido */}
+                            <div className="mt-2 h-4 sm:h-5 flex items-center">
                                 <div className="w-full h-full flex items-center justify-between gap-0.5">
                                     {generateSoundWaveBars(index)}
                                 </div>
                             </div>
 
-                            <div className="flex justify-between text-xs text-blue-500/70 mt-1">
+                            <div className="flex justify-between text-[10px] sm:text-xs text-blue-500/70 mt-1">
                                 <span>{playingSongId === index ? "Reproduciendo" : ""}</span>
                                 <span>{song.duration}</span>
                             </div>
                         </div>
 
-                        {/* Controls */}
+                        {/* Controles */}
                         <div className="flex items-center gap-2">
-                            {/* Play/Pause button */}
+                            {/* Botón de play/pausa */}
                             <Button
                                 variant="ghost"
                                 size="icon"
-                                className={`rounded-full h-8 w-8 ${
+                                className={`rounded-full h-8 w-8 transition-colors duration-200 ${
                                     playingSongId === index
                                         ? "bg-blue-400 text-white hover:bg-blue-500 hover:text-white"
                                         : "text-blue-600 hover:text-white hover:bg-blue-500"
@@ -120,12 +115,12 @@ export function AlbumSongList({ songs, playingSongId, onTogglePlay, Button }: Al
                                 {playingSongId === index ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
                             </Button>
 
-                            {/* Download button - only show on hover */}
+                            {/* Botón de descarga, visible solo al hacer hover */}
                             {hoveredSongId === index && (
                                 <Button
                                     variant="ghost"
                                     size="icon"
-                                    className="rounded-full h-8 w-8 text-blue-600 hover:text-white hover:bg-blue-500"
+                                    className="rounded-full h-8 w-8 transition-colors duration-200 text-blue-600 hover:text-white hover:bg-blue-500"
                                     onClick={() => handleDownload(song)}
                                 >
                                     <Download className="h-4 w-4" />
@@ -138,4 +133,3 @@ export function AlbumSongList({ songs, playingSongId, onTogglePlay, Button }: Al
         </div>
     )
 }
-

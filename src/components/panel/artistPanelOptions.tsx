@@ -1,7 +1,6 @@
 "use client"
 
 import { useState } from "react"
-import { motion } from "framer-motion"
 import { User, Music, Album, DollarSign, BarChart2 } from "lucide-react"
 import { Link } from "react-router"
 
@@ -17,40 +16,26 @@ const ArtistPanelOptions = () => {
         { id: "statistics", label: "Estadísticas", icon: <BarChart2 size={16} className="mr-3" />, path: "statistics" },
     ]
 
-    const container = {
-        hidden: { opacity: 0 },
-        show: {
-            opacity: 1,
-            transition: {
-                staggerChildren: 0.1,
-            },
-        },
-    }
-
-    const item = {
-        hidden: { y: 20, opacity: 0 },
-        show: { y: 0, opacity: 1, transition: { type: "spring", stiffness: 300, damping: 24 } },
-    }
-
-    // Button styles
+    // Clases base para los botones
     const buttonBaseStyle =
-        "relative overflow-hidden w-full py-2 px-3 text-sm font-medium rounded-lg shadow-md text-white flex items-center transition-all duration-300 ease-in-out transform hover:-translate-y-1 active:translate-y-0"
+        "relative overflow-hidden w-full py-2 px-3 text-sm font-medium rounded-lg shadow-md text-white flex items-center"
     const buttonGradient = "bg-gradient-to-r from-[#0076ff] to-[#005ecc] hover:from-[#005ecc] hover:to-[#004799]"
     const buttonActiveStyle = "bg-gradient-to-r from-[#005ecc] to-[#004799] shadow-inner"
 
     return (
-        <motion.div
-            className="flex flex-col gap-2 p-3 rounded-xl shadow-lg w-48"
-            style={{
-                backgroundColor: "rgba(255, 255, 255, 0.5)",
-                backdropFilter: "blur(8px)",
-            }}
-            variants={container}
-            initial="hidden"
-            animate="show"
+        <div
+            className="
+        flex flex-col gap-2 p-3
+        rounded-xl shadow-lg
+        w-full
+        bg-white/50
+        dark:bg-slate-900/30
+        backdrop-blur-md
+    "
         >
-            {buttons.map((button) => (
-                <motion.div key={button.id} variants={item} className="w-full">
+
+        {buttons.map((button) => (
+                <div key={button.id} className="w-full">
                     <Link
                         to={button.path}
                         className="block"
@@ -58,35 +43,26 @@ const ArtistPanelOptions = () => {
                         onMouseEnter={() => setHoveredButton(button.id)}
                         onMouseLeave={() => setHoveredButton(null)}
                     >
-                        <motion.div
-                            className={`${buttonBaseStyle} ${buttonGradient} ${activeButton === button.id ? buttonActiveStyle : ""}`}
-                            whileTap={{ scale: 0.97 }}
+                        <div
+                            className={`
+                ${buttonBaseStyle} 
+                ${buttonGradient} 
+                ${activeButton === button.id ? buttonActiveStyle : ""}
+              `}
                         >
-                            <motion.span
-                                className="transition-transform duration-300"
-                                animate={{
-                                    scale: hoveredButton === button.id ? 1.1 : 1,
-                                }}
-                            >
-                                {button.icon}
-                            </motion.span>
+                            <span>{button.icon}</span>
                             <span>{button.label}</span>
                             {hoveredButton === button.id && (
-                                <motion.div
+                                <div
                                     className="absolute inset-0 rounded-lg"
                                     style={{ backgroundColor: "rgba(51, 145, 255, 0.2)" }}
-                                    layoutId="hoverBackground"
-                                    initial={{ opacity: 0 }}
-                                    animate={{ opacity: 1 }}
-                                    exit={{ opacity: 0 }}
-                                    transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                                 />
                             )}
-                        </motion.div>
+                        </div>
                     </Link>
-                </motion.div>
+                </div>
             ))}
-        </motion.div>
+        </div>
     )
 }
 

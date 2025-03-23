@@ -13,7 +13,7 @@ export const ProductContainerRatingsItem = () => {
                 <CardTitle className="italic">"{product.queryResult?.ratings.list[0].title}"</CardTitle>
                 <div className="pt-2 flex items-center gap-2">
                     {!imgLoaded && <Skeleton className="rounded-full w-10 h-10" />}
-                    <img className="rounded-full w-10 h-10" hidden={!imgLoaded} src={product.queryResult?.ratings.list[0].userImgUrl} onLoad={() => {setImgLoaded(true)}}/>
+                    <img alt="imagen del usuarios de la reseña" className="rounded-full w-10 h-10" hidden={!imgLoaded} src={product.queryResult?.ratings.list[0].userImgUrl} onLoad={() => {setImgLoaded(true)}}/>
                     <p>@{product.queryResult?.ratings.list[0].username}</p>
                 </div>
             </CardHeader>

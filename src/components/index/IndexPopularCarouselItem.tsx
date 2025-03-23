@@ -13,6 +13,7 @@ export const IndexPopularCarouselItem = ({ title, artist, popularNo, coverUrl, s
             <div className='text-center'>
                 <Skeleton hidden={imgLoaded} className='w-48 h-48' />
                 <img
+                    alt="Imagen de una canción"
                     hidden={!imgLoaded}
                     className='w-48 h-48 rounded-xl hover:brightness-50 transition hover:cursor-pointer'
                     onLoad={() => setImgLoaded(true)}
