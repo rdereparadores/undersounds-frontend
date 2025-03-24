@@ -1,0 +1,995 @@
+[
+    {
+        "product": {
+            "title": "Hackney Diamonds",
+            "id": 1,
+            "type": "album",
+            "artists": [
+                {
+                    "name": "The Rolling Stones",
+                    "id": 101
+                }
+            ],
+            "duration": 2426,
+            "date": "2023-10-20",
+            "genres": [
+                "Rock",
+                "Blues Rock"
+            ],
+            "description": "Hackney Diamonds es el vigésimo cuarto álbum de estudio británico (y vigesimosexto en los Estados Unidos) de la banda de rock The Rolling Stones, lanzado el 20 de octubre de 2023. Es su primer álbum con material original desde A Bigger Bang (2005), su intervalo más largo entre álbumes de estudio originales, y el primero desde la muerte del baterista Charlie Watts en 2021.",
+            "imgUrl": "https://picsum.photos/id/1/500/500",
+            "trackList": [
+                {
+                    "title": "Angry",
+                    "id": 101,
+                    "artists": [
+                        {
+                            "name": "The Rolling Stones",
+                            "id": 101
+                        }
+                    ],
+                    "type": "song",
+                    "genres": [
+                        "Rock",
+                        "Blues Rock"
+                    ],
+                    "duration": 203,
+                    "imgUrl": "https://picsum.photos/id/101/500/500",
+                    "price": {
+                        "digital": 1.29,
+                        "cd": 0,
+                        "vinyl": 0,
+                        "cassette": 0
+                    }
+                },
+                {
+                    "title": "Get Close",
+                    "id": 102,
+                    "artists": [
+                        {
+                            "name": "The Rolling Stones",
+                            "id": 101
+                        }
+                    ],
+                    "type": "song",
+                    "genres": [
+                        "Rock",
+                        "Blues Rock"
+                    ],
+                    "duration": 219,
+                    "imgUrl": "https://picsum.photos/id/102/500/500",
+                    "price": {
+                        "digital": 1.29,
+                        "cd": 0,
+                        "vinyl": 0,
+                        "cassette": 0
+                    }
+                },
+                {
+                    "title": "Depending On You",
+                    "id": 103,
+                    "artists": [
+                        {
+                            "name": "The Rolling Stones",
+                            "id": 101
+                        }
+                    ],
+                    "type": "song",
+                    "genres": [
+                        "Rock",
+                        "Blues Rock"
+                    ],
+                    "duration": 198,
+                    "imgUrl": "https://picsum.photos/id/103/500/500",
+                    "price": {
+                        "digital": 1.29,
+                        "cd": 0,
+                        "vinyl": 0,
+                        "cassette": 0
+                    }
+                }
+            ],
+            "price": {
+                "digital": 12.99,
+                "cd": 15.99,
+                "vinyl": 29.99,
+                "cassette": 14.99
+            }
+        },
+        "artist": {
+            "name": "The Rolling Stones",
+            "id": 101,
+            "followers": 22547631,
+            "isFollowing": false,
+            "imgUrl": "https://cdn.example.com/artists/rolling-stones.jpg"
+        },
+        "ratings": {
+            "average": 4.2,
+            "ratingCount": {
+                "five": 752,
+                "four": 531,
+                "three": 189,
+                "two": 45,
+                "one": 23
+            },
+            "list": [
+                {
+                    "userImgUrl": "https://cdn.example.com/users/user1.jpg",
+                    "username": "rockfan83",
+                    "title": "¡Un regreso triunfal!",
+                    "description": "Después de 18 años sin material original, los Stones vuelven con fuerza. Hackney Diamonds es crudo, energético y demuestra que estos veteranos aún tienen mucho que ofrecer. 'Angry' es un clásico instantáneo.",
+                    "rating": 5
+                },
+                {
+                    "userImgUrl": "https://cdn.example.com/users/user2.jpg",
+                    "username": "musiccritic22",
+                    "title": "Sólido pero inconsistente",
+                    "description": "Hay momentos brillantes como 'Angry' y 'Sweet Sounds of Heaven', pero algunas canciones se sienten un poco forzadas. Aun así, es impresionante para una banda con 60 años de carrera.",
+                    "rating": 4
+                },
+                {
+                    "userImgUrl": "https://cdn.example.com/users/user3.jpg",
+                    "username": "bluesrocker",
+                    "title": "El espíritu del rock and roll vive",
+                    "description": "Un álbum que captura la esencia de los Stones. La producción de Andrew Watt le da un toque moderno sin perder la identidad de la banda.",
+                    "rating": 5
+                }
+            ]
+        },
+        "related": [
+            {
+                "title": "Hackney Diamonds",
+                "id": 1,
+                "artists": [
+                    {
+                        "name": "The Rolling Stones",
+                        "id": 101
+                    }
+                ],
+                "type": "album",
+                "genres": [
+                    "Rock",
+                    "Blues Rock"
+                ],
+                "duration": 2426,
+                "imgUrl": "https://picsum.photos/id/1/500/500",
+                "price": {
+                    "digital": 12.99,
+                    "cd": 15.99,
+                    "vinyl": 29.99,
+                    "cassette": 14.99
+                }
+            },
+            {
+                "title": "Forty Licks",
+                "id": 1001,
+                "artists": [
+                    {
+                        "name": "The Rolling Stones",
+                        "id": 101
+                    }
+                ],
+                "type": "album",
+                "genres": [
+                    "Rock",
+                    "Blues Rock",
+                    "Classic Rock"
+                ],
+                "duration": 8540,
+                "imgUrl": "https://picsum.photos/id/1001/500/500",
+                "price": {
+                    "digital": 14.99,
+                    "cd": 16.99,
+                    "vinyl": 35.99,
+                    "cassette": 0
+                }
+            },
+            {
+                "title": "Now and Then",
+                "id": 1002,
+                "artists": [
+                    {
+                        "name": "The Beatles",
+                        "id": 1001
+                    }
+                ],
+                "type": "song",
+                "genres": [
+                    "Rock",
+                    "Pop Rock"
+                ],
+                "duration": 248,
+                "imgUrl": "https://picsum.photos/id/1002/500/500",
+                "price": {
+                    "digital": 1.29,
+                    "cd": 5.99,
+                    "vinyl": 14.99,
+                    "cassette": 0
+                }
+            }
+        ]
+    },
+    {
+        "product": {
+            "title": "Cowboy Carter",
+            "id": 2,
+            "type": "album",
+            "artists": [
+                {
+                    "name": "Beyoncé",
+                    "id": 102
+                }
+            ],
+            "duration": 3780,
+            "date": "2024-03-29",
+            "genres": [
+                "Country",
+                "R&B",
+                "Pop"
+            ],
+            "description": "Cowboy Carter es el octavo álbum de estudio en solitario de la cantante estadounidense Beyoncé, lanzado el 29 de marzo de 2024. Sirve como la segunda entrega de un proyecto de tres partes que comenzó con Renaissance (2022). Inspirado en una experiencia en la que se sintió rechazada en la industria de la música country, Cowboy Carter fue concebido durante cinco años.",
+            "imgUrl": "https://picsum.photos/id/2/500/500",
+            "trackList": [
+                {
+                    "title": "Texas Hold 'Em",
+                    "id": 201,
+                    "artists": [
+                        {
+                            "name": "Beyoncé",
+                            "id": 102
+                        }
+                    ],
+                    "type": "song",
+                    "genres": [
+                        "Country",
+                        "R&B"
+                    ],
+                    "duration": 211,
+                    "imgUrl": "https://picsum.photos/id/201/500/500",
+                    "price": {
+                        "digital": 1.29,
+                        "cd": 0,
+                        "vinyl": 0,
+                        "cassette": 0
+                    }
+                },
+                {
+                    "title": "16 Carriages",
+                    "id": 202,
+                    "artists": [
+                        {
+                            "name": "Beyoncé",
+                            "id": 102
+                        }
+                    ],
+                    "type": "song",
+                    "genres": [
+                        "Country",
+                        "R&B"
+                    ],
+                    "duration": 243,
+                    "imgUrl": "https://picsum.photos/id/202/500/500",
+                    "price": {
+                        "digital": 1.29,
+                        "cd": 0,
+                        "vinyl": 0,
+                        "cassette": 0
+                    }
+                },
+                {
+                    "title": "Ya Ya",
+                    "id": 203,
+                    "artists": [
+                        {
+                            "name": "Beyoncé",
+                            "id": 102
+                        }
+                    ],
+                    "type": "song",
+                    "genres": [
+                        "Country",
+                        "R&B",
+                        "Folk"
+                    ],
+                    "duration": 204,
+                    "imgUrl": "https://picsum.photos/id/203/500/500",
+                    "price": {
+                        "digital": 1.29,
+                        "cd": 0,
+                        "vinyl": 0,
+                        "cassette": 0
+                    }
+                }
+            ],
+            "price": {
+                "digital": 13.99,
+                "cd": 16.99,
+                "vinyl": 34.99,
+                "cassette": 15.99
+            }
+        },
+        "artist": {
+            "name": "Beyoncé",
+            "id": 102,
+            "followers": 35218749,
+            "isFollowing": true,
+            "imgUrl": "https://cdn.example.com/artists/beyonce.jpg"
+        },
+        "ratings": {
+            "average": 4.7,
+            "ratingCount": {
+                "five": 2845,
+                "four": 521,
+                "three": 127,
+                "two": 32,
+                "one": 19
+            },
+            "list": [
+                {
+                    "userImgUrl": "https://cdn.example.com/users/user4.jpg",
+                    "username": "beyhive_queen",
+                    "title": "Una obra maestra transcultural",
+                    "description": "Beyoncé redefine el country de manera brillante, reclamando el género para las voces negras que ayudaron a crearlo. Un trabajo ambicioso que fusiona géneros sin perder autenticidad.",
+                    "rating": 5
+                },
+                {
+                    "userImgUrl": "https://cdn.example.com/users/user5.jpg",
+                    "username": "musiclover456",
+                    "title": "Innovador pero respetuoso con las tradiciones",
+                    "description": "Este álbum es una declaración cultural que celebra la historia negra en el country mientras empuja los límites del género. 'Texas Hold 'Em' es pegadiza y revolucionaria a la vez.",
+                    "rating": 5
+                },
+                {
+                    "userImgUrl": "https://cdn.example.com/users/user6.jpg",
+                    "username": "countryroots",
+                    "title": "Una fusión interesante pero inconsistente",
+                    "description": "Hay momentos brillantes y la producción es impecable, pero algunas canciones son más exitosas que otras en la fusión de géneros. Aun así, un experimento valiente y necesario.",
+                    "rating": 4
+                }
+            ]
+        },
+        "related": [
+            {
+                "title": "Renaissance",
+                "id": 2001,
+                "artists": [
+                    {
+                        "name": "Beyoncé",
+                        "id": 102
+                    }
+                ],
+                "type": "album",
+                "genres": [
+                    "Dance",
+                    "R&B",
+                    "House"
+                ],
+                "duration": 3722,
+                "imgUrl": "https://picsum.photos/id/2001/500/500",
+                "price": {
+                    "digital": 13.99,
+                    "cd": 16.99,
+                    "vinyl": 34.99,
+                    "cassette": 15.99
+                }
+            },
+            {
+                "title": "Texas Hold 'Em",
+                "id": 201,
+                "artists": [
+                    {
+                        "name": "Beyoncé",
+                        "id": 102
+                    }
+                ],
+                "type": "song",
+                "genres": [
+                    "Country",
+                    "R&B"
+                ],
+                "duration": 211,
+                "imgUrl": "https://picsum.photos/id/201/500/500",
+                "price": {
+                    "digital": 1.29,
+                    "cd": 5.99,
+                    "vinyl": 12.99,
+                    "cassette": 8.99
+                }
+            },
+            {
+                "title": "One Thing At A Time",
+                "id": 3,
+                "artists": [
+                    {
+                        "name": "Morgan Wallen",
+                        "id": 103
+                    }
+                ],
+                "type": "album",
+                "genres": [
+                    "Country",
+                    "Pop Country"
+                ],
+                "duration": 6396,
+                "imgUrl": "https://picsum.photos/id/3/500/500",
+                "price": {
+                    "digital": 14.99,
+                    "cd": 17.99,
+                    "vinyl": 36.99,
+                    "cassette": 15.99
+                }
+            }
+        ]
+    },
+    {
+        "product": {
+            "title": "Hit Me Hard and Soft",
+            "id": 5,
+            "type": "album",
+            "artists": [
+                {
+                    "name": "Billie Eilish",
+                    "id": 105
+                }
+            ],
+            "duration": 2752,
+            "date": "2024-05-17",
+            "genres": [
+                "Alternative Pop",
+                "Electropop",
+                "Indie Pop"
+            ],
+            "description": "Hit Me Hard and Soft es el tercer álbum de estudio de la cantante estadounidense Billie Eilish, lanzado el 17 de mayo de 2024. El álbum fue escrito y producido por Eilish junto a su hermano Finneas O'Connell, continuando su colaboración creativa. A diferencia de lanzamientos anteriores, el álbum se lanzó sin sencillos previos, presentándolo como una experiencia de escucha completa.",
+            "imgUrl": "https://picsum.photos/id/5/500/500",
+            "trackList": [
+                {
+                    "title": "Lunch",
+                    "id": 501,
+                    "artists": [
+                        {
+                            "name": "Billie Eilish",
+                            "id": 105
+                        }
+                    ],
+                    "type": "song",
+                    "genres": [
+                        "Alternative Pop",
+                        "Electropop"
+                    ],
+                    "duration": 205,
+                    "imgUrl": "https://picsum.photos/id/501/500/500",
+                    "price": {
+                        "digital": 1.29,
+                        "cd": 0,
+                        "vinyl": 0,
+                        "cassette": 0
+                    }
+                },
+                {
+                    "title": "Birds of a Feather",
+                    "id": 502,
+                    "artists": [
+                        {
+                            "name": "Billie Eilish",
+                            "id": 105
+                        }
+                    ],
+                    "type": "song",
+                    "genres": [
+                        "Alternative Pop",
+                        "Electropop"
+                    ],
+                    "duration": 198,
+                    "imgUrl": "https://picsum.photos/id/502/500/500",
+                    "price": {
+                        "digital": 1.29,
+                        "cd": 0,
+                        "vinyl": 0,
+                        "cassette": 0
+                    }
+                },
+                {
+                    "title": "Skinny",
+                    "id": 503,
+                    "artists": [
+                        {
+                            "name": "Billie Eilish",
+                            "id": 105
+                        }
+                    ],
+                    "type": "song",
+                    "genres": [
+                        "Alternative Pop",
+                        "Electropop"
+                    ],
+                    "duration": 187,
+                    "imgUrl": "https://picsum.photos/id/503/500/500",
+                    "price": {
+                        "digital": 1.29,
+                        "cd": 0,
+                        "vinyl": 0,
+                        "cassette": 0
+                    }
+                }
+            ],
+            "price": {
+                "digital": 11.99,
+                "cd": 14.99,
+                "vinyl": 32.99,
+                "cassette": 13.99
+            }
+        },
+        "artist": {
+            "name": "Billie Eilish",
+            "id": 105,
+            "followers": 31487926,
+            "isFollowing": false,
+            "imgUrl": "https://cdn.example.com/artists/billie-eilish.jpg"
+        },
+        "ratings": {
+            "average": 4.5,
+            "ratingCount": {
+                "five": 1843,
+                "four": 942,
+                "three": 241,
+                "two": 73,
+                "one": 31
+            },
+            "list": [
+                {
+                    "userImgUrl": "https://cdn.example.com/users/user7.jpg",
+                    "username": "popmusic_lover",
+                    "title": "Evolución y madurez artística",
+                    "description": "Billie demuestra un crecimiento notable en este álbum cohesivo y profundamente personal. La producción es inmersiva y las letras revelan una nueva madurez sin perder su esencia distintiva.",
+                    "rating": 5
+                },
+                {
+                    "userImgUrl": "https://cdn.example.com/users/user8.jpg",
+                    "username": "indie_dreamer",
+                    "title": "Una experiencia sónica completa",
+                    "description": "Hit Me Hard and Soft funciona mejor como un todo que como canciones individuales. Es un viaje emocional que requiere escucha activa, pero recompensa con cada reproducción.",
+                    "rating": 4
+                },
+                {
+                    "userImgUrl": "https://cdn.example.com/users/user9.jpg",
+                    "username": "musiccritic99",
+                    "title": "Sorprendentemente diverso y cohesivo",
+                    "description": "Billie y Finneas experimentan con nuevos estilos mientras mantienen una visión clara. 'Lunch' y 'Birds of a Feather' son destacados en un álbum sin rellenos.",
+                    "rating": 5
+                }
+            ]
+        },
+        "related": [
+            {
+                "title": "Happier Than Ever",
+                "id": 5001,
+                "artists": [
+                    {
+                        "name": "Billie Eilish",
+                        "id": 105
+                    }
+                ],
+                "type": "album",
+                "genres": [
+                    "Alternative Pop",
+                    "Electropop"
+                ],
+                "duration": 3367,
+                "imgUrl": "https://picsum.photos/id/5001/500/500",
+                "price": {
+                    "digital": 11.99,
+                    "cd": 14.99,
+                    "vinyl": 30.99,
+                    "cassette": 13.99
+                }
+            },
+            {
+                "title": "Lunch",
+                "id": 501,
+                "artists": [
+                    {
+                        "name": "Billie Eilish",
+                        "id": 105
+                    }
+                ],
+                "type": "song",
+                "genres": [
+                    "Alternative Pop",
+                    "Electropop"
+                ],
+                "duration": 205,
+                "imgUrl": "https://picsum.photos/id/501/500/500",
+                "price": {
+                    "digital": 1.29,
+                    "cd": 0,
+                    "vinyl": 0,
+                    "cassette": 0
+                }
+            },
+            {
+                "title": "Eternal Sunshine",
+                "id": 7,
+                "artists": [
+                    {
+                        "name": "Ariana Grande",
+                        "id": 107
+                    }
+                ],
+                "type": "album",
+                "genres": [
+                    "Pop",
+                    "R&B"
+                ],
+                "duration": 2109,
+                "imgUrl": "https://picsum.photos/id/7/500/500",
+                "price": {
+                    "digital": 12.99,
+                    "cd": 15.99,
+                    "vinyl": 30.99,
+                    "cassette": 14.99
+                }
+            }
+        ]
+    },
+    {
+        "product": {
+            "title": "The Tortured Poets Department",
+            "id": 13,
+            "type": "album",
+            "artists": [
+                {
+                    "name": "Taylor Swift",
+                    "id": 104
+                }
+            ],
+            "duration": 4155,
+            "date": "2024-04-19",
+            "genres": [
+                "Pop",
+                "Alternative Pop",
+                "Indie Pop"
+            ],
+            "description": "The Tortured Poets Department es el undécimo álbum de estudio de la cantautora estadounidense Taylor Swift, lanzado el 19 de abril de 2024. Inicialmente anunciado como un álbum individual de 16 pistas, Swift sorprendió a los fans al revelar dos horas después que era un álbum doble con un total de 31 canciones, incluyendo The Anthology con 15 pistas adicionales.",
+            "imgUrl": "https://picsum.photos/id/13/500/500",
+            "trackList": [
+                {
+                    "title": "Fortnight",
+                    "id": 10,
+                    "artists": [
+                        {
+                            "name": "Taylor Swift",
+                            "id": 104
+                        },
+                        {
+                            "name": "Post Malone",
+                            "id": 111
+                        }
+                    ],
+                    "type": "song",
+                    "genres": [
+                        "Pop",
+                        "Alternative"
+                    ],
+                    "duration": 213,
+                    "imgUrl": "https://picsum.photos/id/10/500/500",
+                    "price": {
+                        "digital": 1.29,
+                        "cd": 0,
+                        "vinyl": 0,
+                        "cassette": 0
+                    }
+                },
+                {
+                    "title": "The Tortured Poets Department",
+                    "id": 1301,
+                    "artists": [
+                        {
+                            "name": "Taylor Swift",
+                            "id": 104
+                        }
+                    ],
+                    "type": "song",
+                    "genres": [
+                        "Pop",
+                        "Alternative Pop"
+                    ],
+                    "duration": 197,
+                    "imgUrl": "https://picsum.photos/id/1301/500/500",
+                    "price": {
+                        "digital": 1.29,
+                        "cd": 0,
+                        "vinyl": 0,
+                        "cassette": 0
+                    }
+                },
+                {
+                    "title": "So Long, London",
+                    "id": 1302,
+                    "artists": [
+                        {
+                            "name": "Taylor Swift",
+                            "id": 104
+                        }
+                    ],
+                    "type": "song",
+                    "genres": [
+                        "Pop",
+                        "Alternative Pop"
+                    ],
+                    "duration": 222,
+                    "imgUrl": "https://picsum.photos/id/1302/500/500",
+                    "price": {
+                        "digital": 1.29,
+                        "cd": 0,
+                        "vinyl": 0,
+                        "cassette": 0
+                    }
+                }
+            ],
+            "price": {
+                "digital": 14.99,
+                "cd": 17.99,
+                "vinyl": 38.99,
+                "cassette": 16.99
+            }
+        },
+        "artist": {
+            "name": "Taylor Swift",
+            "id": 104,
+            "followers": 94276531,
+            "isFollowing": true,
+            "imgUrl": "https://cdn.example.com/artists/taylor-swift.jpg"
+        },
+        "ratings": {
+            "average": 4.6,
+            "ratingCount": {
+                "five": 3845,
+                "four": 1221,
+                "three": 341,
+                "two": 93,
+                "one": 61
+            },
+            "list": [
+                {
+                    "userImgUrl": "https://cdn.example.com/users/user10.jpg",
+                    "username": "swiftie4life",
+                    "title": "Una obra maestra narrativa",
+                    "description": "Taylor ha creado un universo lírico complejo que explora el desamor, la fama y la autorreflexión. La producción con Jack Antonoff es exquisita y la colaboración con Post Malone en 'Fortnight' es perfecta.",
+                    "rating": 5
+                },
+                {
+                    "userImgUrl": "https://cdn.example.com/users/user11.jpg",
+                    "username": "musicanalyst22",
+                    "title": "Ambicioso pero podría ser más conciso",
+                    "description": "Un álbum brillante en muchos aspectos, con letras incisivas y producción sofisticada, pero la versión extendida diluye un poco el impacto. Las primeras 16 canciones forman una narrativa más cohesiva.",
+                    "rating": 4
+                },
+                {
+                    "userImgUrl": "https://cdn.example.com/users/user12.jpg",
+                    "username": "lyricalpoet",
+                    "title": "Swift en su mejor momento narrativo",
+                    "description": "The Tortured Poets Department muestra a una Taylor más madura, experimentando con nuevos sonidos mientras mantiene su dominio de la narración. 'Fortnight' y 'So Long, London' son simplemente brillantes.",
+                    "rating": 5
+                }
+            ]
+        },
+        "related": [
+            {
+                "title": "Midnights",
+                "id": 13001,
+                "artists": [
+                    {
+                        "name": "Taylor Swift",
+                        "id": 104
+                    }
+                ],
+                "type": "album",
+                "genres": [
+                    "Pop",
+                    "Alternative Pop"
+                ],
+                "duration": 3053,
+                "imgUrl": "https://picsum.photos/id/13001/500/500",
+                "price": {
+                    "digital": 13.99,
+                    "cd": 16.99,
+                    "vinyl": 36.99,
+                    "cassette": 15.99
+                }
+            },
+            {
+                "title": "Fortnight",
+                "id": 10,
+                "artists": [
+                    {
+                        "name": "Taylor Swift",
+                        "id": 104
+                    },
+                    {
+                        "name": "Post Malone",
+                        "id": 111
+                    }
+                ],
+                "type": "song",
+                "genres": [
+                    "Pop",
+                    "Alternative"
+                ],
+                "duration": 213,
+                "imgUrl": "https://picsum.photos/id/10/500/500",
+                "price": {
+                    "digital": 1.29,
+                    "cd": 5.99,
+                    "vinyl": 12.99,
+                    "cassette": 8.99
+                }
+            },
+            {
+                "title": "Cruel Summer",
+                "id": 4,
+                "artists": [
+                    {
+                        "name": "Taylor Swift",
+                        "id": 104
+                    }
+                ],
+                "type": "song",
+                "genres": [
+                    "Pop",
+                    "Synth-pop"
+                ],
+                "duration": 178,
+                "imgUrl": "https://picsum.photos/id/4/500/500",
+                "price": {
+                    "digital": 1.29,
+                    "cd": 5.99,
+                    "vinyl": 12.99,
+                    "cassette": 8.99
+                }
+            }
+        ]
+    },
+    {
+        "product": {
+            "title": "Fortnight",
+            "id": 10,
+            "type": "song",
+            "artists": [
+                {
+                    "name": "Taylor Swift",
+                    "id": 104
+                },
+                {
+                    "name": "Post Malone",
+                    "id": 111
+                }
+            ],
+            "duration": 213,
+            "date": "2024-04-19",
+            "genres": [
+                "Pop",
+                "Alternative"
+            ],
+            "description": "Fortnight es el primer sencillo del undécimo álbum de estudio de Taylor Swift, The Tortured Poets Department. La canción cuenta con la colaboración del cantante Post Malone, marcando la primera colaboración entre ambos artistas. La pista fue lanzada junto con un video musical dirigido por Swift que incluye cameos de actores como Ethan Hawke y Josh Charles.",
+            "imgUrl": "https://picsum.photos/id/10/500/500",
+            "price": {
+                "digital": 1.29,
+                "cd": 5.99,
+                "vinyl": 12.99,
+                "cassette": 8.99
+            }
+        },
+        "artist": {
+            "name": "Taylor Swift",
+            "id": 104,
+            "followers": 94276531,
+            "isFollowing": true,
+            "imgUrl": "https://cdn.example.com/artists/taylor-swift.jpg"
+        },
+        "ratings": {
+            "average": 4.8,
+            "ratingCount": {
+                "five": 2543,
+                "four": 321,
+                "three": 74,
+                "two": 21,
+                "one": 7
+            },
+            "list": [
+                {
+                    "userImgUrl": "https://cdn.example.com/users/user13.jpg",
+                    "username": "melodylover",
+                    "title": "Una colaboración perfecta",
+                    "description": "Las voces de Taylor y Post se complementan de manera sorprendente. La producción es atmosférica y la letra es típicamente Swift: personal, detallada y llena de imágenes evocadoras.",
+                    "rating": 5
+                },
+                {
+                    "userImgUrl": "https://cdn.example.com/users/user14.jpg",
+                    "username": "chart_watcher",
+                    "title": "Merece cada récord que ha roto",
+                    "description": "No es casualidad que esta canción haya tenido tanto éxito. La combinación de la narración de Swift con la voz única de Post Malone crea algo verdaderamente especial.",
+                    "rating": 5
+                },
+                {
+                    "userImgUrl": "https://cdn.example.com/users/user15.jpg",
+                    "username": "casual_listener",
+                    "title": "Sorprendentemente adictiva",
+                    "description": "No soy un gran fan de ninguno de los dos artistas, pero esta canción me enganchó desde la primera escucha. La melodía se queda en tu cabeza y las voces tienen una química innegable.",
+                    "rating": 4
+                }
+            ]
+        },
+        "related": [
+            {
+                "title": "The Tortured Poets Department",
+                "id": 13,
+                "artists": [
+                    {
+                        "name": "Taylor Swift",
+                        "id": 104
+                    }
+                ],
+                "type": "album",
+                "genres": [
+                    "Pop",
+                    "Alternative Pop"
+                ],
+                "duration": 4155,
+                "imgUrl": "https://picsum.photos/id/13/500/500",
+                "price": {
+                    "digital": 14.99,
+                    "cd": 17.99,
+                    "vinyl": 38.99,
+                    "cassette": 16.99
+                }
+            },
+            {
+                "title": "Cruel Summer",
+                "id": 4,
+                "artists": [
+                    {
+                        "name": "Taylor Swift",
+                        "id": 104
+                    }
+                ],
+                "type": "song",
+                "genres": [
+                    "Pop",
+                    "Synth-pop"
+                ],
+                "duration": 178,
+                "imgUrl": "https://picsum.photos/id/4/500/500",
+                "price": {
+                    "digital": 1.29,
+                    "cd": 5.99,
+                    "vinyl": 12.99,
+                    "cassette": 8.99
+                }
+            },
+            {
+                "title": "Austin",
+                "id": 20,
+                "artists": [
+                    {
+                        "name": "Post Malone",
+                        "id": 111
+                    }
+                ],
+                "type": "album",
+                "genres": [
+                    "Pop",
+                    "Country",
+                    "Alternative"
+                ],
+                "duration": 2572,
+                "imgUrl": "https://picsum.photos/id/20/500/500",
+                "price": {
+                    "digital": 12.99,
+                    "cd": 15.99,
+                    "vinyl": 32.99,
+                    "cassette": 14.99
+                }
+            }
+        ]
+    }
+]

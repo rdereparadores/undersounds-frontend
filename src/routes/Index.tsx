@@ -8,6 +8,7 @@ import { Link } from 'react-router'
 import { TiDeviceLaptop } from 'react-icons/ti'
 import { IoPhonePortraitOutline } from 'react-icons/io5'
 import { BsMusicPlayerFill } from 'react-icons/bs'
+import { GlobalStatsProvider } from '@/hooks/globalStats/GlobalStatsProvider'
 
 const infoCards = [
     {
@@ -49,7 +50,9 @@ export const Index = () => (
         </div>
 
         <div className='flex justify-center mb-5'>
-            <IndexPopularCarousel />
+            <GlobalStatsProvider>
+                <IndexPopularCarousel />
+            </GlobalStatsProvider>
         </div>
 
         <div className='flex justify-center'>
@@ -64,7 +67,7 @@ export const Index = () => (
             ))}
         </div>
 
-        <div className='h-96 mt-40'>
+        <div className='h-[20dvh] mt-40'>
 
         </div>
     </div>
