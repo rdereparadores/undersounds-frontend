@@ -13,7 +13,7 @@ export const ProductProvider = ({ children }: ProductProviderProps) => {
     const [queryResultShort, setQueryResultShort] = useState<undefined | ProductContextResultShortProps>(undefined)
 
     const queryProduct = async ({ type, id }: ProductContextQueryProps) => {
-        setQueryResult(products[id % 2 ? 0 : 1])
+        setQueryResult(products.find(product => product.product.type == type && product.product.id === id))
     }
 
     const queryProductShort = async ({ type, id }: ProductContextQueryProps) => {

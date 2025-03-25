@@ -1,181 +1,57 @@
 [
     {
-        "title": "Hackney Diamonds",
+        "title": "Song 1",
         "id": 1,
         "artists": [
             {
-                "name": "The Rolling Stones",
-                "id": 101
-            }
-        ],
-        "type": "album",
-        "genres": [
-            "Rock",
-            "Blues Rock"
-        ],
-        "duration": 2426,
-        "imgUrl": "https://picsum.photos/id/1/500/500",
-        "price": {
-            "digital": 12.99,
-            "cd": 15.99,
-            "vinyl": 29.99,
-            "cassette": 14.99
-        }
-    },
-    {
-        "title": "Angry",
-        "id": 101,
-        "artists": [
-            {
-                "name": "The Rolling Stones",
-                "id": 101
+                "name": "Artist 1",
+                "id": 1
             }
         ],
         "type": "song",
-        "genres": [
-            "Rock",
-            "Blues Rock"
-        ],
-        "duration": 203,
-        "imgUrl": "https://picsum.photos/id/101/500/500",
+        "genres": ["Pop"],
+        "duration": 210,
+        "imgUrl": "https://picsum.photos/id/101/200/300",
         "price": {
             "digital": 1.29,
-            "cd": 0,
-            "vinyl": 0,
-            "cassette": 0
+            "cd": 9.99,
+            "vinyl": 19.99,
+            "cassette": 4.99
         }
     },
     {
-        "title": "Get Close",
-        "id": 102,
-        "artists": [
-            {
-                "name": "The Rolling Stones",
-                "id": 101
-            }
-        ],
-        "type": "song",
-        "genres": [
-            "Rock",
-            "Blues Rock"
-        ],
-        "duration": 219,
-        "imgUrl": "https://picsum.photos/id/102/500/500",
-        "price": {
-            "digital": 1.29,
-            "cd": 0,
-            "vinyl": 0,
-            "cassette": 0
-        }
-    },
-    {
-        "title": "Cowboy Carter",
+        "title": "Album 1",
         "id": 2,
         "artists": [
             {
-                "name": "Beyoncé",
-                "id": 102
+                "name": "Artist 2",
+                "id": 2
             }
         ],
         "type": "album",
-        "genres": [
-            "Country",
-            "R&B"
-        ],
-        "duration": 3780,
-        "imgUrl": "https://picsum.photos/id/2/500/500",
+        "genres": ["Rock"],
+        "duration": 2400,
+        "imgUrl": "https://picsum.photos/id/104/200/300",
         "price": {
-            "digital": 13.99,
-            "cd": 16.99,
-            "vinyl": 34.99,
-            "cassette": 15.99
+            "digital": 9.99,
+            "cd": 14.99,
+            "vinyl": 24.99,
+            "cassette": 9.99
         }
     },
     {
-        "title": "Texas Hold 'Em",
-        "id": 201,
-        "artists": [
-            {
-                "name": "Beyoncé",
-                "id": 102
-            }
-        ],
-        "type": "song",
-        "genres": [
-            "Country",
-            "R&B"
-        ],
-        "duration": 211,
-        "imgUrl": "https://picsum.photos/id/201/500/500",
-        "price": {
-            "digital": 1.29,
-            "cd": 0,
-            "vinyl": 0,
-            "cassette": 0
-        }
-    },
-    {
-        "title": "16 Carriages",
-        "id": 202,
-        "artists": [
-            {
-                "name": "Beyoncé",
-                "id": 102
-            }
-        ],
-        "type": "song",
-        "genres": [
-            "Country",
-            "R&B"
-        ],
-        "duration": 243,
-        "imgUrl": "https://picsum.photos/id/202/500/500",
-        "price": {
-            "digital": 1.29,
-            "cd": 0,
-            "vinyl": 0,
-            "cassette": 0
-        }
-    },
-    {
-        "title": "One Thing At A Time",
+        "title": "Song 2",
         "id": 3,
         "artists": [
             {
-                "name": "Morgan Wallen",
-                "id": 103
-            }
-        ],
-        "type": "album",
-        "genres": [
-            "Country",
-            "Pop Country"
-        ],
-        "duration": 6396,
-        "imgUrl": "https://picsum.photos/id/3/500/500",
-        "price": {
-            "digital": 14.99,
-            "cd": 17.99,
-            "vinyl": 36.99,
-            "cassette": 15.99
-        }
-    },
-    {
-        "title": "Last Night",
-        "id": 301,
-        "artists": [
-            {
-                "name": "Morgan Wallen",
-                "id": 103
+                "name": "Artist 3",
+                "id": 3
             }
         ],
         "type": "song",
-        "genres": [
-            "Country",
-            "Pop Country"
-        ],
-        "duration": 169,
-        "imgUrl": "https://picsum.photos/id/301/500/500",
+        "genres": ["Hip-Hop"],
+        "duration": 180,
+        "imgUrl": "https://picsum.photos/id/108/200/300",
         "price": {
             "digital": 1.29,
             "cd": 0,
@@ -184,268 +60,183 @@
         }
     },
     {
-        "title": "Cruel Summer",
+        "title": "Album 2",
         "id": 4,
         "artists": [
             {
-                "name": "Taylor Swift",
-                "id": 104
-            }
-        ],
-        "type": "single",
-        "genres": [
-            "Pop",
-            "Synth-pop"
-        ],
-        "duration": 178,
-        "imgUrl": "https://picsum.photos/id/4/500/500",
-        "price": {
-            "digital": 1.29,
-            "cd": 5.99,
-            "vinyl": 12.99,
-            "cassette": 8.99
-        }
-    },
-    {
-        "title": "Hit Me Hard and Soft",
-        "id": 5,
-        "artists": [
-            {
-                "name": "Billie Eilish",
-                "id": 105
+                "name": "Artist 1",
+                "id": 1
             }
         ],
         "type": "album",
-        "genres": [
-            "Alternative Pop",
-            "Electropop"
-        ],
-        "duration": 2752,
-        "imgUrl": "https://picsum.photos/id/5/500/500",
+        "genres": ["Pop", "Dance"],
+        "duration": 3600,
+        "imgUrl": "https://picsum.photos/id/111/200/300",
         "price": {
-            "digital": 11.99,
-            "cd": 14.99,
-            "vinyl": 32.99,
-            "cassette": 13.99
+            "digital": 10.99,
+            "cd": 15.99,
+            "vinyl": 25.99,
+            "cassette": 10.99
         }
     },
     {
-        "title": "Lunch",
-        "id": 501,
-        "artists": [
-            {
-                "name": "Billie Eilish",
-                "id": 105
-            }
-        ],
-        "type": "song",
-        "genres": [
-            "Alternative Pop",
-            "Electropop"
-        ],
-        "duration": 205,
-        "imgUrl": "https://picsum.photos/id/501/500/500",
-        "price": {
-            "digital": 1.29,
-            "cd": 0,
-            "vinyl": 0,
-            "cassette": 0
-        }
-    },
-    {
-        "title": "Birds of a Feather",
-        "id": 502,
-        "artists": [
-            {
-                "name": "Billie Eilish",
-                "id": 105
-            }
-        ],
-        "type": "song",
-        "genres": [
-            "Alternative Pop",
-            "Electropop"
-        ],
-        "duration": 198,
-        "imgUrl": "https://picsum.photos/id/502/500/500",
-        "price": {
-            "digital": 1.29,
-            "cd": 0,
-            "vinyl": 0,
-            "cassette": 0
-        }
-    },
-    {
-        "title": "Redrum",
+        "title": "Song 3",
         "id": 6,
         "artists": [
             {
-                "name": "21 Savage",
-                "id": 106
+                "name": "Artist 4",
+                "id": 4
             }
         ],
-        "type": "single",
-        "genres": [
-            "Hip-Hop",
-            "Trap"
-        ],
-        "duration": 182,
-        "imgUrl": "https://picsum.photos/id/6/500/500",
+        "type": "song",
+        "genres": ["Jazz"],
+        "duration": 195,
+        "imgUrl": "https://picsum.photos/id/115/200/300",
         "price": {
-            "digital": 1.29,
-            "cd": 5.99,
-            "vinyl": 12.99,
-            "cassette": 8.99
+            "digital": 1.99,
+            "cd": 0,
+            "vinyl": 0,
+            "cassette": 0
         }
     },
     {
-        "title": "Eternal Sunshine",
+        "title": "Album 3",
         "id": 7,
         "artists": [
             {
-                "name": "Ariana Grande",
-                "id": 107
+                "name": "Artist 5",
+                "id": 5
             }
         ],
         "type": "album",
-        "genres": [
-            "Pop",
-            "R&B"
-        ],
-        "duration": 2109,
-        "imgUrl": "https://picsum.photos/id/7/500/500",
+        "genres": ["Electronic"],
+        "duration": 4200,
+        "imgUrl": "https://picsum.photos/id/118/200/300",
         "price": {
-            "digital": 12.99,
-            "cd": 15.99,
-            "vinyl": 30.99,
-            "cassette": 14.99
+            "digital": 11.99,
+            "cd": 16.99,
+            "vinyl": 26.99,
+            "cassette": 11.99
         }
     },
     {
-        "title": "yes, and?",
-        "id": 701,
-        "artists": [
-            {
-                "name": "Ariana Grande",
-                "id": 107
-            }
-        ],
-        "type": "song",
-        "genres": [
-            "Pop",
-            "Dance-Pop"
-        ],
-        "duration": 201,
-        "imgUrl": "https://picsum.photos/id/701/500/500",
-        "price": {
-            "digital": 1.29,
-            "cd": 0,
-            "vinyl": 0,
-            "cassette": 0
-        }
-    },
-    {
-        "title": "Espresso",
-        "id": 8,
-        "artists": [
-            {
-                "name": "Sabrina Carpenter",
-                "id": 108
-            }
-        ],
-        "type": "single",
-        "genres": [
-            "Pop",
-            "Dance-Pop"
-        ],
-        "duration": 179,
-        "imgUrl": "https://picsum.photos/id/8/500/500",
-        "price": {
-            "digital": 1.29,
-            "cd": 5.99,
-            "vinyl": 12.99,
-            "cassette": 8.99
-        }
-    },
-    {
-        "title": "VULTURES 1",
+        "title": "Song 4",
         "id": 9,
         "artists": [
             {
-                "name": "Ye",
-                "id": 109
-            },
-            {
-                "name": "Ty Dolla $ign",
-                "id": 110
-            }
-        ],
-        "type": "album",
-        "genres": [
-            "Hip-Hop",
-            "Rap"
-        ],
-        "duration": 2153,
-        "imgUrl": "https://picsum.photos/id/9/500/500",
-        "price": {
-            "digital": 13.99,
-            "cd": 16.99,
-            "vinyl": 34.99,
-            "cassette": 15.99
-        }
-    },
-    {
-        "title": "Vultures",
-        "id": 901,
-        "artists": [
-            {
-                "name": "Ye",
-                "id": 109
-            },
-            {
-                "name": "Ty Dolla $ign",
-                "id": 110
+                "name": "Artist 6",
+                "id": 6
             }
         ],
         "type": "song",
-        "genres": [
-            "Hip-Hop",
-            "Rap"
-        ],
-        "duration": 182,
-        "imgUrl": "https://picsum.photos/id/901/500/500",
+        "genres": ["Country"],
+        "duration": 235,
+        "imgUrl": "https://picsum.photos/id/122/200/300",
         "price": {
-            "digital": 1.29,
+            "digital": 1.49,
             "cd": 0,
             "vinyl": 0,
             "cassette": 0
         }
     },
     {
-        "title": "Fortnight",
+        "title": "Album 4",
         "id": 10,
         "artists": [
             {
-                "name": "Taylor Swift",
-                "id": 104
-            },
-            {
-                "name": "Post Malone",
-                "id": 111
+                "name": "Artist 7",
+                "id": 7
             }
         ],
-        "type": "single",
-        "genres": [
-            "Pop",
-            "Alternative"
-        ],
-        "duration": 213,
-        "imgUrl": "https://picsum.photos/id/10/500/500",
+        "type": "album",
+        "genres": ["Indie"],
+        "duration": 3000,
+        "imgUrl": "https://picsum.photos/id/125/200/300",
         "price": {
-            "digital": 1.29,
-            "cd": 5.99,
-            "vinyl": 12.99,
-            "cassette": 8.99
+            "digital": 9.49,
+            "cd": 12.99,
+            "vinyl": 21.99,
+            "cassette": 9.49
+        }
+    },
+    {
+        "title": "Song 5",
+        "id": 12,
+        "artists": [
+            {
+                "name": "Artist 8",
+                "id": 8
+            }
+        ],
+        "type": "song",
+        "genres": ["R&B"],
+        "duration": 300,
+        "imgUrl": "https://picsum.photos/id/129/200/300",
+        "price": {
+            "digital": 1.99,
+            "cd": 0,
+            "vinyl": 0,
+            "cassette": 0
+        }
+    },
+    {
+        "title": "Album 5",
+        "id": 13,
+        "artists": [
+            {
+                "name": "Artist 9",
+                "id": 9
+            }
+        ],
+        "type": "album",
+        "genres": ["Folk"],
+        "duration": 4800,
+        "imgUrl": "https://picsum.photos/id/132/200/300",
+        "price": {
+            "digital": 12.99,
+            "cd": 18.99,
+            "vinyl": 29.99,
+            "cassette": 12.99
+        }
+    },
+    {
+        "title": "Song 6",
+        "id": 15,
+        "artists": [
+            {
+                "name": "Artist 10",
+                "id": 10
+            }
+        ],
+        "type": "song",
+        "genres": ["World"],
+        "duration": 220,
+        "imgUrl": "https://picsum.photos/id/136/200/300",
+        "price": {
+            "digital": 1.99,
+            "cd": 0,
+            "vinyl": 0,
+            "cassette": 0
+        }
+    },
+    {
+        "title": "Album 6",
+        "id": 16,
+        "artists": [
+            {
+                "name": "Artist 11",
+                "id": 11
+            }
+        ],
+        "type": "album",
+        "genres": ["Classical"],
+        "duration": 5400,
+        "imgUrl": "https://picsum.photos/id/139/200/300",
+        "price": {
+            "digital": 14.99,
+            "cd": 19.99,
+            "vinyl": 29.99,
+            "cassette": 14.99
         }
     }
 ]
