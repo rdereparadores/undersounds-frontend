@@ -1,4 +1,5 @@
 import { createContext } from 'react'
+import { ProductContextResultShortProps } from '../product/ProductContext'
 
 export interface ShopContextSearchProps {
     query: string,
@@ -6,22 +7,8 @@ export interface ShopContextSearchProps {
 }
 
 export interface ShopContextResultProps {
-    items: ShopContextResultItemProps[],
+    items: ProductContextResultShortProps[],
     itemCount: number
-}
-
-interface ShopContextResultItemArtistProps {
-    name: string,
-    id: number
-}
-
-export interface ShopContextResultItemProps {
-    title: string,
-    artists: ShopContextResultItemArtistProps[],
-    imgUrl: string,
-    type: string, // 'album', 'song',
-    genreList: string[],
-    id: number
 }
 
 interface ShopContextProps {

@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react"
 import { useSearchParams, useNavigate } from "react-router"
-import { ShopContextResultItemProps } from "@/hooks/shop/ShopContext"
 import {
     Select,
     SelectContent,
@@ -13,17 +12,17 @@ import {
 import { useShop } from "@/hooks/shop/useShop"
 import { ShopItem } from "./ShopItem"
 import { ShopPagination } from "./ShopPagination"
+import { ProductContextResultShortProps } from "@/hooks/product/ProductContext"
 
 export const ShopItemsContainer = () => {
     const [params] = useSearchParams()
-    const [searchResults, setSearchResults] = useState<undefined | ShopContextResultItemProps[]>(undefined)
+    const [searchResults, setSearchResults] = useState<undefined | ProductContextResultShortProps[]>(undefined)
     const [searchResultCount, setSearchResultCount] = useState<undefined | number>(undefined)
     const navigate = useNavigate()
     const shop = useShop()
 
     useEffect(() => {
-        console.log('Cambiado el ordenar por')
-        shop.search({ query: params.get('query')!, filters: params }).then(results => {
+        shop.search({ query: params.get('query') || '', filters: params }).then(results => {
             setSearchResults(results.items)
             setSearchResultCount(results.itemCount)
         })
@@ -54,7 +53,7 @@ export const ShopItemsContainer = () => {
 
             <div className='pt-4 grid grid-cols-2 sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4'>
                 {searchResults?.map((item, index) => (
-                    <ShopItem key={index} title={item.title} artists={item.artists} imgUrl={item.imgUrl} type={item.type} genreList={item.genreList} id={item.id} />
+                    <ShopItem key={index} {...item} />
                 ))}
             </div>
 
