@@ -12,7 +12,7 @@ export const ProductContainerRelatedCarousel = () => {
             </CardHeader>
             <CardContent className="flex flex-wrap gap-2 flex-grow items-center justify-center">
                 {product.queryResult?.related.map((item, index) => (
-                    <ShopItem key={index} title={item.title} artists={item.artists} imgUrl={item.imgUrl} type={item.type} genreList={item.genres} id={item.id} />
+                    <ShopItem key={index} {...item} />
                 ))}
             </CardContent>
         </Card>

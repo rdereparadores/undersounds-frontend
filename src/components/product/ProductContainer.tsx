@@ -18,7 +18,7 @@ export const ProductContainer = ({ type }: ProductContainerProps) => {
 
     useEffect(() => {
         product.queryProduct({ type: type, id: parseInt(params.id!) })
-    }, [])
+    }, [params.id])
 
     return (
         <>
