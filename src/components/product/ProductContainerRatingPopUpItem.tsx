@@ -14,7 +14,7 @@ interface ProductContainerRatingPopUpItemProps {
 export const ProductContainerRatingPopUpItem = ({ username, imgUrl, rating, title, description }: ProductContainerRatingPopUpItemProps) => {
     const [imgLoaded, setImgLoaded] = useState(false)
     return (
-        <Card className="h-fit w-fit flex items-center">
+        <Card className="h-fit flex grow items-center">
             <CardContent className="p-2 justify-start gap-2 flex flex-wrap">
                 <div className="flex flex-col gap-2">
                     <div className="pt-2 flex items-center gap-2">
@@ -34,7 +34,7 @@ export const ProductContainerRatingPopUpItem = ({ username, imgUrl, rating, titl
                         {rating < 5 && <FaRegStar className="w-5 h-5" />}
                     </div>
                 </div>
-                <div>
+                <div className="flex flex-col justify-start">
                     <p className="italic font-semibold overflow-hidden text-ellipsis line-clamp-1">{title}</p>
                     <p className="overflow-hidden text-ellipsis line-clamp-4">{description}</p>
                 </div>

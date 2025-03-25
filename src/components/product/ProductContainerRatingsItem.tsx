@@ -8,7 +8,7 @@ export const ProductContainerRatingsItem = () => {
     const [imgLoaded, setImgLoaded] = useState(false)
     const product = useProduct()
     return (
-        <Card className="h-36 max-w-96 flex items-center">
+        <Card className="h-36 grow flex items-center">
             <CardHeader className="py-0">
                 <CardTitle className="italic">"{product.queryResult?.ratings.list[0].title}"</CardTitle>
                 <div className="pt-2 flex items-center gap-2">

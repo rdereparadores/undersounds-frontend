@@ -20,8 +20,8 @@ export const ProductContainerRatings = () => {
                     <ProductContainerRatingPopUp />
                 </div>
             </CardHeader>
-            <CardContent className="flex gap-2 flex-wrap justify-center items-center h-full">
-                <div className="flex gap-2 flex-wrap justify-center">
+            <CardContent className="flex gap-2 h-full">
+                <div className="flex gap-2 flex-wrap justify-center w-full">
                     <div className="w-fit gap-2 flex flex-col">
                         <Card className="bg-black w-36 h-36">
                             <CardContent className="flex flex-col items-center justify-center w-full h-full p-0">
@@ -29,7 +29,7 @@ export const ProductContainerRatings = () => {
                             </CardContent>
                         </Card>
                         {product.queryResult &&
-                            <div className="flex mb-2 w-full justify-center">
+                            <div className="flex mb-2 justify-center">
                                 {product.queryResult!.ratings.average >= 1 && <FaStar className="w-5 h-5" />}
                                 {product.queryResult!.ratings.average >= 2 && <FaStar className="w-5 h-5" />}
                                 {product.queryResult!.ratings.average >= 3 && <FaStar className="w-5 h-5" />}
@@ -67,19 +67,21 @@ export const ProductContainerRatings = () => {
                             </div>
                         </div>
                     }
-                    {
-                        (() => {
-                            if (product.queryResult?.ratings.list.length == 0) {
-                                return (
-                                    <Card className="h-36 min-w-72 max-w-80 flex items-center justify-center">
-                                        <CardDescription>Sé el primero en comentar</CardDescription>
-                                    </Card>
-                                )
-                            } else {
-                                return <ProductContainerRatingsItem />
-                            }
-                        })()
-                    }
+                    <div className="grow">
+                        {
+                            (() => {
+                                if (product.queryResult?.ratings.list.length == 0) {
+                                    return (
+                                        <Card className="h-36 min-w-72 max-w-80 flex items-center justify-center">
+                                            <CardDescription>Sé el primero en comentar</CardDescription>
+                                        </Card>
+                                    )
+                                } else {
+                                    return <ProductContainerRatingsItem />
+                                }
+                            })()
+                        }
+                    </div>
                 </div>
             </CardContent>
         </Card>
