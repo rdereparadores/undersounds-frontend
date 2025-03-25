@@ -1,0 +1,656 @@
+[
+    {
+        "product": {
+            "title": "Song 1",
+            "id": 1,
+            "type": "song",
+            "artists": [{ "name": "Artist 1", "id": 1 }],
+            "duration": 210,
+            "date": "2025-01-01",
+            "genres": ["Pop"],
+            "description": "A catchy pop song.",
+            "imgUrl": "https://picsum.photos/id/101/200/300",
+            "price": {
+                "digital": 1.29,
+                "cd": 9.99,
+                "vinyl": 19.99,
+                "cassette": 4.99
+            }
+        },
+        "artist": {
+            "name": "Artist 1",
+            "id": 1,
+            "followers": 1500,
+            "isFollowing": false,
+            "imgUrl": "https://picsum.photos/id/102/200/300"
+        },
+        "ratings": {
+            "average": 4.5,
+            "ratingCount": {
+                "five": 20,
+                "four": 10,
+                "three": 5,
+                "two": 3,
+                "one": 2
+            },
+            "list": [
+                {
+                    "userImgUrl": "https://picsum.photos/id/103/50/50",
+                    "username": "User1",
+                    "title": "Great Song!",
+                    "description": "Loved the melody.",
+                    "rating": 5
+                }
+            ]
+        },
+        "related": []
+    },
+    {
+        "product": {
+            "title": "Album 1",
+            "id": 2,
+            "type": "album",
+            "artists": [{ "name": "Artist 2", "id": 2 }],
+            "duration": 2400,
+            "date": "2025-02-01",
+            "genres": ["Rock"],
+            "description": "A thrilling rock album.",
+            "imgUrl": "https://picsum.photos/id/104/200/300",
+            "price": {
+                "digital": 9.99,
+                "cd": 14.99,
+                "vinyl": 24.99,
+                "cassette": 9.99
+            },
+            "tracklist": [
+                {
+                    "title": "Track 1",
+                    "id": 3,
+                    "artists": [{ "name": "Artist 2", "id": 2 }],
+                    "type": "song",
+                    "genres": ["Rock"],
+                    "duration": 240,
+                    "imgUrl": "https://picsum.photos/id/105/200/300",
+                    "price": {
+                        "digital": 1.29,
+                        "cd": 0,
+                        "vinyl": 0,
+                        "cassette": 0
+                    }
+                }
+            ]
+        },
+        "artist": {
+            "name": "Artist 2",
+            "id": 2,
+            "followers": 3000,
+            "isFollowing": true,
+            "imgUrl": "https://picsum.photos/id/106/200/300"
+        },
+        "ratings": {
+            "average": 4.0,
+            "ratingCount": {
+                "five": 15,
+                "four": 8,
+                "three": 2,
+                "two": 0,
+                "one": 1
+            },
+            "list": [
+                {
+                    "userImgUrl": "https://picsum.photos/id/107/50/50",
+                    "username": "User2",
+                    "title": "Nice Album!",
+                    "description": "Great collection of songs.",
+                    "rating": 4
+                }
+            ]
+        },
+        "related": []
+    },
+    {
+        "product": {
+            "title": "Song 2",
+            "id": 3,
+            "type": "song",
+            "artists": [{ "name": "Artist 3", "id": 3 }],
+            "duration": 180,
+            "date": "2025-03-01",
+            "genres": ["Hip-Hop"],
+            "description": "A smooth hip-hop track.",
+            "imgUrl": "https://picsum.photos/id/108/200/300",
+            "price": {
+                "digital": 1.29,
+                "cd": 0,
+                "vinyl": 0,
+                "cassette": 0
+            }
+        },
+        "artist": {
+            "name": "Artist 3",
+            "id": 3,
+            "followers": 2500,
+            "isFollowing": false,
+            "imgUrl": "https://picsum.photos/id/109/200/300"
+        },
+        "ratings": {
+            "average": 4.7,
+            "ratingCount": {
+                "five": 30,
+                "four": 5,
+                "three": 1,
+                "two": 0,
+                "one": 0
+            },
+            "list": [
+                {
+                    "userImgUrl": "https://picsum.photos/id/110/50/50",
+                    "username": "User3",
+                    "title": "Awesome Beat!",
+                    "description": "Catchy and enjoyable.",
+                    "rating": 5
+                }
+            ]
+        },
+        "related": []
+    },
+    {
+        "product": {
+            "title": "Album 2",
+            "id": 4,
+            "type": "album",
+            "artists": [{ "name": "Artist 1", "id": 1 }],
+            "duration": 3600,
+            "date": "2025-04-01",
+            "genres": ["Pop", "Dance"],
+            "description": "A hit pop album.",
+            "imgUrl": "https://picsum.photos/id/111/200/300",
+            "price": {
+                "digital": 10.99,
+                "cd": 15.99,
+                "vinyl": 25.99,
+                "cassette": 10.99
+            },
+            "tracklist": [
+                {
+                    "title": "Track 2",
+                    "id": 5,
+                    "artists": [{ "name": "Artist 1", "id": 1 }],
+                    "type": "song",
+                    "genres": ["Pop"],
+                    "duration": 240,
+                    "imgUrl": "https://picsum.photos/id/112/200/300",
+                    "price": {
+                        "digital": 1.29,
+                        "cd": 0,
+                        "vinyl": 0,
+                        "cassette": 0
+                    }
+                }
+            ]
+        },
+        "artist": {
+            "name": "Artist 1",
+            "id": 1,
+            "followers": 1500,
+            "isFollowing": false,
+            "imgUrl": "https://picsum.photos/id/113/200/300"
+        },
+        "ratings": {
+            "average": 4.8,
+            "ratingCount": {
+                "five": 40,
+                "four": 5,
+                "three": 2,
+                "two": 0,
+                "one": 0
+            },
+            "list": [
+                {
+                    "userImgUrl": "https://picsum.photos/id/114/50/50",
+                    "username": "User4",
+                    "title": "Best Album!",
+                    "description": "Enjoyed every track!",
+                    "rating": 5
+                }
+            ]
+        },
+        "related": []
+    },
+    {
+        "product": {
+            "title": "Song 3",
+            "id": 6,
+            "type": "song",
+            "artists": [{ "name": "Artist 4", "id": 4 }],
+            "duration": 195,
+            "date": "2025-05-01",
+            "genres": ["Jazz"],
+            "description": "A smooth jazz tune.",
+            "imgUrl": "https://picsum.photos/id/115/200/300",
+            "price": {
+                "digital": 1.99,
+                "cd": 0,
+                "vinyl": 0,
+                "cassette": 0
+            }
+        },
+        "artist": {
+            "name": "Artist 4",
+            "id": 4,
+            "followers": 1000,
+            "isFollowing": true,
+            "imgUrl": "https://picsum.photos/id/116/200/300"
+        },
+        "ratings": {
+            "average": 4.6,
+            "ratingCount": {
+                "five": 25,
+                "four": 8,
+                "three": 5,
+                "two": 1,
+                "one": 0
+            },
+            "list": [
+                {
+                    "userImgUrl": "https://picsum.photos/id/117/50/50",
+                    "username": "User5",
+                    "title": "Beautiful",
+                    "description": "The jazz feels are amazing.",
+                    "rating": 5
+                }
+            ]
+        },
+        "related": []
+    },
+    {
+        "product": {
+            "title": "Album 3",
+            "id": 7,
+            "type": "album",
+            "artists": [{ "name": "Artist 5", "id": 5 }],
+            "duration": 4200,
+            "date": "2025-06-01",
+            "genres": ["Electronic"],
+            "description": "An electronic music experience.",
+            "imgUrl": "https://picsum.photos/id/118/200/300",
+            "price": {
+                "digital": 11.99,
+                "cd": 16.99,
+                "vinyl": 26.99,
+                "cassette": 11.99
+            },
+            "tracklist": [
+                {
+                    "title": "Track 3",
+                    "id": 8,
+                    "artists": [{ "name": "Artist 5", "id": 5 }],
+                    "type": "song",
+                    "genres": ["Electronic"],
+                    "duration": 300,
+                    "imgUrl": "https://picsum.photos/id/119/200/300",
+                    "price": {
+                        "digital": 1.79,
+                        "cd": 0,
+                        "vinyl": 0,
+                        "cassette": 0
+                    }
+                }
+            ]
+        },
+        "artist": {
+            "name": "Artist 5",
+            "id": 5,
+            "followers": 5000,
+            "isFollowing": true,
+            "imgUrl": "https://picsum.photos/id/120/200/300"
+        },
+        "ratings": {
+            "average": 4.9,
+            "ratingCount": {
+                "five": 50,
+                "four": 4,
+                "three": 3,
+                "two": 0,
+                "one": 0
+            },
+            "list": [
+                {
+                    "userImgUrl": "https://picsum.photos/id/121/50/50",
+                    "username": "User6",
+                    "title": "Mind-Blowing",
+                    "description": "Innovative sounds.",
+                    "rating": 5
+                }
+            ]
+        },
+        "related": []
+    },
+    {
+        "product": {
+            "title": "Song 4",
+            "id": 9,
+            "type": "song",
+            "artists": [{ "name": "Artist 6", "id": 6 }],
+            "duration": 235,
+            "date": "2025-07-01",
+            "genres": ["Country"],
+            "description": "A soulful country ballad.",
+            "imgUrl": "https://picsum.photos/id/122/200/300",
+            "price": {
+                "digital": 1.49,
+                "cd": 0,
+                "vinyl": 0,
+                "cassette": 0
+            }
+        },
+        "artist": {
+            "name": "Artist 6",
+            "id": 6,
+            "followers": 700,
+            "isFollowing": false,
+            "imgUrl": "https://picsum.photos/id/123/200/300"
+        },
+        "ratings": {
+            "average": 4.3,
+            "ratingCount": {
+                "five": 22,
+                "four": 6,
+                "three": 3,
+                "two": 1,
+                "one": 1
+            },
+            "list": [
+                {
+                    "userImgUrl": "https://picsum.photos/id/124/50/50",
+                    "username": "User7",
+                    "title": "Lovely Tune",
+                    "description": "Reminds me of home.",
+                    "rating": 5
+                }
+            ]
+        },
+        "related": []
+    },
+    {
+        "product": {
+            "title": "Album 4",
+            "id": 10,
+            "type": "album",
+            "artists": [{ "name": "Artist 7", "id": 7 }],
+            "duration": 3000,
+            "date": "2025-08-01",
+            "genres": ["Indie"],
+            "description": "An indie rock journey.",
+            "imgUrl": "https://picsum.photos/id/125/200/300",
+            "price": {
+                "digital": 9.49,
+                "cd": 12.99,
+                "vinyl": 21.99,
+                "cassette": 9.49
+            },
+            "tracklist": [
+                {
+                    "title": "Track 4",
+                    "id": 11,
+                    "artists": [{ "name": "Artist 7", "id": 7 }],
+                    "type": "song",
+                    "genres": ["Indie"],
+                    "duration": 320,
+                    "imgUrl": "https://picsum.photos/id/126/200/300",
+                    "price": {
+                        "digital": 1.99,
+                        "cd": 0,
+                        "vinyl": 0,
+                        "cassette": 0
+                    }
+                }
+            ]
+        },
+        "artist": {
+            "name": "Artist 7",
+            "id": 7,
+            "followers": 1800,
+            "isFollowing": true,
+            "imgUrl": "https://picsum.photos/id/127/200/300"
+        },
+        "ratings": {
+            "average": 4.75,
+            "ratingCount": {
+                "five": 35,
+                "four": 10,
+                "three": 5,
+                "two": 2,
+                "one": 1
+            },
+            "list": [
+                {
+                    "userImgUrl": "https://picsum.photos/id/128/50/50",
+                    "username": "User8",
+                    "title": "Beautiful Lyrics",
+                    "description": "Hearts and souls, expressed well.",
+                    "rating": 5
+                }
+            ]
+        },
+        "related": []
+    },
+    {
+        "product": {
+            "title": "Song 5",
+            "id": 12,
+            "type": "song",
+            "artists": [{ "name": "Artist 8", "id": 8 }],
+            "duration": 300,
+            "date": "2025-09-01",
+            "genres": ["R&B"],
+            "description": "A smooth R&B ballad.",
+            "imgUrl": "https://picsum.photos/id/129/200/300",
+            "price": {
+                "digital": 1.99,
+                "cd": 0,
+                "vinyl": 0,
+                "cassette": 0
+            }
+        },
+        "artist": {
+            "name": "Artist 8",
+            "id": 8,
+            "followers": 2000,
+            "isFollowing": false,
+            "imgUrl": "https://picsum.photos/id/130/200/300"
+        },
+        "ratings": {
+            "average": 4.2,
+            "ratingCount": {
+                "five": 18,
+                "four": 10,
+                "three": 4,
+                "two": 3,
+                "one": 1
+            },
+            "list": [
+                {
+                    "userImgUrl": "https://picsum.photos/id/131/50/50",
+                    "username": "User9",
+                    "title": "Excellent Voice",
+                    "description": "Impressive vocal delivery.",
+                    "rating": 5
+                }
+            ]
+        },
+        "related": []
+    },
+    {
+        "product": {
+            "title": "Album 5",
+            "id": 13,
+            "type": "album",
+            "artists": [{ "name": "Artist 9", "id": 9 }],
+            "duration": 4800,
+            "date": "2025-10-01",
+            "genres": ["Folk"],
+            "description": "A journey through folk music.",
+            "imgUrl": "https://picsum.photos/id/132/200/300",
+            "price": {
+                "digital": 12.99,
+                "cd": 18.99,
+                "vinyl": 29.99,
+                "cassette": 12.99
+            },
+            "tracklist": [
+                {
+                    "title": "Track 5",
+                    "id": 14,
+                    "artists": [{ "name": "Artist 9", "id": 9 }],
+                    "type": "song",
+                    "genres": ["Folk"],
+                    "duration": 400,
+                    "imgUrl": "https://picsum.photos/id/133/200/300",
+                    "price": {
+                        "digital": 1.99,
+                        "cd": 0,
+                        "vinyl": 0,
+                        "cassette": 0
+                    }
+                }
+            ]
+        },
+        "artist": {
+            "name": "Artist 9",
+            "id": 9,
+            "followers": 1200,
+            "isFollowing": true,
+            "imgUrl": "https://picsum.photos/id/134/200/300"
+        },
+        "ratings": {
+            "average": 4.7,
+            "ratingCount": {
+                "five": 28,
+                "four": 6,
+                "three": 2,
+                "two": 0,
+                "one": 0
+            },
+            "list": [
+                {
+                    "userImgUrl": "https://picsum.photos/id/135/50/50",
+                    "username": "User10",
+                    "title": "A Soulful Collection",
+                    "description": "The essence of folk beautifully captured.",
+                    "rating": 5
+                }
+            ]
+        },
+        "related": []
+    },
+    {
+        "product": {
+            "title": "Song 6",
+            "id": 15,
+            "type": "song",
+            "artists": [{ "name": "Artist 10", "id": 10 }],
+            "duration": 220,
+            "date": "2025-11-01",
+            "genres": ["World"],
+            "description": "A global music experience.",
+            "imgUrl": "https://picsum.photos/id/136/200/300",
+            "price": {
+                "digital": 1.99,
+                "cd": 0,
+                "vinyl": 0,
+                "cassette": 0
+            }
+        },
+        "artist": {
+            "name": "Artist 10",
+            "id": 10,
+            "followers": 800,
+            "isFollowing": false,
+            "imgUrl": "https://picsum.photos/id/137/200/300"
+        },
+        "ratings": {
+            "average": 4.5,
+            "ratingCount": {
+                "five": 10,
+                "four": 8,
+                "three": 5,
+                "two": 2,
+                "one": 1
+            },
+            "list": [
+                {
+                    "userImgUrl": "https://picsum.photos/id/138/50/50",
+                    "username": "User11",
+                    "title": "Diverse Sounds",
+                    "description": "Loved the variety.",
+                    "rating": 5
+                }
+            ]
+        },
+        "related": []
+    },
+    {
+        "product": {
+            "title": "Album 6",
+            "id": 16,
+            "type": "album",
+            "artists": [{ "name": "Artist 11", "id": 11 }],
+            "duration": 5400,
+            "date": "2025-12-01",
+            "genres": ["Classical"],
+            "description": "A masterpiece of classical music.",
+            "imgUrl": "https://picsum.photos/id/139/200/300",
+            "price": {
+                "digital": 14.99,
+                "cd": 19.99,
+                "vinyl": 29.99,
+                "cassette": 14.99
+            },
+            "tracklist": [
+                {
+                    "title": "Track 6",
+                    "id": 17,
+                    "artists": [{ "name": "Artist 11", "id": 11 }],
+                    "type": "song",
+                    "genres": ["Classical"],
+                    "duration": 500,
+                    "imgUrl": "https://picsum.photos/id/140/200/300",
+                    "price": {
+                        "digital": 1.99,
+                        "cd": 0,
+                        "vinyl": 0,
+                        "cassette": 0
+                    }
+                }
+            ]
+        },
+        "artist": {
+            "name": "Artist 11",
+            "id": 11,
+            "followers": 900,
+            "isFollowing": true,
+            "imgUrl": "https://picsum.photos/id/141/200/300"
+        },
+        "ratings": {
+            "average": 4.8,
+            "ratingCount": {
+                "five": 35,
+                "four": 10,
+                "three": 3,
+                "two": 0,
+                "one": 1
+            },
+            "list": [
+                {
+                    "userImgUrl": "https://picsum.photos/id/142/50/50",
+                    "username": "User12",
+                    "title": "Timeless",
+                    "description": "An eternal work of art.",
+                    "rating": 5
+                }
+            ]
+        },
+        "related": []
+    }
+]

@@ -1,0 +1,242 @@
+[
+    {
+        "title": "Song 1",
+        "id": 1,
+        "artists": [
+            {
+                "name": "Artist 1",
+                "id": 1
+            }
+        ],
+        "type": "song",
+        "genres": ["Pop"],
+        "duration": 210,
+        "imgUrl": "https://picsum.photos/id/101/200/300",
+        "price": {
+            "digital": 1.29,
+            "cd": 9.99,
+            "vinyl": 19.99,
+            "cassette": 4.99
+        }
+    },
+    {
+        "title": "Album 1",
+        "id": 2,
+        "artists": [
+            {
+                "name": "Artist 2",
+                "id": 2
+            }
+        ],
+        "type": "album",
+        "genres": ["Rock"],
+        "duration": 2400,
+        "imgUrl": "https://picsum.photos/id/104/200/300",
+        "price": {
+            "digital": 9.99,
+            "cd": 14.99,
+            "vinyl": 24.99,
+            "cassette": 9.99
+        }
+    },
+    {
+        "title": "Song 2",
+        "id": 3,
+        "artists": [
+            {
+                "name": "Artist 3",
+                "id": 3
+            }
+        ],
+        "type": "song",
+        "genres": ["Hip-Hop"],
+        "duration": 180,
+        "imgUrl": "https://picsum.photos/id/108/200/300",
+        "price": {
+            "digital": 1.29,
+            "cd": 0,
+            "vinyl": 0,
+            "cassette": 0
+        }
+    },
+    {
+        "title": "Album 2",
+        "id": 4,
+        "artists": [
+            {
+                "name": "Artist 1",
+                "id": 1
+            }
+        ],
+        "type": "album",
+        "genres": ["Pop", "Dance"],
+        "duration": 3600,
+        "imgUrl": "https://picsum.photos/id/111/200/300",
+        "price": {
+            "digital": 10.99,
+            "cd": 15.99,
+            "vinyl": 25.99,
+            "cassette": 10.99
+        }
+    },
+    {
+        "title": "Song 3",
+        "id": 6,
+        "artists": [
+            {
+                "name": "Artist 4",
+                "id": 4
+            }
+        ],
+        "type": "song",
+        "genres": ["Jazz"],
+        "duration": 195,
+        "imgUrl": "https://picsum.photos/id/115/200/300",
+        "price": {
+            "digital": 1.99,
+            "cd": 0,
+            "vinyl": 0,
+            "cassette": 0
+        }
+    },
+    {
+        "title": "Album 3",
+        "id": 7,
+        "artists": [
+            {
+                "name": "Artist 5",
+                "id": 5
+            }
+        ],
+        "type": "album",
+        "genres": ["Electronic"],
+        "duration": 4200,
+        "imgUrl": "https://picsum.photos/id/118/200/300",
+        "price": {
+            "digital": 11.99,
+            "cd": 16.99,
+            "vinyl": 26.99,
+            "cassette": 11.99
+        }
+    },
+    {
+        "title": "Song 4",
+        "id": 9,
+        "artists": [
+            {
+                "name": "Artist 6",
+                "id": 6
+            }
+        ],
+        "type": "song",
+        "genres": ["Country"],
+        "duration": 235,
+        "imgUrl": "https://picsum.photos/id/122/200/300",
+        "price": {
+            "digital": 1.49,
+            "cd": 0,
+            "vinyl": 0,
+            "cassette": 0
+        }
+    },
+    {
+        "title": "Album 4",
+        "id": 10,
+        "artists": [
+            {
+                "name": "Artist 7",
+                "id": 7
+            }
+        ],
+        "type": "album",
+        "genres": ["Indie"],
+        "duration": 3000,
+        "imgUrl": "https://picsum.photos/id/125/200/300",
+        "price": {
+            "digital": 9.49,
+            "cd": 12.99,
+            "vinyl": 21.99,
+            "cassette": 9.49
+        }
+    },
+    {
+        "title": "Song 5",
+        "id": 12,
+        "artists": [
+            {
+                "name": "Artist 8",
+                "id": 8
+            }
+        ],
+        "type": "song",
+        "genres": ["R&B"],
+        "duration": 300,
+        "imgUrl": "https://picsum.photos/id/129/200/300",
+        "price": {
+            "digital": 1.99,
+            "cd": 0,
+            "vinyl": 0,
+            "cassette": 0
+        }
+    },
+    {
+        "title": "Album 5",
+        "id": 13,
+        "artists": [
+            {
+                "name": "Artist 9",
+                "id": 9
+            }
+        ],
+        "type": "album",
+        "genres": ["Folk"],
+        "duration": 4800,
+        "imgUrl": "https://picsum.photos/id/132/200/300",
+        "price": {
+            "digital": 12.99,
+            "cd": 18.99,
+            "vinyl": 29.99,
+            "cassette": 12.99
+        }
+    },
+    {
+        "title": "Song 6",
+        "id": 15,
+        "artists": [
+            {
+                "name": "Artist 10",
+                "id": 10
+            }
+        ],
+        "type": "song",
+        "genres": ["World"],
+        "duration": 220,
+        "imgUrl": "https://picsum.photos/id/136/200/300",
+        "price": {
+            "digital": 1.99,
+            "cd": 0,
+            "vinyl": 0,
+            "cassette": 0
+        }
+    },
+    {
+        "title": "Album 6",
+        "id": 16,
+        "artists": [
+            {
+                "name": "Artist 11",
+                "id": 11
+            }
+        ],
+        "type": "album",
+        "genres": ["Classical"],
+        "duration": 5400,
+        "imgUrl": "https://picsum.photos/id/139/200/300",
+        "price": {
+            "digital": 14.99,
+            "cd": 19.99,
+            "vinyl": 29.99,
+            "cassette": 14.99
+        }
+    }
+]

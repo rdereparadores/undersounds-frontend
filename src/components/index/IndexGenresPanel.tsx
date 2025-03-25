@@ -11,7 +11,7 @@ interface IndexGenresPanelGenreProps {
 const IndexGenresPanelGenre = ({ name, gradientFrom, gradientTo, genre }: IndexGenresPanelGenreProps) => {
     const navigate = useNavigate()
     return (
-        <Button onClick={() => { navigate(`/shop/${genre ? '?genre=' + genre : ''}`) }} className={`h-36 flex-1 min-w-28 bg-gradient-to-tr ${gradientFrom} ${gradientTo}`}>{name}</Button>
+        <Button onClick={() => { navigate(`/shop/${genre ? '?genre=' + genre : ''}`) }} className={`h-36 flex-1 min-w-32 bg-gradient-to-tr ${gradientFrom} ${gradientTo}`}>{name}</Button>
     )
 }
 

@@ -8,16 +8,21 @@ import {
 
 import { Skeleton } from '@/components/ui/skeleton'
 import { useState, useEffect } from 'react'
-import { ApiContextSongProps } from '@/hooks/api/ApiContext'
 import { useApi } from '@/hooks/api/useApi'
 import { IndexPopularCarouselItem } from './IndexPopularCarouselItem'
+import { useGlobalStats } from '@/hooks/globalStats/useGlobalStats'
+import { ProductContextResultShortProps } from '@/hooks/product/ProductContext'
+import { ProductProvider } from '@/hooks/product/ProductProvider'
 
 export const IndexPopularCarousel = () => {
     const api = useApi()
-    const [top10Songs, setTop10Songs] = useState<undefined | ApiContextSongProps[]>(undefined)
+    const globalStats = useGlobalStats()
+    const [top10Songs, setTop10Songs] = useState<undefined | ProductContextResultShortProps[]>(undefined)
 
     useEffect(() => {
-        api.getTop10Songs().then(songs => setTop10Songs(songs))
+        globalStats.top10Songs().then((songs) => {
+            setTop10Songs(songs)
+        })
     }, [api])
 
     return (
@@ -31,16 +36,15 @@ export const IndexPopularCarousel = () => {
                     {top10Songs !== undefined ?
                         top10Songs?.map((song, index) => (
                             <CarouselItem key={index} className='basis-auto'>
-                                <IndexPopularCarouselItem
-                                    title={song.title}
-                                    artist={song.artist}
-                                    popularNo={song.popularNo}
-                                    coverUrl={song.coverUrl}
-                                    songId={song.songId}
-                                />
+                                <ProductProvider>
+                                    <IndexPopularCarouselItem
+                                        song={song}
+                                        position={index + 1}
+                                    />
+                                </ProductProvider>
                             </CarouselItem>
                         ))
-                    :
+                        :
                         <Skeleton className='w-full h-56' />
                     }
                 </CarouselContent>
