@@ -1,48 +1,6 @@
 import React, { useState } from "react";
-import { ShopContext, ShopContextSearchProps, ShopContextResultItemProps } from "./ShopContext";
-
-const items: ShopContextResultItemProps[] = [
-    {
-        title: 'Prueba',
-        artists: [{name: 'mgk', id: 4}],
-        imgUrl: 'https://picsum.photos/200',
-        type: 'song',
-        genreList: ['pop', 'rock'],
-        id: 22
-    },
-    {
-        title: 'Prueba',
-        artists: [{name: 'mgk', id: 4}],
-        imgUrl: 'https://picsum.photos/200',
-        type: 'song',
-        genreList: ['pop', 'rock'],
-        id: 22
-    },
-    {
-        title: 'Prueba',
-        artists: [{name: 'mgk', id: 4}],
-        imgUrl: 'https://picsum.photos/200',
-        type: 'song',
-        genreList: ['pop', 'rock'],
-        id: 22
-    },
-    {
-        title: 'Prueba',
-        artists: [{name: 'mgk', id: 4}, {name: 'Jelly Roll', id: 7}],
-        imgUrl: 'https://picsum.photos/200',
-        type: 'song',
-        genreList: ['pop', 'rock'],
-        id: 22
-    },
-    {
-        title: 'Prueba',
-        artists: [{name: 'mgk', id: 4}],
-        imgUrl: 'https://picsum.photos/2000',
-        type: 'song',
-        genreList: ['pop', 'rock'],
-        id: 22
-    }
-]
+import { ShopContext, ShopContextSearchProps } from "./ShopContext";
+import productsShort from '@/testingDB/productsShort.json'
 
 interface ShopProviderProps {
     children: React.ReactNode
@@ -52,12 +10,12 @@ export const ShopProvider = ({ children }: ShopProviderProps) => {
     const [searchResultItemCount, setSearchResultItemCount] = useState<number | undefined>(undefined)
 
     const search = async ({ query, filters }: ShopContextSearchProps) => {
-        console.log(query)
         console.log(filters)
         setSearchResultItemCount(5)
+        const result = productsShort.filter(product => product.title.includes(query))
         return {
-            items: items,
-            itemCount: 5
+            items: result,
+            itemCount: result.length
         }
     }
 
