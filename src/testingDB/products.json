@@ -62,7 +62,7 @@
                 "vinyl": 24.99,
                 "cassette": 9.99
             },
-            "tracklist": [
+            "trackList": [
                 {
                     "title": "Track 1",
                     "id": 3,
@@ -171,7 +171,7 @@
                 "vinyl": 25.99,
                 "cassette": 10.99
             },
-            "tracklist": [
+            "trackList": [
                 {
                     "title": "Track 2",
                     "id": 5,
@@ -215,7 +215,28 @@
                 }
             ]
         },
-        "related": []
+        "related": [
+            {
+                "title": "Song 1",
+                "id": 1,
+                "artists": [
+                    {
+                        "name": "Artist 1",
+                        "id": 1
+                    }
+                ],
+                "type": "song",
+                "genres": ["Pop"],
+                "duration": 210,
+                "imgUrl": "https://picsum.photos/id/101/200/300",
+                "price": {
+                    "digital": 1.29,
+                    "cd": 9.99,
+                    "vinyl": 19.99,
+                    "cassette": 4.99
+                }
+            }
+        ]
     },
     {
         "product": {
@@ -280,7 +301,7 @@
                 "vinyl": 26.99,
                 "cassette": 11.99
             },
-            "tracklist": [
+            "trackList": [
                 {
                     "title": "Track 3",
                     "id": 8,
@@ -389,7 +410,7 @@
                 "vinyl": 21.99,
                 "cassette": 9.49
             },
-            "tracklist": [
+            "trackList": [
                 {
                     "title": "Track 4",
                     "id": 11,
@@ -498,7 +519,7 @@
                 "vinyl": 29.99,
                 "cassette": 12.99
             },
-            "tracklist": [
+            "trackList": [
                 {
                     "title": "Track 5",
                     "id": 14,
@@ -607,7 +628,7 @@
                 "vinyl": 29.99,
                 "cassette": 14.99
             },
-            "tracklist": [
+            "trackList": [
                 {
                     "title": "Track 6",
                     "id": 17,
