@@ -8,14 +8,12 @@ import {
 
 import { Skeleton } from '@/components/ui/skeleton'
 import { useState, useEffect } from 'react'
-import { useApi } from '@/hooks/api/useApi'
 import { IndexPopularCarouselItem } from './IndexPopularCarouselItem'
 import { useGlobalStats } from '@/hooks/globalStats/useGlobalStats'
 import { ProductContextResultShortProps } from '@/hooks/product/ProductContext'
 import { ProductProvider } from '@/hooks/product/ProductProvider'
 
 export const IndexPopularCarousel = () => {
-    const api = useApi()
     const globalStats = useGlobalStats()
     const [top10Songs, setTop10Songs] = useState<undefined | ProductContextResultShortProps[]>(undefined)
 
@@ -23,7 +21,7 @@ export const IndexPopularCarousel = () => {
         globalStats.top10Songs().then((songs) => {
             setTop10Songs(songs)
         })
-    }, [api])
+    }, [globalStats])
 
     return (
         <div className='w-5/6 h-fit'>
