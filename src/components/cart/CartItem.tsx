@@ -6,6 +6,7 @@ import { useCart } from "@/hooks/cart/useCart"
 import { useEffect } from "react"
 import { Badge } from "../ui/badge"
 import { FaRegTrashAlt } from "react-icons/fa";
+import { Link } from "react-router"
 
 export interface CartItemProps { cartIndex: number }
 
@@ -29,13 +30,17 @@ export const CartItem = ({ cartIndex }: CartItemProps) => {
 
     return (
         <Card className="flex flex-col p-4 gap-2 w-full">
-            <CardContent className="p-0 w-full">
+            <CardContent className="p-0 w-full flex flex-col gap-2 sm:gap-0">
                 <div className="flex gap-2">
-                    <img className="aspect-square h-32 flex rounded-lg" src={product.queryResultShort?.imgUrl}></img>
+                    <Link to={`/${product.queryResultShort?.type}/${product.queryResultShort?.id}`}>
+                        <img className="aspect-square h-32 flex rounded-lg" src={product.queryResultShort?.imgUrl}></img>
+                    </Link>
                     <div className="flex flex-col grow">
                         <div className="flex justify-between grow flex-wrap">
                             <div className="flex flex-col gap-2">
-                                <p className="font-medium">{product.queryResultShort?.title}</p>
+                                <Link to={`/${product.queryResultShort?.type}/${product.queryResultShort?.id}`}>
+                                    <p className="font-medium w-fit">{product.queryResultShort?.title}</p>
+                                </Link>
                                 <div className="flex gap-2">
                                     <Badge>{product.queryResultShort?.type === 'song' ? 'Canción' : 'Álbum'}</Badge>
                                     <Badge variant='outline'>{cart.cart!.items[cartIndex].format}</Badge>
@@ -47,7 +52,7 @@ export const CartItem = ({ cartIndex }: CartItemProps) => {
                     </div>
                 </div>
 
-                <div className="flex justify-end gap-2">
+                <div className="flex sm:justify-end gap-2 md:-mt-9">
                     <div>
                         <Button onClick={() => {cart.remove(cart.cart!.items[cartIndex])}} variant="destructive" ><FaRegTrashAlt /></Button>
                     </div>

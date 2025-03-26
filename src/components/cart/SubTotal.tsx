@@ -3,15 +3,15 @@ import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { useCart } from '@/hooks/cart/useCart'
 import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router'
 
 export interface SubTotalProps {
     children?: React.ReactNode,
-    purchaseButtonEnabled: boolean,
-    purchaseButtonChildren: React.ReactNode,
-    purchaseButtonOnClick?: () => void
+    route: 'cart' | 'checkout'
 }
 
-const SubTotal = ({ purchaseButtonEnabled, purchaseButtonChildren, purchaseButtonOnClick }: SubTotalProps) => {
+const SubTotal = ({ route }: SubTotalProps) => {
+    const navigate = useNavigate()
     const cart = useCart()
     const [totalPrice, setTotalPrice] = useState(0)
     const [shippingRate, setShippingRate] = useState(0)
@@ -33,8 +33,16 @@ const SubTotal = ({ purchaseButtonEnabled, purchaseButtonChildren, purchaseButto
         cart.getShippingRate().then(rate => setShippingRate(rate))
     }, [cart.cart, cart, shippingRate])
 
+    const handlePayButtonClick = () => {
+        if (route == 'cart') {
+            navigate('../checkout')
+        } else {
+            console.log("Aquí va la petición para la API de Checkout.com")
+        }
+    }
+
     return (
-        <Card className="h-fit grow">
+        <Card className="h-fit grow lg:max-w-md">
             <CardHeader>
                 <CardTitle>Resumen</CardTitle>
                 <CardDescription>{cart.cart?.items.length} artículos</CardDescription>
@@ -43,11 +51,15 @@ const SubTotal = ({ purchaseButtonEnabled, purchaseButtonChildren, purchaseButto
             <CardContent>
                 <div className='flex justify-between items-center'>
                     <p>Subtotal</p>
-                    <p className=''>{totalPrice.toFixed(2)} €</p>
+                    <p className='text-right'>{totalPrice.toFixed(2)} €</p>
                 </div>
                 <div className='flex justify-between items-center'>
                     <p>Gastos de envío</p>
-                    <p className=''>{shippingRate === 0 ? 'Gratis' : `${shippingRate} €`}</p>
+                    <p className='text-right'>{
+                        route == 'cart' ?
+                        'Calculado en el siguiente paso' :
+                        shippingRate === 0 ? 'Gratis' : `${shippingRate} €`
+                    }</p>
                 </div>
 
                 <Separator className='mt-2' />
@@ -58,13 +70,15 @@ const SubTotal = ({ purchaseButtonEnabled, purchaseButtonChildren, purchaseButto
             </CardContent>
 
             <CardFooter>
+
                 <Button
-                    asChild={purchaseButtonEnabled}
-                    disabled={!purchaseButtonEnabled}
+                    disabled={route == 'checkout'}
                     className='w-full'
-                    onClick={purchaseButtonOnClick}
+                    onClick={handlePayButtonClick}
                 >
-                    {purchaseButtonChildren}
+                    {
+                        route == 'checkout' ? 'Tramitar pedido' : 'Pagar'
+                    }
                 </Button>
             </CardFooter>
         </Card>
