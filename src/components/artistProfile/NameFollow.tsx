@@ -17,10 +17,12 @@ const IsNotFollowed = () => (
 
 export function NameFollow({followed}: FollowProps) {
     return (
-        <div className="w-[90%] flex flex-wrap gap-5 -mt-20 mb-20 z-10">
-            <p className="font-bold text-3xl text-white ">Nombre autor</p>
+        <div className="w-[90%] flex sm:flex-wrap gap-5 z-10">
+            <p className="font-bold text-3xl text-white ">Machine gun kelly</p>
 
+            <div className="flex items-center">
             {followed ? <IsFollowed/> : <IsNotFollowed/>}
+            </div>
 
         </div>
     )
