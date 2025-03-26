@@ -22,27 +22,15 @@ export function Footer() {
                     </div>
 
                     <div className="flex flex-col gap-4">
-                        <p className="text-gray-400 font-mono font-semibold">EMPRESA</p>
-                        <p className="hover:underline text-white text-start">Acerca de</p>
-                        <p className="hover:underline text-white text-start">Empleo</p>
-                    </div>
-
-                    <div className="flex flex-col gap-4">
                         <p className="text-gray-400 font-mono font-semibold">COMUNIDAD</p>
-                         <Link to="auth/signup"><p className="hover:underline text-white text-start">UnderSounds para artistas</p></Link>
-                        <p  className="hover:underline text-white text-start">Desarrolladores</p>
-                        <p  className="hover:underline text-white text-start">Publicidad</p>
-                        <p  className="hover:underline text-white text-start">Inversores</p>
-                        <p  className="hover:underline text-white text-start">Proveedores</p>
+                        <Link to="auth/signup"><p className="hover:underline text-white text-start">Registrarse</p></Link>
+                        <Link to="auth/signin"><p className="hover:underline text-white text-start">Iniciar sesión</p></Link>
                     </div>
 
                     <div className="flex flex-col gap-4">
                         <p className="text-gray-400 font-mono font-semibold">ENLACES ÚTILES</p>
-                        <p className="hover:underline text-white text-start">Asistencia</p>
-                        <p className="hover:underline text-white text-start">Privacidad</p>
-                        <p className="hover:underline text-white text-start">Copyright</p>
-                        <p className="hover:underline text-white text-start">Terminos de uso</p>
-                        <p className="hover:underline text-white text-start">Preferencias de cookies</p>
+                        <Link to="/"><p className="hover:underline text-white text-start">Inicio</p></Link>
+                        <Link to="/shop"><p className="hover:underline text-white text-start">Tienda</p></Link>
                     </div>
 
                 </CardContent>
