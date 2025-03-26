@@ -23,7 +23,6 @@ import { FaRegTrashAlt } from "react-icons/fa"
 
 interface NavBarCartItemProps { cartIndex: number }
 
-// Componente NavBarCartItem modificado
 const NavBarCartItem = ({ cartIndex }: NavBarCartItemProps) => {
     const product = useProduct()
     const cart = useCart()
@@ -44,11 +43,17 @@ const NavBarCartItem = ({ cartIndex }: NavBarCartItemProps) => {
 
     return (
         <Card className="flex p-4 gap-2">
-            <img className="w-28 h-28 flex rounded-lg" src={product.queryResultShort?.imgUrl}></img>
+            <SheetClose asChild>
+                <Link to={`/${cart.cart?.items[cartIndex].type}/${cart.cart?.items[cartIndex].id}`}>
+                    <img className="w-28 h-28 flex rounded-lg" src={product.queryResultShort?.imgUrl}></img>
+                </Link>
+            </SheetClose>
             <div className="flex grow">
                 <div className="flex justify-between grow">
                     <div>
-                        <p className="font-medium">{product.queryResultShort?.title}</p>
+                        <Link to={`/${cart.cart?.items[cartIndex].type}/${cart.cart?.items[cartIndex].id}`}>
+                            <p className="font-medium">{product.queryResultShort?.title}</p>
+                        </Link>
                         <div className="flex gap-2 py-2">
                             <Badge>{product.queryResultShort?.type == 'song' ? 'Canción' : 'Álbum'}</Badge>
                             <Badge variant='outline'>{cart.cart!.items[cartIndex].format}</Badge>
@@ -57,7 +62,7 @@ const NavBarCartItem = ({ cartIndex }: NavBarCartItemProps) => {
                         <p className="font-medium text-lg">{getPrice().toFixed(2)} €</p>
                     </div>
                 </div>
-                
+
                 <div className="flex justify-end gap-2">
                     <div>
                         <Button variant="destructive"
@@ -96,6 +101,7 @@ export const NavBarCartEmpty = () => (
 const NavBarCartFilled = () => {
     const cart = useCart()
     const [totalPrice, setTotalPrice] = useState(0)
+    const [shippingRate, setShippingRate] = useState(0)
 
     useEffect(() => {
         let newTotal = 0
@@ -110,7 +116,8 @@ const NavBarCartFilled = () => {
         Promise.all(promisesArray).then(() => {
             setTotalPrice(newTotal)
         })
-    }, [cart.cart])
+        cart.getShippingRate().then(rate => setShippingRate(rate))
+    }, [cart.cart, cart])
 
     return (
         <>
@@ -119,7 +126,7 @@ const NavBarCartFilled = () => {
                     {cart.cart?.items.map((_item, index) => (
                         <ProductProvider key={`cart-item-${index}-${_item.id}`}>
                             <NavBarCartItem
-                                cartIndex={index} 
+                                cartIndex={index}
                             />
                         </ProductProvider>
                     ))}
@@ -129,7 +136,7 @@ const NavBarCartFilled = () => {
             <Separator className="m-4" />
             <div className="flex justify-between">
                 <p>Total</p>
-                <p className="font-bold">{totalPrice.toFixed(2)} €</p>
+                <p className="font-bold">{(totalPrice + shippingRate).toFixed(2)} €</p>
             </div>
 
             <SheetFooter>

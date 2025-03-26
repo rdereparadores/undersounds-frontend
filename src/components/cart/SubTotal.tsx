@@ -14,6 +14,7 @@ export interface SubTotalProps {
 const SubTotal = ({ purchaseButtonEnabled, purchaseButtonChildren, purchaseButtonOnClick }: SubTotalProps) => {
     const cart = useCart()
     const [totalPrice, setTotalPrice] = useState(0)
+    const [shippingRate, setShippingRate] = useState(0)
 
     useEffect(() => {
         let newTotal = 0
@@ -28,7 +29,9 @@ const SubTotal = ({ purchaseButtonEnabled, purchaseButtonChildren, purchaseButto
         Promise.all(promisesArray).then(() => {
             setTotalPrice(newTotal)
         })
-    }, [cart.cart])
+        
+        cart.getShippingRate().then(rate => setShippingRate(rate))
+    }, [cart.cart, cart, shippingRate])
 
     return (
         <Card className="h-fit grow">
@@ -44,13 +47,13 @@ const SubTotal = ({ purchaseButtonEnabled, purchaseButtonChildren, purchaseButto
                 </div>
                 <div className='flex justify-between items-center'>
                     <p>Gastos de envío</p>
-                    <p className=''>Gratis</p>
+                    <p className=''>{shippingRate === 0 ? 'Gratis' : `${shippingRate} €`}</p>
                 </div>
 
                 <Separator className='mt-2' />
                 <div className='flex justify-between items-center'>
                     <p>Total</p>
-                    <p className='text-xl font-medium'>{totalPrice.toFixed(2)} €</p>
+                    <p className='text-xl font-medium'>{(totalPrice + shippingRate).toFixed(2)} €</p>
                 </div>
             </CardContent>
 

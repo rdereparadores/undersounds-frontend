@@ -34,13 +34,13 @@ export const CartItem = ({ cartIndex }: CartItemProps) => {
                     <img className="aspect-square h-32 flex rounded-lg" src={product.queryResultShort?.imgUrl}></img>
                     <div className="flex flex-col grow">
                         <div className="flex justify-between grow flex-wrap">
-                            <div>
+                            <div className="flex flex-col gap-2">
                                 <p className="font-medium">{product.queryResultShort?.title}</p>
-                                <div className="flex gap-2 mt-2">
+                                <div className="flex gap-2">
                                     <Badge>{product.queryResultShort?.type === 'song' ? 'Canción' : 'Álbum'}</Badge>
                                     <Badge variant='outline'>{cart.cart!.items[cartIndex].format}</Badge>
                                 </div>
-                                <p className="text-sm mt-2">Unidades: {cart.cart?.items[cartIndex].quantity}</p>
+                                <Badge className="w-fit" variant='outline'>Unidades: {cart.cart?.items[cartIndex].quantity}</Badge>
                             </div>
                             <p className="font-medium text-lg">{(getPrice() * cart.cart!.items[cartIndex].quantity).toFixed(2)} €</p>
                         </div>

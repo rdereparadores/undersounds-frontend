@@ -2,7 +2,7 @@ import { createContext } from "react"
 
 export interface CartItemProps {
     type: string,
-    format: string,
+    format: 'cd' | 'digital' | 'cassette' | 'vinyl',
     quantity: number,
     id: number
 }
@@ -17,7 +17,8 @@ interface CartContextProps {
     remove: (item: CartItemProps) => void,
     removeOne: (item: CartItemProps) => void,
     setQuantity: (item: CartItemProps, quantity: number) => void,
-    getUpdatedPrice: (item: CartItemProps) => Promise<number>
+    getUpdatedPrice: (item: CartItemProps) => Promise<number>,
+    getShippingRate: () => Promise<number>
 }
 
 export const CartContext = createContext<CartContextProps>({
@@ -26,5 +27,6 @@ export const CartContext = createContext<CartContextProps>({
     remove: () => {},
     removeOne: () => {},
     setQuantity: () => {},
-    getUpdatedPrice: async () => (0)
+    getUpdatedPrice: async () => (0),
+    getShippingRate: async () => (0)
 })

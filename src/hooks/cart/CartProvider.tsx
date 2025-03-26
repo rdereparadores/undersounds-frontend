@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import { CartContext, CartProps, CartItemProps } from "./CartContext"
 import { toast } from "sonner"
+import productsShort from '@/testingDB/productsShort.json'
 
 interface CartProviderProps {
     children: React.ReactNode
@@ -90,22 +91,15 @@ export const CartProvider = ({ children }: CartProviderProps) => {
     }
 
     const getUpdatedPrice = async ( item: CartItemProps ) => {
-        switch (item.format) {
-            case 'digital':
-                return 6.99 * item.quantity
-            case 'cd':
-                return 10.99 * item.quantity
-            case 'vinyl':
-                return 14.99 * item.quantity
-            case 'cassette':
-                return 16.99 * item.quantity
-            default:
-                return 0
-        }
+        return productsShort.filter(product => product.id === item.id && product.type === item.type)[0].price[item.format] * item.quantity
+    }
+
+    const getShippingRate = async () => {
+        return cart?.items.some(item => item.format != 'digital') ? 4.99 : 0
     }
 
     return (
-        <CartContext.Provider value={{ cart, add, remove, removeOne, setQuantity, getUpdatedPrice }}>
+        <CartContext.Provider value={{ cart, add, remove, removeOne, setQuantity, getUpdatedPrice, getShippingRate }}>
             { children }
         </CartContext.Provider>
     )
