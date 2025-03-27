@@ -32,11 +32,7 @@ const cards = [
 
 export const Checkout = () => {
     return (
-        <SubTotalContainer
-            purchaseButtonEnabled={false}
-            purchaseButtonChildren={<p>Finalizar compra</p>}
-            purchaseButtonOnClick={() => { alert("Compra realizada con éxito") }}
-        >
+        <SubTotalContainer route='checkout'>
             <Card className='grow-[3]'>
                 <CardHeader>
                     <CardTitle className='text-xl'>
@@ -51,7 +47,6 @@ export const Checkout = () => {
                 </CardContent>
 
                 <CardFooter>
-
                 </CardFooter>
             </Card>
         </SubTotalContainer>

@@ -4,6 +4,7 @@ import { Card, CardHeader, CardContent, CardTitle } from "@/components/ui/card"
 import { useCart } from "@/hooks/cart/useCart"
 import { Link } from 'react-router'
 import { Button } from "@/components/ui/button"
+import { ProductProvider } from "@/hooks/product/ProductProvider"
 
 export function Cart() {
     const cart = useCart()
@@ -25,10 +26,7 @@ export function Cart() {
             }
             {
                 cart.cart!.items.length > 0 &&
-                <SubTotalContainer
-                    purchaseButtonEnabled={true}
-                    purchaseButtonChildren={<Link to='../checkout'>Tramitar compra</Link>}
-                >
+                <SubTotalContainer route='cart'>
                     <Card className="grow-[3]">
                         <CardHeader>
                             <CardTitle className='text-xl'>
@@ -39,7 +37,9 @@ export function Cart() {
                         <CardContent>
                             <div className="flex flex-col gap-3">
                                 {cart.cart?.items.map((_item, index) =>
-                                    <CartItem key={index} cartIndex={index} />
+                                    <ProductProvider>
+                                        <CartItem key={index} cartIndex={index} />
+                                    </ProductProvider>
                                 )}
                             </div>
                         </CardContent>

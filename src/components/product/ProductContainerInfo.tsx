@@ -14,7 +14,7 @@ export const ProductContainerInfo = () => {
     const product = useProduct()
     const cart = useCart()
     const [imgLoaded, setImgLoaded] = useState(false)
-    const [selectedFormat, setSelectedFormat] = useState<null | string>(null)
+    const [selectedFormat, setSelectedFormat] = useState<null | 'digital' | 'cd' | 'cassette' | 'vinyl'>(null)
 
     return (
         <div className='flex mt-3 gap-3 flex-wrap flex-grow justify-center'>
@@ -38,7 +38,7 @@ export const ProductContainerInfo = () => {
                         <CardDescription>Selecciona el formato deseado</CardDescription>
                     </CardHeader>
                     <CardContent className="flex flex-col gap-2">
-                        <Select onValueChange={(value) => setSelectedFormat(value)}>
+                        <Select onValueChange={(value: 'digital' | 'cd' | 'cassette' | 'vinyl') => setSelectedFormat(value)}>
                             <SelectTrigger>
                                 <SelectValue placeholder='Escoge un formato...' />
                             </SelectTrigger>
