@@ -1,14 +1,18 @@
+import { useState } from "react"
 import { Button } from "../ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card"
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "../ui/carousel"
 import Autoplay from "embla-carousel-autoplay"
+import { Skeleton } from "../ui/skeleton"
 
 export const UserDashboardRecommendedArtistsItem = () => {
+    const [imgLoaded, setImgLoaded] = useState(false)
 
     return (
         <div className="flex items-center justify-between sm:min-w-96 hover:bg-gray-100 hover:cursor-pointer p-2 rounded-sm transition ease-in-out">
             <div className="flex items-center gap-2">
-                <img src='https://picsum.photos/800' className="rounded-full w-12 h-12" />
+                { !imgLoaded && <Skeleton className="rounded-full w-12 h-12" /> }
+                <img className={`rounded-full w-12 h-12 ${imgLoaded ? '' : 'hidden'}`} src='https://picsum.photos/800' onLoad={() => {setImgLoaded(true)}}/>
                 <div>
                     <p>Machine Gun Kelly</p>
                     <CardDescription>@mgk</CardDescription>
@@ -36,11 +40,13 @@ export const UserDashboardRecommendedArtistsCard = () => {
 }
 
 export const UserDashboardLatestCardItem = () => {
+    const [imgLoaded, setImgLoaded] = useState(false)
     return (
         <Card className="px-6 bg-gradient-to-br from-sky-200 to-red-300 h-fit py-10">
             <CardContent className="p-0 sm:px-10 flex justify-start items-center h-full">
                 <div className="flex justify-center items-start gap-4 flex-wrap">
-                    <img src='https://picsum.photos/800' className="rounded-md w-48 h-48 sm:w-72 sm:h-72" />
+                    {!imgLoaded && <Skeleton className="rounded-md w-48 h-48 sm:w-72 sm:h-72" />}
+                    <img src='https://picsum.photos/800' className={`rounded-md w-48 h-48 sm:w-72 sm:h-72 ${imgLoaded ? '' : 'hidden'}`} onLoad={() => setImgLoaded(true)}/>
                     <div className="flex flex-col items-center sm:items-start">
                         <p className="text-2xl font-medium">Buenas noches</p>
                         <p>Quevedo</p>

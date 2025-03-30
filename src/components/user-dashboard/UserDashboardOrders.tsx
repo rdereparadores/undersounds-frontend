@@ -4,12 +4,15 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "../ui/collapsible"
 import { Separator } from "../ui/separator"
 import { Badge } from "../ui/badge"
+import { Skeleton } from "../ui/skeleton"
 
 export const UserDashboardOrdersOrderCardItem = () => {
+    const [imgLoaded, setImgLoaded] = useState(false)
     return (
         <div className="flex gap-4 justify-between">
             <div className="flex gap-4">
-                <img src='https://picsum.photos/200' className="w-20 h-20 rounded-md hidden sm:block" />
+                {!imgLoaded && <Skeleton className="w-20 h-20 rounded-md hidden sm:block" />}
+                <img src='https://picsum.photos/200' className={`w-20 h-20 rounded-md hidden sm:block ${imgLoaded ? '' : 'hidden'}`} onLoad={() => setImgLoaded(true)} />
                 <div className="flex flex-col gap-1 justify-center">
                     <p>Canción 1</p>
                     <CardDescription>Artista 1</CardDescription>

@@ -8,12 +8,15 @@ import { Button } from "../ui/button"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../ui/table"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "../ui/collapsible"
 import { useState } from "react"
+import { Skeleton } from "../ui/skeleton"
 
 export const UserDashboardLibrarySongItem = () => {
+    const [imgLoaded, setImgLoaded] = useState(false)
     return (
         <Card>
             <CardHeader className="p-0 relative">
-                <img src='https://picsum.photos/400' className="w-48 h-48 rounded-xl rounded-b-none" />
+                {!imgLoaded && <Skeleton className="w-48 h-48 rounded-xl rounded-b-none" />}
+                <img src='https://picsum.photos/400' className={`w-48 h-48 rounded-xl rounded-b-none ${imgLoaded ? '' : 'hidden'}`} onLoad={() => setImgLoaded(true)} />
                 <Button className="absolute bottom-2 right-2 rounded-full w-10 h-10">
                     <FaPlay className="ml-[3px]" />
                 </Button>
@@ -54,19 +57,22 @@ export const UserDashboardLibraryAlbumItemTrack = () => {
 }
 
 export const UserDashboardLibraryAlbumItem = () => {
-    const [open, setIsOpen] = useState(false)
+    const [open, setOpen] = useState(false)
+    const [imgLoaded, setImgLoaded] = useState(false)
+
     return (
         <Card>
             <CardHeader>
                 <div className="flex gap-4 flex-wrap justify-center">
-                    <img src='https://picsum.photos/400' className="w-32 h-32 rounded-xl" />
+                    {!imgLoaded && <Skeleton className="w-32 h-32 rounded-xl" />}
+                    <img src='https://picsum.photos/400' className={`w-32 h-32 rounded-xl ${imgLoaded ? '' : 'hidden'}`} onLoad={() => setImgLoaded(true)} />
                     <div className="flex flex-col gap-1">
                         <CardTitle>Buenas noches</CardTitle>
                         <CardDescription>Quevedo</CardDescription>
                         <CardDescription>5 pistas | 35:05</CardDescription>
                     </div>
                     <div className="flex flex-col grow -mt-3">
-                        <Collapsible open={open} onOpenChange={setIsOpen}>
+                        <Collapsible open={open} onOpenChange={setOpen}>
                             <>
                                 <Table>
                                     <TableHeader>

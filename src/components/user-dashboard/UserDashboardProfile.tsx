@@ -10,6 +10,8 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Badge } from '../ui/badge'
 import { IoAddCircleOutline } from "react-icons/io5"
 import { DatePicker } from '../ui/new-date-picker'
+import { useState } from 'react'
+import { Skeleton } from '../ui/skeleton'
 
 const maxBirthdate = new Date(Date.now())
 maxBirthdate.setFullYear(maxBirthdate.getFullYear() - 16);
@@ -161,6 +163,7 @@ export const UserDashboardProfileAddressesCard = () => {
 }
 
 export const UserDashboardProfile = () => {
+    const [imgLoaded, setImgLoaded] = useState(false)
 
     return (
         <div className="grow gap-4 flex flex-col flex-wrap">
@@ -171,7 +174,8 @@ export const UserDashboardProfile = () => {
 
                 <div className='flex gap-4 items-top justify-center flex-wrap'>
                     <div className='relative w-fit h-fit'>
-                        <img src='https://picsum.photos/200' className='w-32 h-32 rounded-full' />
+                        {!imgLoaded && <Skeleton className='w-32 h-32 rounded-full' />}
+                        <img src='https://picsum.photos/200' className={`w-32 h-32 rounded-full ${imgLoaded ? '' : 'hidden'}`} onLoad={() => setImgLoaded(true)} />
                         <Button className='absolute right-2 bottom-2 w-8 h-8'><MdEditSquare /></Button>
                     </div>
                     <UserDashboardProfileForm />

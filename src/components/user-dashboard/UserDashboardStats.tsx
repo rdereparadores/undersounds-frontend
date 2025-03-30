@@ -2,6 +2,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui
 import { IoIosTrendingUp } from "react-icons/io"
 import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "../ui/chart"
 import { Bar, BarChart, Pie, PieChart, XAxis, YAxis } from "recharts"
+import { useState } from "react"
+import { Skeleton } from "../ui/skeleton"
 
 export const UserDashboardStatsHeader = () => {
     return (
@@ -149,6 +151,7 @@ export const UserDashboardStatsTopArtistsChart = () => {
 }
 
 export const UserDashboardStatsTopArtistCard = () => {
+    const [imgLoaded, setImgLoaded] = useState(false)
     return (
         <Card>
             <CardHeader>
@@ -156,7 +159,8 @@ export const UserDashboardStatsTopArtistCard = () => {
             </CardHeader>
             <CardContent>
                 <div className="flex gap-4 flex-wrap">
-                    <img src='https://picsum.photos/200' className="w-16 h-16 rounded-full" />
+                    {!imgLoaded && <Skeleton className="w-16 h-16 rounded-full" />}
+                    <img src='https://picsum.photos/200' className={`w-16 h-16 rounded-full ${imgLoaded ? '' : 'hidden'}`} onLoad={() => setImgLoaded(true)} />
                     <div className="flex flex-col justify-center flex-wrap">
                         <p className="font-medium text-xl">Quevedo</p>
                         <p>Estás en el top 0.1% de oyentes</p>
