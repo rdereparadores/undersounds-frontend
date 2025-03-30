@@ -5,16 +5,11 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from 'react-hook-form'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form'
 import { Input } from '../ui/input'
-import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover'
-import { CalendarIcon } from 'lucide-react'
-import { Calendar } from '../ui/calendar'
-import { format } from "date-fns"
-import { cn } from "@/lib/utils"
-import { es } from 'date-fns/locale'
 import { Separator } from '../ui/separator'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../ui/card'
 import { Badge } from '../ui/badge'
 import { IoAddCircleOutline } from "react-icons/io5"
+import { DatePicker } from '../ui/new-date-picker'
 
 const maxBirthdate = new Date(Date.now())
 maxBirthdate.setFullYear(maxBirthdate.getFullYear() - 16);
@@ -72,34 +67,7 @@ export const UserDashboardProfileForm = () => {
                 <FormField control={form.control} name='birthdate' render={({ field }) => (
                     <FormItem className="flex flex-col gap-1">
                         <FormLabel>Fecha de nacimiento</FormLabel>
-                        <Popover>
-                            <PopoverTrigger asChild>
-                                <FormControl>
-                                    <Button
-                                        variant={"outline"}
-                                        className={cn(
-                                            "w-full pl-3 text-left font-normal",
-                                            !field.value && "text-muted-foreground"
-                                        )}
-                                    >
-                                        {format(field.value!, "PPP", { locale: es })}
-                                        <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                                    </Button>
-                                </FormControl>
-                            </PopoverTrigger>
-                            <PopoverContent className="w-auto p-0" align="start">
-                                <Calendar
-                                    locale={es}
-                                    mode="single"
-                                    selected={field.value}
-                                    onSelect={field.onChange}
-                                    disabled={(date) =>
-                                        date > new Date() || date < new Date("1900-01-01")
-                                    }
-                                    initialFocus
-                                />
-                            </PopoverContent>
-                        </Popover>
+                        <DatePicker date={field.value} setDate={field.onChange} />
                         <FormMessage />
                     </FormItem>
                 )}
@@ -147,7 +115,7 @@ export const UserDashboardProfilePasswordUpdateCard = () => {
 
 export const UserDashboardProfileAddressesCardItem = () => {
     return (
-        <Card className='w-96'>
+        <Card className='w-fit'>
             <CardHeader>
                 <div className='flex gap-2 items-center'>
                     <CardTitle>Casa</CardTitle>
@@ -161,9 +129,9 @@ export const UserDashboardProfileAddressesCardItem = () => {
                 <p>10004 Cáceres</p>
                 <p>666666666</p>
             </CardContent>
-            <CardFooter className='gap-2'>
-                <Button>Eliminar</Button>
-                <Button variant='outline'>Establecer como predeterminada</Button>
+            <CardFooter className='gap-2 flex flex-wrap'>
+                <Button className='grow'>Eliminar</Button>
+                <Button className='grow' variant='outline'>Establecer como predeterminada</Button>
             </CardFooter>
         </Card>
     )
@@ -171,7 +139,7 @@ export const UserDashboardProfileAddressesCardItem = () => {
 
 export const UserDashboardProfileAddressesAddCard = () => {
     return (
-        <Card className='w-96 min-h-64'>
+        <Card className='w-80 min-h-64'>
             <CardContent className='p-0 flex flex-col items-center justify-center h-full'>
                 <IoAddCircleOutline className='w-32 h-32' color='gray' />
                 <CardDescription className='text-md'>Añadir dirección</CardDescription>

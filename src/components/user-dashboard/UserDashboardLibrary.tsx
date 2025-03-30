@@ -58,7 +58,7 @@ export const UserDashboardLibraryAlbumItem = () => {
     return (
         <Card>
             <CardHeader>
-                <div className="flex gap-4 flex-wrap">
+                <div className="flex gap-4 flex-wrap justify-center">
                     <img src='https://picsum.photos/400' className="w-32 h-32 rounded-xl" />
                     <div className="flex flex-col gap-1">
                         <CardTitle>Buenas noches</CardTitle>
@@ -79,7 +79,6 @@ export const UserDashboardLibraryAlbumItem = () => {
                                     </TableHeader>
 
                                     <TableBody>
-
                                         <UserDashboardLibraryAlbumItemTrack />
                                         <UserDashboardLibraryAlbumItemTrack />
                                         <CollapsibleContent asChild>
@@ -117,7 +116,7 @@ export const UserDashboardLibraryAlbumItem = () => {
 
 export const UserDashboardLibrary = () => {
     return (
-        <div className="grow flex flex-col flex-wrap">
+        <div className="grow flex flex-col flex-wrap gap-2">
             <div className="flex justify-between flex-wrap gap-2">
                 <h1 className="text-3xl font-medium">Biblioteca</h1>
                 <Input type='search' placeholder="Buscar..." className="sm:max-w-72"></Input>
