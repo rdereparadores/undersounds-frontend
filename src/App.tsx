@@ -1,12 +1,10 @@
 import { Routes, Route, Outlet } from 'react-router'
 import './App.css'
 import { Index } from "@/routes/Index.tsx";
-import { songChartData, albumChartData, playbackChartData } from '@/components/panel/artistStatistics/artist-chart-data.tsx'
 import { SignIn } from '@/routes/SignIn'
 import { SignUp } from '@/routes/SignUp'
 import { Checkout } from './routes/Checkout.tsx'
 import { Shop } from './routes/Shop.tsx'
-import { UserPanel } from './routes/UserPanel.tsx'
 import { ShopProvider } from './hooks/shop/ShopProvider.tsx'
 import { NavBarContainer } from '@/components/navbar/NavBarContainer.tsx'
 import { Cart } from './routes/Cart.tsx'
@@ -14,21 +12,21 @@ import { GuestOnlyRoute } from './components/auth/GuestOnlyRoute.tsx'
 import { ProtectedRoute } from './components/auth/ProtectedRoute.tsx'
 import { UserRole } from './constants.ts'
 import { ProductContainer } from './components/product/ProductContainer.tsx'
-import PurchasePanel from "@/components/panel/purchasePanel/purchasePanel.tsx";
-import { purchasesData } from "@/components/panel/purchasePanel/purchaseData.tsx";
 import MusicPlayer from "@/components/panel/songPanel/music-player.tsx";
 import { sampleSongs } from "@/components/panel/songPanel/sample-songs.tsx";
 import AlbumPlayer from "@/components/panel/albumPanel/album-player.tsx";
 import { sampleAlbums } from "@/components/panel/albumPanel/sample-albums.tsx";
-import ProfileCard from "@/components/panel/profilePanel/profileCard.tsx";
-import StatisticsPanel from "@/components/panel/statisticsPanel/statisticsPanel.tsx";
 import { ArtistPanel } from "@/routes/ArtistPanel.tsx";
-import ArtistStatisticsPanel from "@/components/panel/artistStatistics/artist-statistics-panel.tsx";
 import SalePanel from "@/components/panel/salePanel/sale-panel.tsx";
 import { salesData } from "@/components/panel/salePanel/salesData.tsx";
 import ArtistProfileCard from "@/components/panel/profilePanel/artistProfileCard.tsx";
 import { ArtistProfile } from './components/artistProfile/ArtistProfile.tsx';
 import { NotFound404 } from './routes/404.tsx';
+import { Dashboard } from './routes/Dashboard.tsx';
+import { UserDashboard } from './components/user-dashboard/UserDashboard.tsx';
+import { UserDashboardProfile } from './components/user-dashboard/UserDashboardProfile.tsx';
+import { UserDashboardLibrary } from './components/user-dashboard/UserDashboardLibrary.tsx';
+import { UserDashboardOrders } from './components/user-dashboard/UserDashboardOrders.tsx';
 
 function App() {
     return (
@@ -56,59 +54,23 @@ function App() {
                 <Route path='profile/artist/:id' element={<ArtistProfile />} />
 
                 <Route path='user' element={<ProtectedRoute requiredRole={UserRole.USER} redirectTo='/user/dashboard' />}>
-                    <Route path='dashboard' element={<UserPanel />}>
-                        <Route index element={
-                            <ProfileCard />
-                        }
-                        />
-                        <Route path="userProfile" element={
-                            <ProfileCard />
-                        }
-                        />
-                        <Route path='purchases' element={
-                            <PurchasePanel purchases={purchasesData} />
-                        }
-                        />
-                        <Route path='statistics' element={
-                            <StatisticsPanel />
-                        }
-                        />
-                        <Route path='songPanel' element={
-                            <MusicPlayer songs={sampleSongs} />
-                        }
-                        />
-                        <Route path='albumPanel' element={
-                            <AlbumPlayer albums={sampleAlbums} />
-                        }
-                        />
+                    <Route path='dashboard' element={<Dashboard role={UserRole.USER} />}>
+                        <Route index element={<UserDashboard />}/>
+                        <Route path='profile' element={<UserDashboardProfile />}/>
+                        <Route path='library' element={<UserDashboardLibrary />}/>
+                        <Route path='orders' element={<UserDashboardOrders />}/>
+                        <Route path='stats' element={<MusicPlayer songs={sampleSongs} />}/>
                     </Route>
-
                 </Route>
 
-                <Route
-                    path="artist"
-                    element={
-                        <ProtectedRoute
-                            requiredRole={UserRole.USER}
-                            redirectTo="/artist/dashboard"
-                        />
-                    }
-                >
+                <Route path="artist" element={<ProtectedRoute requiredRole={UserRole.ARTIST} redirectTo="/artist/dashboard"/>}>
                     <Route path="dashboard" element={<ArtistPanel />}>
                         <Route index element={<ArtistProfileCard />} />
-                        <Route path="artistProfile" element={<ArtistProfileCard />} />
+                        <Route path="profile" element={<ArtistProfileCard />} />
                         <Route path="sales" element={<SalePanel sales={salesData} />} />
-                        <Route path="statistics" element={
-                            <ArtistStatisticsPanel
-                                songChartData={songChartData}
-                                albumChartData={albumChartData}
-                                playbackChartData={playbackChartData}
-                                period="Último mes"
-                                trend="↑ 15% más ingresos que el mes anterior"
-                                totalIncome={5950}
-                            />} />
-                        <Route path="songPanel" element={<MusicPlayer songs={sampleSongs} />} />
-                        <Route path="albumPanel" element={<AlbumPlayer albums={sampleAlbums} />} />
+                        <Route path="stats" element={<></>} />
+                        <Route path="songs" element={<MusicPlayer songs={sampleSongs} />} />
+                        <Route path="albums" element={<AlbumPlayer albums={sampleAlbums} />} />
                     </Route>
                 </Route>
                 <Route path='*' element={<NotFound404 />} />
