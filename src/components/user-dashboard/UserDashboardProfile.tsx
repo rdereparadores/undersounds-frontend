@@ -171,7 +171,7 @@ export const UserDashboardProfileAddressesCardItem = () => {
 
 export const UserDashboardProfileAddressesAddCard = () => {
     return (
-        <Card className='w-96'>
+        <Card className='w-96 min-h-64'>
             <CardContent className='p-0 flex flex-col items-center justify-center h-full'>
                 <IoAddCircleOutline className='w-32 h-32' color='gray' />
                 <CardDescription className='text-md'>Añadir dirección</CardDescription>

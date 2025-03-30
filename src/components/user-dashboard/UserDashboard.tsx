@@ -42,7 +42,7 @@ export const UserDashboardLatestCardItem = () => {
                 <div className="flex justify-center items-start gap-4 flex-wrap">
                     <img src='https://picsum.photos/800' className="rounded-md w-48 h-48 sm:w-72 sm:h-72" />
                     <div className="flex flex-col items-center sm:items-start">
-                        <p className="text-2xl font-medium">Cara al sol</p>
+                        <p className="text-2xl font-medium">Buenas noches</p>
                         <p>Quevedo</p>
                     </div>
                 </div>

@@ -22,7 +22,7 @@ export const UserDashboardLibrarySongItem = () => {
                 </Button>
             </CardHeader>
             <CardContent className="pt-2 px-2">
-                <CardTitle>Cara al sol</CardTitle>
+                <CardTitle>Buenas noches</CardTitle>
                 <CardDescription>Quevedo</CardDescription>
             </CardContent>
         </Card>
@@ -41,7 +41,7 @@ export const UserDashboardLibraryAlbumItemTrack = () => {
                 </Button>
             </TableCell>
             <TableCell>
-                <p>Cara al sol remix</p>
+                <p>Duro</p>
             </TableCell>
             <TableCell className="hidden sm:table-cell">
                 <p>Quevedo</p>
@@ -61,7 +61,7 @@ export const UserDashboardLibraryAlbumItem = () => {
                 <div className="flex gap-4 flex-wrap">
                     <img src='https://picsum.photos/400' className="w-32 h-32 rounded-xl" />
                     <div className="flex flex-col gap-1">
-                        <CardTitle>Cara al sol</CardTitle>
+                        <CardTitle>Buenas noches</CardTitle>
                         <CardDescription>Quevedo</CardDescription>
                         <CardDescription>5 pistas | 35:05</CardDescription>
                     </div>

@@ -39,7 +39,7 @@ export const UserDashboardOrdersOrderAddress = () => {
             <CardContent>
                 <p>Iván Ruiz López</p>
                 <p>Avenida de las Delicias, 2</p>
-                <p>Colegio Mayor Antonio Franco</p>
+                <p>Colegio Mayor</p>
                 <p>10004 Cáceres</p>
                 <p>666666666</p>
             </CardContent>
@@ -69,7 +69,7 @@ export const UserDashboardOrdersOrderDetails = () => {
                     <CardContent>
                         <p>Iván Ruiz López</p>
                         <p>Avenida de las Delicias, 2</p>
-                        <p>Colegio Mayor Antonio Franco</p>
+                        <p>Colegio Mayor</p>
                         <p>10004 Cáceres</p>
                         <p>666666666</p>
                     </CardContent>

@@ -27,6 +27,7 @@ import { UserDashboard } from './components/user-dashboard/UserDashboard.tsx';
 import { UserDashboardProfile } from './components/user-dashboard/UserDashboardProfile.tsx';
 import { UserDashboardLibrary } from './components/user-dashboard/UserDashboardLibrary.tsx';
 import { UserDashboardOrders } from './components/user-dashboard/UserDashboardOrders.tsx';
+import { UserDashboardStats } from './components/user-dashboard/UserDashboardStats.tsx';
 
 function App() {
     return (
@@ -59,7 +60,7 @@ function App() {
                         <Route path='profile' element={<UserDashboardProfile />}/>
                         <Route path='library' element={<UserDashboardLibrary />}/>
                         <Route path='orders' element={<UserDashboardOrders />}/>
-                        <Route path='stats' element={<MusicPlayer songs={sampleSongs} />}/>
+                        <Route path='stats' element={<UserDashboardStats />}/>
                     </Route>
                 </Route>
 
