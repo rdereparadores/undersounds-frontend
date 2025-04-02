@@ -1,4 +1,5 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@radix-ui/react-avatar'
+import { MdOutlineLocalShipping } from "react-icons/md"
 import { IoAlbumsOutline } from 'react-icons/io5'
 import {
     DropdownMenu,
@@ -8,8 +9,6 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { PiVinylRecord } from "react-icons/pi"
-import { IoStatsChartOutline } from 'react-icons/io5'
 import { IoIosLogOut } from 'react-icons/io'
 import { RxDashboard } from "react-icons/rx"
 import { Button } from "../ui/button"
@@ -45,16 +44,13 @@ export const NavBarUserSection = () => {
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
                     <DropdownMenuItem asChild>
-                        <Link to='/user/dashboard'><RxDashboard />Perfil</Link>
+                        <Link to='/user/dashboard'><RxDashboard />Panel</Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>
-                        <Link to='/user/dashboard/songPanel'><PiVinylRecord />Canciones</Link>
+                        <Link to='/user/dashboard/library'><IoAlbumsOutline />Biblioteca</Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>
-                        <Link to='/user/dashboard/albumPanel'><IoAlbumsOutline />Álbumes</Link>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem asChild>
-                        <Link to='/user/dashboard/stats'><IoStatsChartOutline />Estadísticas</Link>
+                        <Link to='/user/dashboard/orders'><MdOutlineLocalShipping />Pedidos</Link>
                     </DropdownMenuItem>
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
