@@ -8,7 +8,6 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { PiVinylRecord } from "react-icons/pi"
 import { IoStatsChartOutline } from 'react-icons/io5'
 import { IoIosLogOut } from 'react-icons/io'
 import { Button } from "../ui/button"
@@ -48,10 +47,7 @@ export const NavBarArtistSection = () => {
                         <Link to='/artist/dashboard'><RxDashboard />Panel</Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>
-                        <Link to='/artist/dashboard/songPanel'><PiVinylRecord />Mis canciones</Link>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem asChild>
-                        <Link to='/artist/dashboard/albumPanel'><IoAlbumsOutline />Mis álbumes</Link>
+                        <Link to='/artist/dashboard/releases'><IoAlbumsOutline />Lanzamientos</Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>
                         <Link to='/artist/dashboard/sales'><IoStatsChartOutline />Ventas</Link>
