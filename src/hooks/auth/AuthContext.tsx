@@ -8,15 +8,16 @@ export interface AuthContextLogInProps {
 }
 
 export interface AuthContextSignUpUserProps {
-    userName: string,
+    name: string,
+    surName: string
     email: string,
-    password: string
+    password: string,
+    birthDate: Date
 }
 
 export interface AuthContextSignUpArtistProps extends AuthContextSignUpUserProps {
-    name: string,
-    surname: string,
-    artistName: string
+    artistName: string,
+    artistUserName: string
 }
 
 interface AuthContextProps {
@@ -25,8 +26,8 @@ interface AuthContextProps {
     userRole: UserRole,
     logIn: ({ email, password }: AuthContextLogInProps) => Promise<boolean>,
     logOut: () => void,
-    signUpUser: ({ userName, email, password }: AuthContextSignUpUserProps) => Promise<boolean>,
-    signUpArtist: ({ userName, email, password, name, surname, artistName }: AuthContextSignUpArtistProps) => Promise<boolean>
+    signUpUser: (input: AuthContextSignUpUserProps) => Promise<boolean>,
+    signUpArtist: (input: AuthContextSignUpArtistProps) => Promise<boolean>
 }
 
 export const AuthContext = createContext<AuthContextProps>({

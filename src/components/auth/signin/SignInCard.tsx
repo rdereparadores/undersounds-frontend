@@ -6,18 +6,26 @@ import { Separator } from "@/components/ui/separator"
 import { FaFacebookF, FaGoogle } from "react-icons/fa"
 import { RiNeteaseCloudMusicFill } from "react-icons/ri"
 import { Link, useNavigate, useSearchParams } from 'react-router'
-import { useState, FormEvent, ChangeEvent, useEffect } from "react"
+import { useState, useEffect } from "react"
 import { toast } from "sonner"
+import { z } from 'zod'
+import { zodResolver } from "@hookform/resolvers/zod"
 
 import { useAuth } from "@/hooks/auth/useAuth"
+import { useForm } from "react-hook-form"
+
+const signInSchema = z.object({
+    email: z.string().email({ message: 'Email inválido' }),
+    password: z.string({ message: 'Contraseña incorrecta' })
+})
+type SignInFormData = z.infer<typeof signInSchema>
 
 export const SignInCard = () => {
+    const { register, handleSubmit, formState: { errors } } = useForm<SignInFormData>({
+        resolver: zodResolver(signInSchema)
+    })
     const [searchParams] = useSearchParams()
     const navigate = useNavigate()
-    const [input, setInput] = useState({
-        email: '',
-        password: ''
-    })
     const [logInButtonDisabled, setLogInButtonDisabled] = useState(false)
     const auth = useAuth()
 
@@ -27,13 +35,23 @@ export const SignInCard = () => {
         }
     }, [searchParams])
 
-    const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
-        e.preventDefault()
+    useEffect(() => {
+        if (errors.email) {
+            toast(errors.email.message)
+            return
+        }
+        if (errors.password) {
+            toast(errors.password.message)
+            return
+        }
+    }, [errors])
+
+    const onSubmit = async (data: SignInFormData) => {
 
         setLogInButtonDisabled(true)
         const result = await auth.logIn({
-            email: input.email,
-            password: input.password
+            email: data.email,
+            password: data.password
         })
 
         if (result) {
@@ -43,15 +61,6 @@ export const SignInCard = () => {
             setLogInButtonDisabled(false)
             toast.error('Email o contraseña incorrectos')
         }
-    }
-
-    const onInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target
-
-        setInput((prev) => ({
-            ...prev,
-            [name]: value
-        }))
     }
 
     return (
@@ -66,17 +75,17 @@ export const SignInCard = () => {
                 <CardDescription>Inicia sesión en tu cuenta de UnderSounds</CardDescription>
             </CardHeader>
             <CardContent>
-                <form onSubmit={onSubmit}>
+                <form onSubmit={handleSubmit(onSubmit)}>
                     <div className='flex flex-col gap-4'>
                         <div className='grid gap-2'>
                             <Label htmlFor='email'>Correo electrónico</Label>
-                            <Input required type='email' name='email' id='email' placeholder='user@example.com' onChange={onInputChange} />
+                            <Input type='email' {...register('email')} />
                         </div>
 
                         <div className='grid gap-2'>
                             <Label htmlFor='password'>Contraseña</Label>
                             <div className='flex flex-col gap-0.5'>
-                                <Input required id='password' name='password' type='password' onChange={onInputChange} />
+                                <Input type='password' {...register('password')} />
                                 <a href='#' className='ml-auto text-sm hover:underline'>¿Olvidaste tu contraseña?</a>
                             </div>
                         </div>
