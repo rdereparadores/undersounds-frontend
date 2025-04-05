@@ -3,6 +3,12 @@ import { Button } from "../components/ui/button"
 import { UserRole } from "@/constants"
 import { Separator } from "@/components/ui/separator"
 import { useAuth } from "@/hooks/auth/useAuth"
+import {
+    Collapsible,
+    CollapsibleContent,
+    CollapsibleTrigger,
+} from "@/components/ui/collapsible"
+
 
 export const UserDashboardMenu = () => {
     const auth = useAuth()
@@ -15,29 +21,83 @@ export const UserDashboardMenu = () => {
 
     return (
         <>
-            <Button asChild variant={isCurrentRoute('dashboard')}>
-                <Link to='/user/dashboard'>Panel</Link>
-            </Button>
-            <Button asChild variant={isCurrentRoute('profile')}>
-                <Link to='/user/dashboard/profile'>Perfil</Link>
-            </Button>
-            <Button asChild variant={isCurrentRoute('library')}>
-                <Link to='/user/dashboard/library'>Biblioteca</Link>
-            </Button>
-            <Button asChild variant={isCurrentRoute('orders')}>
-                <Link to='/user/dashboard/orders'>Pedidos</Link>
-            </Button>
-            <Button asChild variant={isCurrentRoute('stats')}>
-                <Link to='/user/dashboard/stats'>Estadísticas</Link>
-            </Button>
-            {auth.userRole === UserRole.ARTIST &&
-                <>
-                <Separator />
-                <Button asChild variant='outline'>
-                    <Link to='/artist/dashboard/'>Panel de artista</Link>
+            {/*Menu en pc*/}
+            <div className="flex-col gap-2 hidden sm:flex">
+                <Button asChild variant={isCurrentRoute('dashboard')}>
+                    <Link to='/user/dashboard'>Panel</Link>
                 </Button>
-                </>
-            }
+                <Button asChild variant={isCurrentRoute('profile')}>
+                    <Link to='/user/dashboard/profile'>Perfil</Link>
+                </Button>
+                <Button asChild variant={isCurrentRoute('library')}>
+                    <Link to='/user/dashboard/library'>Biblioteca</Link>
+                </Button>
+                <Button asChild variant={isCurrentRoute('orders')}>
+                    <Link to='/user/dashboard/orders'>Pedidos</Link>
+                </Button>
+                <Button asChild variant={isCurrentRoute('stats')}>
+                    <Link to='/user/dashboard/stats'>Estadísticas</Link>
+                </Button>
+                {auth.userRole === UserRole.ARTIST &&
+                    <>
+                        <Separator />
+                        <Button asChild variant='outline'>
+                            <Link to='/artist/dashboard/'>Panel de artista</Link>
+                        </Button>
+                    </>
+                }
+            </div>
+
+            {/*Menú de móvil*/}
+            <div className="sm:hidden">
+                <Collapsible>
+
+                    <CollapsibleTrigger asChild>
+                        <Button variant="outline" className="w-[100%]">Menú</Button>
+                    </CollapsibleTrigger>
+
+                    <CollapsibleContent>
+                        <div className="flex flex-col gap-2">
+                            <CollapsibleTrigger asChild>
+
+                                <Button asChild variant={isCurrentRoute('dashboard')}>
+                                    <Link to='/user/dashboard'>Panel</Link>
+                                </Button>
+                            </CollapsibleTrigger>
+
+                            <CollapsibleTrigger asChild>
+                                <Button asChild variant={isCurrentRoute('profile')}>
+                                    <Link to='/user/dashboard/profile'>Perfil</Link>
+                                </Button></CollapsibleTrigger>
+
+                            <CollapsibleTrigger asChild>
+                                <Button asChild variant={isCurrentRoute('library')}>
+                                    <Link to='/user/dashboard/library'>Biblioteca</Link>
+                                </Button></CollapsibleTrigger>
+
+                            <CollapsibleTrigger asChild>
+                                <Button asChild variant={isCurrentRoute('orders')}>
+                                    <Link to='/user/dashboard/orders'>Pedidos</Link>
+                                </Button></CollapsibleTrigger>
+
+                            <CollapsibleTrigger asChild>
+                                <Button asChild variant={isCurrentRoute('stats')}>
+                                    <Link to='/user/dashboard/stats'>Estadísticas</Link>
+                                </Button></CollapsibleTrigger>
+
+                            {auth.userRole === UserRole.ARTIST &&
+                                <>
+                                    <Separator />
+                                    <Button asChild variant='outline'>
+                                        <Link to='/artist/dashboard/'>Panel de artista</Link>
+                                    </Button>
+                                </>
+                            }
+                        </div>
+                    </CollapsibleContent>
+                </Collapsible>
+
+            </div >
         </>
     )
 }
@@ -70,10 +130,10 @@ export const ArtistDashboardMenu = () => {
             </Button>
             {auth.userRole === UserRole.ARTIST &&
                 <>
-                <Separator />
-                <Button asChild variant='outline'>
-                    <Link to='/user/dashboard/'>Panel de usuario</Link>
-                </Button>
+                    <Separator />
+                    <Button asChild variant='outline'>
+                        <Link to='/user/dashboard/'>Panel de usuario</Link>
+                    </Button>
                 </>
             }
         </>
