@@ -20,6 +20,10 @@ export interface AuthContextSignUpArtistProps extends AuthContextSignUpUserProps
     artistUserName: string
 }
 
+export interface AuthContextForgotPassword {
+    email:string,
+}
+
 interface AuthContextProps {
     token: string | null | undefined,
     userName: string,
@@ -27,7 +31,10 @@ interface AuthContextProps {
     logIn: ({ email, password }: AuthContextLogInProps) => Promise<boolean>,
     logOut: () => void,
     signUpUser: (input: AuthContextSignUpUserProps) => Promise<boolean>,
-    signUpArtist: (input: AuthContextSignUpArtistProps) => Promise<boolean>
+    signUpArtist: (input: AuthContextSignUpArtistProps) => Promise<boolean>,
+    signInGoogle: () => void,
+    signInFacebook: () => void,
+    forgotPassword: (input:AuthContextForgotPassword) => Promise<boolean>
 }
 
 export const AuthContext = createContext<AuthContextProps>({
@@ -37,5 +44,8 @@ export const AuthContext = createContext<AuthContextProps>({
     logIn: async () => (false),
     logOut: () => {},
     signUpUser: async () => (false),
-    signUpArtist: async () => (false)
+    signUpArtist: async () => (false),
+    signInGoogle: async () => {},
+    signInFacebook: async () => {},
+    forgotPassword: async () => (false)
 })

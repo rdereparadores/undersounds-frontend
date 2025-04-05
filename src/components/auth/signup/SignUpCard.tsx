@@ -7,9 +7,10 @@ import { Link } from 'react-router'
 import { Tabs, TabsList, TabsContent, TabsTrigger } from "@/components/ui/tabs"
 import { SignUpUserForm } from "./SignUpUserForm"
 import { SignUpArtistForm } from "./SignUpArtistForm"
+import { useAuth } from "@/hooks/auth/useAuth"
 
 export const SignUpCard = () => {
-
+    const auth = useAuth()
     return (
         <Card className='w-[400px]'>
             <CardHeader>
@@ -42,10 +43,10 @@ export const SignUpCard = () => {
                 </div>
 
                 <div className='flex flex-col gap-3'>
-                    <Button className='w-full'>
+                    <Button onClick={auth.signInGoogle} className='w-full'>
                         <FaGoogle /> Registrarse con Google
                     </Button>
-                    <Button className='w-full'>
+                    <Button onClick={auth.signInFacebook} className='w-full'>
                         <FaFacebookF /> Registrarse con Facebook
                     </Button>
                 </div>

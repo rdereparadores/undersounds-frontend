@@ -54,7 +54,7 @@ export const SignInCard = () => {
             password: data.password
         })
 
-        if (result) {
+        if (result === true) {
             const redirectTo = searchParams.get('redirectTo')
             navigate(redirectTo ? redirectTo : '/user/dashboard')
         } else {
@@ -62,6 +62,7 @@ export const SignInCard = () => {
             toast.error('Email o contraseña incorrectos')
         }
     }
+
 
     return (
         <Card className='w-[400px]'>
@@ -101,10 +102,10 @@ export const SignInCard = () => {
                 </div>
 
                 <div className='flex flex-col gap-3'>
-                    <Button className='w-full'>
+                    <Button onClick={auth.signInGoogle} className='w-full'>
                         <FaGoogle /> Iniciar sesión con Google
                     </Button>
-                    <Button className='w-full'>
+                    <Button onClick={auth.signInFacebook} className='w-full'>
                         <FaFacebookF /> Iniciar sesión con Facebook
                     </Button>
                 </div>
