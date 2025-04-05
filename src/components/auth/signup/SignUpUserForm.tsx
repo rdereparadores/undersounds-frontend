@@ -10,9 +10,7 @@ import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { z } from 'zod'
 
-const signUpArtistSchema = z.object({
-    artistName: z.string(),
-    artistUserName: z.string(),
+const signUpUserSchema = z.object({
     name: z.string(),
     surName: z.string(),
     birthDate: z.date(),
@@ -27,11 +25,11 @@ const signUpArtistSchema = z.object({
     message: 'Las contraseñas no coinciden'
 })
 
-type SignUpArtistData = z.infer<typeof signUpArtistSchema>
+type SignUpUserData = z.infer<typeof signUpUserSchema>
 
-export const SignUpArtistForm = () => {
-    const { register, handleSubmit, formState: { errors }, setValue } = useForm<SignUpArtistData>({
-        resolver: zodResolver(signUpArtistSchema)
+export const SignUpUserForm = () => {
+    const { register, handleSubmit, formState: { errors }, setValue } = useForm<SignUpUserData>({
+        resolver: zodResolver(signUpUserSchema)
     })
     const auth = useAuth()
     const [date, setDate] = useState(new Date())
@@ -50,7 +48,7 @@ export const SignUpArtistForm = () => {
         setValue('birthDate', date)
     }, [date, setValue])
 
-    const onSubmit = async (data: SignUpArtistData) => {
+    const onSubmit = async (data: SignUpUserData) => {
         setSignUpButtonDisabled(true)
 
         const result = await auth.signUpUser(data)
@@ -61,15 +59,7 @@ export const SignUpArtistForm = () => {
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
-            <div className='flex flex-col gap-4'>
-                <div className='grid gap-2'>
-                    <Label htmlFor='artistName'>Nombre artístico</Label>
-                    <Input type='text' placeholder='Artista' {...register('artistName')} />
-                </div>
-                <div className='grid gap-2'>
-                    <Label htmlFor='artistUserName'>Nombre de usuario</Label>
-                    <Input type='text' placeholder='@artista' {...register('artistUserName')} />
-                </div>
+            <div className='flex flex-col gap-4 mt-2'>
                 <div className='flex flex-row gap-2'>
                     <div className='grid gap-2'>
                         <Label htmlFor='name'>Nombre</Label>

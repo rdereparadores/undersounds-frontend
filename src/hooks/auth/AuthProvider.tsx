@@ -1,8 +1,19 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router'
-import { AuthContext, AuthContextLogInProps, AuthContextSignUpArtistProps, AuthContextSignUpUserProps } from './AuthContext'
+import { AuthContext, AuthContextForgotPassword, AuthContextLogInProps, AuthContextSignUpArtistProps, AuthContextSignUpUserProps } from './AuthContext'
 import { UserRole } from '@/constants'
+import {
+    createUserWithEmailAndPassword,
+    signInWithEmailAndPassword,
+    GoogleAuthProvider,signInWithPopup,
+    sendPasswordResetEmail,
+    FacebookAuthProvider,
+    //sendEmailVerification, sendPasswordResetEmail,updatePassword, fetchSignInMethodsForEmail
+} from 'firebase/auth'
+import { auth } from './firebase'
+import { FirebaseError } from 'firebase/app'
 import { toast } from 'sonner'
+
 
 interface AuthProviderProps {
     children: React.ReactNode
@@ -31,18 +42,33 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     }, [])
 
     const logIn = async ({ email, password }: AuthContextLogInProps) => {
-        if (email === password) {
+        try {
+            const userCredential = await signInWithEmailAndPassword(auth, email, password)
+            const idToken = userCredential.user.getIdToken().toString()
+
+            setUserName(email)
+            localStorage.setItem('jwt', idToken)
+            setToken(idToken)
+            setUserRole(UserRole.ARTIST)
+            return true
+
+        } catch (error: unknown) {
+            if(error instanceof FirebaseError){
+                const errorCode = error.code
+                if(errorCode === 'auth/wrong-password'){
+                    toast.error("Email o contraseña incorrectos")
+                }else if(errorCode === 'auth/invalid-email'){
+                    toast.error("Email o contraseña incorrectos")
+                }else if(errorCode === 'auth/user-not-found'){
+                    toast.error("No existe un usuario para ese email")
+                }
+            }
             return false
         }
-
-        setUserName(email)
-        localStorage.setItem('jwt', 'example-token')
-        setToken('example-token')
-        setUserRole(UserRole.ARTIST)
-        return true
     }
 
     const logOut = () => {
+        auth.signOut()
         localStorage.removeItem('jwt')
         setToken(null)
         setUserRole(UserRole.GUEST)
@@ -50,44 +76,116 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         setTimeout(() => navigate('/auth/signin'), 0)
     }
 
-    const signUpUser = async ({ userName, email, password }: AuthContextSignUpUserProps) => {
-        if (userName == 'usuario') {
-            toast.error('El nombre de usuario no está disponible')
+    const signUpUser = async (data: AuthContextSignUpUserProps) => {
+        try {
+            const userCredential = await createUserWithEmailAndPassword(auth, data.email, data.password)
+            const idToken = userCredential.user.getIdToken().toString()
+
+            setUserName(data.email)
+            localStorage.setItem('jwt', idToken)
+            setToken(idToken)
+            setUserRole(UserRole.USER)
+
+            return true
+        } catch (error: unknown) {
+            if(error instanceof FirebaseError){
+                const errorCode = error.code
+                if(errorCode === 'auth/email-already-in-use'){
+                    toast.error("Error al registrarse")
+                }else if(errorCode === 'auth/invalid-email'){
+                    toast.error("Error al registrarse")
+                }else if(errorCode === 'auth/weak-password'){
+                    toast.error("Error al registrarse")
+                }
+            }
             return false
         }
-        if (email == 'email@example.com') {
-            toast.error('Ya existe un usuario con esa dirección de correo')
+    }
+
+    const signUpArtist = async (data: AuthContextSignUpArtistProps) => {
+        try {
+            //const userCredential = 
+            await createUserWithEmailAndPassword(auth, data.email, data.password)
+            //const idToken = userCredential.user.getIdToken().toString()
+
+            //TODO enviar todos los campos a la base de datos
+
+            return true
+        } catch (error: unknown) {
+            if(error instanceof FirebaseError){
+                const errorCode = error.code
+                if(errorCode === 'auth/email-already-in-use'){
+                    toast.error("Error al registrarse")
+                }else if(errorCode === 'auth/invalid-email'){
+                    toast.error("Error al registrarse")
+                }else if(errorCode === 'auth/weak-password'){
+                    toast.error("Error al registrarse")
+                }
+            }
             return false
         }
-        if (password == 'password') {
-            toast.error('Contraseña insegura')
+    }
+
+    const signInGoogle = async() => {
+        auth.languageCode = 'es';
+        const google = new GoogleAuthProvider();
+        try {
+            const result = (await signInWithPopup(auth, google));
+            //const credential = 
+            GoogleAuthProvider.credentialFromResult(result);
+            //const idToken = (await result.user.getIdToken()).toString()
+            
+        //TODO enviar todos los campos a la base de datos
+
+        } catch (error: unknown) {
+            if(error instanceof FirebaseError){
+                const errorCode = error.code
+                if(errorCode === 'auth/account-exists-with-different-credential'){
+                    toast.error("Ya existe un usuario con ese email")
+                }else if(errorCode === 'auth/cancelled-popup-request'){
+                    toast.error("Se intentó abrir otra ventana emergente")
+                }else if(errorCode === 'auth/popup-closed-by-user'){
+                    toast.error("Ventana emergente cerrada por el usuario")
+                }
+            }
             return false
         }
+    }
+
+    const signInFacebook = async() => {
+        auth.languageCode = 'es';
+        const facebook = new FacebookAuthProvider();
+        try {  
+            const result = (await signInWithPopup(auth, facebook));
+            //const credential = 
+            FacebookAuthProvider.credentialFromResult(result);
+            //const idToken = (await result.user.getIdToken()).toString()
+            
+        //TODO enviar todos los campos a la base de datos
+
+        } catch (error: unknown) {
+            if(error instanceof FirebaseError){
+                const errorCode = error.code
+                if(errorCode === 'auth/account-exists-with-different-credential'){
+                    toast.error("Ya existe un usuario con ese email")
+                }else if(errorCode === 'auth/cancelled-popup-request'){
+                    toast.error("Se intentó abrir otra ventana emergente")
+                }else if(errorCode === 'auth/popup-closed-by-user'){
+                    toast.error("Ventana emergente cerrada por el usuario")
+                }
+            }
+            return false
+        }
+    }
+
+    const forgotPassword = async(data:AuthContextForgotPassword) => { 
+        sendPasswordResetEmail(auth,data.email)
         return true
     }
 
-    const signUpArtist = async ({ userName, email, password, name, surname, artistName }: AuthContextSignUpArtistProps) => {
-        if (userName == 'usuario') {
-            toast.error('El nombre de usuario no está disponible')
-            return false
-        }
-        if (email == 'email@example.com') {
-            toast.error('Ya existe un usuario con esa dirección de correo')
-            return false
-        }
-        if (password == 'password') {
-            toast.error('Contraseña insegura')
-            return false
-        }
-        if (name == 'nombre' || surname == 'apellidos' || artistName == 'artista') {
-            toast.error('Campos no válidos')
-            return false
-        }
-        return true
-    }
     return (
-        <AuthContext.Provider value={{ token, userName, userRole, logIn, logOut, signUpUser, signUpArtist }}>
-            { children }
+        <AuthContext.Provider value={{ token, userName, userRole, logIn, logOut, signUpUser, signUpArtist, signInGoogle, forgotPassword, signInFacebook }}>
+            {children}
         </AuthContext.Provider>
     )
 }
