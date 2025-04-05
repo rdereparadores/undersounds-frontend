@@ -13,6 +13,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 
 import { useAuth } from "@/hooks/auth/useAuth"
 import { useForm } from "react-hook-form"
+import { ForgotPassword } from "./ForgotPassword"
 
 const signInSchema = z.object({
     email: z.string().email({ message: 'Email inválido' }),
@@ -87,7 +88,7 @@ export const SignInCard = () => {
                             <Label htmlFor='password'>Contraseña</Label>
                             <div className='flex flex-col gap-0.5'>
                                 <Input type='password' {...register('password')} />
-                                <a href='#' className='ml-auto text-sm hover:underline'>¿Olvidaste tu contraseña?</a>
+                                <ForgotPassword></ForgotPassword>
                             </div>
                         </div>
 
