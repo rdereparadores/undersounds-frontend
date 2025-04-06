@@ -164,8 +164,12 @@ export const VerificationPopUp = () => {
                     </InputOTP>
                 </div>
                 <DialogFooter className='gap-2'>
-                    <Button>Volver a enviar</Button>
-                    <Button>Verificar</Button>
+                    <DialogClose asChild>
+                        <Button>Volver a enviar</Button>
+                    </DialogClose>
+                    <DialogClose asChild>
+                        <Button>Verificar</Button>
+                    </DialogClose>
                 </DialogFooter>
             </DialogContent>
         </Dialog>
@@ -201,7 +205,9 @@ export const UserDashboardProfilePasswordUpdateCard = () => {
                                 </div>
                             </div>
                             <DialogFooter>
-                                <VerificationPopUp></VerificationPopUp>
+                                <DialogClose asChild>
+                                    <VerificationPopUp></VerificationPopUp>
+                                </DialogClose>
                             </DialogFooter>
                         </DialogContent>
                     </Dialog>
@@ -276,7 +282,7 @@ export const AddAdress = () => {
                     </div>
 
                     <div className='flex gap-2 flex-col'>
-                        <Label htmlFor='address-address2'>* Dirección 2</Label>
+                        <Label htmlFor='address-address2'>Dirección 2</Label>
                         <Input id="address-address2" placeholder="Dirección 2" />
                     </div>
 
@@ -364,7 +370,9 @@ export const EditUserAvatar = () => {
                     <img onClick={onButtonClick} src='https://picsum.photos/200' className='w-32 h-32 rounded-full hover:cursor-pointer'></img>
                 </div>
                 <DialogFooter className='gap-2'>
-                    <Button>Confirmar</Button>
+                    <DialogClose asChild>
+                        <Button>Confirmar</Button>
+                    </DialogClose>
                 </DialogFooter>
             </DialogContent>
         </Dialog>
