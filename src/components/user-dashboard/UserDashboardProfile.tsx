@@ -24,7 +24,6 @@ import {
 } from "@/components/ui/dialog"
 import { Label } from '../ui/label'
 import { InputOTP, InputOTPGroup, InputOTPSlot, InputOTPSeparator } from '../ui/input-otp'
-import { CheckoutAddressAddButton } from '../checkout/CheckoutAddressAddButton'
 import { CheckoutAddressCountrySelector } from '../checkout/CheckoutAddressCountrySelector'
 
 const maxBirthdate = new Date(Date.now())
@@ -342,10 +341,12 @@ export const UserDashboardProfileAddressesCard = () => {
 
 export const EditUserAvatar = () => {
 
-    const inputFile = useRef(null);
+    const inputFile = useRef<HTMLInputElement | null>(null);
 
     const onButtonClick = () => {
-        inputFile.current.click();
+        if (inputFile.current) {
+            inputFile.current.click();
+        }
     };
 
     return (
