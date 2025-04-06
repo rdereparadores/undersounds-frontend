@@ -47,7 +47,7 @@ export const CheckoutAddressAddButton = () => {
                     </div>
 
                     <div className='flex gap-2 flex-col'>
-                        <Label htmlFor='address-address2'>* Dirección 2</Label>
+                        <Label htmlFor='address-address2'>Dirección 2</Label>
                         <Input id="address-address2" placeholder="Dirección 2" />
                     </div>
 
