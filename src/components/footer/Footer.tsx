@@ -16,18 +16,18 @@ export function Footer() {
                     <CardTitle></CardTitle>
                     <CardDescription></CardDescription>
                 </CardHeader>
-                <CardContent className="flex gap-36 flex-wrap justify-center">
+                <CardContent className="flex sm:gap-32 sm:flex-row flex-col gap-14 flex-wrap sm:justify-center items-center">
                     <div>
                         <p className="text-white w-fit">Logo UnderSounds</p>
                     </div>
 
-                    <div className="flex flex-col gap-4">
+                    <div className="flex flex-col items-center gap-4">
                         <p className="text-gray-400 font-mono font-semibold">COMUNIDAD</p>
                         <Link to="auth/signup"><p className="hover:underline text-white text-start">Registrarse</p></Link>
                         <Link to="auth/signin"><p className="hover:underline text-white text-start">Iniciar sesión</p></Link>
                     </div>
 
-                    <div className="flex flex-col gap-4">
+                    <div className="flex flex-col items-center gap-4">
                         <p className="text-gray-400 font-mono font-semibold">ENLACES ÚTILES</p>
                         <Link to="/"><p className="hover:underline text-white text-start">Inicio</p></Link>
                         <Link to="/shop"><p className="hover:underline text-white text-start">Tienda</p></Link>
@@ -35,7 +35,7 @@ export function Footer() {
 
                 </CardContent>
                 <CardFooter className="flex justify-center flex-wrap">
-                    <Button variant="link" className="text-gray-400 text-sm">Legal</Button>
+                    <Button variant="link" className="text-gray-400 text-sm">Terminos y condiciones</Button>
                     <Button variant="link" className="text-gray-400 text-sm">Centro de seguridad y privacidad</Button>
                     <Button variant="link" className="text-gray-400 text-sm">Politica de privacidad</Button>
                     <Button variant="link" className="text-gray-400 text-sm">Configuración de cookies</Button>
