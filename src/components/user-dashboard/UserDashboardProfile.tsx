@@ -10,8 +10,21 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Badge } from '../ui/badge'
 import { IoAddCircleOutline } from "react-icons/io5"
 import { DatePicker } from '../ui/new-date-picker'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { Skeleton } from '../ui/skeleton'
+import {
+    Dialog,
+    DialogClose,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from "@/components/ui/dialog"
+import { Label } from '../ui/label'
+import { InputOTP, InputOTPGroup, InputOTPSlot, InputOTPSeparator } from '../ui/input-otp'
+import { CheckoutAddressCountrySelector } from '../checkout/CheckoutAddressCountrySelector'
 
 const maxBirthdate = new Date(Date.now())
 maxBirthdate.setFullYear(maxBirthdate.getFullYear() - 16);
@@ -92,10 +105,74 @@ export const UserDashboardProfileEmailUpdateCard = () => {
                         <CardTitle>Correo electrónico</CardTitle>
                         <CardDescription>pepe@gmail.com</CardDescription>
                     </div>
-                    <Button>Actualizar</Button>
+                    <Dialog>
+                        <DialogTrigger asChild>
+                            <Button>Actualizar</Button>
+                        </DialogTrigger>
+                        <DialogContent className='w-fit min-w-[25%]'>
+                            <DialogHeader>
+                                <DialogTitle>Cambiar correo electrónico</DialogTitle>
+                                <DialogDescription>
+                                    Cambia tu correo electronico por otro.
+                                </DialogDescription>
+                            </DialogHeader>
+                            <div className='flex flex-col justify-center gap-4'>
+                                <div>
+                                    <Label htmlFor="email">Nuevo correo electrónico</Label>
+                                    <Input id="newEmail" type="email" placeholder='correo@example.com'></Input>
+                                    <Label htmlFor="email">Nuevo correo electrónico</Label>
+                                    <Input id="newEmail" type="email" placeholder='correo@example.com'></Input>
+                                </div>
+                            </div>
+                            <DialogFooter>
+                                <VerificationPopUp></VerificationPopUp>
+                            </DialogFooter>
+                        </DialogContent>
+                    </Dialog>
                 </div>
             </CardHeader>
         </Card>
+    )
+}
+
+export const VerificationPopUp = () => {
+    return (
+        <Dialog>
+            <DialogTrigger asChild>
+                <Button>Continuar</Button>
+            </DialogTrigger>
+            <DialogContent className='w-fit'>
+                <DialogHeader>
+                    <DialogTitle>Verificar usuario</DialogTitle>
+                    <DialogDescription>
+                        Introduce el código que te hemos enviado al correo.
+                    </DialogDescription>
+                </DialogHeader>
+                <div className='flex justify-center'>
+                    <InputOTP maxLength={6}>
+                        <InputOTPGroup>
+                            <InputOTPSlot index={0} />
+                            <InputOTPSlot index={1} />
+                            <InputOTPSlot index={2} />
+                        </InputOTPGroup>
+                        <InputOTPSeparator />
+                        <InputOTPGroup>
+                            <InputOTPSlot index={3} />
+                            <InputOTPSlot index={4} />
+                            <InputOTPSlot index={5} />
+                        </InputOTPGroup>
+                    </InputOTP>
+                </div>
+                <DialogFooter className='gap-2'>
+                    <DialogClose asChild>
+                        <Button>Volver a enviar</Button>
+                    </DialogClose>
+                    <DialogClose asChild>
+                        <Button>Verificar</Button>
+                    </DialogClose>
+                </DialogFooter>
+            </DialogContent>
+        </Dialog>
     )
 }
 
@@ -108,7 +185,32 @@ export const UserDashboardProfilePasswordUpdateCard = () => {
                         <CardTitle>Contraseña</CardTitle>
                         <CardDescription>Cambia tu contraseña</CardDescription>
                     </div>
-                    <Button>Cambiar</Button>
+                    <Dialog>
+                        <DialogTrigger asChild>
+                            <Button>Cambiar</Button>
+                        </DialogTrigger>
+                        <DialogContent className='w-fit min-w-[25%]'>
+                            <DialogHeader>
+                                <DialogTitle>Cambiar contraseña</DialogTitle>
+                                <DialogDescription>
+                                    Cambia tu contraseña por otra.
+                                </DialogDescription>
+                            </DialogHeader>
+                            <div className='flex flex-col justify-center gap-4'>
+                                <div>
+                                    <Label htmlFor="password">Nueva contraseña</Label>
+                                    <Input id="newPassword" type="password" placeholder='Contraseña'></Input>
+                                    <Label htmlFor="password">Confirmar nueva contraseña</Label>
+                                    <Input id="newPassword" type="password" placeholder='Contraseña'></Input>
+                                </div>
+                            </div>
+                            <DialogFooter>
+                                <DialogClose asChild>
+                                    <VerificationPopUp></VerificationPopUp>
+                                </DialogClose>
+                            </DialogFooter>
+                        </DialogContent>
+                    </Dialog>
                 </div>
             </CardHeader>
         </Card>
@@ -139,11 +241,91 @@ export const UserDashboardProfileAddressesCardItem = () => {
     )
 }
 
+export const AddAdress = () => {
+    return (
+        <Dialog>
+            <DialogTrigger>
+                <IoAddCircleOutline className='w-32 h-32' color='gray' />
+            </DialogTrigger>
+            <DialogContent>
+                <DialogHeader>
+                    <DialogTitle className="font-bold">Nueva dirección</DialogTitle>
+                    <DialogDescription>* Campo obligatorio</DialogDescription>
+                </DialogHeader>
+
+                <div className='flex flex-col gap-2'>
+                    <div className='flex gap-2'>
+                        <div className='flex gap-2 grow flex-col'>
+                            <Label htmlFor='address-name'>* Nombre</Label>
+                            <Input id='address-name' placeholder='Nombre' />
+                        </div>
+
+                        <div className='flex gap-2 grow flex-col'>
+                            <Label htmlFor='address-surname'>* Apellidos</Label>
+                            <Input id='address-surname' placeholder='Apellidos' />
+                        </div>
+                    </div>
+
+                    <div className='flex gap-2'>
+                        <div className='flex gap-2 grow flex-col'>
+                            <CheckoutAddressCountrySelector />
+                        </div>
+                        <div className='flex gap-2 grow flex-col'>
+                            <Label htmlFor='address-phone'>* Teléfono</Label>
+                            <Input id='address-phone' placeholder='Teléfono' />
+                        </div>
+                    </div>
+
+                    <div className='flex gap-2 flex-col'>
+                        <Label htmlFor='address-address1'>* Dirección 1</Label>
+                        <Input id="address-address1" placeholder="Dirección 1" />
+                    </div>
+
+                    <div className='flex gap-2 flex-col'>
+                        <Label htmlFor='address-address2'>Dirección 2</Label>
+                        <Input id="address-address2" placeholder="Dirección 2" />
+                    </div>
+
+                    <div className='flex gap-2'>
+                        <div className='flex gap-2 grow flex-col'>
+                            <Label htmlFor='address-province'>* Provincia</Label>
+                            <Input id="address-province" placeholder="Provincia" />
+                        </div>
+                        <div className='flex gap-2 grow flex-col'>
+                            <Label htmlFor='address-city'>* Ciudad</Label>
+                            <Input id='address-city' placeholder='Ciudad' />
+                        </div>
+                    </div>
+
+                    <div className='flex gap-2 flex-col'>
+                        <Label htmlFor='address-observations'>Observaciones</Label>
+                        <Input id="address-observations" placeholder="Observaciones" />
+                    </div>
+
+                    <div className='flex gap-2 flex-col'>
+                        <Label htmlFor='address-alias'>* Alias</Label>
+                        <Input id="address-alias" placeholder="Alias" />
+                    </div>
+                </div>
+
+                <DialogFooter className='gap-y-2'>
+                    <DialogClose asChild>
+                        <Button variant='outline'>Cancelar</Button>
+                    </DialogClose>
+                    <DialogClose asChild>
+                        <Button>Guardar</Button>
+                    </DialogClose>
+                </DialogFooter>
+            </DialogContent>
+        </Dialog>
+    )
+}
+
 export const UserDashboardProfileAddressesAddCard = () => {
     return (
         <Card className='w-80 min-h-64'>
             <CardContent className='p-0 flex flex-col items-center justify-center h-full'>
-                <IoAddCircleOutline className='w-32 h-32' color='gray' />
+                <AddAdress></AddAdress>
                 <CardDescription className='text-md'>Añadir dirección</CardDescription>
             </CardContent>
         </Card>
@@ -162,6 +344,41 @@ export const UserDashboardProfileAddressesCard = () => {
     )
 }
 
+
+export const EditUserAvatar = () => {
+
+    const inputFile = useRef<HTMLInputElement | null>(null);
+
+    const onButtonClick = () => {
+        if (inputFile.current) {
+            inputFile.current.click();
+        }
+    };
+
+    return (
+        <Dialog>
+            <DialogTrigger asChild>
+                <Button className='absolute right-2 bottom-2 w-8 h-8'><MdEditSquare /></Button>
+            </DialogTrigger>
+            <DialogContent className='w-fit'>
+                <DialogHeader>
+                    <DialogTitle>¿Ya te has aburrido de tu foto de perfil?</DialogTitle>
+                    <DialogDescription>Cambia tu foto de perfil subiendo una foto desde tu dispositivo.</DialogDescription>
+                </DialogHeader>
+                <div className='flex justify-center'>
+                    <Input type='file' id='file' ref={inputFile} style={{ display: 'none' }} />
+                    <img onClick={onButtonClick} src='https://picsum.photos/200' className='w-32 h-32 rounded-full hover:cursor-pointer'></img>
+                </div>
+                <DialogFooter className='gap-2'>
+                    <DialogClose asChild>
+                        <Button>Confirmar</Button>
+                    </DialogClose>
+                </DialogFooter>
+            </DialogContent>
+        </Dialog>
+    )
+}
+
 export const UserDashboardProfile = () => {
     const [imgLoaded, setImgLoaded] = useState(false)
 
@@ -176,7 +393,7 @@ export const UserDashboardProfile = () => {
                     <div className='relative w-fit h-fit'>
                         {!imgLoaded && <Skeleton className='w-32 h-32 rounded-full' />}
                         <img src='https://picsum.photos/200' className={`w-32 h-32 rounded-full ${imgLoaded ? '' : 'hidden'}`} onLoad={() => setImgLoaded(true)} />
-                        <Button className='absolute right-2 bottom-2 w-8 h-8'><MdEditSquare /></Button>
+                        <EditUserAvatar></EditUserAvatar>
                     </div>
                     <UserDashboardProfileForm />
                     <Separator orientation='vertical' className='hidden xl:block' />
