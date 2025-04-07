@@ -150,7 +150,7 @@ export const ArtistDashboardStats = () => {
         <div className="grow gap-4 flex flex-col flex-wrap">
             <h1 className="text-3xl font-medium">Estadísticas</h1>
             <ArtistDashboardStatsHeader />
-            <div className="flex gap-4">
+            <div className="flex gap-4 flex-wrap">
                 <ArtistDashboardStatsFormatChart />
                 <ArtistDashboardStatsTopSoldChart />
             </div>
