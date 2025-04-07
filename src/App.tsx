@@ -25,6 +25,8 @@ import { ArtistDashboardProfile } from './components/artist-dashboard/ArtistDash
 import { ArtistDashboardSales } from './components/artist-dashboard/ArtistDashboardSales.tsx';
 import { ArtistDashboardStats } from './components/artist-dashboard/ArtistDashboardStats.tsx';
 import { ArtistDashboardReleases } from './components/artist-dashboard/ArtistDashboardReleases.tsx';
+import { ArtistDashboardReleasesNewAlbum } from './components/artist-dashboard/ArtistDashboardReleasesNewAlbum.tsx';
+import { ArtistDashboardReleasesNewSong } from './components/artist-dashboard/ArtistDashboardReleasesNewSong.tsx';
 
 function App() {
     return (
@@ -68,6 +70,8 @@ function App() {
                         <Route path="sales" element={<ArtistDashboardSales />} />
                         <Route path="stats" element={<ArtistDashboardStats />} />
                         <Route path="releases" element={<ArtistDashboardReleases />} />
+                        <Route path='releases/new/song' element={<ArtistDashboardReleasesNewSong />} />
+                        <Route path='releases/new/album' element={<ArtistDashboardReleasesNewAlbum />} />
                     </Route>
                 </Route>
                 <Route path='*' element={<NotFound404 />} />

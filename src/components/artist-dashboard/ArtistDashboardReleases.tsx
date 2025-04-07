@@ -5,6 +5,8 @@ import { TableCell, TableRow } from "../ui/table"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs"
 import { FaDownload, FaEdit, FaPlay } from "react-icons/fa"
 import { Skeleton } from "../ui/skeleton"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../ui/dropdown-menu"
+import { useNavigate } from "react-router"
 
 export const ArtistDashboardReleasesSongsItem = () => {
     const [imgLoaded, setImgLoaded] = useState(false)
@@ -79,12 +81,25 @@ export const ArtistDashboardReleasesAlbumsItem = () => {
 }
 
 export const ArtistDashboardReleases = () => {
+    const navigate = useNavigate()
 
     return (
         <div className="grow gap-4 flex flex-col flex-wrap">
             <div className="flex gap-4 justify-between">
                 <h1 className="text-3xl font-medium">Lanzamientos</h1>
-                <Button>+ Nuevo lanzamiento</Button>
+                <DropdownMenu>
+                    <DropdownMenuTrigger>
+                        <Button>+ Nuevo lanzamiento</Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent>
+                        <DropdownMenuItem onClick={() => {navigate('new/song')}}>
+                            Canción
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => {navigate('new/album')}}>
+                            Álbum
+                        </DropdownMenuItem>
+                    </DropdownMenuContent>
+                </DropdownMenu>
             </div>
             <Tabs defaultValue="songs">
                 <TabsList>
