@@ -48,7 +48,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
             const userCredential = await signInWithEmailAndPassword(auth, email, password)
             const idToken = userCredential.user.getIdToken().toString()
 
-            const response = await axios.get("https://localhost:4000/auth/signin", {
+            const response = await axios.get("/api/auth/signin", {
                 headers: {
                     Authorization: `Bearer ${idToken}`,
                 },
@@ -89,17 +89,16 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     const signUpUser = async (data: AuthContextSignUpUserProps) => {
         try {
             const userCredential = await createUserWithEmailAndPassword(auth, data.email, data.password)
-            const idToken = userCredential.user.getIdToken().toString()
+            const idToken = await userCredential.user.getIdToken()
 
-            const response = await axios.get("https://localhost:4000/auth/signup", {
+            const response = await axios.get("/api/auth/signup", {
                 headers: {
                     Authorization: `Bearer ${idToken}`,
                     email: userCredential.user.email,
                     name: data.name,
                     surName: data.surName,
                     birthDate: data.birthDate.toJSON(),
-                },
-                
+                }
             });
 
             console.log(response.data)
@@ -130,7 +129,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
             const userCredential = await createUserWithEmailAndPassword(auth, data.email, data.password)
             const idToken = userCredential.user.getIdToken().toString()
 
-            const response = await axios.get("https://localhost:4000/auth/signup", {
+            const response = await axios.get("http://localhost:4000/auth/signup", {
                 headers: {
                     Authorization: `Bearer ${idToken}`,
                 },
@@ -161,10 +160,9 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         const google = new GoogleAuthProvider();
         try {
             const result = (await signInWithPopup(auth, google));
-            const credential = GoogleAuthProvider.credentialFromResult(result);
             const idToken = (await result.user.getIdToken()).toString()
 
-            const response = await axios.get("https://localhost:4000/auth/signup", {
+            const response = await axios.get("http://localhost:4000/auth/signup", {
                 headers: {
                     Authorization: `Bearer ${idToken}`,
                 },
@@ -193,10 +191,9 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         const facebook = new FacebookAuthProvider();
         try {
             const result = (await signInWithPopup(auth, facebook));
-            const credential = FacebookAuthProvider.credentialFromResult(result);
             const idToken = (await result.user.getIdToken()).toString()
 
-            const response = await axios.get("https://localhost:4000/auth/signup", {
+            const response = await axios.get("http://localhost:4000/auth/signup", {
                 headers: {
                     Authorization: `Bearer ${idToken}`,
                 },
