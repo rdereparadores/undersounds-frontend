@@ -91,13 +91,11 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
             const userCredential = await createUserWithEmailAndPassword(auth, data.email, data.password)
             const idToken = await userCredential.user.getIdToken()
 
-            const response = await axios.get("/api/auth/signup", {
-                headers: {
-                    Authorization: `Bearer ${idToken}`,
-                    email: userCredential.user.email,
-                    name: data.name,
-                    surName: data.surName,
-                    birthDate: data.birthDate.toJSON(),
+            const response = await axios.post("/api/auth/signup", {
+                ...data
+            },{
+                headers:{
+                    Authorization:`Bearer ${idToken}`,
                 }
             });
 
