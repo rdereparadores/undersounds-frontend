@@ -9,6 +9,7 @@ import { Toaster } from '@/components/ui/sonner'
 import { ScrollToTop } from '@/lib/utils'
 import { ProductProvider } from './hooks/product/ProductProvider'
 import { CartProvider } from './hooks/cart/CartProvider'
+import { CheckoutProvider } from './hooks/checkout/CheckoutProvider'
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
@@ -17,8 +18,10 @@ root.render(
         <AuthProvider>
                 <ProductProvider>
                     <CartProvider>
-                        <App />
-                        <Toaster richColors />
+                        <CheckoutProvider>
+                            <App />
+                            <Toaster richColors />
+                        </CheckoutProvider>
                     </CartProvider>
                 </ProductProvider>
         </AuthProvider>

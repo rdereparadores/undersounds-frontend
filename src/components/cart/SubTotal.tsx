@@ -4,6 +4,7 @@ import { Separator } from '@/components/ui/separator'
 import { useCart } from '@/hooks/cart/useCart'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router'
+import { useCheckout } from '@/hooks/checkout/useCheckout'
 
 export interface SubTotalProps {
     children?: React.ReactNode,
@@ -12,6 +13,7 @@ export interface SubTotalProps {
 
 const SubTotal = ({ route }: SubTotalProps) => {
     const navigate = useNavigate()
+    const checkout = useCheckout()
     const cart = useCart()
     const [totalPrice, setTotalPrice] = useState(0)
     const [shippingRate, setShippingRate] = useState(0)
@@ -37,7 +39,7 @@ const SubTotal = ({ route }: SubTotalProps) => {
         if (route == 'cart') {
             navigate('../checkout')
         } else {
-            console.log("Aquí va la petición para la API de Checkout.com")
+            checkout.createOrder('o')
         }
     }
 
@@ -72,7 +74,7 @@ const SubTotal = ({ route }: SubTotalProps) => {
             <CardFooter>
 
                 <Button
-                    disabled={route == 'checkout'}
+                    disabled={!checkout.payButtonEnabled}
                     className='w-full'
                     onClick={handlePayButtonClick}
                 >

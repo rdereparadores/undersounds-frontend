@@ -1,8 +1,7 @@
-import { Card, CardContent, CardHeader, CardFooter, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 
 import { SubTotalContainer } from '@/components/cart/SubTotalContainer'
 import { CheckoutAddress } from "@/components/checkout/CheckoutAddress"
-import { CheckoutPaymentMethod } from "@/components/checkout/CheckoutPaymentMethod"
 
 const addresses = [
     {
@@ -21,15 +20,6 @@ const addresses = [
     }
 ]
 
-const cards = [
-    {
-        alias: 'Main',
-        fullName: 'Alejandro Paniagua García',
-        cardLast4Digits: 4412,
-        paymentMethodId: 'card-001'
-    }
-]
-
 export const Checkout = () => {
     return (
         <SubTotalContainer route='checkout'>
@@ -42,12 +32,7 @@ export const Checkout = () => {
 
                 <CardContent>
                     <CheckoutAddress addressList={addresses} />
-                    <CheckoutPaymentMethod paymentMethodList={cards} />
-
                 </CardContent>
-
-                <CardFooter>
-                </CardFooter>
             </Card>
         </SubTotalContainer>
     )
