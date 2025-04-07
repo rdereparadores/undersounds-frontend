@@ -35,11 +35,11 @@ export function Footer() {
 
                 </CardContent>
                 <CardFooter className="flex justify-center flex-wrap">
-                    <Button variant="link" className="text-gray-400 text-sm">Terminos y condiciones</Button>
-                    <Button variant="link" className="text-gray-400 text-sm">Centro de seguridad y privacidad</Button>
-                    <Button variant="link" className="text-gray-400 text-sm">Politica de privacidad</Button>
-                    <Button variant="link" className="text-gray-400 text-sm">Configuración de cookies</Button>
-                    <Button variant="link" className="text-gray-400 text-sm">Accesibilidad</Button>
+                    <Link to="/legal"><Button variant="link" className="text-gray-400 text-sm">Terminos y condiciones</Button></Link>
+                    <Link to="/legal"><Button variant="link" className="text-gray-400 text-sm">Centro de seguridad y privacidad</Button></Link>
+                    <Link to="/legal"><Button variant="link" className="text-gray-400 text-sm">Politica de privacidad</Button></Link>
+                    <Link to="/legal"><Button variant="link" className="text-gray-400 text-sm">Configuración de cookies</Button></Link>
+                    <Link to="/legal"><Button variant="link" className="text-gray-400 text-sm">Accesibilidad</Button></Link>
                 </CardFooter>
             </Card>
     )
