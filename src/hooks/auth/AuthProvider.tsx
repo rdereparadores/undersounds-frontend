@@ -5,7 +5,7 @@ import { UserRole } from '@/constants'
 import {
     createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
-    GoogleAuthProvider,signInWithPopup,
+    GoogleAuthProvider, signInWithPopup,
     sendPasswordResetEmail,
     FacebookAuthProvider,
     //sendEmailVerification, sendPasswordResetEmail,updatePassword, fetchSignInMethodsForEmail
@@ -13,6 +13,8 @@ import {
 import { auth } from './firebase'
 import { FirebaseError } from 'firebase/app'
 import { toast } from 'sonner'
+import axios from "axios";
+
 
 
 interface AuthProviderProps {
@@ -46,6 +48,14 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
             const userCredential = await signInWithEmailAndPassword(auth, email, password)
             const idToken = userCredential.user.getIdToken().toString()
 
+            const response = await axios.get("https://localhost:4000/auth/signin", {
+                headers: {
+                    Authorization: `Bearer ${idToken}`,
+                },
+            });
+
+            console.log(response.data)
+
             setUserName(email)
             localStorage.setItem('jwt', idToken)
             setToken(idToken)
@@ -53,13 +63,13 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
             return true
 
         } catch (error: unknown) {
-            if(error instanceof FirebaseError){
+            if (error instanceof FirebaseError) {
                 const errorCode = error.code
-                if(errorCode === 'auth/wrong-password'){
+                if (errorCode === 'auth/wrong-password') {
                     toast.error("Email o contraseña incorrectos")
-                }else if(errorCode === 'auth/invalid-email'){
+                } else if (errorCode === 'auth/invalid-email') {
                     toast.error("Email o contraseña incorrectos")
-                }else if(errorCode === 'auth/user-not-found'){
+                } else if (errorCode === 'auth/user-not-found') {
                     toast.error("No existe un usuario para ese email")
                 }
             }
@@ -81,6 +91,19 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
             const userCredential = await createUserWithEmailAndPassword(auth, data.email, data.password)
             const idToken = userCredential.user.getIdToken().toString()
 
+            const response = await axios.get("https://localhost:4000/auth/signup", {
+                headers: {
+                    Authorization: `Bearer ${idToken}`,
+                    email: userCredential.user.email,
+                    name: data.name,
+                    surName: data.surName,
+                    birthDate: data.birthDate.toJSON(),
+                },
+                
+            });
+
+            console.log(response.data)
+
             setUserName(data.email)
             localStorage.setItem('jwt', idToken)
             setToken(idToken)
@@ -88,13 +111,13 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
             return true
         } catch (error: unknown) {
-            if(error instanceof FirebaseError){
+            if (error instanceof FirebaseError) {
                 const errorCode = error.code
-                if(errorCode === 'auth/email-already-in-use'){
+                if (errorCode === 'auth/email-already-in-use') {
                     toast.error("Error al registrarse")
-                }else if(errorCode === 'auth/invalid-email'){
+                } else if (errorCode === 'auth/invalid-email') {
                     toast.error("Error al registrarse")
-                }else if(errorCode === 'auth/weak-password'){
+                } else if (errorCode === 'auth/weak-password') {
                     toast.error("Error al registrarse")
                 }
             }
@@ -104,21 +127,28 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
     const signUpArtist = async (data: AuthContextSignUpArtistProps) => {
         try {
-            //const userCredential = 
-            await createUserWithEmailAndPassword(auth, data.email, data.password)
-            //const idToken = userCredential.user.getIdToken().toString()
+            const userCredential = await createUserWithEmailAndPassword(auth, data.email, data.password)
+            const idToken = userCredential.user.getIdToken().toString()
+
+            const response = await axios.get("https://localhost:4000/auth/signup", {
+                headers: {
+                    Authorization: `Bearer ${idToken}`,
+                },
+            });
+
+            console.log(response.data)
 
             //TODO enviar todos los campos a la base de datos
 
             return true
         } catch (error: unknown) {
-            if(error instanceof FirebaseError){
+            if (error instanceof FirebaseError) {
                 const errorCode = error.code
-                if(errorCode === 'auth/email-already-in-use'){
+                if (errorCode === 'auth/email-already-in-use') {
                     toast.error("Error al registrarse")
-                }else if(errorCode === 'auth/invalid-email'){
+                } else if (errorCode === 'auth/invalid-email') {
                     toast.error("Error al registrarse")
-                }else if(errorCode === 'auth/weak-password'){
+                } else if (errorCode === 'auth/weak-password') {
                     toast.error("Error al registrarse")
                 }
             }
@@ -126,25 +156,31 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         }
     }
 
-    const signInGoogle = async() => {
+    const signInGoogle = async () => {
         auth.languageCode = 'es';
         const google = new GoogleAuthProvider();
         try {
             const result = (await signInWithPopup(auth, google));
-            //const credential = 
-            GoogleAuthProvider.credentialFromResult(result);
-            //const idToken = (await result.user.getIdToken()).toString()
-            
-        //TODO enviar todos los campos a la base de datos
+            const credential = GoogleAuthProvider.credentialFromResult(result);
+            const idToken = (await result.user.getIdToken()).toString()
+
+            const response = await axios.get("https://localhost:4000/auth/signup", {
+                headers: {
+                    Authorization: `Bearer ${idToken}`,
+                },
+            });
+
+            console.log(response.data)
+            //TODO enviar todos los campos a la base de datos
 
         } catch (error: unknown) {
-            if(error instanceof FirebaseError){
+            if (error instanceof FirebaseError) {
                 const errorCode = error.code
-                if(errorCode === 'auth/account-exists-with-different-credential'){
+                if (errorCode === 'auth/account-exists-with-different-credential') {
                     toast.error("Ya existe un usuario con ese email")
-                }else if(errorCode === 'auth/cancelled-popup-request'){
+                } else if (errorCode === 'auth/cancelled-popup-request') {
                     toast.error("Se intentó abrir otra ventana emergente")
-                }else if(errorCode === 'auth/popup-closed-by-user'){
+                } else if (errorCode === 'auth/popup-closed-by-user') {
                     toast.error("Ventana emergente cerrada por el usuario")
                 }
             }
@@ -152,25 +188,31 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         }
     }
 
-    const signInFacebook = async() => {
+    const signInFacebook = async () => {
         auth.languageCode = 'es';
         const facebook = new FacebookAuthProvider();
-        try {  
+        try {
             const result = (await signInWithPopup(auth, facebook));
-            //const credential = 
-            FacebookAuthProvider.credentialFromResult(result);
-            //const idToken = (await result.user.getIdToken()).toString()
-            
-        //TODO enviar todos los campos a la base de datos
+            const credential = FacebookAuthProvider.credentialFromResult(result);
+            const idToken = (await result.user.getIdToken()).toString()
+
+            const response = await axios.get("https://localhost:4000/auth/signup", {
+                headers: {
+                    Authorization: `Bearer ${idToken}`,
+                },
+            });
+
+            console.log(response.data)
+            //TODO enviar todos los campos a la base de datos
 
         } catch (error: unknown) {
-            if(error instanceof FirebaseError){
+            if (error instanceof FirebaseError) {
                 const errorCode = error.code
-                if(errorCode === 'auth/account-exists-with-different-credential'){
+                if (errorCode === 'auth/account-exists-with-different-credential') {
                     toast.error("Ya existe un usuario con ese email")
-                }else if(errorCode === 'auth/cancelled-popup-request'){
+                } else if (errorCode === 'auth/cancelled-popup-request') {
                     toast.error("Se intentó abrir otra ventana emergente")
-                }else if(errorCode === 'auth/popup-closed-by-user'){
+                } else if (errorCode === 'auth/popup-closed-by-user') {
                     toast.error("Ventana emergente cerrada por el usuario")
                 }
             }
@@ -178,8 +220,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         }
     }
 
-    const forgotPassword = async(data:AuthContextForgotPassword) => { 
-        sendPasswordResetEmail(auth,data.email)
+    const forgotPassword = async (data: AuthContextForgotPassword) => {
+        sendPasswordResetEmail(auth, data.email)
         return true
     }
 
