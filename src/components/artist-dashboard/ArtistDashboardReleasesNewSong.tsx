@@ -11,21 +11,20 @@ import { Badge } from '../ui/badge'
 import { Separator } from '../ui/separator'
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbSeparator } from '../ui/breadcrumb'
 import { Link } from 'react-router'
-import axios from 'axios'
 import { toast } from 'sonner'
+import { useArtistRelease } from '@/hooks/artist-release/useArtistRelease'
+import { Skeleton } from '../ui/skeleton'
+import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover'
 
 const newSongSchema = z.object({
     title: z.string().min(1),
     description: z.string().min(1),
     imgSrc: z.enum(['file', 'ai']).default('file'),
     img: z.any()
-        .refine((file) => file?.[0], {
-            message: "Debes subir una portada",
-        })
-        .refine((file) => file?.[0]?.type?.startsWith("image/"), {
+        .refine((file) => file.length > 0 ? file?.[0]?.type?.startsWith("image/") : true, {
             message: "La portada debe tener formato JPG o PNG",
         }).optional(),
-    
+
     imgUrl: z.string().url('').optional(),
 
     song: z.any()
@@ -47,12 +46,82 @@ const newSongSchema = z.object({
         return !!data.imgUrl
     }
     return false
+}, {
+    message: 'Sube una imagen',
+    path: ['img', 'imgUrl']
 })
 
 type NewSongFormData = z.infer<typeof newSongSchema>
 
+export const ArtistDashboardReleasesNewSongCollaborators = () => {
+    return (
+        <Card className='grow'>
+            <CardHeader>
+                <div className='flex gap-2 justify-between'>
+                    <CardTitle>Colaboradores</CardTitle>
+                    <Popover>
+                        <PopoverTrigger>
+                            <Button>+ Añadir colaborador</Button>
+                        </PopoverTrigger>
+                        <PopoverContent>
+                            <div className='flex flex-col gap-4'>
+                                <Input type='search' placeholder='@artista' />
+                                <div className='flex items-center justify-between gap-2'>
+                                    <p>@pito</p>
+                                    <Button>+ Añadir</Button>
+                                </div>
+                            </div>
+                        </PopoverContent>
+                    </Popover>
+                </div>
+            </CardHeader>
+
+            <CardContent>
+                <Card>
+                    <CardHeader>
+                        <div className='flex items-center justify-between gap-2'>
+                            <div className='flex items-center gap-2'>
+                                <img src='https://picsum.photos/200' className='rounded-full w-14 h-14' />
+                                <p>Matysitoflowbakan0</p>
+                            </div>
+                            <Button variant='destructive'>Eliminar</Button>
+                        </div>
+                    </CardHeader>
+                </Card>
+            </CardContent>
+        </Card>
+    )
+}
+
+export const ArtistDashboardReleasesNewSongGenres = () => {
+    return (
+        <Card className='grow'>
+            <CardHeader>
+                <CardTitle>Géneros</CardTitle>
+            </CardHeader>
+            <CardContent>
+                <div className='flex gap-2'>
+                    <Badge>Pop</Badge>
+                    <Badge>Rock</Badge>
+                    <Badge>Blues</Badge>
+                </div>
+                <Separator className='my-4' />
+                <div className='flex flex-col gap-2'>
+                    <div className='flex gap-4 justify-between items-center'>
+                        <p>Rock</p>
+                        <Button onClick={() => {}}>Añadir</Button>
+                    </div>
+                </div>
+
+            </CardContent>
+        </Card>
+    )
+}
+
 export const ArtistDashboardReleasesNewSong = () => {
-    const [previewImg, setPreviewImg] = useState('https://picsum.photos/200')
+    const artistRelease = useArtistRelease()
+    const [previewImgLoaded, setPreviewImgLoaded] = useState(false)
+    const [previewImg, setPreviewImg] = useState('')
     const [generatingImage, setGeneratingImage] = useState(false)
     const { register, handleSubmit, formState: { errors }, watch, setValue } = useForm<NewSongFormData>({
         resolver: zodResolver(newSongSchema),
@@ -60,18 +129,17 @@ export const ArtistDashboardReleasesNewSong = () => {
             imgSrc: 'file'
         }
     })
-
     const imgField = watch('img')
     const imgAiField = watch('imgUrl')
     const imgSrc = watch('imgSrc')
     const title = watch('title')
 
     const onSubmit = async (data: NewSongFormData) => {
-        console.log(data.song[0])
+        console.log(data)
     }
 
     useEffect(() => {
-        switch(imgSrc) {
+        switch (imgSrc) {
             case 'file':
                 if (imgField && imgField[0]) {
                     const reader = new FileReader()
@@ -88,28 +156,28 @@ export const ArtistDashboardReleasesNewSong = () => {
         }
     }, [imgField, imgAiField, imgSrc])
 
-    useEffect(() => {
-        console.log(errors)
-    }, [errors])
-
     const handleImageUpload = () => {
         setValue('imgSrc', 'file')
         document.getElementById('upload-cover')?.click()
     }
 
-    const handleImageAIGeneration = () => {
+    const handleImageAIGeneration = async () => {
         if (!title || title === '') {
             toast.error('Debes escribir un título primero')
             return
         }
         setGeneratingImage(true)
-        axios.post('/api/ai/cover', {prompt: title})
-        .then(res => {
-            setValue('imgSrc', 'ai')
-            setValue('imgUrl', res.data.msg.img_url)
+        setPreviewImgLoaded(false)
+        const result = await artistRelease.generateAiCover(title)
+        if (result === null) {
+            toast.error('Ocurrió un error al generar la imagen')
             setGeneratingImage(false)
-        })
-            
+            return
+        }
+        setValue('imgSrc', 'ai')
+        setValue('imgUrl', result)
+        setGeneratingImage(false)
+        setPreviewImgLoaded(true)
     }
 
     return (
@@ -133,7 +201,9 @@ export const ArtistDashboardReleasesNewSong = () => {
             <form onSubmit={handleSubmit(onSubmit)}>
                 <div className='flex gap-4 mb-4'>
                     <div className='flex flex-col gap-4 max-w-32'>
-                        <img src={previewImg} className="rounded-md w-32 h-32" />
+                        {!previewImgLoaded && <Skeleton className="rounded-md w-32 h-32" />}
+                        <img src={previewImg} className={`rounded-md w-32 h-32 ${previewImgLoaded ? '' : 'hidden'}`} onLoad={() => { setPreviewImgLoaded(true) }} />
+                        {(errors.img) && <span className='text-sm text-red-600'>Sube una imagen</span>}
                         <div className='flex flex-col gap-2'>
                             <Button onClick={handleImageUpload}>Subir portada</Button>
                             <Button disabled={generatingImage} variant='outline' onClick={handleImageAIGeneration}>Generar con IA</Button>
@@ -144,11 +214,13 @@ export const ArtistDashboardReleasesNewSong = () => {
                         <div className='flex flex-col gap-2'>
                             <Label htmlFor='title'>Título</Label>
                             <Input {...register(('title'))} />
+                            {errors.title && <span className='text-sm text-red-600'>El título no puede estar vacío</span>}
                         </div>
 
                         <div className='flex flex-col gap-2 grow'>
                             <Label htmlFor='description' aria-multiline='true'>Descripción</Label>
                             <Textarea className='grow' {...register('description')} />
+                            {errors.description && <span className='text-sm text-red-600'>La descripción no puede estar vacía</span>}
                         </div>
                     </div>
                 </div>
@@ -157,6 +229,7 @@ export const ArtistDashboardReleasesNewSong = () => {
                     <div className='flex flex-col gap-2'>
                         <Label htmlFor='song'>Fichero de audio</Label>
                         <Input type='file' {...register('song')} />
+                        {errors.song && <span className='text-sm text-red-600'>Debes subir un fichero de audio</span>}
                     </div>
                 </div>
 
@@ -170,56 +243,30 @@ export const ArtistDashboardReleasesNewSong = () => {
                                 <div className='flex flex-col gap-2'>
                                     <Label htmlFor='priceDigital'>Digital</Label>
                                     <Input step='0.01' type='number' {...register('priceDigital')} />
+                                    {errors.priceDigital && <span className='text-sm text-red-600'>El precio debe ser superior a 1</span>}
                                 </div>
                                 <div className='flex flex-col gap-2'>
                                     <Label htmlFor='priceCd'>CD</Label>
                                     <Input step='0.01' type='number' {...register('priceCd')} />
+                                    {errors.priceCd && <span className='text-sm text-red-600'>El precio debe ser superior a 1</span>}
                                 </div>
                                 <div className='flex flex-col gap-2'>
                                     <Label htmlFor='priceVinyl'>Vinilo</Label>
                                     <Input step='0.01' type='number' {...register('priceVinyl')} />
+                                    {errors.priceVinyl && <span className='text-sm text-red-600'>El precio debe ser superior a 1</span>}
                                 </div>
                                 <div className='flex flex-col gap-2'>
                                     <Label htmlFor='priceCasette'>Cassette</Label>
                                     <Input step='0.01' type='number' {...register('priceCassette')} />
+                                    {errors.priceCassette && <span className='text-sm text-red-600'>El precio debe ser superior a 1</span>}
                                 </div>
                             </div>
                         </CardContent>
                     </Card>
 
                     <div className='flex flex-col gap-4 grow'>
-                        <Card className='grow'>
-                            <CardHeader>
-                                <div className='flex gap-2 justify-between'>
-                                    <CardTitle>Colaboradores</CardTitle>
-                                    <Button>+ Añadir colaborador</Button>
-                                </div>
-                            </CardHeader>
-
-                            <CardContent>
-
-                            </CardContent>
-                        </Card>
-                        <Card className='grow'>
-                            <CardHeader>
-                                <CardTitle>Géneros</CardTitle>
-                            </CardHeader>
-                            <CardContent>
-                                <div className='flex gap-2'>
-                                    <Badge>Pop</Badge>
-                                    <Badge>Rock</Badge>
-                                    <Badge>Blues</Badge>
-                                </div>
-                                <Separator className='my-4' />
-                                <div className='flex flex-col gap-2'>
-                                    <div className='flex gap-4 justify-between items-center'>
-                                        <p>Rock</p>
-                                        <Button>Añadir</Button>
-                                    </div>
-                                </div>
-
-                            </CardContent>
-                        </Card>
+                        <ArtistDashboardReleasesNewSongCollaborators />
+                        <ArtistDashboardReleasesNewSongGenres />
                     </div>
                 </div>
                 <div className='flex justify-end mt-4'>

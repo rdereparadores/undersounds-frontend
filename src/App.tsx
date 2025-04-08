@@ -28,6 +28,7 @@ import { ArtistDashboardReleases } from './components/artist-dashboard/ArtistDas
 import { Legal } from './components/footer/Legal.tsx';
 import { ArtistDashboardReleasesNewAlbum } from './components/artist-dashboard/ArtistDashboardReleasesNewAlbum.tsx';
 import { ArtistDashboardReleasesNewSong } from './components/artist-dashboard/ArtistDashboardReleasesNewSong.tsx';
+import { ArtistReleaseProvider } from './hooks/artist-release/ArtistReleaseProvider.tsx';
 
 function App() {
     return (
@@ -66,7 +67,7 @@ function App() {
                 </Route>
 
                 <Route path="artist" element={<ProtectedRoute requiredRole={UserRole.ARTIST} redirectTo="/artist/dashboard" />}>
-                    <Route path="dashboard" element={<Dashboard role={UserRole.ARTIST} />}>
+                    <Route path="dashboard" element={<ArtistReleaseProvider><Dashboard role={UserRole.ARTIST} /></ArtistReleaseProvider>}>
                         <Route index element={<ArtistDashboard />} />
                         <Route path="profile" element={<ArtistDashboardProfile />} />
                         <Route path="sales" element={<ArtistDashboardSales />} />
