@@ -12,7 +12,8 @@ export interface AuthContextSignUpUserProps {
     surName: string
     email: string,
     password: string,
-    birthDate: Date
+    birthDate: Date,
+    userName?: string
 }
 
 export interface AuthContextSignUpArtistProps extends AuthContextSignUpUserProps {

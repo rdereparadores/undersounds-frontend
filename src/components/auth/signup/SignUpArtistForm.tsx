@@ -11,8 +11,8 @@ import { toast } from 'sonner'
 import { z } from 'zod'
 
 const signUpArtistSchema = z.object({
-    artistName: z.string(),
-    artistUserName: z.string(),
+    artistName: z.string().min(1, "Nombre de artista inválido"),
+    artistUserName: z.string().min(1,"Nombre de usuario de artista inválido"),
     name: z.string(),
     surName: z.string(),
     birthDate: z.date(),
@@ -53,7 +53,7 @@ export const SignUpArtistForm = () => {
     const onSubmit = async (data: SignUpArtistData) => {
         setSignUpButtonDisabled(true)
 
-        const result = await auth.signUpUser(data)
+        const result = await auth.signUpArtist(data)
         if (result) {
             toast.success('Registrado con éxito')
         }

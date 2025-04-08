@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router'
 import { AuthContext, AuthContextForgotPassword, AuthContextLogInProps, AuthContextSignUpArtistProps, AuthContextSignUpUserProps } from './AuthContext'
 import { UserRole } from '@/constants'
 import {
-    createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
     GoogleAuthProvider, signInWithPopup,
     sendPasswordResetEmail,
@@ -15,7 +14,19 @@ import { FirebaseError } from 'firebase/app'
 import { toast } from 'sonner'
 import axios from "axios";
 
+export const api = axios.create({
+    baseURL:"",
+})
 
+api.interceptors.request.use(config => {
+    const token = localStorage.getItem("token")
+    if(token){
+        config.headers.Authorization = `Bearer ${token}`
+    }
+    return config
+},error => {
+    return Promise.reject((error))
+})
 
 interface AuthProviderProps {
     children: React.ReactNode
@@ -46,20 +57,21 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     const logIn = async ({ email, password }: AuthContextLogInProps) => {
         try {
             const userCredential = await signInWithEmailAndPassword(auth, email, password)
-            const idToken = userCredential.user.getIdToken().toString()
+            const idToken = await userCredential.user.getIdToken()
+            localStorage.setItem("token",idToken)
+            const response = await api.post("/api/auth/signin")
 
-            const response = await axios.get("/api/auth/signin", {
-                headers: {
-                    Authorization: `Bearer ${idToken}`,
-                },
-            });
+            if(response.data.err){
+                toast(response.data.err)
+            }
 
-            console.log(response.data)
-
-            setUserName(email)
-            localStorage.setItem('jwt', idToken)
-            setToken(idToken)
-            setUserRole(UserRole.ARTIST)
+            if(response.data.user_type === "user"){
+                setUserRole(UserRole.USER)
+            }
+           
+            if(response.data.user_type === "artist"){
+                setUserRole(UserRole.ARTIST)
+            }
             return true
 
         } catch (error: unknown) {
@@ -88,69 +100,68 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
     const signUpUser = async (data: AuthContextSignUpUserProps) => {
         try {
-            const userCredential = await createUserWithEmailAndPassword(auth, data.email, data.password)
-            const idToken = await userCredential.user.getIdToken()
-
             const response = await axios.post("/api/auth/signup", {
-                ...data
-            },{
-                headers:{
-                    Authorization:`Bearer ${idToken}`,
-                }
+                ...data,
+                userType: "user"
             });
 
-            console.log(response.data)
-
-            setUserName(data.email)
-            localStorage.setItem('jwt', idToken)
-            setToken(idToken)
-            setUserRole(UserRole.USER)
-
-            return true
-        } catch (error: unknown) {
-            if (error instanceof FirebaseError) {
-                const errorCode = error.code
-                if (errorCode === 'auth/email-already-in-use') {
-                    toast.error("Error al registrarse")
-                } else if (errorCode === 'auth/invalid-email') {
-                    toast.error("Error al registrarse")
-                } else if (errorCode === 'auth/weak-password') {
-                    toast.error("Error al registrarse")
+            if (response.data.err) {
+                switch (response.data.err) {
+                    case "EMAIL_ALREADY_IN_USE": {
+                        toast.error("Email ya esta en uso")
+                        break
+                    }
+                    case "INVALID_EMAIL": {
+                        toast.error("Email inválido")
+                        break
+                    }
+                    case "WEAK_PASSWORD": {
+                        toast.error("Contraseña demasiado floja")
+                        break
+                    }
                 }
             }
+
+            navigate('/auth/signin')
+            return true
+        } catch (error: unknown) {
+            console.log(error)
             return false
         }
+
     }
 
     const signUpArtist = async (data: AuthContextSignUpArtistProps) => {
-        try {
-            const userCredential = await createUserWithEmailAndPassword(auth, data.email, data.password)
-            const idToken = userCredential.user.getIdToken().toString()
 
-            const response = await axios.get("http://localhost:4000/auth/signup", {
-                headers: {
-                    Authorization: `Bearer ${idToken}`,
-                },
+        try {
+            const response = await axios.post("/api/auth/signup", {
+                ...data,
+                userType: "artist"
             });
 
-            console.log(response.data)
-
-            //TODO enviar todos los campos a la base de datos
-
-            return true
-        } catch (error: unknown) {
-            if (error instanceof FirebaseError) {
-                const errorCode = error.code
-                if (errorCode === 'auth/email-already-in-use') {
-                    toast.error("Error al registrarse")
-                } else if (errorCode === 'auth/invalid-email') {
-                    toast.error("Error al registrarse")
-                } else if (errorCode === 'auth/weak-password') {
-                    toast.error("Error al registrarse")
+            if (response.data.err) {
+                switch (response.data.err) {
+                    case "EMAIL_ALREADY_IN_USE": {
+                        toast.error("Email ya esta en uso")
+                        break
+                    }
+                    case "INVALID_EMAIL": {
+                        toast.error("Email inválido")
+                        break
+                    }
+                    case "WEAK_PASSWORD": {
+                        toast.error("Contraseña demasiado floja")
+                        break
+                    }
                 }
             }
+            navigate('/auth/signin')
+            return true
+        } catch (error: unknown) {
+            console.log(error)
             return false
         }
+
     }
 
     const signInGoogle = async () => {
@@ -158,16 +169,21 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         const google = new GoogleAuthProvider();
         try {
             const result = (await signInWithPopup(auth, google));
-            const idToken = (await result.user.getIdToken()).toString()
+            const idToken = await result.user.getIdToken()
+            localStorage.setItem("token",idToken)
+            const response = await api.post("/api/auth/signin")
 
-            const response = await axios.get("http://localhost:4000/auth/signup", {
-                headers: {
-                    Authorization: `Bearer ${idToken}`,
-                },
-            });
+            if(response.data.err){
+                toast(response.data.err)
+            }
 
-            console.log(response.data)
-            //TODO enviar todos los campos a la base de datos
+            if(response.data.user_type === "user"){
+                setUserRole(UserRole.USER)
+            }
+           
+            if(response.data.user_type === "artist"){
+                setUserRole(UserRole.ARTIST)
+            }
 
         } catch (error: unknown) {
             if (error instanceof FirebaseError) {
@@ -191,7 +207,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
             const result = (await signInWithPopup(auth, facebook));
             const idToken = (await result.user.getIdToken()).toString()
 
-            const response = await axios.get("http://localhost:4000/auth/signup", {
+            const response = await axios.get("http://localhost:4000/auth/signin", {
                 headers: {
                     Authorization: `Bearer ${idToken}`,
                 },
@@ -226,3 +242,4 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         </AuthContext.Provider>
     )
 }
+
