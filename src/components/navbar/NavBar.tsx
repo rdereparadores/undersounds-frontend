@@ -34,8 +34,7 @@ import { UserRole } from '@/constants.ts'
 import { Separator } from "@/components/ui/separator"
 import { useAuth } from "@/hooks/auth/useAuth"
 import { useNavigate } from "react-router"
-import { ChangeEvent, FormEvent, useState } from "react"
-import { IoIosLogOut } from 'react-icons/io'
+import { ChangeEvent, FormEvent, useEffect, useState } from "react"
 
 interface NavBarProps { floating: boolean }
 
@@ -44,6 +43,12 @@ export const NavBar = ({ floating }: NavBarProps) => {
     const auth = useAuth()
     const navigate = useNavigate()
     const [searchQuery, setSearchQuery] = useState('')
+    const [userRole, setUserRole] = useState<UserRole | undefined>(undefined)
+    
+    useEffect(() => {
+        auth.checkRole()
+        .then(role => setUserRole(role))
+    })
 
     const onSearch = (e: FormEvent) => {
         e.preventDefault()
@@ -73,10 +78,10 @@ export const NavBar = ({ floating }: NavBarProps) => {
                 </Button>
 
                 {(() => {
-                    if (auth.token === undefined) {
+                    if (userRole === undefined) {
                         return <Skeleton className='w-56' />
                     }
-                    switch (auth.userRole) {
+                    switch (userRole) {
                         case UserRole.GUEST:
                             return <NavBarGuestSection />
                         case UserRole.USER:
@@ -125,10 +130,10 @@ export const NavBar = ({ floating }: NavBarProps) => {
                         <Separator />
 
                         {(() => {
-                            if (auth.token === undefined) {
+                            if (userRole === undefined) {
                                 return <Skeleton className='h-56' />
                             }
-                            switch (auth.userRole) {
+                            switch (userRole) {
                                 case UserRole.GUEST:
                                     return <NavBarGuestSectionMobile />
                                 case UserRole.USER:
@@ -137,10 +142,6 @@ export const NavBar = ({ floating }: NavBarProps) => {
                                     return <NavBarArtistSectionMobile />
                             }
                         })()}
-
-                        <Separator />
-
-                        <Button variant="ghost" onClick={auth.logOut}> <IoIosLogOut />Cerrar sesión</Button>
                     </SheetContent>
                 </Sheet>
             </div>

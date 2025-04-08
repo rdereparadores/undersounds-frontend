@@ -7,19 +7,34 @@ import { Skeleton } from "../ui/skeleton"
 import { RxDashboard } from "react-icons/rx"
 import { SheetClose } from "../ui/sheet"
 import { MdOutlineLocalShipping } from "react-icons/md"
+import { useEffect, useState } from "react"
+import { useUser } from "@/hooks/user/useUser"
+import { UserInfoProps } from "@/hooks/user/userContext"
+import { Separator } from "../ui/separator"
+import { IoIosLogOut } from "react-icons/io"
 
 export const NavBarUserSectionMobile = () => {
     const auth = useAuth()
+    const user = useUser()
+    const [userInfo, setUserInfo] = useState<UserInfoProps | undefined>(undefined)
+
+    useEffect(() => {
+        user.getUserInfo()
+            .then(user => setUserInfo(user))
+    }, [])
+
+    if (userInfo === undefined) return <></>
+
     return (
         <>
             <Button variant="outline">
                 <Avatar>
-                    <AvatarImage src="https://picsum.photos/30" width='25px' height='25px' alt="avatarUser" className='rounded-full'></AvatarImage>
+                    <AvatarImage src={userInfo.imgUrl} width='25px' height='25px' alt="avatarUser" className='rounded-full'></AvatarImage>
                     <AvatarFallback>
                         <Skeleton className='w-[25px] h-[25px] rounded-full' />
                     </AvatarFallback>
                 </Avatar>
-                @{auth.userName}
+                @{userInfo.userName}
             </Button>
             <SheetClose asChild>
                 <Button asChild variant="ghost">
@@ -36,6 +51,8 @@ export const NavBarUserSectionMobile = () => {
                     <Link to='/user/dashboard/orders'>Pedidos</Link>
                 </Button>
             </SheetClose>
+            <Separator />
+            <Button variant="ghost" onClick={auth.logOut}> <IoIosLogOut />Cerrar sesión</Button>
         </>
     )
 }
