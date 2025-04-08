@@ -4,7 +4,7 @@ import { Progress } from "@/components/ui/progress"
 import { FaRegStar, FaStar } from "react-icons/fa6"
 
 import { ProductContainerRatingsItem } from "./ProductContainerRatingsItem";
-import { ProductContainerRatingPopUp } from "./ProductConatinerRatingPopUp";
+import { ProductContainerRatingPopUp } from "./ProductContainerRatingPopUp";
 import { useProduct } from "@/hooks/product/useProduct";
 
 export const ProductContainerRatings = () => {

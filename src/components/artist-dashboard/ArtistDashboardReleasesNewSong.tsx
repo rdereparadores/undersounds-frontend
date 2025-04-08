@@ -6,22 +6,27 @@ import { Button } from '../ui/button'
 import { Label } from '../ui/label'
 import { Textarea } from '../ui/textarea'
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { Badge } from '../ui/badge'
 import { Separator } from '../ui/separator'
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbSeparator } from '../ui/breadcrumb'
 import { Link } from 'react-router'
+import axios from 'axios'
+import { toast } from 'sonner'
 
 const newSongSchema = z.object({
     title: z.string().min(1),
     description: z.string().min(1),
+    imgSrc: z.enum(['file', 'ai']).default('file'),
     img: z.any()
         .refine((file) => file?.[0], {
             message: "Debes subir una portada",
         })
         .refine((file) => file?.[0]?.type?.startsWith("image/"), {
             message: "La portada debe tener formato JPG o PNG",
-        }),
+        }).optional(),
+    
+    imgUrl: z.string().url('').optional(),
 
     song: z.any()
         .refine((file) => file?.[0], {
@@ -31,26 +36,81 @@ const newSongSchema = z.object({
             message: "El archivo de audio debe ser de los siguientes tipos: MP3, FLAC, WAV",
         }),
 
-    priceDigital: z.preprocess((val) => Number(val), z.number().min(0)),
-    priceVinyl: z.preprocess((val) => Number(val), z.number().min(0)),
-    priceCassette: z.preprocess((val) => Number(val), z.number().min(0)),
-    priceCd: z.preprocess((val) => Number(val), z.number().min(0))
+    priceDigital: z.preprocess((val) => Number(val), z.number().min(1)),
+    priceVinyl: z.preprocess((val) => Number(val), z.number().min(1)),
+    priceCassette: z.preprocess((val) => Number(val), z.number().min(1)),
+    priceCd: z.preprocess((val) => Number(val), z.number().min(1))
+}).refine(data => {
+    if (data.imgSrc === 'file') {
+        return data.img?.[0] !== undefined
+    } else if (data.imgSrc === 'ai') {
+        return !!data.imgUrl
+    }
+    return false
 })
 
 type NewSongFormData = z.infer<typeof newSongSchema>
 
 export const ArtistDashboardReleasesNewSong = () => {
-    const { register, handleSubmit, formState: { errors } } = useForm<NewSongFormData>({
-        resolver: zodResolver(newSongSchema)
+    const [previewImg, setPreviewImg] = useState('https://picsum.photos/200')
+    const [generatingImage, setGeneratingImage] = useState(false)
+    const { register, handleSubmit, formState: { errors }, watch, setValue } = useForm<NewSongFormData>({
+        resolver: zodResolver(newSongSchema),
+        defaultValues: {
+            imgSrc: 'file'
+        }
     })
+
+    const imgField = watch('img')
+    const imgAiField = watch('imgUrl')
+    const imgSrc = watch('imgSrc')
+    const title = watch('title')
 
     const onSubmit = async (data: NewSongFormData) => {
         console.log(data.song[0])
     }
 
     useEffect(() => {
+        switch(imgSrc) {
+            case 'file':
+                if (imgField && imgField[0]) {
+                    const reader = new FileReader()
+                    reader.onload = (e) => {
+                        setPreviewImg(e.target?.result as string)
+                    }
+                    reader.readAsDataURL(imgField[0])
+                }
+                break
+            case 'ai':
+                if (imgAiField) {
+                    setPreviewImg(imgAiField)
+                }
+        }
+    }, [imgField, imgAiField, imgSrc])
+
+    useEffect(() => {
         console.log(errors)
     }, [errors])
+
+    const handleImageUpload = () => {
+        setValue('imgSrc', 'file')
+        document.getElementById('upload-cover')?.click()
+    }
+
+    const handleImageAIGeneration = () => {
+        if (!title || title === '') {
+            toast.error('Debes escribir un título primero')
+            return
+        }
+        setGeneratingImage(true)
+        axios.post('/api/ai/cover', {prompt: title})
+        .then(res => {
+            setValue('imgSrc', 'ai')
+            setValue('imgUrl', res.data.msg.img_url)
+            setGeneratingImage(false)
+        })
+            
+    }
 
     return (
         <div className="grow gap-4 flex flex-col flex-wrap">
@@ -73,12 +133,12 @@ export const ArtistDashboardReleasesNewSong = () => {
             <form onSubmit={handleSubmit(onSubmit)}>
                 <div className='flex gap-4 mb-4'>
                     <div className='flex flex-col gap-4 max-w-32'>
-                        <img src='https://picsum.photos/200' className="rounded-md w-32 h-32" />
+                        <img src={previewImg} className="rounded-md w-32 h-32" />
                         <div className='flex flex-col gap-2'>
-                            <Button onClick={() => document.getElementById('upload-cover')?.click()}>Subir portada</Button>
-                            <Button variant='outline'>Generar con IA</Button>
+                            <Button onClick={handleImageUpload}>Subir portada</Button>
+                            <Button disabled={generatingImage} variant='outline' onClick={handleImageAIGeneration}>Generar con IA</Button>
                         </div>
-                        <Input id='upload-cover' type='file' {...register('img')} className='hidden' />
+                        <Input id='upload-cover' type='file' accept='image/*' {...register('img')} className='hidden' />
                     </div>
                     <div className='flex flex-col gap-4 grow'>
                         <div className='flex flex-col gap-2'>
