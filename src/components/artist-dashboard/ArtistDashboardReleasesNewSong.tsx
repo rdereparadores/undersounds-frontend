@@ -135,6 +135,12 @@ export const ArtistDashboardReleasesNewSong = () => {
     const title = watch('title')
 
     const onSubmit = async (data: NewSongFormData) => {
+        await artistRelease.publishSong({
+            song: data.song!,
+            ...data,
+            collaborators: [''],
+            genres: ['Rock']
+        })
         console.log(data)
     }
 
