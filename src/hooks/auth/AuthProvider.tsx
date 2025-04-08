@@ -1,7 +1,5 @@
-import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router'
 import { AuthContext, AuthContextForgotPassword, AuthContextLogInProps, AuthContextSignUpArtistProps, AuthContextSignUpUserProps } from './AuthContext'
-import { UserRole } from '@/constants'
 import {
     signInWithEmailAndPassword,
     GoogleAuthProvider, signInWithPopup,
@@ -13,64 +11,26 @@ import { auth } from './firebase'
 import { FirebaseError } from 'firebase/app'
 import { toast } from 'sonner'
 import axios from "axios";
-
-export const api = axios.create({
-    baseURL:"",
-})
-
-api.interceptors.request.use(config => {
-    const token = localStorage.getItem("token")
-    if(token){
-        config.headers.Authorization = `Bearer ${token}`
-    }
-    return config
-},error => {
-    return Promise.reject((error))
-})
+import { api } from '@/lib/api'
+import { UserRole } from '@/constants'
 
 interface AuthProviderProps {
     children: React.ReactNode
 }
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
-    const [userName, setUserName] = useState('')
-    const [userRole, setUserRole] = useState(UserRole.GUEST)
-    const [token, setToken] = useState<undefined | null | string>(undefined)
-
     const navigate = useNavigate()
-
-    useEffect(() => {
-        const verifyToken = async () => {
-            const localToken = localStorage.getItem('jwt')
-            if (!localToken) { // Guest
-                setUserRole(UserRole.GUEST)
-                return setToken(null)
-            }
-
-            setUserName('AlejPagar')
-            setUserRole(UserRole.ARTIST)
-            return setToken(localToken)
-        }
-        verifyToken()
-    }, [])
 
     const logIn = async ({ email, password }: AuthContextLogInProps) => {
         try {
             const userCredential = await signInWithEmailAndPassword(auth, email, password)
             const idToken = await userCredential.user.getIdToken()
-            localStorage.setItem("token",idToken)
+            localStorage.setItem("token", idToken)
             const response = await api.post("/api/auth/signin")
 
-            if(response.data.err){
-                toast(response.data.err)
-            }
-
-            if(response.data.user_type === "user"){
-                setUserRole(UserRole.USER)
-            }
-           
-            if(response.data.user_type === "artist"){
-                setUserRole(UserRole.ARTIST)
+            if (response.data.err) {
+                toast.error(response.data.err)
+                return false
             }
             return true
 
@@ -91,10 +51,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
     const logOut = () => {
         auth.signOut()
-        localStorage.removeItem('jwt')
-        setToken(null)
-        setUserRole(UserRole.GUEST)
-
+        localStorage.removeItem('token')
         setTimeout(() => navigate('/auth/signin'), 0)
     }
 
@@ -116,13 +73,12 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
                         break
                     }
                     case "WEAK_PASSWORD": {
-                        toast.error("Contraseña demasiado floja")
+                        toast.error("Contraseña demasiado débil")
                         break
                     }
                 }
+                return false
             }
-
-            navigate('/auth/signin')
             return true
         } catch (error: unknown) {
             console.log(error)
@@ -154,8 +110,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
                         break
                     }
                 }
+                return false
             }
-            navigate('/auth/signin')
             return true
         } catch (error: unknown) {
             console.log(error)
@@ -170,20 +126,15 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         try {
             const result = (await signInWithPopup(auth, google));
             const idToken = await result.user.getIdToken()
-            localStorage.setItem("token",idToken)
+            localStorage.setItem("token", idToken)
             const response = await api.post("/api/auth/signin")
 
-            if(response.data.err){
-                toast(response.data.err)
+            if (response.data.err) {
+                toast.error(response.data.err)
+                return false
             }
-
-            if(response.data.user_type === "user"){
-                setUserRole(UserRole.USER)
-            }
-           
-            if(response.data.user_type === "artist"){
-                setUserRole(UserRole.ARTIST)
-            }
+            navigate('/user/dashboard')
+            return true
 
         } catch (error: unknown) {
             if (error instanceof FirebaseError) {
@@ -231,13 +182,27 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         }
     }
 
+    const checkRole = async () => {
+        try {
+            const token = localStorage.getItem('token')
+            if (!token) return UserRole.GUEST
+
+            const result = await api.post('/api/auth/signin', {})
+            if (result.data.err) return UserRole.GUEST
+
+            return result.data.msg.userRole === 'user' ? UserRole.USER : UserRole.ARTIST
+        } catch {
+            return UserRole.GUEST
+        }
+    }
+
     const forgotPassword = async (data: AuthContextForgotPassword) => {
         sendPasswordResetEmail(auth, data.email)
         return true
     }
 
     return (
-        <AuthContext.Provider value={{ token, userName, userRole, logIn, logOut, signUpUser, signUpArtist, signInGoogle, forgotPassword, signInFacebook }}>
+        <AuthContext.Provider value={{ logIn, logOut, signUpUser, signUpArtist, signInGoogle, forgotPassword, signInFacebook, checkRole }}>
             {children}
         </AuthContext.Provider>
     )

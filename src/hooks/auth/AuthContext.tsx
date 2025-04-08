@@ -1,6 +1,5 @@
-import { createContext } from 'react'
-
 import { UserRole } from '@/constants'
+import { createContext } from 'react'
 
 export interface AuthContextLogInProps {
     email: string,
@@ -26,27 +25,23 @@ export interface AuthContextForgotPassword {
 }
 
 interface AuthContextProps {
-    token: string | null | undefined,
-    userName: string,
-    userRole: UserRole,
     logIn: ({ email, password }: AuthContextLogInProps) => Promise<boolean>,
     logOut: () => void,
     signUpUser: (input: AuthContextSignUpUserProps) => Promise<boolean>,
     signUpArtist: (input: AuthContextSignUpArtistProps) => Promise<boolean>,
     signInGoogle: () => void,
     signInFacebook: () => void,
+    checkRole: () => Promise<UserRole>
     forgotPassword: (input:AuthContextForgotPassword) => Promise<boolean>
 }
 
 export const AuthContext = createContext<AuthContextProps>({
-    token: '',
-    userName: '',
-    userRole: UserRole.GUEST,
     logIn: async () => (false),
     logOut: () => {},
     signUpUser: async () => (false),
     signUpArtist: async () => (false),
     signInGoogle: async () => {},
     signInFacebook: async () => {},
+    checkRole: async () => UserRole.GUEST,
     forgotPassword: async () => (false)
 })

@@ -8,16 +8,23 @@ import {
     CollapsibleContent,
     CollapsibleTrigger,
 } from "@/components/ui/collapsible"
+import { useEffect, useState } from "react"
 
 
 export const UserDashboardMenu = () => {
     const auth = useAuth()
     const location = useLocation()
+    const [userRole, setUserRole] = useState<UserRole | undefined>(undefined)
     const isCurrentRoute = (route: string) => {
         const currentRouteSplitted = location.pathname.split('/').filter(item => item != '')
         const currentRoute = currentRouteSplitted[currentRouteSplitted.length - 1]
         return (currentRoute == route) ? 'secondary' : 'link'
     }
+
+    useEffect(() => {
+        auth.checkRole()
+        .then(role => setUserRole(role))
+    }, [])
 
     return (
         <>
@@ -38,7 +45,7 @@ export const UserDashboardMenu = () => {
                 <Button asChild variant={isCurrentRoute('stats')}>
                     <Link to='/user/dashboard/stats'>Estadísticas</Link>
                 </Button>
-                {auth.userRole === UserRole.ARTIST &&
+                {userRole === UserRole.ARTIST &&
                     <>
                         <Separator />
                         <Button asChild variant='outline'>
@@ -85,7 +92,7 @@ export const UserDashboardMenu = () => {
                                     <Link to='/user/dashboard/stats'>Estadísticas</Link>
                                 </Button></CollapsibleTrigger>
 
-                            {auth.userRole === UserRole.ARTIST &&
+                            {userRole === UserRole.ARTIST &&
                                 <>
                                     <Separator />
                                     <Button asChild variant='outline'>
@@ -105,11 +112,17 @@ export const UserDashboardMenu = () => {
 export const ArtistDashboardMenu = () => {
     const location = useLocation()
     const auth = useAuth()
+    const [userRole, setUserRole] = useState<UserRole | undefined>(undefined)
     const isCurrentRoute = (route: string) => {
         const currentRouteSplitted = location.pathname.split('/').filter(item => item != '')
         const currentRoute = currentRouteSplitted[currentRouteSplitted.length - 1]
         return (currentRoute == route) ? 'secondary' : 'link'
     }
+
+    useEffect(() => {
+        auth.checkRole()
+        .then(role => setUserRole(role))
+    }, [])
 
     return (
         <>
@@ -128,7 +141,7 @@ export const ArtistDashboardMenu = () => {
             <Button asChild variant={isCurrentRoute('stats')}>
                 <Link to='/artist/dashboard/stats'>Estadísticas</Link>
             </Button>
-            {auth.userRole === UserRole.ARTIST &&
+            {userRole === UserRole.ARTIST &&
                 <>
                     <Separator />
                     <Button asChild variant='outline'>

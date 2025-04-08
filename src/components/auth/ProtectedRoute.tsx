@@ -2,6 +2,7 @@ import { Navigate, Outlet } from "react-router"
 
 import { UserRole } from "@/constants"
 import { useAuth } from "@/hooks/auth/useAuth"
+import { useEffect, useState } from "react"
 
 interface ProtectedRouteProps {
     requiredRole: UserRole,
@@ -9,11 +10,19 @@ interface ProtectedRouteProps {
 }
 
 export const ProtectedRoute = ({ requiredRole, redirectTo }: ProtectedRouteProps) => {
-    const user = useAuth()
+    const auth = useAuth()
+    const [userRole, setUserRole] = useState<UserRole | undefined>(undefined)
+    useEffect(() => {
+        const roleHandler = async () => {
+            const role = await auth.checkRole()
+            setUserRole(role)
+        }
+        roleHandler()
+    }, [auth])
 
-    if (user.token === undefined) {
+    if (userRole === undefined) {
         return <></>
-    } else if (user.token === null || user.userRole < requiredRole) {
+    } else if (userRole < requiredRole) {
         return <Navigate to={`/auth/signin?redirectTo=${redirectTo}`} />
     } else {
         return (<Outlet />)
