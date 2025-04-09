@@ -26,6 +26,9 @@ import { ArtistDashboardSales } from './components/artist-dashboard/ArtistDashbo
 import { ArtistDashboardStats } from './components/artist-dashboard/ArtistDashboardStats.tsx';
 import { ArtistDashboardReleases } from './components/artist-dashboard/ArtistDashboardReleases.tsx';
 import { Legal } from './components/footer/Legal.tsx';
+import { ArtistDashboardReleasesNewAlbum } from './components/artist-dashboard/ArtistDashboardReleasesNewAlbum.tsx';
+import { ArtistDashboardReleasesNewSong } from './components/artist-dashboard/ArtistDashboardReleasesNewSong.tsx';
+import { ArtistReleaseProvider } from './hooks/artist-release/ArtistReleaseProvider.tsx';
 
 function App() {
     return (
@@ -64,12 +67,14 @@ function App() {
                 </Route>
 
                 <Route path="artist" element={<ProtectedRoute requiredRole={UserRole.ARTIST} redirectTo="/artist/dashboard" />}>
-                    <Route path="dashboard" element={<Dashboard role={UserRole.ARTIST} />}>
+                    <Route path="dashboard" element={<ArtistReleaseProvider><Dashboard role={UserRole.ARTIST} /></ArtistReleaseProvider>}>
                         <Route index element={<ArtistDashboard />} />
                         <Route path="profile" element={<ArtistDashboardProfile />} />
                         <Route path="sales" element={<ArtistDashboardSales />} />
                         <Route path="stats" element={<ArtistDashboardStats />} />
                         <Route path="releases" element={<ArtistDashboardReleases />} />
+                        <Route path='releases/new/song' element={<ArtistDashboardReleasesNewSong />} />
+                        <Route path='releases/new/album' element={<ArtistDashboardReleasesNewAlbum />} />
                     </Route>
                 </Route>
                 <Route path='*' element={<NotFound404 />} />

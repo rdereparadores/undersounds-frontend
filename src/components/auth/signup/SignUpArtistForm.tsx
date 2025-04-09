@@ -7,12 +7,13 @@ import { useAuth } from '@/hooks/auth/useAuth'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { useNavigate } from 'react-router'
 import { toast } from 'sonner'
 import { z } from 'zod'
 
 const signUpArtistSchema = z.object({
-    artistName: z.string(),
-    artistUserName: z.string(),
+    artistName: z.string().min(1, "Nombre de artista inválido"),
+    artistUserName: z.string().min(1,"Nombre de usuario de artista inválido"),
     name: z.string(),
     surName: z.string(),
     birthDate: z.date(),
@@ -30,6 +31,7 @@ const signUpArtistSchema = z.object({
 type SignUpArtistData = z.infer<typeof signUpArtistSchema>
 
 export const SignUpArtistForm = () => {
+    const navigate = useNavigate()
     const { register, handleSubmit, formState: { errors }, setValue } = useForm<SignUpArtistData>({
         resolver: zodResolver(signUpArtistSchema)
     })
@@ -52,10 +54,12 @@ export const SignUpArtistForm = () => {
 
     const onSubmit = async (data: SignUpArtistData) => {
         setSignUpButtonDisabled(true)
-
-        const result = await auth.signUpUser(data)
+        const result = await auth.signUpArtist(data)
         if (result) {
+            navigate('/auth/signin')
             toast.success('Registrado con éxito')
+        } else {
+            setSignUpButtonDisabled(false)
         }
     }
 

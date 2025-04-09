@@ -15,15 +15,28 @@ import { Button } from "../ui/button"
 import { Skeleton } from '../ui/skeleton'
 import { useAuth } from '@/hooks/auth/useAuth'
 import { Link } from 'react-router'
+import { useUser } from '@/hooks/user/useUser'
+import { useEffect, useState } from 'react'
+import { UserInfoProps } from '@/hooks/user/UserContext'
 
 export const NavBarUserSection = () => {
     const auth = useAuth()
+    const user = useUser()
+    const [userInfo, setUserInfo] = useState<UserInfoProps | undefined>(undefined)
+
+    useEffect(() => {
+        user.getUserInfo()
+        .then(user => setUserInfo(user))
+    }, [])
+
+    if (userInfo === undefined) return <></>
+
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
                 <Button variant="outline">
                     <Avatar>
-                        <AvatarImage src="https://picsum.photos/30" width='25px' height='25px' alt="avatarUser" className='rounded-full'></AvatarImage>
+                        <AvatarImage src={userInfo.imgUrl} width='25px' height='25px' alt="avatarUser" className='rounded-full'></AvatarImage>
                         <AvatarFallback><Skeleton className='w-[25px] h-[25px] rounded-full' /></AvatarFallback>
                     </Avatar>
                     Mi cuenta
@@ -33,12 +46,12 @@ export const NavBarUserSection = () => {
                 <DropdownMenuGroup>
                     <DropdownMenuItem>
                         <Avatar>
-                            <AvatarImage src="https://picsum.photos/30" width='30px' height='30px' alt="avatarUser" className='rounded-full'></AvatarImage>
+                            <AvatarImage src={userInfo.imgUrl} width='30px' height='30px' alt="avatarUser" className='rounded-full'></AvatarImage>
                             <AvatarFallback>
                                 <Skeleton className='w-[30px] h-[30px] rounded-full' />
                             </AvatarFallback>
                         </Avatar>
-                        <p>@{auth.userName}</p>
+                        <p>@{userInfo.userName}</p>
                     </DropdownMenuItem>
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />

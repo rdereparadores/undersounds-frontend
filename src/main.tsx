@@ -10,20 +10,23 @@ import { ScrollToTop } from '@/lib/utils'
 import { ProductProvider } from './hooks/product/ProductProvider'
 import { CartProvider } from './hooks/cart/CartProvider'
 import { CheckoutProvider } from './hooks/checkout/CheckoutProvider'
+import { UserProvider } from './hooks/user/UserProvider'
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
     <BrowserRouter>
         <ScrollToTop />
         <AuthProvider>
-                <ProductProvider>
-                    <CartProvider>
-                        <CheckoutProvider>
+            <ProductProvider>
+                <CartProvider>
+                    <CheckoutProvider>
+                        <UserProvider>
                             <App />
                             <Toaster richColors />
-                        </CheckoutProvider>
-                    </CartProvider>
-                </ProductProvider>
+                        </UserProvider>
+                    </CheckoutProvider>
+                </CartProvider>
+            </ProductProvider>
         </AuthProvider>
         <SpeedInsights />
     </BrowserRouter>

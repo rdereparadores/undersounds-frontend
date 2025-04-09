@@ -7,12 +7,14 @@ import { useAuth } from '@/hooks/auth/useAuth'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { useNavigate } from 'react-router'
 import { toast } from 'sonner'
 import { z } from 'zod'
 
 const signUpUserSchema = z.object({
     name: z.string(),
     surName: z.string(),
+    userName: z.string(),
     birthDate: z.date(),
     email: z.string().email({ message: 'Email inválido' }),
     password: z.string().min(6, { message: 'La contraseña debe tener al menos 6 caracteres' }),
@@ -28,6 +30,7 @@ const signUpUserSchema = z.object({
 type SignUpUserData = z.infer<typeof signUpUserSchema>
 
 export const SignUpUserForm = () => {
+    const navigate = useNavigate()
     const { register, handleSubmit, formState: { errors }, setValue } = useForm<SignUpUserData>({
         resolver: zodResolver(signUpUserSchema)
     })
@@ -54,6 +57,9 @@ export const SignUpUserForm = () => {
         const result = await auth.signUpUser(data)
         if (result) {
             toast.success('Registrado con éxito')
+            navigate('/auth/signin')
+        } else {
+            setSignUpButtonDisabled(false)
         }
     }
 
@@ -70,6 +76,11 @@ export const SignUpUserForm = () => {
                         <Label htmlFor='surname'>Apellidos</Label>
                         <Input type='text' placeholder='Doe' {...register('surName')} />
                     </div>
+                </div>
+
+                <div className='grid gap-2'>
+                    <Label htmlFor='userName'>Nombre de usuario</Label>
+                    <Input type='text' placeholder='@usuario' {...register('userName')} />
                 </div>
 
                 <div className='grid gap-2'>
