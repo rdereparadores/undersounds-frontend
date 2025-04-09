@@ -10,7 +10,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Badge } from '../ui/badge'
 import { IoAddCircleOutline } from "react-icons/io5"
 import { DatePicker } from '../ui/new-date-picker'
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Skeleton } from '../ui/skeleton'
 import {
     Dialog,
@@ -25,31 +25,40 @@ import {
 import { Label } from '../ui/label'
 import { InputOTP, InputOTPGroup, InputOTPSlot, InputOTPSeparator } from '../ui/input-otp'
 import { CheckoutAddressCountrySelector } from '../checkout/CheckoutAddressCountrySelector'
+import { UserInfoProps } from '@/hooks/user/userContext'
+import { useUser } from '@/hooks/user/useUser'
+import { toast } from 'sonner'
 
 const maxBirthdate = new Date(Date.now())
 maxBirthdate.setFullYear(maxBirthdate.getFullYear() - 16);
 
 const profileFormSchema = z.object({
-    name: z.string().max(30).optional(),
-    surname: z.string().max(50).optional(),
-    birthdate: z.date().max(maxBirthdate).optional()
+    name: z.string().max(30, 'Máximo 30 caracteres').optional(),
+    surName: z.string().max(50, 'Máximo 50 caracteres').optional(),
+    birthDate: z.date().max(maxBirthdate, 'Debes tener al menos 16 años').optional()
 
 })
 
-export const UserDashboardProfileForm = () => {
-
+export const UserDashboardProfileForm = ({ namePlaceholder, surNamePlaceholder, birthDatePlaceholder }: { namePlaceholder: string, surNamePlaceholder: string, birthDatePlaceholder: Date }) => {
+    const user = useUser()
     const form = useForm<z.infer<typeof profileFormSchema>>({
         resolver: zodResolver(profileFormSchema),
         defaultValues: {
             name: '',
-            surname: '',
-            birthdate: new Date('2004-09-10')
+            surName: '',
+            birthDate: new Date(birthDatePlaceholder)
         }
 
     })
 
-    const onSubmit = (values: z.infer<typeof profileFormSchema>) => {
+    const onSubmit = async (values: z.infer<typeof profileFormSchema>) => {
         console.log(values)
+        const result = await user.updateUserInfo(values)
+        if (result) {
+            toast.success('Perfil actualizado correctamente')
+        } else {
+            toast.error('Error al actualizar el perfil')
+        }
     }
 
     return (
@@ -60,18 +69,18 @@ export const UserDashboardProfileForm = () => {
                         <FormItem className='grow'>
                             <FormLabel>Nombre</FormLabel>
                             <FormControl>
-                                <Input placeholder='Juan' {...field} />
+                                <Input placeholder={namePlaceholder} {...field} />
                             </FormControl>
                             <FormMessage />
                         </FormItem>
                     )}
                     />
 
-                    <FormField control={form.control} name='surname' render={({ field }) => (
+                    <FormField control={form.control} name='surName' render={({ field }) => (
                         <FormItem className='grow'>
                             <FormLabel>Apellidos</FormLabel>
                             <FormControl>
-                                <Input placeholder='Doe Doe' {...field} />
+                                <Input placeholder={surNamePlaceholder} {...field} />
                             </FormControl>
                             <FormMessage />
                         </FormItem>
@@ -79,7 +88,7 @@ export const UserDashboardProfileForm = () => {
                     />
                 </div>
 
-                <FormField control={form.control} name='birthdate' render={({ field }) => (
+                <FormField control={form.control} name='birthDate' render={({ field }) => (
                     <FormItem className="flex flex-col gap-1">
                         <FormLabel>Fecha de nacimiento</FormLabel>
                         <DatePicker date={field.value} setDate={field.onChange} />
@@ -95,7 +104,7 @@ export const UserDashboardProfileForm = () => {
     )
 }
 
-export const UserDashboardProfileEmailUpdateCard = () => {
+export const UserDashboardProfileEmailUpdateCard = ({ emailPlaceholder }: { emailPlaceholder: string }) => {
 
     return (
         <Card className='grow'>
@@ -103,7 +112,7 @@ export const UserDashboardProfileEmailUpdateCard = () => {
                 <div className='flex gap-4 justify-between items-center'>
                     <div className='flex flex-col gap-1'>
                         <CardTitle>Correo electrónico</CardTitle>
-                        <CardDescription>pepe@gmail.com</CardDescription>
+                        <CardDescription>{emailPlaceholder}</CardDescription>
                     </div>
                     <Dialog>
                         <DialogTrigger asChild>
@@ -346,32 +355,45 @@ export const UserDashboardProfileAddressesCard = () => {
 
 
 export const EditUserAvatar = () => {
-
+    const user = useUser()
     const inputFile = useRef<HTMLInputElement | null>(null);
 
     const onButtonClick = () => {
         if (inputFile.current) {
             inputFile.current.click();
         }
-    };
+    }
+
+    const onSubmit = async () => {
+        if (inputFile.current && inputFile.current.files?.length) {
+            const file = inputFile.current.files[0]
+            await user.updateUserProfileImage(file)
+        } else {
+            console.error("No se seleccionó ningún archivo");
+        }
+    }
 
     return (
         <Dialog>
             <DialogTrigger asChild>
                 <Button className='absolute right-2 bottom-2 w-8 h-8'><MdEditSquare /></Button>
             </DialogTrigger>
-            <DialogContent className='w-fit'>
+            <DialogContent className='w-fit pt-12'>
                 <DialogHeader>
                     <DialogTitle>¿Ya te has aburrido de tu foto de perfil?</DialogTitle>
-                    <DialogDescription>Cambia tu foto de perfil subiendo una foto desde tu dispositivo.</DialogDescription>
+                    <DialogDescription>Actualízala o deja que la IA lo haga por ti.</DialogDescription>
                 </DialogHeader>
-                <div className='flex justify-center'>
+                <div className='flex justify-center items-center gap-4'>
                     <Input type='file' id='file' ref={inputFile} style={{ display: 'none' }} />
-                    <img onClick={onButtonClick} src='https://picsum.photos/200' className='w-32 h-32 rounded-full hover:cursor-pointer'></img>
+                    <img src='https://picsum.photos/200' className='w-32 h-32 rounded-full hover:cursor-pointer' />
+                    <div className='flex flex-col gap-2 items-center grow'>
+                        <Button className='w-full' variant='outline'>Generar con IA</Button>
+                        <Button onClick={onButtonClick} className='w-full' variant='outline'>Subir desde el dispositivo</Button>
+                    </div>
                 </div>
                 <DialogFooter className='gap-2'>
                     <DialogClose asChild>
-                        <Button>Confirmar</Button>
+                        <Button className='w-full' onClick={onSubmit}>Confirmar</Button>
                     </DialogClose>
                 </DialogFooter>
             </DialogContent>
@@ -381,6 +403,15 @@ export const EditUserAvatar = () => {
 
 export const UserDashboardProfile = () => {
     const [imgLoaded, setImgLoaded] = useState(false)
+    const user = useUser()
+    const [userInfo, setUserInfo] = useState<UserInfoProps | undefined>(undefined)
+
+    useEffect(() => {
+        user.getUserInfo()
+            .then(user => setUserInfo(user))
+    }, [])
+
+    if (userInfo === undefined) return <></>
 
     return (
         <div className="grow gap-4 flex flex-col flex-wrap">
@@ -392,14 +423,14 @@ export const UserDashboardProfile = () => {
                 <div className='flex gap-4 items-top justify-center flex-wrap'>
                     <div className='relative w-fit h-fit'>
                         {!imgLoaded && <Skeleton className='w-32 h-32 rounded-full' />}
-                        <img src='https://picsum.photos/200' className={`w-32 h-32 rounded-full ${imgLoaded ? '' : 'hidden'}`} onLoad={() => setImgLoaded(true)} />
+                        <img src={userInfo.imgUrl} className={`w-32 h-32 rounded-full ${imgLoaded ? '' : 'hidden'}`} onLoad={() => setImgLoaded(true)} />
                         <EditUserAvatar></EditUserAvatar>
                     </div>
-                    <UserDashboardProfileForm />
+                    <UserDashboardProfileForm namePlaceholder={userInfo.name} surNamePlaceholder={userInfo.surName} birthDatePlaceholder={userInfo.birthDate} />
                     <Separator orientation='vertical' className='hidden xl:block' />
 
                     <div className='flex flex-col gap-4 grow'>
-                        <UserDashboardProfileEmailUpdateCard />
+                        <UserDashboardProfileEmailUpdateCard emailPlaceholder={userInfo.email} />
                         <UserDashboardProfilePasswordUpdateCard />
                     </div>
                 </div>
