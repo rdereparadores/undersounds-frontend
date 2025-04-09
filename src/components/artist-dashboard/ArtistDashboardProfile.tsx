@@ -1,6 +1,6 @@
-import { MdEditSquare } from "react-icons/md"
-import { Button } from "../ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card"
+import { ChangeFeatureContent } from "./ArtistDashboardProfileChangeFeatureContent"
+import { ArtistDashboardProfileEditProfilePopUp } from "./ArtistDashboardProfileEditProfilePopUp"
 
 export const ArtistDashboardProfile = () => {
 
@@ -10,7 +10,7 @@ export const ArtistDashboardProfile = () => {
 
             <div className="relative">
                 <img src='https://picsum.photos/1920/1080' className="w-full h-48 rounded-md object-cover" />
-                <Button className="absolute top-2 right-2" variant='default'><MdEditSquare /> Editar perfil</Button>
+                <ArtistDashboardProfileEditProfilePopUp/>
                 <div className="flex flex-wrap gap-4 items-end absolute -bottom-16 w-full pl-2">
                     <img src='https://picsum.photos/200' className="w-32 h-32 rounded-full" />
                     <div className="flex flex-col justify-end flex-wrap">
@@ -28,7 +28,7 @@ export const ArtistDashboardProfile = () => {
                                 <CardTitle>Contenido destacado</CardTitle>
                                 <CardDescription>Destaca contenido en tu perfil</CardDescription>
                             </div>
-                            <Button variant='outline'>Cambiar</Button>
+                            <ChangeFeatureContent/>
                         </div>
                     </CardHeader>
                     <CardContent>
