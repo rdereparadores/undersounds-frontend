@@ -1,5 +1,5 @@
 import { api } from "@/lib/api"
-import { UserContext, UserInfoProps } from "./userContext"
+import { UserContext, UserInfoProps } from "./UserContext"
 
 export const UserProvider = ({ children }: { children: React.ReactNode }) => {
 
