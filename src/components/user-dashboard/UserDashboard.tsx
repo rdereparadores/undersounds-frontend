@@ -4,7 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "../ui/carousel"
 import Autoplay from "embla-carousel-autoplay"
 import { Skeleton } from "../ui/skeleton"
-import { UserInfoProps } from "@/hooks/user/userContext"
+import { UserInfoProps } from "@/hooks/user/UserContext"
 import { useUser } from "@/hooks/user/useUser"
 
 export const UserDashboardRecommendedArtistsItem = () => {

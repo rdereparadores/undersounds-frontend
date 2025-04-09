@@ -25,7 +25,7 @@ import {
 import { Label } from '../ui/label'
 import { InputOTP, InputOTPGroup, InputOTPSlot, InputOTPSeparator } from '../ui/input-otp'
 import { CheckoutAddressCountrySelector } from '../checkout/CheckoutAddressCountrySelector'
-import { UserInfoProps } from '@/hooks/user/userContext'
+import { UserInfoProps } from '@/hooks/user/UserContext'
 import { useUser } from '@/hooks/user/useUser'
 import { toast } from 'sonner'
 

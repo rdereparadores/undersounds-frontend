@@ -9,7 +9,7 @@ import { SheetClose } from "../ui/sheet"
 import { MdOutlineLocalShipping } from "react-icons/md"
 import { useEffect, useState } from "react"
 import { useUser } from "@/hooks/user/useUser"
-import { UserInfoProps } from "@/hooks/user/userContext"
+import { UserInfoProps } from "@/hooks/user/UserContext"
 import { Separator } from "../ui/separator"
 import { IoIosLogOut } from "react-icons/io"
 

@@ -17,7 +17,7 @@ import { RxDashboard } from "react-icons/rx"
 import { Link } from 'react-router'
 import { useUser } from '@/hooks/user/useUser'
 import { useEffect, useState } from 'react'
-import { ArtistInfoProps } from '@/hooks/user/userContext'
+import { ArtistInfoProps } from '@/hooks/user/UserContext'
 
 export const NavBarArtistSection = () => {
     const auth = useAuth()
