@@ -1,12 +1,12 @@
 import { api } from "@/lib/api"
 import { UserContext, UserInfoProps } from "./UserContext"
+import axios from "axios"
 
 export const UserProvider = ({ children }: { children: React.ReactNode }) => {
 
     const getUserInfo = async () => {
         try {
             const result = await api.get('/api/user/profile')
-            console.log(result.data.data)
             return result.data.data
         } catch {
             return undefined
@@ -24,10 +24,10 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
 
     const updateUserProfileImage = async (image: File) => {
         try {
+            console.log('es un fichero mi pana')
             const formData = new FormData()
             formData.append('profileImage', image)
             const result = await api.post('/api/user/profile/update/image', formData)
-            console.log(result.data)
             if (result.data.error) {
                 return false
             }
@@ -37,10 +37,19 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
         }
     }
 
+    const generateUserProfileImageAI = async (prompt: string) => {
+        try {
+            const result = await axios.post('/api/ai/cover', { prompt })
+            return result.data.msg.img_url
+        } catch (_err) {
+            console.log(_err)
+            return null
+        }
+    }
+
     const getArtistInfo = async () => {
         try {
             const result = await api.get('/api/artist/profile')
-            console.log(result.data.data)
             return result.data.data
         } catch {
             return undefined
@@ -48,7 +57,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     }
 
     return (
-        <UserContext.Provider value={{ getUserInfo, getArtistInfo, updateUserInfo, updateUserProfileImage }}>
+        <UserContext.Provider value={{ getUserInfo, getArtistInfo, updateUserInfo, updateUserProfileImage, generateUserProfileImageAI }}>
             {children}
         </UserContext.Provider>
     )

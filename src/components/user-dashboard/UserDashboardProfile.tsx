@@ -1,6 +1,5 @@
 import { z } from 'zod'
 import { Button } from '../ui/button'
-import { MdEditSquare } from "react-icons/md"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from 'react-hook-form'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form'
@@ -10,7 +9,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Badge } from '../ui/badge'
 import { IoAddCircleOutline } from "react-icons/io5"
 import { DatePicker } from '../ui/new-date-picker'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Skeleton } from '../ui/skeleton'
 import {
     Dialog,
@@ -28,6 +27,7 @@ import { CheckoutAddressCountrySelector } from '../checkout/CheckoutAddressCount
 import { UserInfoProps } from '@/hooks/user/UserContext'
 import { useUser } from '@/hooks/user/useUser'
 import { toast } from 'sonner'
+import { UserDashboardProfileUpdateImage } from './UserDashboardProfileUpdateImage'
 
 const maxBirthdate = new Date(Date.now())
 maxBirthdate.setFullYear(maxBirthdate.getFullYear() - 16);
@@ -353,54 +353,6 @@ export const UserDashboardProfileAddressesCard = () => {
     )
 }
 
-
-export const EditUserAvatar = () => {
-    const user = useUser()
-    const inputFile = useRef<HTMLInputElement | null>(null);
-
-    const onButtonClick = () => {
-        if (inputFile.current) {
-            inputFile.current.click();
-        }
-    }
-
-    const onSubmit = async () => {
-        if (inputFile.current && inputFile.current.files?.length) {
-            const file = inputFile.current.files[0]
-            await user.updateUserProfileImage(file)
-        } else {
-            console.error("No se seleccionó ningún archivo");
-        }
-    }
-
-    return (
-        <Dialog>
-            <DialogTrigger asChild>
-                <Button className='absolute right-2 bottom-2 w-8 h-8'><MdEditSquare /></Button>
-            </DialogTrigger>
-            <DialogContent className='w-fit pt-12'>
-                <DialogHeader>
-                    <DialogTitle>¿Ya te has aburrido de tu foto de perfil?</DialogTitle>
-                    <DialogDescription>Actualízala o deja que la IA lo haga por ti.</DialogDescription>
-                </DialogHeader>
-                <div className='flex justify-center items-center gap-4'>
-                    <Input type='file' id='file' ref={inputFile} style={{ display: 'none' }} />
-                    <img src='https://picsum.photos/200' className='w-32 h-32 rounded-full hover:cursor-pointer' />
-                    <div className='flex flex-col gap-2 items-center grow'>
-                        <Button className='w-full' variant='outline'>Generar con IA</Button>
-                        <Button onClick={onButtonClick} className='w-full' variant='outline'>Subir desde el dispositivo</Button>
-                    </div>
-                </div>
-                <DialogFooter className='gap-2'>
-                    <DialogClose asChild>
-                        <Button className='w-full' onClick={onSubmit}>Confirmar</Button>
-                    </DialogClose>
-                </DialogFooter>
-            </DialogContent>
-        </Dialog>
-    )
-}
-
 export const UserDashboardProfile = () => {
     const [imgLoaded, setImgLoaded] = useState(false)
     const user = useUser()
@@ -424,7 +376,7 @@ export const UserDashboardProfile = () => {
                     <div className='relative w-fit h-fit'>
                         {!imgLoaded && <Skeleton className='w-32 h-32 rounded-full' />}
                         <img src={userInfo.imgUrl} className={`w-32 h-32 rounded-full ${imgLoaded ? '' : 'hidden'}`} onLoad={() => setImgLoaded(true)} />
-                        <EditUserAvatar></EditUserAvatar>
+                        <UserDashboardProfileUpdateImage />
                     </div>
                     <UserDashboardProfileForm namePlaceholder={userInfo.name} surNamePlaceholder={userInfo.surName} birthDatePlaceholder={userInfo.birthDate} />
                     <Separator orientation='vertical' className='hidden xl:block' />
