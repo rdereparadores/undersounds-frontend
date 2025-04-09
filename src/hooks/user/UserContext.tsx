@@ -16,10 +16,14 @@ export interface ArtistInfoProps extends UserInfoProps {
 
 export interface UserContextProps {
     getUserInfo: () => Promise<UserInfoProps>,
-    getArtistInfo: () => Promise<ArtistInfoProps>
+    updateUserInfo: (data: Partial<UserInfoProps>) => Promise<boolean>,
+    updateUserProfileImage: (image: File) => Promise<boolean>,
+    getArtistInfo: () => Promise<ArtistInfoProps>,
 }
 
 export const UserContext = createContext<UserContextProps>({
     getUserInfo: async () => {throw new Error()},
-    getArtistInfo: async () => {throw new Error()}
+    updateUserInfo: async () => {throw new Error()},
+    updateUserProfileImage: () => {throw new Error()},
+    getArtistInfo: async () => {throw new Error()},
 })

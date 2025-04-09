@@ -17,7 +17,7 @@ import { useAuth } from '@/hooks/auth/useAuth'
 import { Link } from 'react-router'
 import { useUser } from '@/hooks/user/useUser'
 import { useEffect, useState } from 'react'
-import { UserInfoProps } from '@/hooks/user/userContext'
+import { UserInfoProps } from '@/hooks/user/UserContext'
 
 export const NavBarUserSection = () => {
     const auth = useAuth()

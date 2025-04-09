@@ -1,9 +1,11 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Button } from "../ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card"
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "../ui/carousel"
 import Autoplay from "embla-carousel-autoplay"
 import { Skeleton } from "../ui/skeleton"
+import { UserInfoProps } from "@/hooks/user/UserContext"
+import { useUser } from "@/hooks/user/useUser"
 
 export const UserDashboardRecommendedArtistsItem = () => {
     const [imgLoaded, setImgLoaded] = useState(false)
@@ -116,10 +118,19 @@ export const UserDashboardRecentOrdersCard = () => {
 }
 
 export const UserDashboard = () => {
+    const user = useUser()
+    const [userInfo, setUserInfo] = useState<UserInfoProps | undefined>(undefined)
+
+    useEffect(() => {
+        user.getUserInfo()
+        .then(user => setUserInfo(user))
+    }, [])
+
+    if (userInfo === undefined) return <></>
 
     return (
         <div className="grow gap-4 flex flex-col flex-wrap">
-            <h1 className="text-3xl font-medium">Hola, Iván</h1>
+            <h1 className="text-3xl font-medium">Hola, {userInfo.name}</h1>
             <div className="flex flex-wrap 2xl:flex-nowrap gap-4">
                 <UserDashboardLatestCard />
                 <UserDashboardRecommendedArtistsCard />

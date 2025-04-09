@@ -1,5 +1,5 @@
 import { api } from "@/lib/api"
-import { UserContext } from "./userContext"
+import { UserContext, UserInfoProps } from "./UserContext"
 
 export const UserProvider = ({ children }: { children: React.ReactNode }) => {
 
@@ -13,6 +13,30 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
         }
     }
 
+    const updateUserInfo = async (data: Partial<UserInfoProps>) => {
+        try {
+            await api.post('/api/user/profile/update', data)
+            return true
+        } catch {
+            return false
+        }
+    }
+
+    const updateUserProfileImage = async (image: File) => {
+        try {
+            const formData = new FormData()
+            formData.append('profileImage', image)
+            const result = await api.post('/api/user/profile/update/image', formData)
+            console.log(result.data)
+            if (result.data.error) {
+                return false
+            }
+            return true
+        } catch {
+            return false
+        }
+    }
+
     const getArtistInfo = async () => {
         try {
             const result = await api.get('/api/artist/profile')
@@ -22,8 +46,9 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
             return undefined
         }
     }
+
     return (
-        <UserContext.Provider value={{ getUserInfo, getArtistInfo }}>
+        <UserContext.Provider value={{ getUserInfo, getArtistInfo, updateUserInfo, updateUserProfileImage }}>
             {children}
         </UserContext.Provider>
     )

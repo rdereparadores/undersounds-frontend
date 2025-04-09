@@ -11,7 +11,7 @@ import { SheetClose } from "../ui/sheet"
 import { IoIosLogOut } from "react-icons/io"
 import { useUser } from "@/hooks/user/useUser"
 import { useEffect, useState } from "react"
-import { ArtistInfoProps } from "@/hooks/user/userContext"
+import { ArtistInfoProps } from "@/hooks/user/UserContext"
 
 export const NavBarArtistSectionMobile = () => {
     const auth = useAuth()

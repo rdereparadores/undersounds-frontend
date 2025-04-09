@@ -10,7 +10,7 @@ import { ScrollToTop } from '@/lib/utils'
 import { ProductProvider } from './hooks/product/ProductProvider'
 import { CartProvider } from './hooks/cart/CartProvider'
 import { CheckoutProvider } from './hooks/checkout/CheckoutProvider'
-import { UserProvider } from './hooks/user/userProvider'
+import { UserProvider } from './hooks/user/UserProvider'
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
