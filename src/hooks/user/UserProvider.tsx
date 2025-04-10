@@ -1,12 +1,11 @@
 import { api } from "@/lib/api"
-import { UserContext, UserInfoProps } from "./UserContext"
+import { AddressProps, UserContext, UserInfoProps } from "./UserContext"
 
 export const UserProvider = ({ children }: { children: React.ReactNode }) => {
 
     const getUserInfo = async () => {
         try {
             const result = await api.get('/api/user/profile')
-            console.log(result.data.data)
             return result.data.data
         } catch {
             return undefined
@@ -24,10 +23,10 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
 
     const updateUserProfileImage = async (image: File) => {
         try {
+            console.log('es un fichero mi pana')
             const formData = new FormData()
             formData.append('profileImage', image)
             const result = await api.post('/api/user/profile/update/image', formData)
-            console.log(result.data)
             if (result.data.error) {
                 return false
             }
@@ -37,10 +36,65 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
         }
     }
 
+    const addAddress = async (address: AddressProps) => {
+        try {
+            const result = await api.post('/api/user/profile/address/add', { address })
+            if (result.data.error) {
+                return false
+            }
+            return true
+        } catch {
+            return false
+        }
+    }
+
+    const removeAddress = async (_id: string) => {
+        try {
+            const result = await api.post('/api/user/profile/address/remove', { _id })
+            if (result.data.error) {
+                return false
+            }
+            return true
+        } catch {
+            return false
+        }
+    }
+
+    const getAddresses = async () => {
+        try {
+            const result = await api.get('/api/user/profile/address')
+            return result.data.data
+        } catch {
+            return null
+        }
+    }
+
+    const setAddressAsDefault = async (_addressId: string) => {
+        console.log(_addressId)
+        try {
+            const result = await api.patch('/api/user/profile/address/set-default', { addressId: _addressId })
+            if (result.data.error) {
+                return false
+            }
+            return true
+        } catch {
+            return false
+        }
+    }
+
+    const generateUserProfileImageAI = async (prompt: string) => {
+        try {
+            const result = await api.post('/api/ai/cover', { prompt })
+            return result.data.msg.img_url
+        } catch (_err) {
+            console.log(_err)
+            return null
+        }
+    }
+
     const getArtistInfo = async () => {
         try {
             const result = await api.get('/api/artist/profile')
-            console.log(result.data.data)
             return result.data.data
         } catch {
             return undefined
@@ -48,7 +102,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     }
 
     return (
-        <UserContext.Provider value={{ getUserInfo, getArtistInfo, updateUserInfo, updateUserProfileImage }}>
+        <UserContext.Provider value={{ getUserInfo, getArtistInfo, updateUserInfo, updateUserProfileImage, generateUserProfileImageAI, addAddress, getAddresses, removeAddress, setAddressAsDefault }}>
             {children}
         </UserContext.Provider>
     )
