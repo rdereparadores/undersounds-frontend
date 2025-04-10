@@ -69,6 +69,19 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
         }
     }
 
+    const setAddressAsDefault = async (_addressId: string) => {
+        console.log(_addressId)
+        try {
+            const result = await api.patch('/api/user/profile/address/set-default', { addressId: _addressId })
+            if (result.data.error) {
+                return false
+            }
+            return true
+        } catch {
+            return false
+        }
+    }
+
     const generateUserProfileImageAI = async (prompt: string) => {
         try {
             const result = await api.post('/api/ai/cover', { prompt })
@@ -89,7 +102,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     }
 
     return (
-        <UserContext.Provider value={{ getUserInfo, getArtistInfo, updateUserInfo, updateUserProfileImage, generateUserProfileImageAI, addAddress, getAddresses, removeAddress }}>
+        <UserContext.Provider value={{ getUserInfo, getArtistInfo, updateUserInfo, updateUserProfileImage, generateUserProfileImageAI, addAddress, getAddresses, removeAddress, setAddressAsDefault }}>
             {children}
         </UserContext.Provider>
     )

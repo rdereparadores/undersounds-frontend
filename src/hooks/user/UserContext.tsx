@@ -37,7 +37,8 @@ export interface UserContextProps {
     generateUserProfileImageAI: (prompt: string) => Promise<string | null>,
     getArtistInfo: () => Promise<ArtistInfoProps>,
     getAddresses: () => Promise<AddressProps[]>,
-    removeAddress: (_id: string) => Promise<boolean>
+    removeAddress: (_id: string) => Promise<boolean>,
+    setAddressAsDefault: (_addressId: string) => Promise<boolean>
 }
 
 export const UserContext = createContext<UserContextProps>({
@@ -48,5 +49,6 @@ export const UserContext = createContext<UserContextProps>({
     addAddress: async () => false,
     removeAddress: async () => false,
     getArtistInfo: async () => {throw new Error()},
-    getAddresses: () => {throw new Error()}
+    getAddresses: () => {throw new Error()},
+    setAddressAsDefault: async () => false
 })

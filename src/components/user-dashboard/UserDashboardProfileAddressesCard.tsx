@@ -201,12 +201,22 @@ export const UserDashboardProfileAddressesCardItem = ({address}: {address: Addre
         setTimeout(() => {window.location.reload()}, 1000)
     }
 
+    const handleAddressSetDefault = async () => {
+        const result = await user.setAddressAsDefault(address._id!)
+        if (!result) {
+            toast.error('Error al establecer la dirección como predeterminada')
+            return
+        }
+        toast.success('Dirección establecida como predeterminada')
+        setTimeout(() => {window.location.reload()}, 1000)
+    }
+
     return (
-        <Card className='w-fit'>
+        <Card className='w-fit sm:min-w-96'>
             <CardHeader>
-                <div className='flex gap-2 items-center'>
+                <div className='flex gap-2 items-center min-h-6'>
                     <CardTitle>{address.alias}</CardTitle>
-                    {address.default && <Badge variant='outline'>Predeterminada</Badge>}
+                    {address.default && <Badge className='m-0' variant='outline'>Predeterminada</Badge>}
                 </div>
             </CardHeader>
             <CardContent>
@@ -219,7 +229,8 @@ export const UserDashboardProfileAddressesCardItem = ({address}: {address: Addre
             </CardContent>
             <CardFooter className='gap-2 flex flex-wrap'>
                 <Button onClick={handleAddressRemove} className='grow'>Eliminar</Button>
-                <Button className='grow' variant='outline'>Establecer como predeterminada</Button>
+                { !address.default &&
+                <Button onClick={handleAddressSetDefault} className='grow' variant='outline'>Establecer como predeterminada</Button> }
             </CardFooter>
         </Card>
     )
