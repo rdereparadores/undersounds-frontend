@@ -1,6 +1,5 @@
 import { api } from "@/lib/api"
-import { UserContext, UserInfoProps } from "./UserContext"
-import axios from "axios"
+import { AddressProps, UserContext, UserInfoProps } from "./UserContext"
 
 export const UserProvider = ({ children }: { children: React.ReactNode }) => {
 
@@ -37,9 +36,42 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
         }
     }
 
+    const addAddress = async (address: AddressProps) => {
+        try {
+            const result = await api.post('/api/user/profile/address/add', { address })
+            if (result.data.error) {
+                return false
+            }
+            return true
+        } catch {
+            return false
+        }
+    }
+
+    const removeAddress = async (_id: string) => {
+        try {
+            const result = await api.post('/api/user/profile/address/remove', { _id })
+            if (result.data.error) {
+                return false
+            }
+            return true
+        } catch {
+            return false
+        }
+    }
+
+    const getAddresses = async () => {
+        try {
+            const result = await api.get('/api/user/profile/address')
+            return result.data.data
+        } catch {
+            return null
+        }
+    }
+
     const generateUserProfileImageAI = async (prompt: string) => {
         try {
-            const result = await axios.post('/api/ai/cover', { prompt })
+            const result = await api.post('/api/ai/cover', { prompt })
             return result.data.msg.img_url
         } catch (_err) {
             console.log(_err)
@@ -57,7 +89,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     }
 
     return (
-        <UserContext.Provider value={{ getUserInfo, getArtistInfo, updateUserInfo, updateUserProfileImage, generateUserProfileImageAI }}>
+        <UserContext.Provider value={{ getUserInfo, getArtistInfo, updateUserInfo, updateUserProfileImage, generateUserProfileImageAI, addAddress, getAddresses, removeAddress }}>
             {children}
         </UserContext.Provider>
     )

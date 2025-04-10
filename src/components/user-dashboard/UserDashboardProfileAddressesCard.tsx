@@ -18,12 +18,16 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form'
 import { CountrySelector } from '../common/CountrySelector'
+import { useUser } from '@/hooks/user/useUser'
+import { toast } from 'sonner'
+import { AddressProps } from '@/hooks/user/UserContext'
+import { useEffect, useState } from 'react'
 
 const addAddressFormSchema = z.object({
     name: z.string(),
     surName: z.string(),
     country: z.string(),
-    phone: z.string(),
+    phone: z.string().refine(phone => /^[0-9]{7,15}$/.test(phone), 'Teléfono inválido'),
     address: z.string(),
     address2: z.string().optional(),
     province: z.string(),
@@ -33,12 +37,22 @@ const addAddressFormSchema = z.object({
 })
 
 export const UserDashboardProfileAddressesAddCard = () => {
+    const user = useUser()
     const form = useForm<z.infer<typeof addAddressFormSchema>>({
         resolver: zodResolver(addAddressFormSchema)
     })
 
-    const onSubmit = (data: z.infer<typeof addAddressFormSchema>) => {
-        console.log(data)
+    const onSubmit = async (data: z.infer<typeof addAddressFormSchema>) => {
+        const result = await user.addAddress({
+            ...data,
+            phone: Number(data.phone)
+        })
+        if (result) {
+            toast.success('Dirección creada con éxito')
+        } else {
+            toast.error('Error al crear la dirección')
+        }
+        setTimeout(() => window.location.reload(), 1000)
     }
 
     return (
@@ -174,24 +188,37 @@ export const UserDashboardProfileAddressesAddCard = () => {
     )
 }
 
-export const UserDashboardProfileAddressesCardItem = () => {
+export const UserDashboardProfileAddressesCardItem = ({address}: {address: AddressProps}) => {
+    const user = useUser()
+
+    const handleAddressRemove = async () => {
+        const result = await user.removeAddress(address._id!)
+        if (!result) {
+            toast.error('Error al eliminar la dirección')
+            return
+        }
+        toast.success('Dirección eliminada')
+        setTimeout(() => {window.location.reload()}, 1000)
+    }
+
     return (
         <Card className='w-fit'>
             <CardHeader>
                 <div className='flex gap-2 items-center'>
-                    <CardTitle>Casa</CardTitle>
-                    <Badge variant='outline'>Predeterminada</Badge>
+                    <CardTitle>{address.alias}</CardTitle>
+                    {address.default && <Badge variant='outline'>Predeterminada</Badge>}
                 </div>
             </CardHeader>
             <CardContent>
-                <p>Iván Ruiz López</p>
-                <p>Avenida de las Delicias, 2</p>
-                <p>Colegio Mayor Antonio Franco</p>
-                <p>10004 Cáceres</p>
-                <p>666666666</p>
+                <p>{address.name} {address.surName}</p>
+                <p>{address.address}</p>
+                <p>{address.address2}</p>
+                <p>{address.city} {address.province}</p>
+                <p>{address.country}</p>
+                <p>{address.phone}</p>
             </CardContent>
             <CardFooter className='gap-2 flex flex-wrap'>
-                <Button className='grow'>Eliminar</Button>
+                <Button onClick={handleAddressRemove} className='grow'>Eliminar</Button>
                 <Button className='grow' variant='outline'>Establecer como predeterminada</Button>
             </CardFooter>
         </Card>
@@ -199,12 +226,21 @@ export const UserDashboardProfileAddressesCardItem = () => {
 }
 
 export const UserDashboardProfileAddressesCard = () => {
+    const user = useUser()
+    const [addresses, setAddresses] = useState<AddressProps[] | undefined>(undefined)
+
+    useEffect(() => {
+        user.getAddresses()
+        .then(addresses => setAddresses(addresses))
+    }, [])
+
+    if (addresses === undefined) return <></>
+
     return (
         <div className='flex gap-4 flex-wrap w-full justify-center'>
-            <UserDashboardProfileAddressesCardItem />
-            <UserDashboardProfileAddressesCardItem />
-            <UserDashboardProfileAddressesCardItem />
-            <UserDashboardProfileAddressesCardItem />
+            {addresses.map((address, index) => (
+                <UserDashboardProfileAddressesCardItem key={index} address={address} />
+            ))}
             <UserDashboardProfileAddressesAddCard />
         </div>
     )
