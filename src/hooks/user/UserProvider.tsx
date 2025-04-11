@@ -92,17 +92,8 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
         }
     }
 
-    const getArtistInfo = async () => {
-        try {
-            const result = await api.get('/api/artist/profile')
-            return result.data.data
-        } catch {
-            return undefined
-        }
-    }
-
     return (
-        <UserContext.Provider value={{ getUserInfo, getArtistInfo, updateUserInfo, updateUserProfileImage, generateUserProfileImageAI, addAddress, getAddresses, removeAddress, setAddressAsDefault }}>
+        <UserContext.Provider value={{ getUserInfo, updateUserInfo, updateUserProfileImage, generateUserProfileImageAI, addAddress, getAddresses, removeAddress, setAddressAsDefault }}>
             {children}
         </UserContext.Provider>
     )

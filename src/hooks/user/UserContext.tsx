@@ -9,11 +9,6 @@ export interface UserInfoProps {
     birthDate: Date
 }
 
-export interface ArtistInfoProps extends UserInfoProps {
-    artistName: string,
-    artistUserName: string
-}
-
 export interface AddressProps {
     _id?: string,
     default?: boolean,
@@ -35,7 +30,6 @@ export interface UserContextProps {
     updateUserProfileImage: (image: File) => Promise<boolean>,
     addAddress: (address: AddressProps) => Promise<boolean>,
     generateUserProfileImageAI: (prompt: string) => Promise<string | null>,
-    getArtistInfo: () => Promise<ArtistInfoProps>,
     getAddresses: () => Promise<AddressProps[]>,
     removeAddress: (_id: string) => Promise<boolean>,
     setAddressAsDefault: (_addressId: string) => Promise<boolean>
@@ -48,7 +42,6 @@ export const UserContext = createContext<UserContextProps>({
     generateUserProfileImageAI: async () => null,
     addAddress: async () => false,
     removeAddress: async () => false,
-    getArtistInfo: async () => {throw new Error()},
     getAddresses: () => {throw new Error()},
     setAddressAsDefault: async () => false
 })

@@ -15,17 +15,17 @@ import { Skeleton } from '../ui/skeleton'
 import { useAuth } from '@/hooks/auth/useAuth'
 import { RxDashboard } from "react-icons/rx"
 import { Link } from 'react-router'
-import { useUser } from '@/hooks/user/useUser'
 import { useEffect, useState } from 'react'
-import { ArtistInfoProps } from '@/hooks/user/UserContext'
+import { useArtist } from '@/hooks/artist/useArtist'
+import { ArtistInfoProps } from '@/hooks/artist/ArtistContext'
 
 export const NavBarArtistSection = () => {
     const auth = useAuth()
-    const user = useUser()
+    const artist = useArtist()
     const [artistInfo, setArtistInfo] = useState<ArtistInfoProps | undefined>(undefined)
 
     useEffect(() => {
-        user.getArtistInfo()
+        artist.getArtistInfo()
         .then(artist => setArtistInfo(artist))
     }, [])
 
@@ -36,7 +36,7 @@ export const NavBarArtistSection = () => {
             <DropdownMenuTrigger asChild>
                 <Button variant="outline">
                     <Avatar>
-                        <AvatarImage src={artistInfo.imgUrl} width='25px' height='25px' alt="avatarUser" className='rounded-full'></AvatarImage>
+                        <AvatarImage src={artistInfo.imgUrl} width='25px' height='25px' alt="avatarUser" className='w-[25px] h-[25px] rounded-full object-cover' />
                         <AvatarFallback><Skeleton className='w-[25px] h-[25px] rounded-full' /></AvatarFallback>
                     </Avatar>
                     Mi cuenta
@@ -46,7 +46,7 @@ export const NavBarArtistSection = () => {
                 <DropdownMenuGroup>
                     <DropdownMenuItem>
                         <Avatar>
-                            <AvatarImage src={artistInfo.imgUrl} width='30px' height='30px' alt="avatarUser" className='rounded-full'></AvatarImage>
+                            <AvatarImage src={artistInfo.imgUrl} width='30px' height='30px' alt="avatarUser" className='w-[30px] h-[30px] rounded-full object-cover' />
                             <AvatarFallback>
                                 <Skeleton className='w-[30px] h-[30px] rounded-full' />
                             </AvatarFallback>

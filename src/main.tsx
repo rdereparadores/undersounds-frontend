@@ -11,6 +11,7 @@ import { ProductProvider } from './hooks/product/ProductProvider'
 import { CartProvider } from './hooks/cart/CartProvider'
 import { CheckoutProvider } from './hooks/checkout/CheckoutProvider'
 import { UserProvider } from './hooks/user/UserProvider'
+import { ArtistProvider } from './hooks/artist/ArtistProvider'
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
@@ -21,8 +22,10 @@ root.render(
                 <CartProvider>
                     <CheckoutProvider>
                         <UserProvider>
-                            <App />
-                            <Toaster richColors />
+                            <ArtistProvider>
+                                <App />
+                                <Toaster richColors />
+                            </ArtistProvider>
                         </UserProvider>
                     </CheckoutProvider>
                 </CartProvider>

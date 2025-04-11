@@ -9,17 +9,17 @@ import { Separator } from "../ui/separator"
 import { RxDashboard } from "react-icons/rx"
 import { SheetClose } from "../ui/sheet"
 import { IoIosLogOut } from "react-icons/io"
-import { useUser } from "@/hooks/user/useUser"
 import { useEffect, useState } from "react"
-import { ArtistInfoProps } from "@/hooks/user/UserContext"
+import { useArtist } from "@/hooks/artist/useArtist"
+import { ArtistInfoProps } from "@/hooks/artist/ArtistContext"
 
 export const NavBarArtistSectionMobile = () => {
     const auth = useAuth()
-    const user = useUser()
+    const artist = useArtist()
     const [artistInfo, setArtistInfo] = useState<ArtistInfoProps | undefined>(undefined)
 
     useEffect(() => {
-        user.getArtistInfo()
+        artist.getArtistInfo()
         .then(artist => setArtistInfo(artist))
     }, [])
 
@@ -29,7 +29,7 @@ export const NavBarArtistSectionMobile = () => {
         <>
             <Button variant="outline">
                 <Avatar>
-                    <AvatarImage src={artistInfo.imgUrl} width='25px' height='25px' alt="avatarUser" className='rounded-full'></AvatarImage>
+                    <AvatarImage src={artistInfo.imgUrl} width='25px' height='25px' alt="avatarUser" className='rounded-full object-cover'></AvatarImage>
                     <AvatarFallback>
                         <Skeleton className='w-[25px] h-[25px] rounded-full' />
                     </AvatarFallback>
