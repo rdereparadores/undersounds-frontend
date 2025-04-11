@@ -2,15 +2,26 @@ import { Card, CardContent, CardDescription, CardHeader, CardFooter, CardTitle }
 import { RiNeteaseCloudMusicFill } from "react-icons/ri"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
-import { FaFacebookF, FaGoogle } from "react-icons/fa"
+import { FaGoogle } from "react-icons/fa"
 import { Link } from 'react-router'
 import { Tabs, TabsList, TabsContent, TabsTrigger } from "@/components/ui/tabs"
 import { SignUpUserForm } from "./SignUpUserForm"
 import { SignUpArtistForm } from "./SignUpArtistForm"
 import { useAuth } from "@/hooks/auth/useAuth"
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuGroup,
+    DropdownMenuLabel,
+    DropdownMenuRadioItem,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+
 
 export const SignUpCard = () => {
     const auth = useAuth()
+
     return (
         <Card className='w-[400px]'>
             <CardHeader>
@@ -43,12 +54,22 @@ export const SignUpCard = () => {
                 </div>
 
                 <div className='flex flex-col gap-3'>
-                    <Button onClick={auth.signInGoogle} className='w-full'>
-                        <FaGoogle /> Registrarse con Google
-                    </Button>
-                    <Button onClick={auth.signInFacebook} className='w-full'>
-                        <FaFacebookF /> Registrarse con Facebook
-                    </Button>
+
+                    <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                            <Button className='w-full'>
+                                <FaGoogle /> Registrarse con Google
+                            </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent className="w-56">
+                            <DropdownMenuLabel>¿Cómo te quieres registrar?</DropdownMenuLabel>
+                            <DropdownMenuSeparator />
+                            <DropdownMenuGroup>
+                                <DropdownMenuRadioItem onClick={() => auth.signUpGoogle("user")} value="top">Usuario</DropdownMenuRadioItem>
+                                <DropdownMenuRadioItem onClick={() => auth.signUpGoogle("artist")} value="bottom">Artista</DropdownMenuRadioItem>
+                            </DropdownMenuGroup>
+                        </DropdownMenuContent>
+                    </DropdownMenu>
                 </div>
             </CardContent>
 

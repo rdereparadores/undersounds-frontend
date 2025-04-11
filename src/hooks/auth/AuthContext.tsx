@@ -30,6 +30,7 @@ interface AuthContextProps {
     signUpUser: (input: AuthContextSignUpUserProps) => Promise<boolean>,
     signUpArtist: (input: AuthContextSignUpArtistProps) => Promise<boolean>,
     signInGoogle: () => void,
+    signUpGoogle: (role:string) => void,
     signInFacebook: () => void,
     checkRole: () => Promise<UserRole>
     forgotPassword: (input:AuthContextForgotPassword) => Promise<boolean>
@@ -41,6 +42,7 @@ export const AuthContext = createContext<AuthContextProps>({
     signUpUser: async () => (false),
     signUpArtist: async () => (false),
     signInGoogle: async () => {},
+    signUpGoogle: async () => {},
     signInFacebook: async () => {},
     checkRole: async () => UserRole.GUEST,
     forgotPassword: async () => (false)

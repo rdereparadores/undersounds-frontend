@@ -120,6 +120,49 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
     }
 
+    const signUpGoogle = async (data : string) => {
+        auth.languageCode = 'es';
+        const google = new GoogleAuthProvider();
+        console.log("INTENTO CREAR " + data + " DE GOOGLE")
+        try {
+            const result = (await signInWithPopup(auth, google));
+            const idToken = await result.user.getIdToken()
+            localStorage.setItem("token", idToken)
+
+            console.log("La info del " + data + " es " + result.user.email + result.user.displayName + result.user.photoURL )
+
+            const response = await api.post("/api/auth/signupgoogle",{
+                userType: data,
+                idToken: idToken,
+                email: result.user.email,
+                img_url: result.user.photoURL,
+                name: result.user.displayName,
+            })
+
+            if (response.data.err) {
+                toast.error(response.data.err)
+                return false
+            }
+
+            if(data === "user")  navigate('/user/dashboard')
+            if(data === "artist")  navigate('/artist/dashboard')
+            return true
+
+        } catch (error: unknown) {
+            if (error instanceof FirebaseError) {
+                const errorCode = error.code
+                if (errorCode === 'auth/account-exists-with-different-credential') {
+                    toast.error("Ya existe un usuario con ese email")
+                } else if (errorCode === 'auth/cancelled-popup-request') {
+                    toast.error("Se intentó abrir otra ventana emergente")
+                } else if (errorCode === 'auth/popup-closed-by-user') {
+                    toast.error("Ventana emergente cerrada por el usuario")
+                }
+            }
+            return false
+    }
+}
+
     const signInGoogle = async () => {
         auth.languageCode = 'es';
         const google = new GoogleAuthProvider();
@@ -201,8 +244,10 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         return true
     }
 
+
+
     return (
-        <AuthContext.Provider value={{ logIn, logOut, signUpUser, signUpArtist, signInGoogle, forgotPassword, signInFacebook, checkRole }}>
+        <AuthContext.Provider value={{ logIn, logOut, signUpUser, signUpArtist, signInGoogle, signUpGoogle, forgotPassword, signInFacebook, checkRole }}>
             {children}
         </AuthContext.Provider>
     )

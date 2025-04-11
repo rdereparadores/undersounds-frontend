@@ -3,7 +3,7 @@ import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
-import { FaFacebookF, FaGoogle } from "react-icons/fa"
+import { FaGoogle } from "react-icons/fa"
 import { RiNeteaseCloudMusicFill } from "react-icons/ri"
 import { Link, useNavigate, useSearchParams } from 'react-router'
 import { useState, useEffect } from "react"
@@ -105,9 +105,6 @@ export const SignInCard = () => {
                 <div className='flex flex-col gap-3'>
                     <Button onClick={auth.signInGoogle} className='w-full'>
                         <FaGoogle /> Iniciar sesión con Google
-                    </Button>
-                    <Button onClick={auth.signInFacebook} className='w-full'>
-                        <FaFacebookF /> Iniciar sesión con Facebook
                     </Button>
                 </div>
             </CardContent>
