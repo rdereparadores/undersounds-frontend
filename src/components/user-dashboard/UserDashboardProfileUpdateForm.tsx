@@ -13,7 +13,7 @@ maxBirthdate.setFullYear(maxBirthdate.getFullYear() - 16);
 
 const profileFormSchema = z.object({
     name: z.string().max(30, 'Máximo 30 caracteres').optional(),
-    surName: z.string().max(50, 'Máximo 50 caracteres').optional(),
+    surname: z.string().max(50, 'Máximo 50 caracteres').optional(),
     birthDate: z.date().max(maxBirthdate, 'Debes tener al menos 16 años').optional()
 
 })
@@ -24,7 +24,7 @@ export const UserDashboardProfileUpdateForm = ({ namePlaceholder, surNamePlaceho
         resolver: zodResolver(profileFormSchema),
         defaultValues: {
             name: '',
-            surName: '',
+            surname: '',
             birthDate: new Date(birthDatePlaceholder)
         }
 
@@ -55,7 +55,7 @@ export const UserDashboardProfileUpdateForm = ({ namePlaceholder, surNamePlaceho
                     )}
                     />
 
-                    <FormField control={form.control} name='surName' render={({ field }) => (
+                    <FormField control={form.control} name='surname' render={({ field }) => (
                         <FormItem className='grow'>
                             <FormLabel>Apellidos</FormLabel>
                             <FormControl>
