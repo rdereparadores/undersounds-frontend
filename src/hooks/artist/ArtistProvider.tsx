@@ -7,7 +7,6 @@ export const ArtistProvider = ({ children }: { children: React.ReactNode }) => {
     const getArtistInfo = async () => {
         try {
             const result = await api.get('/api/artist/profile')
-            console.log(result)
             return result.data.data
         } catch {
             return undefined
@@ -17,9 +16,10 @@ export const ArtistProvider = ({ children }: { children: React.ReactNode }) => {
     const updateArtistInfo = async (data: Partial<UpdateArtistInfoProps>) => {
         try {
             if (data.artistName || data.artistUsername) {
+                console.log(data.artistUsername)
                 const result = await api.post('/api/artist/profile/update', { 
                     artistName: data.artistName,
-                    artistUserName: data.artistUsername
+                    artistUsername: data.artistUsername
                 })
                 if (result.data.error) {
                     toast.error('Error al actualizar el nombre o el nombre de usuario')

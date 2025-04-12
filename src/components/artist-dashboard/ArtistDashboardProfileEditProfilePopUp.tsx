@@ -21,7 +21,7 @@ import { useArtist } from "@/hooks/artist/useArtist"
 
 const profileFormSchema = z.object({
     artistName: z.string().max(30, 'Máximo 30 caracteres').optional(),
-    artistUserName: z.string().max(30, 'Máximo 30 caracteres').optional(),
+    artistUsername: z.string().max(30, 'Máximo 30 caracteres').optional(),
     artistProfileImg: z.any().refine((file) => file?.length > 0 ? file?.[0]?.type?.startsWith('image/') : true, {
         message: 'El formato debe ser JPG o PNG'
     }),
@@ -35,14 +35,14 @@ interface ArtistDashboardProfileEditProfilePopUpProps {
     bannerImgPlaceholder: string
 }
 
-export function ArtistDashboardProfileEditProfilePopUp({profileImgPlaceholder, bannerImgPlaceholder }: ArtistDashboardProfileEditProfilePopUpProps) {
+export function ArtistDashboardProfileEditProfilePopUp({ profileImgPlaceholder, bannerImgPlaceholder }: ArtistDashboardProfileEditProfilePopUpProps) {
     const artist = useArtist()
     const [previewProfileImg, setPreviewProfileImg] = useState<string>(profileImgPlaceholder)
     const [previewBannerImg, setPreviewBannerImg] = useState<string>(bannerImgPlaceholder)
     const form = useForm<z.infer<typeof profileFormSchema>>({
         resolver: zodResolver(profileFormSchema),
         defaultValues: {
-            artistUserName: '',
+            artistUsername: '',
             artistName: ''
         }
     })
@@ -76,7 +76,7 @@ export function ArtistDashboardProfileEditProfilePopUp({profileImgPlaceholder, b
             artistProfileImg: values.artistProfileImg[0],
             artistBannerImg: values.artistBannerImg[0]
         })
-        if (result) setTimeout(() => {window.location.reload()}, 1000)
+        if (result) setTimeout(() => { window.location.reload() }, 1000)
     }
 
     const handleBannerImgUpload = () => {
@@ -123,7 +123,7 @@ export function ArtistDashboardProfileEditProfilePopUp({profileImgPlaceholder, b
                                 </FormItem>
                             )} />
 
-                            <FormField control={form.control} name='artistUserName' render={({ field }) => (
+                            <FormField control={form.control} name='artistUsername' render={({ field }) => (
                                 <FormItem>
                                     <FormLabel>Nombre de usuario</FormLabel>
                                     <FormControl>
@@ -133,19 +133,15 @@ export function ArtistDashboardProfileEditProfilePopUp({profileImgPlaceholder, b
                                 </FormItem>
                             )} />
 
-                            <Button type='submit'>Confirmar</Button>
+                            <DialogFooter>
+                                <DialogClose asChild>
+                                    <Button type='button'>Cancelar</Button>
+                                </DialogClose>
+                                <Button type='submit'>Confirmar</Button>
+                            </DialogFooter>
                         </div>
                     </form>
                 </Form>
-
-                <DialogFooter>
-                    <DialogClose>
-                        <Button>Cancelar</Button>
-                    </DialogClose>
-                    <DialogClose>
-                        <Button>Confirmar</Button>
-                    </DialogClose>
-                </DialogFooter>
             </DialogContent>
         </Dialog>
 
