@@ -26,7 +26,7 @@ export function Song({songName,imgURL,artists,album}:SongProps){
                 </Button>
             </div>
             <Button variant="link" className="visible">{artists.map(item => item.name).join(', ')}</Button>
-            <Button variant="link" className="visible">{album}</Button> 
+            <Button variant="link" className="hidden sm:block">{album}</Button> 
         </Card>
     )
 }
