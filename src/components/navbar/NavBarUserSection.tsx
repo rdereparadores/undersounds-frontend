@@ -51,7 +51,7 @@ export const NavBarUserSection = () => {
                                 <Skeleton className='w-[30px] h-[30px] rounded-full' />
                             </AvatarFallback>
                         </Avatar>
-                        <p>@{userInfo.userName}</p>
+                        <p>@{userInfo.username}</p>
                     </DropdownMenuItem>
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />

@@ -48,7 +48,7 @@ export const NavBar = ({ floating }: NavBarProps) => {
     useEffect(() => {
         auth.checkRole()
         .then(role => setUserRole(role))
-    })
+    }, [])
 
     const onSearch = (e: FormEvent) => {
         e.preventDefault()

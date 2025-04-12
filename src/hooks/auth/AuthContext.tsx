@@ -8,20 +8,20 @@ export interface AuthContextLogInProps {
 
 export interface AuthContextSignUpUserProps {
     name: string,
-    surName: string
+    surname: string
     email: string,
     password: string,
     birthDate: Date,
-    userName?: string
+    username?: string
 }
 
 export interface AuthContextSignUpArtistProps extends AuthContextSignUpUserProps {
     artistName: string,
-    artistUserName: string
+    artistUsername: string
 }
 
 export interface AuthContextForgotPassword {
-    email:string,
+    email: string,
 }
 
 interface AuthContextProps {
