@@ -163,6 +163,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     }
 }
 
+
     const signInGoogle = async () => {
         auth.languageCode = 'es';
         const google = new GoogleAuthProvider();
@@ -244,10 +245,51 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         return true
     }
 
+    const setOtp = async () => {
+        try {
+    
+            const response = await axios.post("/api/auth/setotp", {
+                idToken: localStorage.getItem('token')
+            });
+    
+            if(response.data.msg === "OK"){
+                return true
+            }else{
+                return false
+            }
+    
+        } catch (error) {
+            console.error('error al poner el otp', error)
+            return false
+        }
+    }
+
+    const confirmOtp = async (input: string) => {
+        try {
+    
+            const response = await axios.post("/api/auth/confirmotp", {
+                input: input,
+                idToken: localStorage.getItem('token')
+            });
+    
+            if(response.data.msg === "OK"){
+                toast("OTP correcto, campos actualizados")
+                return true
+            }else{
+                toast.error("OTP incorrecto")
+                return false
+            }
+    
+        } catch (error) {
+            console.log("OTP incorrecto", error)
+            toast.error("OTP introducido incorrecto")
+            return false
+        }
+    }
 
 
     return (
-        <AuthContext.Provider value={{ logIn, logOut, signUpUser, signUpArtist, signInGoogle, signUpGoogle, forgotPassword, signInFacebook, checkRole }}>
+        <AuthContext.Provider value={{ logIn, logOut, signUpUser, signUpArtist, signInGoogle, signUpGoogle, forgotPassword, signInFacebook, checkRole, setOtp, confirmOtp }}>
             {children}
         </AuthContext.Provider>
     )

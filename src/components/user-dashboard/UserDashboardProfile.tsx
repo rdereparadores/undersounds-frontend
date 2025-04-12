@@ -21,9 +21,12 @@ import { useUser } from '@/hooks/user/useUser'
 import { UserDashboardProfileUpdateImage } from './UserDashboardProfileUpdateImage'
 import { UserDashboardProfileAddressesCard } from './UserDashboardProfileAddressesCard'
 import { UserDashboardProfileUpdateForm } from './UserDashboardProfileUpdateForm'
+import { useAuth } from "@/hooks/auth/useAuth"
+import React from 'react'
+
 
 export const UserDashboardProfileEmailUpdateCard = ({ emailPlaceholder }: { emailPlaceholder: string }) => {
-
+    
     return (
         <Card className='grow'>
             <CardHeader>
@@ -63,10 +66,13 @@ export const UserDashboardProfileEmailUpdateCard = ({ emailPlaceholder }: { emai
 }
 
 export const VerificationPopUp = () => {
+    const auth = useAuth()
+    const [value, setValue] = React.useState("")
+
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <Button>Continuar</Button>
+                <Button onClick={auth.setOtp}>Continuar</Button>
             </DialogTrigger>
             <DialogContent className='w-fit'>
                 <DialogHeader>
@@ -76,7 +82,9 @@ export const VerificationPopUp = () => {
                     </DialogDescription>
                 </DialogHeader>
                 <div className='flex justify-center'>
-                    <InputOTP maxLength={6}>
+                    <InputOTP maxLength={6}
+                        value={value}
+                        onChange={(value) => setValue(value)}>
                         <InputOTPGroup>
                             <InputOTPSlot index={0} />
                             <InputOTPSlot index={1} />
@@ -91,12 +99,8 @@ export const VerificationPopUp = () => {
                     </InputOTP>
                 </div>
                 <DialogFooter className='gap-2'>
-                    <DialogClose asChild>
-                        <Button>Volver a enviar</Button>
-                    </DialogClose>
-                    <DialogClose asChild>
-                        <Button>Verificar</Button>
-                    </DialogClose>
+                    <Button onClick={auth.setOtp}>Volver a enviar</Button>
+                    <Button onClick={() => auth.confirmOtp(value)}>Verificar</Button>
                 </DialogFooter>
             </DialogContent>
         </Dialog>
