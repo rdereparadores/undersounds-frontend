@@ -25,12 +25,13 @@ import { useEffect, useState } from 'react'
 
 const addAddressFormSchema = z.object({
     name: z.string(),
-    surName: z.string(),
+    surname: z.string(),
     country: z.string(),
-    phone: z.string().refine(phone => /^[0-9]{7,15}$/.test(phone), 'Teléfono inválido'),
+    phone: z.string().refine(phone => /^[0-9]{7,15}$/.test(phone), 'Inválido'),
     address: z.string(),
     address2: z.string().optional(),
     province: z.string(),
+    zipCode: z.string().refine(zipCode => /^[0-9]{5}$/.test(zipCode), 'Inválido'),
     city: z.string(),
     observations: z.string().optional(),
     alias: z.string()
@@ -45,7 +46,8 @@ export const UserDashboardProfileAddressesAddCard = () => {
     const onSubmit = async (data: z.infer<typeof addAddressFormSchema>) => {
         const result = await user.addAddress({
             ...data,
-            phone: Number(data.phone)
+            phone: Number(data.phone),
+            zipCode: Number(data.zipCode)
         })
         if (result) {
             toast.success('Dirección creada con éxito')
@@ -90,7 +92,7 @@ export const UserDashboardProfileAddressesAddCard = () => {
                                                 <FormMessage />
                                             </FormItem>
                                         )} />
-                                        <FormField control={form.control} name='surName' render={({ field }) => (
+                                        <FormField control={form.control} name='surname' render={({ field }) => (
                                             <FormItem className='grow'>
                                                 <FormLabel>* Apellidos</FormLabel>
                                                 <FormControl>
@@ -163,15 +165,27 @@ export const UserDashboardProfileAddressesAddCard = () => {
                                         )} />
                                     </div>
 
-                                    <FormField control={form.control} name='observations' render={({ field }) => (
-                                        <FormItem className='grow'>
-                                            <FormLabel>* Observaciones</FormLabel>
-                                            <FormControl>
-                                                <Input {...field} />
-                                            </FormControl>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )} />
+                                    <div className='flex-wrap flex gap-2'>
+                                        <FormField control={form.control} name='zipCode' render={({ field }) => (
+                                            <FormItem className='grow'>
+                                                <FormLabel>* Código postal</FormLabel>
+                                                <FormControl>
+                                                    <Input {...field} />
+                                                </FormControl>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )} />
+
+                                        <FormField control={form.control} name='observations' render={({ field }) => (
+                                            <FormItem className='grow'>
+                                                <FormLabel>Observaciones</FormLabel>
+                                                <FormControl>
+                                                    <Input {...field} />
+                                                </FormControl>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )} />
+                                    </div>
                                 </div>
                                 <DialogFooter className='mt-4'>
                                     <DialogClose asChild>
@@ -188,7 +202,7 @@ export const UserDashboardProfileAddressesAddCard = () => {
     )
 }
 
-export const UserDashboardProfileAddressesCardItem = ({address}: {address: AddressProps}) => {
+export const UserDashboardProfileAddressesCardItem = ({ address }: { address: AddressProps }) => {
     const user = useUser()
 
     const handleAddressRemove = async () => {
@@ -198,7 +212,7 @@ export const UserDashboardProfileAddressesCardItem = ({address}: {address: Addre
             return
         }
         toast.success('Dirección eliminada')
-        setTimeout(() => {window.location.reload()}, 1000)
+        setTimeout(() => { window.location.reload() }, 1000)
     }
 
     const handleAddressSetDefault = async () => {
@@ -208,7 +222,7 @@ export const UserDashboardProfileAddressesCardItem = ({address}: {address: Addre
             return
         }
         toast.success('Dirección establecida como predeterminada')
-        setTimeout(() => {window.location.reload()}, 1000)
+        setTimeout(() => { window.location.reload() }, 1000)
     }
 
     return (
@@ -220,17 +234,17 @@ export const UserDashboardProfileAddressesCardItem = ({address}: {address: Addre
                 </div>
             </CardHeader>
             <CardContent>
-                <p>{address.name} {address.surName}</p>
+                <p>{address.name} {address.surname}</p>
                 <p>{address.address}</p>
                 <p>{address.address2}</p>
-                <p>{address.city} {address.province}</p>
+                <p>{address.zipCode} {address.city}, {address.province}</p>
                 <p>{address.country}</p>
                 <p>{address.phone}</p>
             </CardContent>
             <CardFooter className='gap-2 flex flex-wrap'>
                 <Button onClick={handleAddressRemove} className='grow'>Eliminar</Button>
-                { !address.default &&
-                <Button onClick={handleAddressSetDefault} className='grow' variant='outline'>Establecer como predeterminada</Button> }
+                {!address.default &&
+                    <Button onClick={handleAddressSetDefault} className='grow' variant='outline'>Establecer como predeterminada</Button>}
             </CardFooter>
         </Card>
     )
@@ -242,7 +256,7 @@ export const UserDashboardProfileAddressesCard = () => {
 
     useEffect(() => {
         user.getAddresses()
-        .then(addresses => setAddresses(addresses))
+            .then(addresses => setAddresses(addresses))
     }, [])
 
     if (addresses === undefined) return <></>

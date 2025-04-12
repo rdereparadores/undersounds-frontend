@@ -126,7 +126,7 @@ export const UserDashboard = () => {
         .then(user => setUserInfo(user))
     }, [])
 
-    if (userInfo === undefined) return <></>
+    if (userInfo === undefined) return <Skeleton className="grow gap-4 flex flex-col flex-wrap"/>
 
     return (
         <div className="grow gap-4 flex flex-col flex-wrap">
