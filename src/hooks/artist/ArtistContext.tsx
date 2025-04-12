@@ -3,14 +3,14 @@ import { UserInfoProps } from '../user/UserContext'
 
 export interface UpdateArtistInfoProps {
     artistName: string,
-    artistUserName: string,
+    artistUsername: string,
     artistProfileImg: File,
     artistBannerImg: File
 }
 
 export interface ArtistInfoProps extends UserInfoProps {
     artistName: string,
-    artistUserName: string,
+    artistUsername: string,
     artistImgUrl: string,
     artistBannerImgUrl: string
 }

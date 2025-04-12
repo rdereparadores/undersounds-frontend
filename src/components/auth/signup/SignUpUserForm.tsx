@@ -13,8 +13,8 @@ import { z } from 'zod'
 
 const signUpUserSchema = z.object({
     name: z.string(),
-    surName: z.string(),
-    userName: z.string(),
+    surname: z.string(),
+    username: z.string(),
     birthDate: z.date(),
     email: z.string().email({ message: 'Email inválido' }),
     password: z.string().min(6, { message: 'La contraseña debe tener al menos 6 caracteres' }),
@@ -74,13 +74,13 @@ export const SignUpUserForm = () => {
 
                     <div className='grid gap-2'>
                         <Label htmlFor='surname'>Apellidos</Label>
-                        <Input type='text' placeholder='Doe' {...register('surName')} />
+                        <Input type='text' placeholder='Doe' {...register('surname')} />
                     </div>
                 </div>
 
                 <div className='grid gap-2'>
                     <Label htmlFor='userName'>Nombre de usuario</Label>
-                    <Input type='text' placeholder='@usuario' {...register('userName')} />
+                    <Input type='text' placeholder='@usuario' {...register('username')} />
                 </div>
 
                 <div className='grid gap-2'>

@@ -34,7 +34,7 @@ export const NavBarUserSectionMobile = () => {
                         <Skeleton className='w-[25px] h-[25px] rounded-full' />
                     </AvatarFallback>
                 </Avatar>
-                @{userInfo.userName}
+                @{userInfo.username}
             </Button>
             <SheetClose asChild>
                 <Button asChild variant="ghost">

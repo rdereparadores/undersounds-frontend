@@ -13,9 +13,9 @@ import { z } from 'zod'
 
 const signUpArtistSchema = z.object({
     artistName: z.string().min(1, "Nombre de artista inválido"),
-    artistUserName: z.string().min(1,"Nombre de usuario de artista inválido"),
+    artistUsername: z.string().min(1,"Nombre de usuario de artista inválido"),
     name: z.string(),
-    surName: z.string(),
+    surname: z.string(),
     birthDate: z.date(),
     email: z.string().email({ message: 'Email inválido' }),
     password: z.string().min(6, { message: 'La contraseña debe tener al menos 6 caracteres' }),
@@ -72,7 +72,7 @@ export const SignUpArtistForm = () => {
                 </div>
                 <div className='grid gap-2'>
                     <Label htmlFor='artistUserName'>Nombre de usuario</Label>
-                    <Input type='text' placeholder='@artista' {...register('artistUserName')} />
+                    <Input type='text' placeholder='@artista' {...register('artistUsername')} />
                 </div>
                 <div className='flex flex-row gap-2'>
                     <div className='grid gap-2'>
@@ -82,7 +82,7 @@ export const SignUpArtistForm = () => {
 
                     <div className='grid gap-2'>
                         <Label htmlFor='surname'>Apellidos</Label>
-                        <Input type='text' placeholder='Doe' {...register('surName')} />
+                        <Input type='text' placeholder='Doe' {...register('surname')} />
                     </div>
                 </div>
 
