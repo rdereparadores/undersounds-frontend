@@ -2,8 +2,8 @@ import { createContext } from "react"
 
 export interface UserInfoProps {
     name: string,
-    surName: string,
-    userName: string,
+    surname: string,
+    username: string,
     imgUrl: string,
     email: string,
     birthDate: Date
@@ -13,12 +13,13 @@ export interface AddressProps {
     _id?: string,
     default?: boolean,
     name: string,
-    surName: string,
+    surname: string,
     country: string,
     phone: number,
     address: string,
     address2?: string,
     province: string,
+    zipCode: number,
     city: string,
     observations?: string,
     alias: string
@@ -32,7 +33,7 @@ export interface UserContextProps {
     generateUserProfileImageAI: (prompt: string) => Promise<string | null>,
     getAddresses: () => Promise<AddressProps[]>,
     removeAddress: (_id: string) => Promise<boolean>,
-    setAddressAsDefault: (_addressId: string) => Promise<boolean>
+    setAddressAsDefault: (_id: string) => Promise<boolean>
 }
 
 export const UserContext = createContext<UserContextProps>({

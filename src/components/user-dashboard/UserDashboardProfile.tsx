@@ -154,7 +154,7 @@ export const UserDashboardProfile = () => {
             .then(user => setUserInfo(user))
     }, [])
 
-    if (userInfo === undefined) return <></>
+    if (userInfo === undefined) return <Skeleton className="grow gap-4 flex flex-col flex-wrap" />
 
     return (
         <div className="grow gap-4 flex flex-col flex-wrap">
@@ -169,7 +169,7 @@ export const UserDashboardProfile = () => {
                         <img src={userInfo.imgUrl} className={`w-32 h-32 rounded-full ${imgLoaded ? '' : 'hidden'}`} onLoad={() => setImgLoaded(true)} />
                         <UserDashboardProfileUpdateImage />
                     </div>
-                    <UserDashboardProfileUpdateForm namePlaceholder={userInfo.name} surNamePlaceholder={userInfo.surName} birthDatePlaceholder={userInfo.birthDate} />
+                    <UserDashboardProfileUpdateForm namePlaceholder={userInfo.name} surNamePlaceholder={userInfo.surname} birthDatePlaceholder={userInfo.birthDate} />
                     <Separator orientation='vertical' className='hidden xl:block' />
 
                     <div className='flex flex-col gap-4 grow'>
