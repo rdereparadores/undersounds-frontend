@@ -232,9 +232,9 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
             if (!token) return UserRole.GUEST
 
             const result = await api.post('/api/auth/signin', {})
-            if (result.data.err) return UserRole.GUEST
+            if (result.data.error) return UserRole.GUEST
 
-            return result.data.msg.userRole === 'user' ? UserRole.USER : UserRole.ARTIST
+            return result.data.data.userRole === 'user' ? UserRole.USER : UserRole.ARTIST
         } catch {
             return UserRole.GUEST
         }

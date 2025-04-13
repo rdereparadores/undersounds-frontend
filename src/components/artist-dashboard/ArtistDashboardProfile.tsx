@@ -28,7 +28,7 @@ export const ArtistDashboardProfile = () => {
                     <img src={artistData.artistImgUrl} className="w-32 h-32 rounded-full object-cover" />
                     <div className="flex flex-col justify-end flex-wrap">
                         <p className="text-2xl font-medium">{artistData.artistName}</p>
-                        <p className="">@{artistData.artistUserName}</p>
+                        <p className="">@{artistData.artistUsername}</p>
                     </div>
                 </div>
             </div>

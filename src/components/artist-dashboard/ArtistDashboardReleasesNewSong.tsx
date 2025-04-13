@@ -10,7 +10,7 @@ import { useEffect, useState } from 'react'
 import { Badge } from '../ui/badge'
 import { Separator } from '../ui/separator'
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbSeparator } from '../ui/breadcrumb'
-import { Link } from 'react-router'
+import { Link, useNavigate } from 'react-router'
 import { toast } from 'sonner'
 import { useArtistRelease } from '@/hooks/artist-release/useArtistRelease'
 import { Skeleton } from '../ui/skeleton'
@@ -19,13 +19,10 @@ import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover'
 const newSongSchema = z.object({
     title: z.string().min(1),
     description: z.string().min(1),
-    imgSrc: z.enum(['file', 'ai']).default('file'),
     img: z.any()
         .refine((file) => file.length > 0 ? file?.[0]?.type?.startsWith("image/") : true, {
             message: "La portada debe tener formato JPG o PNG",
         }).optional(),
-
-    imgUrl: z.string().url('').optional(),
 
     song: z.any()
         .refine((file) => file?.[0], {
@@ -40,15 +37,11 @@ const newSongSchema = z.object({
     priceCassette: z.preprocess((val) => Number(val), z.number().min(1)),
     priceCd: z.preprocess((val) => Number(val), z.number().min(1))
 }).refine(data => {
-    if (data.imgSrc === 'file') {
-        return data.img?.[0] !== undefined
-    } else if (data.imgSrc === 'ai') {
-        return !!data.imgUrl
-    }
+    if (data.img) return data.img?.[0] !== undefined
     return false
 }, {
     message: 'Sube una imagen',
-    path: ['img', 'imgUrl']
+    path: ['img']
 })
 
 type NewSongFormData = z.infer<typeof newSongSchema>
@@ -60,7 +53,7 @@ export const ArtistDashboardReleasesNewSongCollaborators = () => {
                 <div className='flex gap-2 justify-between'>
                     <CardTitle>Colaboradores</CardTitle>
                     <Popover>
-                        <PopoverTrigger>
+                        <PopoverTrigger asChild>
                             <Button>+ Añadir colaborador</Button>
                         </PopoverTrigger>
                         <PopoverContent>
@@ -119,59 +112,46 @@ export const ArtistDashboardReleasesNewSongGenres = () => {
 }
 
 export const ArtistDashboardReleasesNewSong = () => {
+    const navigate = useNavigate()
     const artistRelease = useArtistRelease()
     const [previewImgLoaded, setPreviewImgLoaded] = useState(false)
     const [previewImg, setPreviewImg] = useState('')
     const [generatingImage, setGeneratingImage] = useState(false)
     const { register, handleSubmit, formState: { errors }, watch, setValue } = useForm<NewSongFormData>({
-        resolver: zodResolver(newSongSchema),
-        defaultValues: {
-            imgSrc: 'file'
-        }
+        resolver: zodResolver(newSongSchema)
     })
     const imgField = watch('img')
-    const imgAiField = watch('imgUrl')
-    const imgSrc = watch('imgSrc')
     const title = watch('title')
 
     const onSubmit = async (data: NewSongFormData) => {
-        await artistRelease.publishSong({
-            song: data.song!,
+        const result = await artistRelease.publishSong({
             ...data,
-            collaborators: [''],
+            song: data.song[0],
+            img: data.img[0],
+            collaborators: [],
             genres: ['Rock']
         })
-        console.log(data)
+
+        if (result) {
+            setTimeout(() => navigate('/artist/dashboard/releases'), 1000)
+        }
     }
 
     useEffect(() => {
-        switch (imgSrc) {
-            case 'file':
-                if (imgField && imgField[0]) {
-                    const reader = new FileReader()
-                    reader.onload = (e) => {
-                        setPreviewImg(e.target?.result as string)
-                    }
-                    reader.readAsDataURL(imgField[0])
-                }
-                break
-            case 'ai':
-                if (imgAiField) {
-                    setPreviewImg(imgAiField)
-                }
+        if (imgField && imgField[0]) {
+            const reader = new FileReader()
+            reader.onload = (e) => {
+                setPreviewImg(e.target?.result as string)
+            }
+            reader.readAsDataURL(imgField[0])
         }
-    }, [imgField, imgAiField, imgSrc])
+    }, [imgField])
 
     const handleImageUpload = () => {
-        setValue('imgSrc', 'file')
         document.getElementById('upload-cover')?.click()
     }
 
     const handleImageAIGeneration = async () => {
-        if (!title || title === '') {
-            toast.error('Debes escribir un título primero')
-            return
-        }
         setGeneratingImage(true)
         setPreviewImgLoaded(false)
         const result = await artistRelease.generateAiCover(title)
@@ -180,8 +160,14 @@ export const ArtistDashboardReleasesNewSong = () => {
             setGeneratingImage(false)
             return
         }
-        setValue('imgSrc', 'ai')
-        setValue('imgUrl', result)
+
+        const response = await fetch(result)
+        const blob = await response.blob()
+        const file = new File([blob], 'image.png', { type: blob.type })
+        const dataTransfer = new DataTransfer()
+        dataTransfer.items.add(file)
+        setValue('img', dataTransfer.files)
+
         setGeneratingImage(false)
         setPreviewImgLoaded(true)
     }
@@ -191,7 +177,7 @@ export const ArtistDashboardReleasesNewSong = () => {
             <Breadcrumb className='mt-2'>
                 <BreadcrumbList>
                     <BreadcrumbItem>
-                        <BreadcrumbLink>
+                        <BreadcrumbLink asChild>
                             <Link to='/artist/dashboard/releases'>Publicaciones</Link>
                         </BreadcrumbLink>
                     </BreadcrumbItem>
