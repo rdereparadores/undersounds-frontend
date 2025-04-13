@@ -3,8 +3,7 @@ import { createContext } from "react";
 export interface PublishSongProps {
     title: string,
     description: string,
-    img?: File,
-    imgUrl?: string,
+    img: File,
     song: File,
     priceDigital: number,
     priceCd: number,
