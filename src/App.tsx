@@ -29,6 +29,8 @@ import { Legal } from './components/footer/Legal.tsx';
 import { ArtistDashboardReleasesNewAlbum } from './components/artist-dashboard/ArtistDashboardReleasesNewAlbum.tsx';
 import { ArtistDashboardReleasesNewSong } from './components/artist-dashboard/ArtistDashboardReleasesNewSong.tsx';
 import { ArtistReleaseProvider } from './hooks/artist-release/ArtistReleaseProvider.tsx';
+import { CheckoutSucces } from './components/checkout/CheckoutSucces.tsx';
+import { CheckoutDeny } from './components/checkout/CheckoutDeny.tsx';
 
 function App() {
     return (
@@ -49,6 +51,10 @@ function App() {
                     <Route element={<ProtectedRoute requiredRole={UserRole.USER} redirectTo='/shop/checkout' />}>
                         <Route path='checkout' element={<Checkout />} />
                     </Route>
+
+                    {/* TODO ponerlas en las rutas correspondientes*/ }
+                    <Route path='checkoutsucces' element={<CheckoutSucces/>}/>
+                    <Route path='checkoutdeny' element={<CheckoutDeny/>}/>
                 </Route>
 
                 <Route path='album/:id' element={<ProductContainer type='album' />} />
