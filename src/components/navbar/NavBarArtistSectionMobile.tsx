@@ -29,12 +29,12 @@ export const NavBarArtistSectionMobile = () => {
         <>
             <Button variant="outline">
                 <Avatar>
-                    <AvatarImage src={artistInfo.imgUrl} width='25px' height='25px' alt="avatarUser" className='rounded-full object-cover'></AvatarImage>
+                    <AvatarImage src={artistInfo.artistImgUrl} width='25px' height='25px' alt="avatarUser" className='rounded-full object-cover'></AvatarImage>
                     <AvatarFallback>
                         <Skeleton className='w-[25px] h-[25px] rounded-full' />
                     </AvatarFallback>
                 </Avatar>
-                @{artistInfo.artistUserName}
+                @{artistInfo.artistUsername}
             </Button>
             <SheetClose asChild>
                 <Button asChild variant="ghost">

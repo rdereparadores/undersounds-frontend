@@ -34,7 +34,7 @@ export const ArtistReleaseProvider = ({ children }: { children: React.ReactNode 
                 return null
             }
             toast.success('Canción publicada con éxito')
-            return result.data._id
+            return result.data.data.id
         } catch {
             toast.error('Error al publicar la canción')
             return null

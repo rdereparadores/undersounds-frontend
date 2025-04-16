@@ -36,7 +36,7 @@ export const NavBarArtistSection = () => {
             <DropdownMenuTrigger asChild>
                 <Button variant="outline">
                     <Avatar>
-                        <AvatarImage src={artistInfo.imgUrl} width='25px' height='25px' alt="avatarUser" className='w-[25px] h-[25px] rounded-full object-cover' />
+                        <AvatarImage src={artistInfo.artistImgUrl} width='25px' height='25px' alt="avatarUser" className='w-[25px] h-[25px] rounded-full object-cover' />
                         <AvatarFallback><Skeleton className='w-[25px] h-[25px] rounded-full' /></AvatarFallback>
                     </Avatar>
                     Mi cuenta
@@ -46,12 +46,12 @@ export const NavBarArtistSection = () => {
                 <DropdownMenuGroup>
                     <DropdownMenuItem>
                         <Avatar>
-                            <AvatarImage src={artistInfo.imgUrl} width='30px' height='30px' alt="avatarUser" className='w-[30px] h-[30px] rounded-full object-cover' />
+                            <AvatarImage src={artistInfo.artistImgUrl} width='30px' height='30px' alt="avatarUser" className='w-[30px] h-[30px] rounded-full object-cover' />
                             <AvatarFallback>
                                 <Skeleton className='w-[30px] h-[30px] rounded-full' />
                             </AvatarFallback>
                         </Avatar>
-                        <p>@{artistInfo.artistUserName}</p>
+                        <p>@{artistInfo.artistUsername}</p>
                     </DropdownMenuItem>
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />

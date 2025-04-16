@@ -15,12 +15,20 @@ export interface ArtistInfoProps extends UserInfoProps {
     artistBannerImgUrl: string
 }
 
+export interface ArtistSongProps {
+    title: string,
+    coverUrl: string,
+    author: string
+}
+
 export interface ArtistContextProps {
     getArtistInfo: () => Promise<ArtistInfoProps | undefined>,
+    getArtistSongs: () => Promise<ArtistSongProps[] | undefined>,
     updateArtistInfo: (data: Partial<UpdateArtistInfoProps>) => Promise<boolean>
 }
 
 export const ArtistContext = createContext<ArtistContextProps>({
     getArtistInfo: async () => {throw new Error()},
+    getArtistSongs: async () => [],
     updateArtistInfo: async () => {throw new Error()}
 })

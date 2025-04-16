@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Button } from "../ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card"
 import { TableCell, TableRow } from "../ui/table"
@@ -7,8 +7,10 @@ import { FaDownload, FaEdit, FaPlay } from "react-icons/fa"
 import { Skeleton } from "../ui/skeleton"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../ui/dropdown-menu"
 import { useNavigate } from "react-router"
+import { useArtist } from "@/hooks/artist/useArtist"
+import { ArtistSongProps } from "@/hooks/artist/ArtistContext"
 
-export const ArtistDashboardReleasesSongsItem = () => {
+export const ArtistDashboardReleasesSongsItem = ({ song }: { song: ArtistSongProps }) => {
     const [imgLoaded, setImgLoaded] = useState(false)
     return (
         <Card>
@@ -26,8 +28,8 @@ export const ArtistDashboardReleasesSongsItem = () => {
                 </Button>
             </CardHeader>
             <CardContent className="pt-2 px-2">
-                <CardTitle>Buenas noches</CardTitle>
-                <CardDescription>Quevedo</CardDescription>
+                <CardTitle>{song.title}</CardTitle>
+                <CardDescription>{song.author}</CardDescription>
             </CardContent>
         </Card>
     )
@@ -82,6 +84,15 @@ export const ArtistDashboardReleasesAlbumsItem = () => {
 
 export const ArtistDashboardReleases = () => {
     const navigate = useNavigate()
+    const artist = useArtist()
+    const [ songList, setSongList ] = useState<ArtistSongProps[] | undefined>()
+
+    useEffect(() => {
+        artist.getArtistSongs()
+        .then(songs => setSongList(songs))
+    }, [])
+
+    if (songList === undefined) return <Skeleton className="grow gap-4 flex flex-col flex-wrap"/>
 
     return (
         <div className="grow gap-4 flex flex-col flex-wrap">
@@ -108,10 +119,9 @@ export const ArtistDashboardReleases = () => {
                 </TabsList>
                 <TabsContent value='songs'>
                     <div className="flex flex-wrap justify-center sm:justify-start gap-4">
-                        <ArtistDashboardReleasesSongsItem />
-                        <ArtistDashboardReleasesSongsItem />
-                        <ArtistDashboardReleasesSongsItem />
-                        <ArtistDashboardReleasesSongsItem />
+                        {songList.map((song, index) => (
+                            <ArtistDashboardReleasesSongsItem song={song} key={index} />
+                        ))}
                     </div>
                     
                 </TabsContent>

@@ -7,14 +7,13 @@ import { Label } from '../ui/label'
 import { Textarea } from '../ui/textarea'
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card'
 import { useEffect, useState } from 'react'
-import { Badge } from '../ui/badge'
-import { Separator } from '../ui/separator'
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbSeparator } from '../ui/breadcrumb'
 import { Link, useNavigate } from 'react-router'
 import { toast } from 'sonner'
 import { useArtistRelease } from '@/hooks/artist-release/useArtistRelease'
 import { Skeleton } from '../ui/skeleton'
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover'
+import { ArtistDashboardReleasesNewSongGenreCard } from './ArtistDashboardReleasesNewSongGenreCard'
 
 const newSongSchema = z.object({
     title: z.string().min(1),
@@ -86,32 +85,8 @@ export const ArtistDashboardReleasesNewSongCollaborators = () => {
     )
 }
 
-export const ArtistDashboardReleasesNewSongGenres = () => {
-    return (
-        <Card className='grow'>
-            <CardHeader>
-                <CardTitle>Géneros</CardTitle>
-            </CardHeader>
-            <CardContent>
-                <div className='flex gap-2'>
-                    <Badge>Pop</Badge>
-                    <Badge>Rock</Badge>
-                    <Badge>Blues</Badge>
-                </div>
-                <Separator className='my-4' />
-                <div className='flex flex-col gap-2'>
-                    <div className='flex gap-4 justify-between items-center'>
-                        <p>Rock</p>
-                        <Button onClick={() => {}}>Añadir</Button>
-                    </div>
-                </div>
-
-            </CardContent>
-        </Card>
-    )
-}
-
 export const ArtistDashboardReleasesNewSong = () => {
+    const [selectedGenreList, setSelectedGenreList] = useState<string[]>([])
     const navigate = useNavigate()
     const artistRelease = useArtistRelease()
     const [previewImgLoaded, setPreviewImgLoaded] = useState(false)
@@ -129,10 +104,10 @@ export const ArtistDashboardReleasesNewSong = () => {
             song: data.song[0],
             img: data.img[0],
             collaborators: [],
-            genres: ['Rock']
+            genres: selectedGenreList
         })
 
-        if (result) {
+        if (result != null) {
             setTimeout(() => navigate('/artist/dashboard/releases'), 1000)
         }
     }
@@ -226,40 +201,41 @@ export const ArtistDashboardReleasesNewSong = () => {
                 </div>
 
                 <div className='flex gap-4'>
-                    <Card className='grow'>
-                        <CardHeader>
-                            <CardTitle>Precios</CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                            <div className='flex flex-col gap-4'>
-                                <div className='flex flex-col gap-2'>
-                                    <Label htmlFor='priceDigital'>Digital</Label>
-                                    <Input step='0.01' type='number' {...register('priceDigital')} />
-                                    {errors.priceDigital && <span className='text-sm text-red-600'>El precio debe ser superior a 1</span>}
-                                </div>
-                                <div className='flex flex-col gap-2'>
-                                    <Label htmlFor='priceCd'>CD</Label>
-                                    <Input step='0.01' type='number' {...register('priceCd')} />
-                                    {errors.priceCd && <span className='text-sm text-red-600'>El precio debe ser superior a 1</span>}
-                                </div>
-                                <div className='flex flex-col gap-2'>
-                                    <Label htmlFor='priceVinyl'>Vinilo</Label>
-                                    <Input step='0.01' type='number' {...register('priceVinyl')} />
-                                    {errors.priceVinyl && <span className='text-sm text-red-600'>El precio debe ser superior a 1</span>}
-                                </div>
-                                <div className='flex flex-col gap-2'>
-                                    <Label htmlFor='priceCasette'>Cassette</Label>
-                                    <Input step='0.01' type='number' {...register('priceCassette')} />
-                                    {errors.priceCassette && <span className='text-sm text-red-600'>El precio debe ser superior a 1</span>}
-                                </div>
-                            </div>
-                        </CardContent>
-                    </Card>
-
                     <div className='flex flex-col gap-4 grow'>
                         <ArtistDashboardReleasesNewSongCollaborators />
-                        <ArtistDashboardReleasesNewSongGenres />
+                        <Card className='grow h-fit'>
+                            <CardHeader>
+                                <CardTitle>Precios</CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                                <div className='flex flex-col gap-4'>
+                                    <div className='flex flex-col gap-2'>
+                                        <Label htmlFor='priceDigital'>Digital</Label>
+                                        <Input step='0.01' type='number' {...register('priceDigital')} />
+                                        {errors.priceDigital && <span className='text-sm text-red-600'>El precio debe ser superior a 1</span>}
+                                    </div>
+                                    <div className='flex flex-col gap-2'>
+                                        <Label htmlFor='priceCd'>CD</Label>
+                                        <Input step='0.01' type='number' {...register('priceCd')} />
+                                        {errors.priceCd && <span className='text-sm text-red-600'>El precio debe ser superior a 1</span>}
+                                    </div>
+                                    <div className='flex flex-col gap-2'>
+                                        <Label htmlFor='priceVinyl'>Vinilo</Label>
+                                        <Input step='0.01' type='number' {...register('priceVinyl')} />
+                                        {errors.priceVinyl && <span className='text-sm text-red-600'>El precio debe ser superior a 1</span>}
+                                    </div>
+                                    <div className='flex flex-col gap-2'>
+                                        <Label htmlFor='priceCasette'>Cassette</Label>
+                                        <Input step='0.01' type='number' {...register('priceCassette')} />
+                                        {errors.priceCassette && <span className='text-sm text-red-600'>El precio debe ser superior a 1</span>}
+                                    </div>
+                                </div>
+                            </CardContent>
+                        </Card>
                     </div>
+
+                    <ArtistDashboardReleasesNewSongGenreCard selectedGenreList={selectedGenreList} setSelectedGenreList={setSelectedGenreList} />
+
                 </div>
                 <div className='flex justify-end mt-4'>
                     <Button type='submit'>Publicar</Button>

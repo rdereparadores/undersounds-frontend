@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card"
 import { Skeleton } from "../ui/skeleton"
 import {
@@ -10,13 +10,24 @@ import {
 import { IoIosTrendingUp } from "react-icons/io"
 import { Badge } from "../ui/badge"
 import { Button } from "../ui/button"
+import { useArtist } from "@/hooks/artist/useArtist"
+import { ArtistInfoProps } from "@/hooks/artist/ArtistContext"
 
 
 export const ArtistDashboard = () => {
+    const artist = useArtist()
+    const [ artistData, setArtistData ] = useState<ArtistInfoProps | undefined>(undefined)
+
+    useEffect(() => {
+        artist.getArtistInfo()
+        .then(data => setArtistData(data))
+    }, [])
+
+    if (artistData === undefined) return <Skeleton className="grow gap-4 flex flex-col flex-wrap" />
 
     return (
         <div className="grow gap-4 flex flex-col flex-wrap">
-            <h1 className="text-3xl font-medium">Hola, Artista</h1>
+            <h1 className="text-3xl font-medium">Hola, {artistData?.artistUsername}</h1>
 
             <div className="flex h-fit">
                 <div className="flex-col w-[50%] mr-3 h-fit">
