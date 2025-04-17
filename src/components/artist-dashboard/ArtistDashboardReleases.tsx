@@ -86,6 +86,7 @@ export const ArtistDashboardReleases = () => {
     const navigate = useNavigate()
     const artist = useArtist()
     const [ songList, setSongList ] = useState<ArtistSongProps[] | undefined>()
+    const [ albumList, setAlbumList ] = useState<ArtistAlbumProps[] | undefined>()
 
     useEffect(() => {
         artist.getArtistSongs()

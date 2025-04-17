@@ -58,7 +58,7 @@ export const NavBarArtistSectionMobile = () => {
                 </Button>
             </SheetClose>
             <Separator />
-            <Button variant="ghost" onClick={auth.logOut}> <IoIosLogOut />Cerrar sesión</Button>
+            <Button variant="ghost" onClick={auth.signOut}> <IoIosLogOut />Cerrar sesión</Button>
         </>
     )
 }

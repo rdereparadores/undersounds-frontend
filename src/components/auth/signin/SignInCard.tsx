@@ -50,7 +50,7 @@ export const SignInCard = () => {
     const onSubmit = async (data: SignInFormData) => {
 
         setLogInButtonDisabled(true)
-        const result = await auth.logIn({
+        const result = await auth.signIn({
             email: data.email,
             password: data.password
         })

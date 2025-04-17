@@ -53,7 +53,6 @@ export const NavBar = ({ floating }: NavBarProps) => {
     const onSearch = (e: FormEvent) => {
         e.preventDefault()
         navigate(`/shop?query=${searchQuery}`)
-
     }
 
     const onSearchChange = (e: ChangeEvent<HTMLInputElement>) => {

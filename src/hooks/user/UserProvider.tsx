@@ -82,8 +82,8 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
 
     const generateUserProfileImageAI = async (prompt: string) => {
         try {
-            const result = await api.post('/api/ai/cover', { prompt })
-            return result.data.msg.img_url
+            const result = await api.post('/api/ai/image', { prompt })
+            return result.data.data.imgUrl
         } catch (_err) {
             console.log(_err)
             return null

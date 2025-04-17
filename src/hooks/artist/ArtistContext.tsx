@@ -17,7 +17,13 @@ export interface ArtistInfoProps extends UserInfoProps {
 
 export interface ArtistSongProps {
     title: string,
-    coverUrl: string,
+    imgUrl: string,
+    author: string
+}
+
+export interface ArtistAlbumProps {
+    title: string,
+    imgUrl: string,
     author: string
 }
 

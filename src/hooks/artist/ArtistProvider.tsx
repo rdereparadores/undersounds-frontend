@@ -57,17 +57,16 @@ export const ArtistProvider = ({ children }: { children: React.ReactNode }) => {
 
     const getArtistSongs = async () => {
         try {
-            const result = await api.get('/api/artist/song')
-            return result.data.data.songs
+            const result = await api.get('/api/artist/songs')
+            return result.data.data
         } catch {
             return undefined
         }
     }
 
-    const getArtistsAlbums = async () => {
+    const getArtistAlbums = async () => {
         try {
-            const result = await api.get('/api/artist/release/album')
-            console.log(result.data.data)
+            const result = await api.get('/api/artist/albums')
             return result.data.data
         } catch {
             return undefined

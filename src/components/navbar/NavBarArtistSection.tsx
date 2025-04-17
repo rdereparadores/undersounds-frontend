@@ -75,7 +75,7 @@ export const NavBarArtistSection = () => {
                 <DropdownMenuSeparator />
 
                 <DropdownMenuGroup>
-                    <DropdownMenuItem onClick={auth.logOut}>
+                    <DropdownMenuItem onClick={auth.signOut}>
                         <IoIosLogOut />Cerrar sesión
                     </DropdownMenuItem>
                 </DropdownMenuGroup>
