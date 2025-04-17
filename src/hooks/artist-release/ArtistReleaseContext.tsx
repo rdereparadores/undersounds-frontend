@@ -13,12 +13,26 @@ export interface PublishSongProps {
     genres: string[] 
 }
 
+export interface PublishAlbumProps {
+    title: string,
+    description: string,
+    img: File,
+    songs: string[], //Pasa los ids de las canciones 
+    priceDigital: number,
+    priceCd: number,
+    priceVinyl: number,
+    priceCassette: number
+    genres: string[] 
+}
+
 interface ArtistReleaseContextProps {
     generateAiCover: (prompt: string) => Promise<string | null>,
-    publishSong: (data: PublishSongProps) => Promise<string | null>
+    publishSong: (data: PublishSongProps) => Promise<string | null>,
+    publishAlbum: (data: PublishAlbumProps) => Promise<string | null>
 }
 
 export const ArtistReleaseContext = createContext<ArtistReleaseContextProps>({
     generateAiCover: async () => '',
-    publishSong: async () => ''
+    publishSong: async () => '',
+    publishAlbum: async () => ''
 })

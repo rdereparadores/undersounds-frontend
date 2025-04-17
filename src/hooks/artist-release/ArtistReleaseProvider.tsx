@@ -1,5 +1,5 @@
 import { toast } from "sonner"
-import { ArtistReleaseContext, PublishSongProps } from "./ArtistReleaseContext"
+import { ArtistReleaseContext, PublishAlbumProps, PublishSongProps } from "./ArtistReleaseContext"
 import { api } from "@/lib/api"
 
 export const ArtistReleaseProvider = ({ children }: { children: React.ReactNode }) => {
@@ -41,8 +41,34 @@ export const ArtistReleaseProvider = ({ children }: { children: React.ReactNode 
         }
     }
 
+    const publishAlbum = async(data: PublishAlbumProps) => {
+        try {
+            const formData = new FormData()
+            formData.append('title', data.title)
+            formData.append('description', data.description)
+            formData.append('priceCd', data.priceCd.toString())
+            formData.append('priceDigital', data.priceDigital.toString())
+            formData.append('priceVinyl', data.priceVinyl.toString())
+            formData.append('priceCassette', data.priceCassette.toString())
+            formData.append('genres', data.genres.join(','))
+            formData.append('img', data.img)
+            formData.append('songs', data.songs.join(','))
+
+            const result = await api.post('/api/artist/release/album', formData)
+            if (result.data.error) {
+                toast.error('Error al publicar el álbum')
+                return null
+            }
+            toast.success('Álbum publicado con éxito')
+            return result.data.data.id
+        } catch {
+            toast.error('Error al publicar el álbum')
+            return null
+        }
+    }
+
     return (
-        <ArtistReleaseContext.Provider value={{ generateAiCover, publishSong }}>
+        <ArtistReleaseContext.Provider value={{ generateAiCover, publishSong, publishAlbum}}>
             {children}
         </ArtistReleaseContext.Provider>
     )

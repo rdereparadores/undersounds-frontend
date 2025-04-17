@@ -1,7 +1,6 @@
 import {
     Table,
     TableBody,
-    TableCaption,
     TableCell,
     TableHead,
     TableHeader,
@@ -9,6 +8,9 @@ import {
 } from "@/components/ui/table"
 import { Checkbox } from "../ui/checkbox"
 import { Label } from "../ui/label"
+import { ScrollArea } from "../ui/scroll-area"
+
+//TODO hay que hacer la funcionalidad que pasandole un lista te muestre las canciones de esa lista
 
 export const Entrada = () => {
     return (
@@ -18,7 +20,6 @@ export const Entrada = () => {
             </TableCell>
             <TableCell>El cocodrilo</TableCell>
             <TableCell>King Africa</TableCell>
-            <TableCell></TableCell>
             <TableCell className="text-center">
                 <Checkbox />
                 <Label></Label>
@@ -31,21 +32,30 @@ export const Entrada = () => {
 export function TableFeaturedContent() {
     return (
         <Table>
-            <TableCaption>Lista de las canciones disponibles para destacar.</TableCaption>
+            <ScrollArea className="h-72 w-[100%] rounded-md border">
             <TableHeader>
                 <TableRow>
-                    <TableHead className="w-[100px]">Imagen</TableHead>
+                    <TableHead>Imagen</TableHead>
                     <TableHead>Nombre</TableHead>
                     <TableHead>Artistas</TableHead>
-                    <TableHead>Álbum</TableHead>
-                    <TableHead className="text-right">Selección</TableHead>
+                    <TableHead className="text-center">Selección</TableHead>
                 </TableRow>
             </TableHeader>
             <TableBody>
-                <Entrada></Entrada>
-                <Entrada></Entrada>
-                <Entrada></Entrada>
+                    <Entrada></Entrada>
+                    <Entrada></Entrada>
+                    <Entrada></Entrada>
+                    <Entrada></Entrada>
+                    <Entrada></Entrada>
+                    <Entrada></Entrada>
+                    <Entrada></Entrada>
+                    <Entrada></Entrada>
+                    <Entrada></Entrada>
+                    <Entrada></Entrada>
+                    <Entrada></Entrada>
+                    <Entrada></Entrada>
             </TableBody>
+            </ScrollArea>
         </Table>
     )
 }
