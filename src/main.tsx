@@ -13,6 +13,7 @@ import { CheckoutProvider } from './hooks/checkout/CheckoutProvider'
 import { UserProvider } from './hooks/user/UserProvider'
 import { ArtistProvider } from './hooks/artist/ArtistProvider'
 import { GenreProvider } from './hooks/genre/GenreProvider'
+import { SongPlayerProvider } from './hooks/song-player/SongPlayerProvider'
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
@@ -25,8 +26,10 @@ root.render(
                         <UserProvider>
                             <ArtistProvider>
                                 <GenreProvider>
-                                    <App />
-                                    <Toaster richColors />
+                                    <SongPlayerProvider>
+                                        <App />
+                                        <Toaster richColors />
+                                    </SongPlayerProvider>
                                 </GenreProvider>
                             </ArtistProvider>
                         </UserProvider>
