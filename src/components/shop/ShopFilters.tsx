@@ -9,18 +9,21 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
-import { useState } from "react"
+import { useGenre } from "@/hooks/genre/useGenre"
+import { useEffect, useState } from "react"
 import { useSearchParams, useNavigate } from "react-router"
-
-const genres = [
-    'rock', 'pop', 'techno', 'hip-hop', 'reggae'
-]
 
 export const ShopFilters = () => {
     const [params] = useSearchParams()
     const navigate = useNavigate()
+    const genre = useGenre()
     const [date, setDate] = useState(params.get('date'))
     const [genreList, setGenreList] = useState(params.get('genre')?.split(',') || [])
+    const [ genres, setGenres ] = useState<string[]>([])
+
+    useEffect(() => {
+        genre.getAll().then(genreResult => setGenres(genreResult))
+    }, [])
     
     const applyFilters = () => {
         if (date) {

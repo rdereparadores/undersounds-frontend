@@ -9,7 +9,7 @@ export const ShopItem = (item: ProductContextResultShortProps) => {
     const [imgLoaded, setImgLoaded] = useState(false)
     const navigate = useNavigate()
     return (
-        <Link to={ `/${item.type}/${item.id}` }>
+        <Link to={ `/${item.productType}/${item._id}` }>
             <Card className='max-w-[200px] w-full mx-auto'>
                 <CardHeader className='p-2'>
                     <div className='relative w-full aspect-square'>
@@ -19,13 +19,13 @@ export const ShopItem = (item: ProductContextResultShortProps) => {
                             hidden={!imgLoaded}
                             className='w-full h-full aspect-square rounded-md hover:brightness-50 transition hover:cursor-pointer'
                             src={item.imgUrl}
-                            onClick={() => { navigate(`/${item.type}/${item.id}`) }}
+                            onClick={() => { navigate(`/${item.productType}/${item._id}`) }}
                             onLoad={() => setImgLoaded(true)}
                         />
                     </div>
                     <CardTitle className=''>{item.title}</CardTitle>
-                    <CardDescription>{item.artists.map(artist => artist.name).join(', ')}</CardDescription>
-                    <Badge className='w-fit'>{item.type == 'album' ? 'Álbum' : 'Canción'}</Badge>
+                    <CardDescription>{item.author}</CardDescription>
+                    <Badge className='w-fit'>{item.productType == 'album' ? 'Álbum' : 'Canción'}</Badge>
                 </CardHeader>
                 <CardContent className='p-2 pt-0'>
                     <div className="flex flex-wrap justify-start gap-1">
