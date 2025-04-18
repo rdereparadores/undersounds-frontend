@@ -8,10 +8,11 @@ import { Skeleton } from "../ui/skeleton"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../ui/dropdown-menu"
 import { useNavigate } from "react-router"
 import { useArtist } from "@/hooks/artist/useArtist"
-import { ArtistSongProps } from "@/hooks/artist/ArtistContext"
+import { ArtistAlbumProps, ArtistInfoProps, ArtistSongProps } from "@/hooks/artist/ArtistContext"
 
-export const ArtistDashboardReleasesSongsItem = ({ song }: { song: ArtistSongProps }) => {
+export const ArtistDashboardReleasesSongsItem = ({ song, artistData }: { song: ArtistSongProps, artistData: ArtistInfoProps }) => {
     const [imgLoaded, setImgLoaded] = useState(false)
+
     return (
         <Card>
             <CardHeader className="p-0 relative">
@@ -29,13 +30,13 @@ export const ArtistDashboardReleasesSongsItem = ({ song }: { song: ArtistSongPro
             </CardHeader>
             <CardContent className="pt-2 px-2">
                 <CardTitle>{song.title}</CardTitle>
-                <CardDescription>{song.author}</CardDescription>
+                <CardDescription>{artistData?.artistName}</CardDescription>
             </CardContent>
         </Card>
     )
 }
 
-export const ArtistDashboardReleasesAlbumsItemTrack = () => {
+export const ArtistDashboardReleasesAlbumsItemTrack = ({ song, artistData }: { song: ArtistSongProps, artistData: ArtistInfoProps }) => {
     return (
         <TableRow>
             <TableCell className="flex gap-2">
@@ -47,34 +48,34 @@ export const ArtistDashboardReleasesAlbumsItemTrack = () => {
                 </Button>
             </TableCell>
             <TableCell>
-                <p>Duro</p>
+                <p>{song.title}</p>
             </TableCell>
             <TableCell className="hidden sm:table-cell">
-                <p>Quevedo</p>
+                <p>{artistData?.artistName}</p>
             </TableCell>
             <TableCell className="hidden sm:table-cell">
-                <p>3:14</p>
+                <p>{song.duration}</p>
             </TableCell>
         </TableRow>
     )
 }
 
-export const ArtistDashboardReleasesAlbumsItem = () => {
+export const ArtistDashboardReleasesAlbumsItem = ({ album, artistData }: { album: ArtistAlbumProps, artistData: ArtistInfoProps}) => {
     const [imgLoaded, setImgLoaded] = useState(false)
-
+    
     return (
         <Card>
             <CardHeader>
                 <div className="flex gap-4 flex-wrap justify-center">
                     {!imgLoaded && <Skeleton className="w-32 h-32 rounded-xl" />}
-                    <img src='https://picsum.photos/400' className={`w-32 h-32 rounded-xl ${imgLoaded ? '' : 'hidden'}`} onLoad={() => setImgLoaded(true)} />
+                    <img src={album.imgUrl} className={`w-32 h-32 rounded-xl ${imgLoaded ? '' : 'hidden'}`} onLoad={() => setImgLoaded(true)} />
                     <div className="flex flex-col gap-1">
-                        <CardTitle>Buenas noches</CardTitle>
-                        <CardDescription>Quevedo</CardDescription>
-                        <CardDescription>5 pistas | 35:05</CardDescription>
+                        <CardTitle>{album.title}</CardTitle>
+                        <CardDescription>{artistData?.artistName}</CardDescription>
+                        <CardDescription>{album.trackList.length} pistas | {album.duration}</CardDescription>
                     </div>
                     <div className="flex flex-col grow items-end">
-                        <Button className="w-10 h-10 pl-4" variant='outline'><FaEdit/></Button>
+                        <Button className="w-10 h-10 pl-4" variant='outline'><FaEdit /></Button>
                     </div>
                 </div>
             </CardHeader>
@@ -85,15 +86,24 @@ export const ArtistDashboardReleasesAlbumsItem = () => {
 export const ArtistDashboardReleases = () => {
     const navigate = useNavigate()
     const artist = useArtist()
-    const [ songList, setSongList ] = useState<ArtistSongProps[] | undefined>()
-    const [ albumList, setAlbumList ] = useState<ArtistAlbumProps[] | undefined>()
+    const [songList, setSongList] = useState<ArtistSongProps[] | undefined>()
+    const [albumList, setAlbumList] = useState<ArtistAlbumProps[] | undefined>()
+    const [artistData, setArtistData] = useState<ArtistInfoProps | undefined>(undefined)
 
     useEffect(() => {
         artist.getArtistSongs()
-        .then(songs => setSongList(songs))
+            .then(songs => setSongList(songs))
+
+        artist.getArtistAlbums()
+            .then(albums => setAlbumList(albums))
+
+        artist.getArtistInfo()
+            .then(data => setArtistData(data))
     }, [])
 
-    if (songList === undefined) return <Skeleton className="grow gap-4 flex flex-col flex-wrap"/>
+    if (songList === undefined) return <Skeleton className="grow gap-4 flex flex-col flex-wrap" />
+    if (albumList === undefined) return <Skeleton className="grow gap-4 flex flex-col flex-wrap" />
+    if (artistData === undefined) return <Skeleton className="grow gap-4 flex flex-col flex-wrap" />
 
     return (
         <div className="grow gap-4 flex flex-col flex-wrap">
@@ -104,10 +114,10 @@ export const ArtistDashboardReleases = () => {
                         <Button>+ Nuevo lanzamiento</Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent>
-                        <DropdownMenuItem onClick={() => {navigate('new/song')}}>
+                        <DropdownMenuItem onClick={() => { navigate('new/song') }}>
                             Canción
                         </DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => {navigate('new/album')}}>
+                        <DropdownMenuItem onClick={() => { navigate('new/album') }}>
                             Álbum
                         </DropdownMenuItem>
                     </DropdownMenuContent>
@@ -121,17 +131,16 @@ export const ArtistDashboardReleases = () => {
                 <TabsContent value='songs'>
                     <div className="flex flex-wrap justify-center sm:justify-start gap-4">
                         {songList.map((song, index) => (
-                            <ArtistDashboardReleasesSongsItem song={song} key={index} />
+                            <ArtistDashboardReleasesSongsItem song={song} artistData={artistData} key={index} />
                         ))}
                     </div>
-                    
+
                 </TabsContent>
                 <TabsContent value='albums'>
                     <div className="flex flex-col gap-4">
-                        <ArtistDashboardReleasesAlbumsItem />
-                        <ArtistDashboardReleasesAlbumsItem />
-                        <ArtistDashboardReleasesAlbumsItem />
-                        <ArtistDashboardReleasesAlbumsItem />
+                        {albumList.map((album, index) => (
+                            <ArtistDashboardReleasesAlbumsItem album={album} artistData={artistData} key={index} />
+                        ))}
                     </div>
                 </TabsContent>
             </Tabs>

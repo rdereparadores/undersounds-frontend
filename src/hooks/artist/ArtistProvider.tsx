@@ -74,7 +74,7 @@ export const ArtistProvider = ({ children }: { children: React.ReactNode }) => {
     }
 
     return (
-        <ArtistContext.Provider value={{ getArtistInfo, updateArtistInfo, getArtistSongs }}>
+        <ArtistContext.Provider value={{ getArtistInfo, updateArtistInfo, getArtistSongs, getArtistAlbums }}>
             { children }
         </ArtistContext.Provider>
     )
