@@ -50,11 +50,9 @@ function App() {
                     <Route path='cart' element={<Cart />} />
                     <Route element={<ProtectedRoute requiredRole={UserRole.USER} redirectTo='/shop/checkout' />}>
                         <Route path='checkout' element={<Checkout />} />
+                        <Route path='checkout/success' element={<CheckoutSucces/>}/>
+                        <Route path='checkout/deny' element={<CheckoutDeny/>}/>
                     </Route>
-
-                    {/* TODO ponerlas en las rutas correspondientes*/ }
-                    <Route path='checkoutsucces' element={<CheckoutSucces/>}/>
-                    <Route path='checkoutdeny' element={<CheckoutDeny/>}/>
                 </Route>
 
                 <Route path='album/:id' element={<ProductContainer type='album' />} />
