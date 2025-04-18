@@ -50,7 +50,6 @@ export const ArtistReleaseProvider = ({ children }: { children: React.ReactNode 
             formData.append('priceDigital', data.priceDigital.toString())
             formData.append('priceVinyl', data.priceVinyl.toString())
             formData.append('priceCassette', data.priceCassette.toString())
-            formData.append('genres', data.genres.join(','))
             formData.append('albumImage', data.albumImage)
             formData.append('songs', data.songs.join(','))
 

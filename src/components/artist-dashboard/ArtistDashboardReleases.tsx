@@ -17,7 +17,7 @@ export const ArtistDashboardReleasesSongsItem = ({ song, artistData }: { song: A
         <Card>
             <CardHeader className="p-0 relative">
                 {!imgLoaded && <Skeleton className="w-48 h-48 rounded-xl rounded-b-none" />}
-                <img src='https://picsum.photos/400' className={`w-48 h-48 rounded-xl rounded-b-none ${imgLoaded ? '' : 'hidden'}`} onLoad={() => setImgLoaded(true)} />
+                <img src={song.imgUrl} className={`w-48 h-48 rounded-xl rounded-b-none ${imgLoaded ? '' : 'hidden'}`} onLoad={() => setImgLoaded(true)} />
                 <Button className="absolute bottom-2 right-2 rounded-full w-10 h-10">
                     <FaPlay className="ml-[3px]" />
                 </Button>
