@@ -22,7 +22,6 @@ export interface PublishAlbumProps {
     priceCd: number,
     priceVinyl: number,
     priceCassette: number
-    genres: string[] 
 }
 
 interface ArtistReleaseContextProps {

@@ -13,9 +13,7 @@ import { toast } from 'sonner'
 import { useArtistRelease } from '@/hooks/artist-release/useArtistRelease'
 import { Skeleton } from '../ui/skeleton'
 import { TableFeaturedContent } from './ArtistDashboardProfileTableFeaturedContent'
-import { ArtistDashboardReleasesNewSongGenreCard } from './ArtistDashboardReleasesNewSongGenreCard'
 import { ScrollArea } from '../ui/scroll-area'
-
 
 const newAlbumSchema = z.object({
     title: z.string().min(1),
@@ -39,7 +37,7 @@ const newAlbumSchema = z.object({
 type NewAlbumFormData = z.infer<typeof newAlbumSchema>
 
 export const ArtistDashboardReleasesNewAlbum = () => {
-    const [selectedGenreList, setSelectedGenreList] = useState<string[]>([])
+    //const [selectedGenreList, setSelectedGenreList] = useState<string[]>([])
     const [selectedSongsList, setSelectedSongsList] = useState<string[]>([])
     const navigate = useNavigate()
     const artistRelease = useArtistRelease()
@@ -57,7 +55,6 @@ export const ArtistDashboardReleasesNewAlbum = () => {
             ...data,
             songs: selectedSongsList,
             albumImage: data.albumImage[0],
-            genres: selectedGenreList
         })
 
         if (result != null) {
@@ -186,7 +183,7 @@ export const ArtistDashboardReleasesNewAlbum = () => {
                         </Card>
                     </div>
 
-                    <ArtistDashboardReleasesNewSongGenreCard selectedGenreList={selectedGenreList} setSelectedGenreList={setSelectedGenreList} />
+                    {/*<ArtistDashboardReleasesNewSongGenreCard selectedGenreList={selectedGenreList} setSelectedGenreList={setSelectedGenreList} />*/}
 
                 </div>
                 <div className='flex justify-end mt-4'>
