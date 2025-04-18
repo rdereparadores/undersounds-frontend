@@ -59,11 +59,20 @@ export const ProductContainerInfo = () => {
                                     toast.error('Debes seleccionar un formato')
                                     return
                                 }
+                                if (!product.queryResult) {
+                                    toast.error('Error al añadir el producto')
+                                    return
+                                }
+
+                                // Pasar id como string y añadir información adicional
                                 cart.add({
-                                    type: product.queryResult!.product.type,
-                                    format: selectedFormat!,
+                                    type: product.queryResult.product.type,
+                                    format: selectedFormat,
                                     quantity: 1,
-                                    id: product.queryResult!.product.id
+                                    id: product.queryResult.product.id,
+                                    title: product.queryResult.product.title,
+                                    price: product.queryResult.product.price[selectedFormat],
+                                    imgUrl: product.queryResult.product.imgUrl
                                 })
                                 document.getElementById('navBarCartButton')?.click()
                             }

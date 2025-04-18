@@ -4,7 +4,10 @@ export interface CartItemProps {
     type: string,
     format: 'cd' | 'digital' | 'cassette' | 'vinyl',
     quantity: number,
-    id: number
+    id: string,
+    title?: string,
+    price?: number,
+    imgUrl?: string
 }
 
 export interface CartProps {
@@ -18,7 +21,8 @@ interface CartContextProps {
     removeOne: (item: CartItemProps) => void,
     setQuantity: (item: CartItemProps, quantity: number) => void,
     getUpdatedPrice: (item: CartItemProps) => Promise<number>,
-    getShippingRate: () => Promise<number>
+    getShippingRate: () => Promise<number>,
+    getTotalPrice: () => Promise<number>
 }
 
 export const CartContext = createContext<CartContextProps>({
@@ -28,5 +32,6 @@ export const CartContext = createContext<CartContextProps>({
     removeOne: () => {},
     setQuantity: () => {},
     getUpdatedPrice: async () => (0),
-    getShippingRate: async () => (0)
+    getShippingRate: async () => (0),
+    getTotalPrice: async () => (0)
 })
