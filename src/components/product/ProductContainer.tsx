@@ -17,7 +17,8 @@ export const ProductContainer = ({ type }: ProductContainerProps) => {
     const product = useProduct()
 
     useEffect(() => {
-        product.queryProduct({ type: type, id: parseInt(params.id!) })
+        // Pasamos el ID como string, sin convertirlo a número
+        product.queryProduct({ type: type, id: params.id! })
     }, [params.id])
 
     return (
@@ -54,6 +55,5 @@ export const ProductContainer = ({ type }: ProductContainerProps) => {
                 </div>
             </div>
         </>
-
     )
 }
