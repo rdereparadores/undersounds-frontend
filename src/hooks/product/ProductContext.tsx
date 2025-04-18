@@ -7,9 +7,10 @@ export interface ProductContextQueryProps {
 
 export interface ProductContextResultShortProps {
     title: string,
-    id: number,
+    _id: string,
+    author: string,
     artists: { name: string, id: number }[],
-    type: string,
+    productType: string,
     genres: string[],
     duration: number,
     imgUrl: string,
@@ -26,6 +27,7 @@ export interface ProductContextResultProps {
         title: string,
         id: number,
         type: string,
+        author: string,
         artists: { name: string, id: number }[],
         duration: number,
         date: string,
@@ -59,12 +61,14 @@ export interface ProductContextProps {
     queryProduct: ({ type, id }: ProductContextQueryProps) => Promise<void>,
     queryProductShort: ({ type, id }: ProductContextQueryProps) => Promise<void>,
     queryResult: undefined | ProductContextResultProps,
-    queryResultShort: undefined | ProductContextResultShortProps
+    queryResultShort: undefined | ProductContextResultShortProps,
+    isLoading: boolean
 }
 
 export const ProductContext = createContext<ProductContextProps>({
     queryProduct: async () => {},
     queryProductShort: async () => {},
     queryResult: undefined,
-    queryResultShort: undefined
+    queryResultShort: undefined,
+    isLoading: false
 })

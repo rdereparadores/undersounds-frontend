@@ -23,6 +23,7 @@ export const ShopItemsContainer = () => {
 
     useEffect(() => {
         shop.search({ query: params.get('query') || '', filters: params }).then(results => {
+            console.log(results)
             setSearchResults(results.items)
             setSearchResultCount(results.itemCount)
         })
@@ -32,6 +33,8 @@ export const ShopItemsContainer = () => {
         params.set('sort', value)
         navigate('?' + params.toString())
     }
+
+    if (searchResults === undefined) return <></>
 
     return (
         <div className='w-full'>
@@ -52,7 +55,7 @@ export const ShopItemsContainer = () => {
             </div>
 
             <div className='pt-4 grid grid-cols-2 sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4'>
-                {searchResults?.map((item, index) => (
+                {searchResults!.map((item, index) => (
                     <ShopItem key={index} {...item} />
                 ))}
             </div>

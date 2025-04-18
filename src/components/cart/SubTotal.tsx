@@ -39,7 +39,7 @@ const SubTotal = ({ route }: SubTotalProps) => {
         if (route == 'cart') {
             navigate('../checkout')
         } else {
-            checkout.createOrder('o')
+            checkout.createOrder()
         }
     }
 
@@ -74,7 +74,7 @@ const SubTotal = ({ route }: SubTotalProps) => {
             <CardFooter>
 
                 <Button
-                    disabled={!checkout.payButtonEnabled}
+                    disabled={route === 'cart' ? false : !checkout.payButtonEnabled}
                     className='w-full'
                     onClick={handlePayButtonClick}
                 >

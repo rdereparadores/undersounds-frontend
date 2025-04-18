@@ -1,13 +1,15 @@
 import { createContext } from 'react'
 
 interface CheckoutContextProps {
-    createOrder: (addressId: string) => void,
+    createOrder: () => Promise<void>,
     payButtonEnabled: boolean,
-    setPayButtonEnabled: (value: boolean) => void
+    setPayButtonEnabled: (value: boolean) => void,
+    setAddress: (id: string) => void
 }
 
 export const CheckoutContext = createContext<CheckoutContextProps>({
-    createOrder: () => {},
+    createOrder: async () => {},
     payButtonEnabled: false,
-    setPayButtonEnabled: () => {}
+    setPayButtonEnabled: () => {},
+    setAddress: () => {}
 })
