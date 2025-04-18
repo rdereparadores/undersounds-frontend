@@ -15,25 +15,17 @@ const SubTotal = ({ route }: SubTotalProps) => {
     const navigate = useNavigate()
     const checkout = useCheckout()
     const cart = useCart()
+    const [itemCount, setItemCount] = useState(0)
     const [totalPrice, setTotalPrice] = useState(0)
-    const [shippingRate, setShippingRate] = useState(0)
+    const [shippingCost, setShippingCost] = useState(0)
 
     useEffect(() => {
-        let newTotal = 0
-        const promisesArray = []
-
-        for (const item of cart.cart!.items) {
-            promisesArray.push(
-                cart.getUpdatedPrice(item).then(price => newTotal += price)
-            )
-        }
-
-        Promise.all(promisesArray).then(() => {
-            setTotalPrice(newTotal)
+        cart.getPopulatedCart().then(cart => {
+            setTotalPrice(cart.totalPrice)
+            setShippingCost(cart.shippingCost)
+            setItemCount(cart.items.reduce((sum, item) => sum + item.quantity, 0))
         })
-        
-        cart.getShippingRate().then(rate => setShippingRate(rate))
-    }, [cart.cart, cart, shippingRate])
+    }, [cart])
 
     const handlePayButtonClick = () => {
         if (route == 'cart') {
@@ -47,27 +39,23 @@ const SubTotal = ({ route }: SubTotalProps) => {
         <Card className="h-fit grow lg:max-w-md">
             <CardHeader>
                 <CardTitle>Resumen</CardTitle>
-                <CardDescription>{cart.cart?.items.length} artículos</CardDescription>
+                <CardDescription>{itemCount} artículos</CardDescription>
             </CardHeader>
 
             <CardContent>
                 <div className='flex justify-between items-center'>
                     <p>Subtotal</p>
-                    <p className='text-right'>{totalPrice.toFixed(2)} €</p>
+                    <p className='text-right'>{(totalPrice - shippingCost).toFixed(2)} €</p>
                 </div>
                 <div className='flex justify-between items-center'>
                     <p>Gastos de envío</p>
-                    <p className='text-right'>{
-                        route == 'cart' ?
-                        'Calculado en el siguiente paso' :
-                        shippingRate === 0 ? 'Gratis' : `${shippingRate} €`
-                    }</p>
+                    <p className='text-right'>{shippingCost.toFixed(2)} €</p>
                 </div>
 
                 <Separator className='mt-2' />
                 <div className='flex justify-between items-center'>
                     <p>Total</p>
-                    <p className='text-xl font-medium'>{(totalPrice + shippingRate).toFixed(2)} €</p>
+                    <p className='text-xl font-medium'>{totalPrice.toFixed(2)} €</p>
                 </div>
             </CardContent>
 

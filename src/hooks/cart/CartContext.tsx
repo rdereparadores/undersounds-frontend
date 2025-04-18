@@ -1,37 +1,44 @@
 import { createContext } from "react"
 
 export interface CartItemProps {
-    type: string,
     format: 'cd' | 'digital' | 'cassette' | 'vinyl',
+    type: 'song' | 'album',
     quantity: number,
-    id: string,
-    title?: string,
-    price?: number,
-    imgUrl?: string
+    id: string
+}
+
+export interface PopulatedCartItemProps extends CartItemProps {
+    imgUrl: string,
+    title: string,
+    price: number
 }
 
 export interface CartProps {
     items: CartItemProps[]
 }
 
+export interface PopulatedCartProps {
+    items: PopulatedCartItemProps[],
+    shippingCost: number,
+    totalPrice: number
+}
+
 interface CartContextProps {
-    cart: CartProps | null,
+    cart: CartProps,
+    clear: () => void,
+    getPopulatedCart: () => Promise<PopulatedCartProps>,
     add: (item: CartItemProps) => void,
-    remove: (item: CartItemProps) => void,
-    removeOne: (item: CartItemProps) => void,
-    setQuantity: (item: CartItemProps, quantity: number) => void,
-    getUpdatedPrice: (item: CartItemProps) => Promise<number>,
-    getShippingRate: () => Promise<number>,
-    getTotalPrice: () => Promise<number>
+    remove: (item: Partial<CartItemProps>) => void,
+    removeOne: (item: Partial<CartItemProps>) => void,
+    setQuantity: (item: Partial<CartItemProps>, quantity: number) => void
 }
 
 export const CartContext = createContext<CartContextProps>({
-    cart: null,
+    cart: {items: []},
+    clear: () => {},
+    getPopulatedCart: async () => {throw new Error()},
     add: () => {},
     remove: () => {},
     removeOne: () => {},
-    setQuantity: () => {},
-    getUpdatedPrice: async () => (0),
-    getShippingRate: async () => (0),
-    getTotalPrice: async () => (0)
+    setQuantity: () => {}
 })

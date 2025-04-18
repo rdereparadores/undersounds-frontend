@@ -64,15 +64,11 @@ export const ProductContainerInfo = () => {
                                     return
                                 }
 
-                                // Pasar id como string y añadir información adicional
                                 cart.add({
-                                    type: product.queryResult.product.type,
+                                    type: product.queryResult.product.type as 'song' | 'album',
                                     format: selectedFormat,
                                     quantity: 1,
-                                    id: product.queryResult.product.id,
-                                    title: product.queryResult.product.title,
-                                    price: product.queryResult.product.price[selectedFormat],
-                                    imgUrl: product.queryResult.product.imgUrl
+                                    id: product.queryResult.product.id
                                 })
                                 document.getElementById('navBarCartButton')?.click()
                             }

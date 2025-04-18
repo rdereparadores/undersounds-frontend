@@ -18,6 +18,7 @@ export const CheckoutProvider = ({ children }: CheckoutProviderProps) => {
             addressId: address
         })
         if (result.data.error) return
+        cart.clear()
         window.location.replace(result.data.data.url)
     }
 

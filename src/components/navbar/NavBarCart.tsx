@@ -27,7 +27,7 @@ export function NavBarCart() {
                 </SheetHeader>
                 <DialogDescription></DialogDescription>
 
-                {cart.cart?.items.length == 0 ? <NavBarCartEmpty /> : <NavBarCartFilled />}
+                {cart.cart.items.length == 0 ? <NavBarCartEmpty /> : <NavBarCartFilled />}
             </SheetContent>
         </Sheet>
     )
