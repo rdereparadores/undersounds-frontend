@@ -19,7 +19,6 @@ interface ProductProviderProps {
     children: React.ReactNode
 }
 
-// Interfaces para las respuestas de la API
 interface SongData {
     _id: string;
     title: string;
@@ -89,7 +88,6 @@ export const ProductProvider = ({ children }: ProductProviderProps) => {
 
     const queryProduct = async ({ type, id }: ProductContextQueryProps) => {
         if (!id) {
-            setError("ID de producto no proporcionado")
             toast.error("ID de producto no proporcionado")
             return
         }
@@ -99,26 +97,27 @@ export const ProductProvider = ({ children }: ProductProviderProps) => {
 
         try {
             if (type === 'song') {
-                // Obtener información de la canción
                 const songInfoResponse = await api.post<SongInfoResponse>('/api/song/info', { songId: id })
 
-                if (!songInfoResponse.data || !songInfoResponse.data.data || !songInfoResponse.data.data.song) {
-                    throw new Error("Respuesta del servidor inválida: datos de canción no encontrados")
+                if (!songInfoResponse.data?.data?.song) {
+                    toast.error("Error obteniendo información de la canción")
+                    setIsLoading(false)
+                    return
                 }
 
                 const songData = songInfoResponse.data.data.song
                 const recommendations = songInfoResponse.data.data.recommendations || []
 
-                // Obtener ratings
                 const songRatingResponse = await api.post<SongRatingResponse>('/api/song/ratings', { songId: id })
 
-                if (!songRatingResponse.data || !songRatingResponse.data.data) {
-                    throw new Error("Respuesta del servidor inválida: datos de ratings no encontrados")
+                if (!songRatingResponse.data?.data) {
+                    toast.error("Error obteniendo valoraciones")
+                    setIsLoading(false)
+                    return
                 }
 
                 const ratingsData = songRatingResponse.data.data
 
-                // Obtener información del artista (simula datos estáticos si hay error)
                 let artistData = {
                     artistName: "Artista Desconocido",
                     artistUsername: "unknown_artist",
@@ -138,10 +137,9 @@ export const ProductProvider = ({ children }: ProductProviderProps) => {
 
                     isFollowing = followingResponse.data.data.following
                 } catch (error) {
-                    console.warn("No se pudo obtener información del artista, usando datos por defecto: ", error)
+                    console.warn("No se pudo obtener información del artista: ", error)
                 }
 
-                // Crear objetos con la estructura exacta del contexto
                 const price: Price = {
                     digital: songData.pricing.digital,
                     cd: songData.pricing.cd,
@@ -170,7 +168,7 @@ export const ProductProvider = ({ children }: ProductProviderProps) => {
                 const artist: ProductContextResultPropsArtist = {
                     name: artistData.artistName,
                     id: songData.author,
-                    followers: 1500, // Dato por defecto
+                    followers: 1500,
                     isFollowing: isFollowing,
                     imgUrl: artistData.artistImgUrl
                 }
@@ -216,7 +214,6 @@ export const ProductProvider = ({ children }: ProductProviderProps) => {
                     }
                 }))
 
-                // Establecer el resultado completo
                 setQueryResult({
                     product,
                     artist,
@@ -224,16 +221,12 @@ export const ProductProvider = ({ children }: ProductProviderProps) => {
                     related
                 })
             } else if (type === 'album') {
-                // TODO: Implementar consulta de álbumes
-                setError("Consulta de álbumes no implementada aún")
-                toast.error("Consulta de álbumes no implementada aún")
+                toast.error('Consulta de álbumes no implementada aún')
             } else {
-                setError(`Tipo de producto no soportado: ${type}`)
-                toast.error("Tipo de producto no soportado")
+                toast.error(`Tipo de producto no soportado: ${type}`)
             }
         } catch (err) {
             console.error("Error al obtener información del producto:", err)
-            setError("Error al obtener información del producto")
             toast.error("Error al obtener información del producto")
             setQueryResult(undefined)
         } finally {
@@ -243,7 +236,6 @@ export const ProductProvider = ({ children }: ProductProviderProps) => {
 
     const queryProductShort = async ({ type, id }: ProductContextQueryProps) => {
         if (!id) {
-            setError("ID de producto no proporcionado")
             toast.error("ID de producto no proporcionado")
             return
         }
@@ -255,19 +247,20 @@ export const ProductProvider = ({ children }: ProductProviderProps) => {
             if (type === 'song') {
                 const response = await api.post<SongInfoResponse>('/api/song/info', { songId: id })
 
-                if (!response.data || !response.data.data || !response.data.data.song) {
-                    throw new Error("Respuesta del servidor inválida: datos no encontrados")
+                if (!response.data?.data?.song) {
+                    toast.error("Error obteniendo información de la canción")
+                    setIsLoading(false)
+                    return
                 }
 
                 const songData = response.data.data.song
 
-                // Obtener nombre del artista
                 let artistName = "Artista Desconocido"
                 try {
                     const artistResponse = await api.get<ArtistProfileResponse>('/api/artist/profile')
                     artistName = artistResponse.data.data.artistName
                 } catch (error) {
-                    console.warn("No se pudo obtener información del artista, usando nombre por defecto: ", error)
+                    console.warn("No se pudo obtener información del artista: ", error)
                 }
 
                 const result: ProductContextResultShortProps = {
@@ -291,16 +284,12 @@ export const ProductProvider = ({ children }: ProductProviderProps) => {
 
                 setQueryResultShort(result)
             } else if (type === 'album') {
-                // TODO: Implementar consulta corta de álbumes
-                setError("Consulta corta de álbumes no implementada aún")
-                toast.error("Consulta corta de álbumes no implementada aún")
+                toast.error('Consulta de álbumes no implementada aún')
             } else {
-                setError(`Tipo de producto no soportado: ${type}`)
-                toast.error("Tipo de producto no soportado")
+                toast.error(`Tipo de producto no soportado: ${type}`)
             }
         } catch (err) {
             console.error("Error al obtener información resumida del producto:", err)
-            setError("Error al obtener información resumida del producto")
             toast.error("Error al obtener información resumida del producto")
             setQueryResultShort(undefined)
         } finally {
