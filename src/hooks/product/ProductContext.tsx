@@ -61,12 +61,14 @@ export interface ProductContextProps {
     queryProduct: ({ type, id }: ProductContextQueryProps) => Promise<void>,
     queryProductShort: ({ type, id }: ProductContextQueryProps) => Promise<void>,
     queryResult: undefined | ProductContextResultProps,
-    queryResultShort: undefined | ProductContextResultShortProps
+    queryResultShort: undefined | ProductContextResultShortProps,
+    isLoading: boolean
 }
 
 export const ProductContext = createContext<ProductContextProps>({
     queryProduct: async () => {},
     queryProductShort: async () => {},
     queryResult: undefined,
-    queryResultShort: undefined
+    queryResultShort: undefined,
+    isLoading: false
 })
