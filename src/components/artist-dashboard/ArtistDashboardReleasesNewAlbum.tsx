@@ -14,40 +14,33 @@ import { useArtistRelease } from '@/hooks/artist-release/useArtistRelease'
 import { Skeleton } from '../ui/skeleton'
 import { TableFeaturedContent } from './ArtistDashboardProfileTableFeaturedContent'
 import { ArtistDashboardReleasesNewSongGenreCard } from './ArtistDashboardReleasesNewSongGenreCard'
+import { ScrollArea } from '../ui/scroll-area'
 
 
 const newAlbumSchema = z.object({
     title: z.string().min(1),
     description: z.string().min(1),
-    img: z.any()
+    albumImage: z.any()
         .refine((file) => file.length > 0 ? file?.[0]?.type?.startsWith("image/") : true, {
             message: "La portada debe tener formato JPG o PNG",
-        }).optional(),
-
-    song: z.any()
-        .refine((file) => file?.[0], {
-            message: "Debes subir el archivo de audio",
-        })
-        .refine((file) => file?.[0]?.type?.startsWith("audio/"), {
-            message: "El archivo de audio debe ser de los siguientes tipos: MP3, FLAC, WAV",
         }),
-
     priceDigital: z.preprocess((val) => Number(val), z.number().min(1)),
     priceVinyl: z.preprocess((val) => Number(val), z.number().min(1)),
     priceCassette: z.preprocess((val) => Number(val), z.number().min(1)),
     priceCd: z.preprocess((val) => Number(val), z.number().min(1))
 }).refine(data => {
-    if (data.img) return data.img?.[0] !== undefined
+    if (data.albumImage) return data.albumImage?.[0] !== undefined
     return false
 }, {
     message: 'Sube una imagen',
-    path: ['img']
+    path: ['albumImage']
 })
 
 type NewAlbumFormData = z.infer<typeof newAlbumSchema>
 
 export const ArtistDashboardReleasesNewAlbum = () => {
     const [selectedGenreList, setSelectedGenreList] = useState<string[]>([])
+    const [selectedSongsList, setSelectedSongsList] = useState<string[]>([])
     const navigate = useNavigate()
     const artistRelease = useArtistRelease()
     const [previewImgLoaded, setPreviewImgLoaded] = useState(false)
@@ -56,14 +49,14 @@ export const ArtistDashboardReleasesNewAlbum = () => {
     const { register, handleSubmit, formState: { errors }, watch, setValue } = useForm<NewAlbumFormData>({
         resolver: zodResolver(newAlbumSchema)
     })
-    const imgField = watch('img')
+    const albumImg = watch('albumImage')
     const title = watch('title')
 
     const onSubmit = async (data: NewAlbumFormData) => {
         const result = await artistRelease.publishAlbum({
             ...data,
-            songs: data.song[0],
-            img: data.img[0],
+            songs: selectedSongsList,
+            albumImage: data.albumImage[0],
             genres: selectedGenreList
         })
 
@@ -73,14 +66,14 @@ export const ArtistDashboardReleasesNewAlbum = () => {
     }
 
     useEffect(() => {
-        if (imgField && imgField[0]) {
+        if (albumImg && albumImg[0]) {
             const reader = new FileReader()
             reader.onload = (e) => {
                 setPreviewImg(e.target?.result as string)
             }
-            reader.readAsDataURL(imgField[0])
+            reader.readAsDataURL(albumImg[0])
         }
-    }, [imgField])
+    }, [albumImg])
 
     const handleImageUpload = () => {
         document.getElementById('upload-cover')?.click()
@@ -98,10 +91,10 @@ export const ArtistDashboardReleasesNewAlbum = () => {
 
         const response = await fetch(result)
         const blob = await response.blob()
-        const file = new File([blob], 'image.png', { type: blob.type })
+        const file = new File([blob], 'albumImage.png', { type: blob.type })
         const dataTransfer = new DataTransfer()
         dataTransfer.items.add(file)
-        setValue('img', dataTransfer.files)
+        setValue('albumImage', dataTransfer.files)
 
         setGeneratingImage(false)
         setPreviewImgLoaded(true)
@@ -124,18 +117,17 @@ export const ArtistDashboardReleasesNewAlbum = () => {
             </Breadcrumb>
             <h1 className="text-3xl font-medium">Nuevo álbum</h1>
 
-
             <form onSubmit={handleSubmit(onSubmit)}>
                 <div className='flex gap-4 mb-4'>
                     <div className='flex flex-col gap-4 max-w-32'>
                         {!previewImgLoaded && <Skeleton className="rounded-md w-32 h-32" />}
                         <img src={previewImg} className={`rounded-md w-32 h-32 ${previewImgLoaded ? '' : 'hidden'}`} onLoad={() => { setPreviewImgLoaded(true) }} />
-                        {(errors.img) && <span className='text-sm text-red-600'>Sube una imagen</span>}
+                        {(errors.albumImage) && <span className='text-sm text-red-600'>Sube una imagen</span>}
                         <div className='flex flex-col gap-2'>
                             <Button onClick={handleImageUpload}>Subir portada</Button>
                             <Button disabled={generatingImage} variant='outline' onClick={handleImageAIGeneration}>Generar con IA</Button>
                         </div>
-                        <Input id='upload-cover' type='file' accept='image/*' {...register('img')} className='hidden' />
+                        <Input id='upload-cover' type='file' accept='image/*' {...register('albumImage')} className='hidden' />
                     </div>
                     <div className='flex flex-col gap-4 grow'>
                         <div className='flex flex-col gap-2'>
@@ -155,7 +147,9 @@ export const ArtistDashboardReleasesNewAlbum = () => {
                 <div className='flex flex-col gap-4 mb-4'>
                     <div className='flex flex-col gap-2'>
                         <Label htmlFor='songs'>Elegir canciones</Label>
-                        <TableFeaturedContent />{/*TODO hay que enviar la lista entera de canciones*/}
+                        <ScrollArea className="h-72 w-[100%] rounded-md border">
+                            <TableFeaturedContent selectedSongsList={selectedSongsList} setSelectedSongsList={setSelectedSongsList} />
+                        </ScrollArea>
                     </div>
                 </div>
 

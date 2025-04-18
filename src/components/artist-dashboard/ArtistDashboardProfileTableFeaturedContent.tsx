@@ -8,31 +8,37 @@ import {
 } from "@/components/ui/table"
 import { Checkbox } from "../ui/checkbox"
 import { Label } from "../ui/label"
-import { ScrollArea } from "../ui/scroll-area"
+import { useArtist } from "@/hooks/artist/useArtist"
+import { useEffect, useState } from "react"
+import { ArtistSongProps } from "@/hooks/artist/ArtistContext"
 
-//TODO hay que hacer la funcionalidad que pasandole un lista te muestre las canciones de esa lista
-
-export const Entrada = () => {
-    return (
-        <TableRow>
-            <TableCell className="font-medium">
-                <img src='https://picsum.photos/50' ></img>
-            </TableCell>
-            <TableCell>El cocodrilo</TableCell>
-            <TableCell>King Africa</TableCell>
-            <TableCell className="text-center">
-                <Checkbox />
-                <Label></Label>
-            </TableCell>
-        </TableRow>
-    )
+interface ArtistDashboardProfileTableFeaturedContentProps {
+    selectedSongsList: string[],
+    setSelectedSongsList: React.Dispatch<React.SetStateAction<string[]>>
 }
 
+export const TableFeaturedContent = ({ selectedSongsList, setSelectedSongsList }: ArtistDashboardProfileTableFeaturedContentProps) => {
+    const artist = useArtist()
+    const [songsList, setSongsList] = useState<ArtistSongProps[]>([])
 
-export function TableFeaturedContent() {
+    useEffect(() => {
+        artist.getArtistSongs()
+            .then(songs => setSongsList(songs || []))
+    }, [])
+
+    const handleSongAdd = (songId: string) => {
+        const newSongsList = [...selectedSongsList, songId]
+        setSelectedSongsList(newSongsList)
+        console.log(selectedSongsList)
+    }
+
+    const handleSongRemove = (songId: string) => {
+        setSelectedSongsList(selectedSongsList.filter(g => g != songId))
+        console.log(selectedSongsList)
+    }
+
     return (
         <Table>
-            <ScrollArea className="h-72 w-[100%] rounded-md border">
             <TableHeader>
                 <TableRow>
                     <TableHead>Imagen</TableHead>
@@ -42,20 +48,28 @@ export function TableFeaturedContent() {
                 </TableRow>
             </TableHeader>
             <TableBody>
-                    <Entrada></Entrada>
-                    <Entrada></Entrada>
-                    <Entrada></Entrada>
-                    <Entrada></Entrada>
-                    <Entrada></Entrada>
-                    <Entrada></Entrada>
-                    <Entrada></Entrada>
-                    <Entrada></Entrada>
-                    <Entrada></Entrada>
-                    <Entrada></Entrada>
-                    <Entrada></Entrada>
-                    <Entrada></Entrada>
+                {songsList.map((songs, index) => (
+                    <TableRow key={index}>
+                        <TableCell className="font-medium">
+                            <img  src={songs.imgUrl} className="size-[50px]"></img>
+                        </TableCell>
+                        <TableCell>{songs.title}</TableCell>
+                        <TableCell>{songs.author}</TableCell>
+                        <TableCell className="text-center">
+                            <Checkbox
+                                onCheckedChange={(e) => {
+                                    if (e) {
+                                        handleSongAdd(songs._id)
+                                    } else {
+                                        handleSongRemove(songs._id)
+                                    }
+                                }}
+                            />
+                            <Label></Label>
+                        </TableCell>
+                    </TableRow>
+                ))}
             </TableBody>
-            </ScrollArea>
         </Table>
     )
 }

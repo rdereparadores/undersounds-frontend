@@ -51,7 +51,7 @@ export const ArtistReleaseProvider = ({ children }: { children: React.ReactNode 
             formData.append('priceVinyl', data.priceVinyl.toString())
             formData.append('priceCassette', data.priceCassette.toString())
             formData.append('genres', data.genres.join(','))
-            formData.append('img', data.img)
+            formData.append('albumImage', data.albumImage)
             formData.append('songs', data.songs.join(','))
 
             const result = await api.post('/api/artist/release/album', formData)

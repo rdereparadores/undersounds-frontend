@@ -16,7 +16,7 @@ export interface PublishSongProps {
 export interface PublishAlbumProps {
     title: string,
     description: string,
-    img: File,
+    albumImage: File,
     songs: string[], //Pasa los ids de las canciones 
     priceDigital: number,
     priceCd: number,

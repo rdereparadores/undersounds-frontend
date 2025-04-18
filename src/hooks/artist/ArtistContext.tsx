@@ -16,6 +16,7 @@ export interface ArtistInfoProps extends UserInfoProps {
 }
 
 export interface ArtistSongProps {
+    _id: string,
     title: string,
     imgUrl: string,
     author: string
