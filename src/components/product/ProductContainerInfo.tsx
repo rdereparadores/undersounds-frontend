@@ -1,17 +1,15 @@
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useState } from "react";
-import { Skeleton } from "../ui/skeleton";
-import { useProduct } from "@/hooks/product/useProduct";
+import { Badge } from "@/components/ui/badge"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { useState } from "react"
+import { Skeleton } from "../ui/skeleton"
 import { useCart } from "@/hooks/cart/useCart"
-import { ProductContainerInfoArtistCard } from "./ProductContainerInfoArtistCard";
-import { toast } from "sonner";
+import { ProductContainerInfoArtistCard } from "./ProductContainerInfoArtistCard"
+import { toast } from "sonner"
+import { AlbumProps, SongProps } from "@/hooks/product/ProductContext"
 
-export const ProductContainerInfo = () => {
-
-    const product = useProduct()
+export const ProductContainerInfo = ({ type, productInfo }: { type: 'song' | 'album', productInfo: SongProps | AlbumProps }) => {
     const cart = useCart()
     const [imgLoaded, setImgLoaded] = useState(false)
     const [selectedFormat, setSelectedFormat] = useState<null | 'digital' | 'cd' | 'cassette' | 'vinyl'>(null)
@@ -19,17 +17,17 @@ export const ProductContainerInfo = () => {
     return (
         <div className='flex mt-3 gap-3 flex-wrap flex-grow justify-center'>
             {!imgLoaded && <Skeleton className="h-96 aspect-square rounded-md" />}
-            <img alt="Imagen de un producto" hidden={!imgLoaded} className='h-96 aspect-square rounded-md' src={product.queryResult?.product.imgUrl} onLoad={() => { setImgLoaded(true) }} />
+            <img alt="Imagen de un producto" hidden={!imgLoaded} className='h-96 aspect-square rounded-md' src={productInfo.imgUrl} onLoad={() => { setImgLoaded(true) }} />
             <div className='flex flex-col grow-[2] flex-shrink'>
-                <h2 className='font-bold text-2xl'>{product.queryResult?.product.title}</h2>
-                <h3 className='text-xl mb-2'>{product.queryResult?.product.artists.map(artist => artist.name).join(', ')}</h3>
-                <h3>Publicado el {product.queryResult?.product.date}</h3>
+                <h2 className='font-bold text-2xl'>{productInfo.title}</h2>
+                <h3 className='text-xl mb-2'>{productInfo.author.artistName}</h3>
+                <h3>Publicado el {(new Date(productInfo.releaseDate)).toLocaleDateString()}</h3>
                 <div className='mt-2 flex gap-2'>
-                    {product.queryResult?.product.genres.map((genre, index) => (
+                    {productInfo.genres.map((genre, index) => (
                         <Badge key={index} variant='outline'>{genre}</Badge>
                     ))}
                 </div>
-                <p className="mt-2 max-w-[500px] min-w-[150px] break-words flex-shrink">{product.queryResult?.product.description}</p>
+                <p className="mt-2 max-w-[500px] min-w-[150px] break-words flex-shrink">{productInfo.description}</p>
             </div>
             <div className='flex flex-col w-fit grow gap-1'>
                 <Card className='grow flex flex-col justify-between'>
@@ -45,10 +43,10 @@ export const ProductContainerInfo = () => {
                             <SelectContent>
                                 <SelectGroup>
                                     <SelectLabel>Formato</SelectLabel>
-                                    <SelectItem value='digital'>Descarga digital {product.queryResult?.product.price.digital}€</SelectItem>
-                                    <SelectItem value='cd'>CD {product.queryResult?.product.price.cd}€</SelectItem>
-                                    <SelectItem value='vinyl'>Vinilo {product.queryResult?.product.price.vinyl}€</SelectItem>
-                                    <SelectItem value='cassette'>Cassette {product.queryResult?.product.price.cassette}€</SelectItem>
+                                    <SelectItem value='digital'>Descarga digital {productInfo.pricing.digital}€</SelectItem>
+                                    <SelectItem value='cd'>CD {productInfo.pricing.cd}€</SelectItem>
+                                    <SelectItem value='vinyl'>Vinilo {productInfo.pricing.vinyl}€</SelectItem>
+                                    <SelectItem value='cassette'>Cassette {productInfo.pricing.cassette}€</SelectItem>
                                 </SelectGroup>
                             </SelectContent>
                         </Select>
@@ -59,23 +57,19 @@ export const ProductContainerInfo = () => {
                                     toast.error('Debes seleccionar un formato')
                                     return
                                 }
-                                if (!product.queryResult) {
-                                    toast.error('Error al añadir el producto')
-                                    return
-                                }
 
                                 cart.add({
-                                    type: product.queryResult.product.type as 'song' | 'album',
+                                    type,
                                     format: selectedFormat,
                                     quantity: 1,
-                                    id: product.queryResult.product.id
+                                    id: productInfo._id
                                 })
                                 document.getElementById('navBarCartButton')?.click()
                             }
                         }>Añadir al carrito</Button>
                     </CardContent>
                 </Card>
-                <ProductContainerInfoArtistCard />
+                <ProductContainerInfoArtistCard productInfo={productInfo} />
 
             </div>
         </div>

@@ -1,98 +1,62 @@
 import { createContext } from "react"
 
-export interface ProductContextQueryProps {
-    type: string,
-    id: string
+interface ProductProps {
+    _id: string,
+    title: string,
+    releaseDate: Date,
+    description: string,
+    imgUrl: string,
+    author: {
+        _id: string,
+        artistName: string,
+        artistImgUrl: string,
+        artistUsername: string,
+        followers: number
+    },
+    duration: number,
+    genres: string[],
+    pricing: {
+        cd: number,
+        digital: number,
+        cassette: number,
+        vinyl: number
+    },
+    collaborators: {
+        _id: string,
+        artistUsername: string
+    }[]
 }
 
-export interface Artist {
-    name: string;
-    id: string;
+export interface SongProps extends ProductProps {
+    songDir: string,
+    plays: number,
 }
 
-export interface Price {
-    digital: number;
-    cd: number;
-    vinyl: number;
-    cassette: number;
+export interface AlbumProps extends ProductProps {
+    trackList: SongProps[]
 }
 
-export interface Product {
-    title: string;
-    id: string;
-    type: string;
-    artists: Artist[];
-    duration: number;
-    date: string;
-    genres: string[];
-    description: string;
-    imgUrl: string;
-    trackList?: ProductContextResultShortProps[];
-    price: Price;
+export interface RatingItemProps {
+    authorUsername: string,
+    authorImgUrl: string,
+    title: string,
+    description: string,
+    date: string,
+    rating: 1 | 2 | 3 | 4 | 5
 }
 
-export interface ProductContextResultPropsArtist {
-    name: string;
-    id: string;
-    followers: number;
-    isFollowing: boolean;
-    imgUrl: string;
-}
-
-export interface List {
-    userImgUrl: string;
-    username: string;
-    title: string;
-    description: string;
-    rating: number;
-}
-
-export interface RatingCount {
-    five: number;
-    four: number;
-    three: number;
-    two: number;
-    one: number;
-}
-
-export interface Ratings {
-    average: number;
-    ratingCount: RatingCount;
-    list: List[];
-}
-
-export interface ProductContextResultProps {
-    product: Product;
-    artist: ProductContextResultPropsArtist;
-    ratings: Ratings;
-    related: ProductContextResultShortProps[];
-}
-
-export interface ProductContextResultShortProps {
-    title: string;
-    id: string;
-    artists: Artist[];
-    type: string;
-    genres: string[];
-    duration: number;
-    imgUrl: string;
-    price: Price;
+export interface RatingProps {
+    ratings: RatingItemProps[],
+    averageRating: number,
+    totalRatings: number
 }
 
 export interface ProductContextProps {
-    queryProduct: ({ type, id }: ProductContextQueryProps) => Promise<void>;
-    queryProductShort: ({ type, id }: ProductContextQueryProps) => Promise<void>;
-    queryResult: undefined | ProductContextResultProps;
-    queryResultShort: undefined | ProductContextResultShortProps;
-    isLoading: boolean;
-    error: string | null;
+    getSongInfo: (id: string) => Promise<SongProps | null>,
+    getProductRatings: (id: string) => Promise<RatingProps | null>
 }
 
 export const ProductContext = createContext<ProductContextProps>({
-    queryProduct: async () => {},
-    queryProductShort: async () => {},
-    queryResult: undefined,
-    queryResultShort: undefined,
-    isLoading: false,
-    error: null
+    getSongInfo: async () => null,
+    getProductRatings: async () => null
 })
