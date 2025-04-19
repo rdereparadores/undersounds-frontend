@@ -10,10 +10,13 @@ import {
 } from "@/components/ui/dialog"
 import { Button } from "../ui/button"
 import { TableFeaturedContent } from "./ArtistDashboardProfileTableFeaturedContent"
-
+import { useState } from "react"
 
 
 export function ChangeFeatureContent() {
+
+    const [selectedSongsList, setSelectedSongsList] = useState<string[]>([])
+    
     return (
         <Dialog>
             <DialogTrigger>
@@ -24,7 +27,7 @@ export function ChangeFeatureContent() {
                     <DialogTitle>Destacar canción</DialogTitle>
                     <DialogDescription>
                         <p>Estas son todas las canciones que puedes destacar.</p>
-                        <TableFeaturedContent />
+                        <TableFeaturedContent selectedSongsList={selectedSongsList} setSelectedSongsList={setSelectedSongsList}/>
                     </DialogDescription>
                 </DialogHeader>
                 <DialogFooter>
