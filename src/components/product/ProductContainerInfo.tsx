@@ -8,11 +8,31 @@ import { useCart } from "@/hooks/cart/useCart"
 import { ProductContainerInfoArtistCard } from "./ProductContainerInfoArtistCard"
 import { toast } from "sonner"
 import { AlbumProps, SongProps } from "@/hooks/product/ProductContext"
+import { Link } from "react-router"
 
 export const ProductContainerInfo = ({ type, productInfo }: { type: 'song' | 'album', productInfo: SongProps | AlbumProps }) => {
     const cart = useCart()
     const [imgLoaded, setImgLoaded] = useState(false)
     const [selectedFormat, setSelectedFormat] = useState<null | 'digital' | 'cd' | 'cassette' | 'vinyl'>(null)
+
+    const parseArtistList = () => {
+        const authorLink = (
+            <Link to={`/profile/artist/${productInfo.author._id}`}>
+                <h3 className='text-xl mb-2'>{productInfo.author.artistName}</h3>
+            </Link>
+        )
+        if (type !== 'song' || !('collaborators' in productInfo) || productInfo.collaborators.length === 0) return authorLink
+        const collaboratorLinks = productInfo.collaborators.map((collaborator, index) => (
+            <Link key={index} to={`/profile/artist/${collaborator._id}`}>{collaborator.artistName}</Link>
+        ))
+
+        return (
+            <h3 className='text-xl mb-2'>
+                <Link to={`/profile/artist/${productInfo.author._id}`}>{productInfo.author.artistName}</Link>
+                {collaboratorLinks}
+            </h3>
+        )
+    }
 
     return (
         <div className='flex mt-3 gap-3 flex-wrap flex-grow justify-center'>
@@ -20,7 +40,7 @@ export const ProductContainerInfo = ({ type, productInfo }: { type: 'song' | 'al
             <img alt="Imagen de un producto" hidden={!imgLoaded} className='h-96 aspect-square rounded-md' src={productInfo.imgUrl} onLoad={() => { setImgLoaded(true) }} />
             <div className='flex flex-col grow-[2] flex-shrink'>
                 <h2 className='font-bold text-2xl'>{productInfo.title}</h2>
-                <h3 className='text-xl mb-2'>{productInfo.author.artistName}</h3>
+                <h3 className='text-xl mb-2'>{parseArtistList()}</h3>
                 <h3>Publicado el {(new Date(productInfo.releaseDate)).toLocaleDateString()}</h3>
                 <div className='mt-2 flex gap-2'>
                     {productInfo.genres.map((genre, index) => (
@@ -32,7 +52,7 @@ export const ProductContainerInfo = ({ type, productInfo }: { type: 'song' | 'al
             <div className='flex flex-col w-fit grow gap-1'>
                 <Card className='grow flex flex-col justify-between'>
                     <CardHeader>
-                        <CardTitle>Comprar pista</CardTitle>
+                        <CardTitle>Comprar</CardTitle>
                         <CardDescription>Selecciona el formato deseado</CardDescription>
                     </CardHeader>
                     <CardContent className="flex flex-col gap-2">

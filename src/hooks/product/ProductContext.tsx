@@ -20,16 +20,19 @@ interface ProductProps {
         digital: number,
         cassette: number,
         vinyl: number
-    },
-    collaborators: {
-        _id: string,
-        artistUsername: string
-    }[]
+    }
 }
 
 export interface SongProps extends ProductProps {
     songDir: string,
     plays: number,
+    collaborators: {
+        _id: string,
+        artistName: string,
+        artistImgUrl: string,
+        artistUsername: string,
+        followers: number
+    }[]
 }
 
 export interface AlbumProps extends ProductProps {

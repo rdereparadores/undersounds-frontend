@@ -6,7 +6,6 @@ import { Link } from "react-router";
 import { AlbumProps, SongProps } from "@/hooks/product/ProductContext";
 import { useUser } from "@/hooks/user/useUser";
 
-//TODO: RUTAS FOLLOW, ISFOLLOWING, EN ARTISTDTO AÑADIR EL INCREMENTAR O DECREMENTAR FOLLOWCOUNT
 export const ProductContainerInfoArtistCard = ({ productInfo }: { productInfo: SongProps | AlbumProps }) => {
     const user = useUser()
     const [imgLoaded, setImgLoaded] = useState(false)
@@ -15,7 +14,7 @@ export const ProductContainerInfoArtistCard = ({ productInfo }: { productInfo: S
     useEffect(() => {
         user.isFollowing(productInfo.author.artistUsername)
         .then(following => setIsFollowing(following))
-    }, [])
+    }, [productInfo.author.artistUsername, user])
 
     const toggleFollow = async () => {
         if (isFollowing) {
