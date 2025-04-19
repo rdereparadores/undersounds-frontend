@@ -12,7 +12,7 @@ interface SongResponse {
     imgUrl: string;
     plays: number;
     author: string;
-    artistName?: string;
+    artistName: string;
 }
 
 export const TrendingSongsProvider = ({ children }: TrendingSongsProviderProps) => {
@@ -28,24 +28,16 @@ export const TrendingSongsProvider = ({ children }: TrendingSongsProviderProps) 
                 return null;
             }
 
-            return response.data.data.songs.map((song: SongResponse) => {
-                if (!song) {
-                    return null;
+            return response.data.data.songs.map((song: SongResponse) => ({
+                id: song._id,
+                title: song.title || 'Unknown Title',
+                imgUrl: song.imgUrl || '/placeholder.jpg',
+                plays: song.plays || 0,
+                artist: {
+                    id: song.author,
+                    name: song.artistName || 'Unknown Artist'
                 }
-
-                const transformedSong: TrendingSongsResult = {
-                    id: song._id,
-                    title: song.title || 'Unknown Title',
-                    imgUrl: song.imgUrl || '/placeholder.jpg',
-                    plays: song.plays || 0,
-                    artist: {
-                        id: song.author,
-                        name: song.artistName || 'Unknown Artist'
-                    }
-                };
-
-                return transformedSong;
-            }).filter(Boolean) as TrendingSongsResult[];
+            }));
         } catch (error) {
             console.error("Error in fetchSongs:", error)
             return null;
