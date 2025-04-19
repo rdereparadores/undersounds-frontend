@@ -1,7 +1,8 @@
 import {
     ProductContext,
     SongProps,
-    RatingProps
+    RatingProps,
+    AlbumProps
 } from "./ProductContext"
 import { api } from '@/lib/api'
 
@@ -22,6 +23,16 @@ export const ProductProvider = ({ children }: ProductProviderProps) => {
         }
     }
 
+    const getAlbumInfo = async (id: string) => {
+        try {
+            const result = await api.post('/api/album/info', { albumId: id })
+            if (result.data.error) return null
+            return result.data.data.album as AlbumProps
+        } catch {
+            return null
+        }
+    }
+
     const getProductRatings = async (id: string) => {
         try {
             const result = await api.post('/api/product/ratings', { id })
@@ -37,6 +48,7 @@ export const ProductProvider = ({ children }: ProductProviderProps) => {
     return (
         <ProductContext.Provider value={{
             getSongInfo,
+            getAlbumInfo,
             getProductRatings
         }}>
             {children}

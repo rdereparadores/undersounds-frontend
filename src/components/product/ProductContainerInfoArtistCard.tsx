@@ -1,12 +1,32 @@
 import { Card, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Skeleton } from "../ui/skeleton";
 import { Link } from "react-router";
 import { AlbumProps, SongProps } from "@/hooks/product/ProductContext";
+import { useUser } from "@/hooks/user/useUser";
 
+//TODO: RUTAS FOLLOW, ISFOLLOWING, EN ARTISTDTO AÑADIR EL INCREMENTAR O DECREMENTAR FOLLOWCOUNT
 export const ProductContainerInfoArtistCard = ({ productInfo }: { productInfo: SongProps | AlbumProps }) => {
+    const user = useUser()
     const [imgLoaded, setImgLoaded] = useState(false)
+    const [isFollowing, setIsFollowing] = useState<boolean>(false)
+
+    useEffect(() => {
+        user.isFollowing(productInfo.author.artistUsername)
+        .then(following => setIsFollowing(following))
+    }, [])
+
+    const toggleFollow = async () => {
+        if (isFollowing) {
+            const result = await user.unfollow(productInfo.author.artistUsername)
+            if (result === true) setIsFollowing(false)
+        }
+        if (!isFollowing) {
+            const result = await user.follow(productInfo.author.artistUsername)
+            if (result === true) setIsFollowing(true)
+        }
+    }
 
     return (
         <Card className="mt-3">
@@ -18,8 +38,8 @@ export const ProductContainerInfoArtistCard = ({ productInfo }: { productInfo: S
                         <p className="font-medium">@{productInfo.author.artistUsername}</p>
                         <p className='text-sm'>{productInfo.author.followers} seguidores</p>
                     </div>
-                    <Button className="grow" variant={true ? 'outline' : 'default'}>
-                    {true ? 'Siguiendo' : '+ Seguir'}
+                    <Button onClick={toggleFollow} className="grow" variant={isFollowing ? 'outline' : 'default'}>
+                    {isFollowing ? 'Siguiendo' : '+ Seguir'}
                     </Button>
                 </div>
                 <Button asChild variant='outline'>

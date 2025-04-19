@@ -1,7 +1,6 @@
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { useProduct } from "@/hooks/product/useProduct"
 import { useCart } from "@/hooks/cart/useCart"
 import { Badge } from "../ui/badge"
 import { FaRegTrashAlt } from "react-icons/fa";
@@ -9,7 +8,6 @@ import { Link } from "react-router"
 import { PopulatedCartItemProps } from "@/hooks/cart/CartContext"
 
 export const CartItem = ({ item }: { item: PopulatedCartItemProps }) => {
-    const product = useProduct()
     const cart = useCart()
 
     return (
@@ -26,7 +24,7 @@ export const CartItem = ({ item }: { item: PopulatedCartItemProps }) => {
                                     <p className="font-medium w-fit">{item.title}</p>
                                 </Link>
                                 <div className="flex gap-2">
-                                    <Badge>{product.queryResultShort?.type === 'song' ? 'Canción' : 'Álbum'}</Badge>
+                                    <Badge>{item.type === 'song' ? 'Canción' : 'Álbum'}</Badge>
                                     <Badge variant='outline'>{item.format}</Badge>
                                 </div>
                                 <Badge className="w-fit" variant='outline'>Unidades: {item.quantity}</Badge>

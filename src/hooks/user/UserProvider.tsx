@@ -1,5 +1,6 @@
 import { api } from "@/lib/api"
 import { AddressProps, UserContext, UserInfoProps } from "./UserContext"
+import { toast } from "sonner"
 
 export const UserProvider = ({ children }: { children: React.ReactNode }) => {
 
@@ -90,8 +91,52 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
         }
     }
 
+    const isFollowing = async (artistUsername: string) => {
+        try {
+            const result = await api.post('/api/user/is-following', { artistUsername })
+            if (result.data.error) return false
+            return result.data.data.following as boolean
+        } catch {
+            return false
+        }
+    }
+
+    const follow = async (artistUsername: string) => {
+        try {
+            const result = await api.post('/api/user/follow', { artistUsername })
+            if (result.data.error) return false
+            return true
+        } catch {
+            toast.error('Debes iniciar sesión primero')
+            return false
+        }
+    }
+
+    const unfollow = async (artistUsername: string) => {
+        try {
+            const result = await api.post('/api/user/unfollow', { artistUsername })
+            if (result.data.error) return false
+            return true
+        } catch {
+            return false
+        }
+    }
+
     return (
-        <UserContext.Provider value={{ getUserInfo, updateUserInfo, updateUserProfileImage, generateUserProfileImageAI, addAddress, getAddresses, removeAddress, setAddressAsDefault }}>
+        <UserContext.Provider
+        value={{
+        getUserInfo, 
+        updateUserInfo, 
+        updateUserProfileImage, 
+        generateUserProfileImageAI, 
+        addAddress, 
+        getAddresses, 
+        removeAddress, 
+        setAddressAsDefault, 
+        isFollowing, 
+        follow, 
+        unfollow
+        }}>
             {children}
         </UserContext.Provider>
     )

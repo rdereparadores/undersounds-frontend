@@ -24,7 +24,7 @@ export const ProductContainer = ({ type }: ProductContainerProps) => {
         if (type === 'song') {
             product.getSongInfo(id).then(song => setProductInfo(song!))
         } else {
-            // TODO llamar a getAlbumInfo
+            product.getAlbumInfo(id).then(album => setProductInfo(album!))
         }
     }, [params.id, product, type])
 
@@ -57,7 +57,7 @@ export const ProductContainer = ({ type }: ProductContainerProps) => {
                 <ProductContainerInfo productInfo={productInfo} type={type} />
                 <div className="flex gap-4 flex-wrap">
                     <div className='flex flex-col grow gap-4'>
-                        {type == 'album' && <ProductContainerTrackList />}
+                        {'trackList' in productInfo && <ProductContainerTrackList trackList={productInfo.trackList!} />}
                         <ProductContainerRatings />
                     </div>
                     <ProductContainerRelatedCarousel />

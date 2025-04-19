@@ -33,7 +33,7 @@ export interface SongProps extends ProductProps {
 }
 
 export interface AlbumProps extends ProductProps {
-    trackList: SongProps[]
+    trackList: Partial<SongProps>[]
 }
 
 export interface RatingItemProps {
@@ -53,10 +53,12 @@ export interface RatingProps {
 
 export interface ProductContextProps {
     getSongInfo: (id: string) => Promise<SongProps | null>,
+    getAlbumInfo: (id: string) => Promise<AlbumProps | null>,
     getProductRatings: (id: string) => Promise<RatingProps | null>
 }
 
 export const ProductContext = createContext<ProductContextProps>({
     getSongInfo: async () => null,
+    getAlbumInfo: async () => null,
     getProductRatings: async () => null
 })
