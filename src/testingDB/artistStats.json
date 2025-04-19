@@ -1,0 +1,35 @@
+{
+  "artistStats": {
+    "monthlySales": {
+      "current": 10,
+      "percentageChange": 100,
+      "trend": "up"
+    },
+    "monthlyReleases": {
+      "current": 4,
+      "previous": 2
+    },
+    "topFormat": {
+      "name": "CD",
+      "ratio": 3
+    },
+    "monthlyUniqueListeners": {
+      "current": 10032,
+      "change": 2432,
+      "trend": "up"
+    },
+    "formatSales": [
+      { "format": "digital", "quantity": 20 },
+      { "format": "cd", "quantity": 10 },
+      { "format": "vinyl", "quantity": 5 },
+      { "format": "cassette", "quantity": 2 }
+    ],
+    "topItems": [
+      { "item": "Mi Abuelo tiene un tractor", "sold": 10 },
+      { "item": "La Ramona", "sold": 8 },
+      { "item": "La mar está fresquibiris", "sold": 8 },
+      { "item": "El perro de mi tío", "sold": 6 },
+      { "item": "El gato de mi abuela", "sold": 3 }
+    ]
+  }
+}

@@ -2,8 +2,14 @@ import { IoIosTrendingUp } from "react-icons/io"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card"
 import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "../ui/chart"
 import { Bar, BarChart, Pie, PieChart, XAxis, YAxis } from "recharts"
+import statsData from '../../testingDB/artistStats.json'
 
 export const ArtistDashboardStatsHeader = () => {
+    const monthlySales = statsData.artistStats.monthlySales
+    const monthlyReleases = statsData.artistStats.monthlyReleases
+    //const formatSales = statsData.artistStats.formatSales
+    const topFormat = statsData.artistStats.topFormat
+    const monthlyUniqueListeners = statsData.artistStats.monthlyUniqueListeners
     return (
         <div className="flex gap-4 flex-wrap">
             <Card className="grow min-w-fit">
@@ -12,9 +18,9 @@ export const ArtistDashboardStatsHeader = () => {
                     <CardDescription>Último mes</CardDescription>
                 </CardHeader>
                 <CardContent>
-                    <p className="font-bold text-3xl">2715</p>
+                    <p className="font-bold text-3xl">{monthlySales.current}</p>
                     <CardDescription className="flex gap-1">
-                        <IoIosTrendingUp className="mt-1" /> 45% más que el mes anterior
+                        <IoIosTrendingUp className="mt-1" /> {monthlySales.percentageChange}% más que el mes anterior
                     </CardDescription>
                 </CardContent>
             </Card>
@@ -25,9 +31,9 @@ export const ArtistDashboardStatsHeader = () => {
                     <CardDescription>Último mes</CardDescription>
                 </CardHeader>
                 <CardContent>
-                    <p className="font-bold text-3xl">7</p>
+                    <p className="font-bold text-3xl">{monthlyReleases.current}</p>
                     <CardDescription className="flex gap-1">
-                        vs. 2 el mes anterior
+                        vs. {monthlyReleases.previous} el mes anterior
                     </CardDescription>
                 </CardContent>
             </Card>
@@ -38,9 +44,9 @@ export const ArtistDashboardStatsHeader = () => {
                     <CardDescription>Desde el inicio</CardDescription>
                 </CardHeader>
                 <CardContent>
-                    <p className="font-bold text-3xl">Digital</p>
+                    <p className="font-bold text-3xl">{topFormat.name}</p>
                     <CardDescription className="flex gap-1">
-                        7 de cada 10 compras
+                        {topFormat.ratio} de cada 10 compras
                     </CardDescription>
                 </CardContent>
             </Card>
@@ -51,9 +57,9 @@ export const ArtistDashboardStatsHeader = () => {
                     <CardDescription>Último mes</CardDescription>
                 </CardHeader>
                 <CardContent>
-                    <p className="font-bold text-3xl">27676</p>
+                    <p className="font-bold text-3xl">{monthlyUniqueListeners.current}</p>
                     <CardDescription className="flex gap-1">
-                        <IoIosTrendingUp className="mt-1" />16365 más que el mes anterior
+                        <IoIosTrendingUp className="mt-1" />{monthlyUniqueListeners.change} más que el mes anterior
                     </CardDescription>
                 </CardContent>
             </Card>
@@ -109,13 +115,7 @@ export const ArtistDashboardStatsFormatChart = () => {
     )
 }
 
-const topSoldData = [
-    { item: 'Canción 1', sold: 350 },
-    { item: 'Canción 2', sold: 300 },
-    { item: 'Canción 3', sold: 248 },
-    { item: 'Canción 4', sold: 227 },
-    { item: 'Canción 5', sold: 192 }
-]
+const topItems = statsData.artistStats.topItems
 
 const topSoldConfig = {
     sold: {
@@ -132,7 +132,7 @@ export const ArtistDashboardStatsTopSoldChart = () => {
             </CardHeader>
             <CardContent>
                 <ChartContainer className="mx-auto aspect-square max-w-[300px]" config={topSoldConfig}>
-                    <BarChart accessibilityLayer data={topSoldData} layout="vertical" margin={{ left: 0 }}>
+                    <BarChart accessibilityLayer data={topItems} layout="vertical" margin={{ left: 0 }}>
                         <YAxis dataKey='item' type='category' tickLine={false} tickMargin={1} axisLine={false} />
                         <XAxis dataKey='sold' type='number' hide />
                         <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel />} />
