@@ -43,13 +43,23 @@ export const ProductProvider = ({ children }: ProductProviderProps) => {
         }
     }
 
+    const getSongIdAndVersion = async(id: string, version: string) => {
+        try {
+            const result = await api.post('/api/song/songidandversion', {id, version})
+            return result.data.data.song
+        } catch {
+            return null
+        }
+    }
+
     
 
     return (
         <ProductContext.Provider value={{
             getSongInfo,
             getAlbumInfo,
-            getProductRatings
+            getProductRatings,
+            getSongIdAndVersion
         }}>
             {children}
         </ProductContext.Provider>
