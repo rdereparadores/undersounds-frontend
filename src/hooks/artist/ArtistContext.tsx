@@ -21,7 +21,9 @@ export interface ArtistSongProps {
     imgUrl: string,
     author: string,
     artistName: string,
-    duration: number
+    duration: number,
+    version?: number,
+    versionHistory?: string[]
 }
 
 export interface ArtistAlbumProps {
@@ -29,7 +31,8 @@ export interface ArtistAlbumProps {
     imgUrl: string,
     author: string,
     duration: number,
-    trackList: string[]
+    trackList: string[],
+    version?: number
 }
 
 export interface ArtistContextProps {

@@ -9,6 +9,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { useNavigate } from "react-router"
 import { useArtist } from "@/hooks/artist/useArtist"
 import { ArtistAlbumProps, ArtistInfoProps, ArtistSongProps } from "@/hooks/artist/ArtistContext"
+import { ArtistDashboardReleasesEditSongPopUp } from "./ArtistDashboardReleasesEditSongPopUp"
 
 export const ArtistDashboardReleasesSongsItem = ({ song, artistData }: { song: ArtistSongProps, artistData: ArtistInfoProps }) => {
     const [imgLoaded, setImgLoaded] = useState(false)
@@ -16,20 +17,22 @@ export const ArtistDashboardReleasesSongsItem = ({ song, artistData }: { song: A
     return (
         <Card>
             <CardHeader className="p-0 relative">
-                {!imgLoaded && <Skeleton className="w-48 h-48 rounded-xl rounded-b-none" />}
-                <img src={song.imgUrl} className={`w-48 h-48 rounded-xl rounded-b-none ${imgLoaded ? '' : 'hidden'}`} onLoad={() => setImgLoaded(true)} />
-                <Button className="absolute bottom-2 right-2 rounded-full w-10 h-10">
-                    <FaPlay className="ml-[3px]" />
-                </Button>
-                <Button variant='secondary' className="absolute bottom-2 right-14 rounded-full w-10 h-10">
-                    <FaDownload />
-                </Button>
-                <Button variant='secondary' className="absolute top-1 right-[11px] rounded-full w-10 h-10">
-                    <FaEdit className="ml-[2px]" />
-                </Button>
+                <div>
+                    <div>
+                        {!imgLoaded && <Skeleton className="w-48 h-48 rounded-xl rounded-b-none" />}
+                        <img src={song.imgUrl} className={`w-48 h-48 rounded-xl rounded-b-none ${imgLoaded ? '' : 'hidden'}`} onLoad={() => setImgLoaded(true)} />
+                        <Button className="absolute bottom-2 right-2 rounded-full w-10 h-10">
+                            <FaPlay className="ml-[3px]" />
+                        </Button>
+                        <Button variant='secondary' className="absolute bottom-2 right-14 rounded-full w-10 h-10">
+                            <FaDownload />
+                        </Button>
+                    </div>
+                    <ArtistDashboardReleasesEditSongPopUp song={song} />
+                </div>
             </CardHeader>
-            <CardContent className="pt-2 px-2">
-                <CardTitle>{song.title}</CardTitle>
+            <CardContent className="pt-2 px-2 w-min h-min">
+                <CardTitle className="">{song.title}</CardTitle>
                 <CardDescription>{artistData?.artistName}</CardDescription>
             </CardContent>
         </Card>
@@ -60,9 +63,9 @@ export const ArtistDashboardReleasesAlbumsItemTrack = ({ song, artistData }: { s
     )
 }
 
-export const ArtistDashboardReleasesAlbumsItem = ({ album, artistData }: { album: ArtistAlbumProps, artistData: ArtistInfoProps}) => {
+export const ArtistDashboardReleasesAlbumsItem = ({ album, artistData }: { album: ArtistAlbumProps, artistData: ArtistInfoProps }) => {
     const [imgLoaded, setImgLoaded] = useState(false)
-    
+
     return (
         <Card>
             <CardHeader>
@@ -130,15 +133,18 @@ export const ArtistDashboardReleases = () => {
                 </TabsList>
                 <TabsContent value='songs'>
                     <div className="flex flex-wrap justify-center sm:justify-start gap-4">
-                        {songList.map((song, index) => (
-                            <ArtistDashboardReleasesSongsItem song={song} artistData={artistData} key={index} />
-                        ))}
+                        {songList
+                            .filter((song) => song.version === undefined) // Filtra las canciones que no tienen versión
+                            .map((song, index) => (
+                                <ArtistDashboardReleasesSongsItem song={song} artistData={artistData} key={index} />
+                            ))}
                     </div>
-
                 </TabsContent>
                 <TabsContent value='albums'>
                     <div className="flex flex-col gap-4">
-                        {albumList.map((album, index) => (
+                        {albumList
+                            .filter((album) => album.version === undefined)
+                            .map((album, index) => (
                             <ArtistDashboardReleasesAlbumsItem album={album} artistData={artistData} key={index} />
                         ))}
                     </div>

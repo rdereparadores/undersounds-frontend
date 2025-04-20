@@ -32,7 +32,9 @@ export interface SongProps extends ProductProps {
         artistImgUrl: string,
         artistUsername: string,
         followers: number
-    }[]
+    }[],
+    version?: number
+
 }
 
 export interface AlbumProps extends ProductProps {
@@ -57,11 +59,13 @@ export interface RatingProps {
 export interface ProductContextProps {
     getSongInfo: (id: string) => Promise<SongProps | null>,
     getAlbumInfo: (id: string) => Promise<AlbumProps | null>,
-    getProductRatings: (id: string) => Promise<RatingProps | null>
+    getProductRatings: (id: string) => Promise<RatingProps | null>,
+    getSongIdAndVersion: (id: string, version: number) => Promise<SongProps | null>
 }
 
 export const ProductContext = createContext<ProductContextProps>({
     getSongInfo: async () => null,
     getAlbumInfo: async () => null,
-    getProductRatings: async () => null
+    getProductRatings: async () => null,
+    getSongIdAndVersion: async () => null,
 })
