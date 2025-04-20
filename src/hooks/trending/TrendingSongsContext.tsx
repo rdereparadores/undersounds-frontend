@@ -1,20 +1,19 @@
 import { createContext } from 'react'
 
-export interface TrendingSongsResult {
-    id: string,
-    title: string,
+export interface TrendingSong {
+    _id: string,
     imgUrl: string,
-    plays: number,
-    artist: {
-        id: string,
-        name: string,
+    title: string,
+    author: {
+        _id: string,
+        artistName: string
     }
 }
 
 export interface TrendingSongsContextProps {
-    getTrendingSongs: () => Promise<TrendingSongsResult[] | null>
+    getTrendingSongs: () => Promise<TrendingSong[]>
 }
 
 export const TrendingSongsContext = createContext<TrendingSongsContextProps>({
-    getTrendingSongs: async () => null
+    getTrendingSongs: async () => []
 })

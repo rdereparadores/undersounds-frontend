@@ -9,42 +9,18 @@ import {
 import { Skeleton } from '@/components/ui/skeleton'
 import { useState, useEffect } from 'react'
 import { IndexPopularCarouselItem } from './IndexPopularCarouselItem'
-import { TrendingSongsResult } from '@/hooks/trending/TrendingSongsContext'
 import { ProductProvider } from '@/hooks/product/ProductProvider'
 import { useTrendingSongs } from "@/hooks/trending/useTrendingSongs"
+import { TrendingSong } from '@/hooks/trending/TrendingSongsContext'
 
 export const IndexPopularCarousel = () => {
-    const { getTrendingSongs } = useTrendingSongs()
-    const [trendingSongs, setTrendingSongs] = useState<TrendingSongsResult[] | null>(null)
-    const [isLoading, setIsLoading] = useState<boolean>(true)
+    const trendingSongs = useTrendingSongs()
+    const [songs, setSongs] = useState<TrendingSong[] | undefined>(undefined)
 
     useEffect(() => {
-        let isMounted = true;
+        trendingSongs.getTrendingSongs().then(result => setSongs(result))
+    }, [trendingSongs])
 
-        const fetchSongs = async () => {
-            try {
-                setIsLoading(true)
-                const songs = await getTrendingSongs()
-
-                if (isMounted && songs && songs.length > 0) {
-                    setTrendingSongs(songs)
-                }
-            } catch (error) {
-                console.error("Error in fetchSongs:", error)
-            } finally {
-                if (isMounted) {
-                    setIsLoading(false)
-                }
-            }
-        }
-        fetchSongs().catch(console.error)
-
-        return () => {
-            isMounted = false;
-        }
-    }, [getTrendingSongs])
-
-    const showSkeletons = isLoading || !trendingSongs || trendingSongs.length === 0;
 
     return (
         <div className='w-5/6 h-fit'>
@@ -54,14 +30,14 @@ export const IndexPopularCarousel = () => {
                 dragFree: true
             }} className='w-full relative'>
                 <CarouselContent className='w-full'>
-                    {!showSkeletons ? (
+                    {songs !== undefined ? (
                         <>
-                            {trendingSongs.map((song, index) => (
-                                <CarouselItem key={song.id || `song-${index}`} className='basis-auto'>
+                            {songs.map((song, index) => (
+                                <CarouselItem key={index} className='basis-auto'>
                                     <ProductProvider>
                                         <IndexPopularCarouselItem
                                             song={song}
-                                            position={index + 1}
+                                            position={index+1}
                                         />
                                     </ProductProvider>
                                 </CarouselItem>

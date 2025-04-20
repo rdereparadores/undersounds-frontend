@@ -31,7 +31,7 @@ export const ProductContainer = ({ type }: ProductContainerProps) => {
         product.getProductRecommendations(id).then(recommendations => setRelated(recommendations))
     }, [params.id, product, type])
 
-    if (productInfo === undefined) return <Skeleton className='w-full h-screen mt-2'/>
+    if (productInfo === undefined || related === undefined) return <Skeleton className='w-full h-screen mt-2'/>
 
     return (
         <>

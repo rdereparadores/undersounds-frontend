@@ -104,24 +104,24 @@ export const ShopFilters = () => {
                                     <Label htmlFor='today'>Hoy</Label>
                                 </div>
                                 <div className='flex items-center space-x-2'>
-                                    <RadioGroupItem value='last-week' id='last-week' />
-                                    <Label htmlFor='last-week'>En la última semana</Label>
+                                    <RadioGroupItem value='week' id='week' />
+                                    <Label htmlFor='week'>En la última semana</Label>
                                 </div>
                                 <div className='flex items-center space-x-2'>
-                                    <RadioGroupItem value='last-month' id='last-month' />
-                                    <Label htmlFor='last-month'>En el último mes</Label>
+                                    <RadioGroupItem value='month' id='month' />
+                                    <Label htmlFor='month'>En el último mes</Label>
                                 </div>
                                 <div className='flex items-center space-x-2'>
-                                    <RadioGroupItem value='last-3-months' id='last-3-months' />
-                                    <Label htmlFor='last-3-months'>En los últimos 3 meses</Label>
+                                    <RadioGroupItem value='3months' id='3months' />
+                                    <Label htmlFor='3months'>En los últimos 3 meses</Label>
                                 </div>
                                 <div className='flex items-center space-x-2'>
-                                    <RadioGroupItem value='last-6-months' id='last-6-months' />
-                                    <Label htmlFor='last-6-months'>En los últimos 6 meses</Label>
+                                    <RadioGroupItem value='6months' id='6months' />
+                                    <Label htmlFor='6months'>En los últimos 6 meses</Label>
                                 </div>
                                 <div className='flex items-center space-x-2'>
-                                    <RadioGroupItem value='last-year' id='last-year' />
-                                    <Label htmlFor='last-year'>En el último año</Label>
+                                    <RadioGroupItem value='year' id='year' />
+                                    <Label htmlFor='year'>En el último año</Label>
                                 </div>
                             </RadioGroup>
                         </AccordionContent>
