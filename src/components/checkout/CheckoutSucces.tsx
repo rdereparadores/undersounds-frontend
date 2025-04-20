@@ -1,8 +1,16 @@
-import { Link } from "react-router";
+import { Link, useParams } from "react-router";
 import { Button } from "../ui/button";
 import { GiConfirmed } from "react-icons/gi";
+import { useEffect } from "react";
+import { useCheckout } from "@/hooks/checkout/useCheckout";
 
 export const CheckoutSucces = () => {
+    const params = useParams()
+    const checkout = useCheckout()
+
+    useEffect(() => {
+        checkout.onSuccess(params.id!)
+    }, [])
 
     return (
         <>

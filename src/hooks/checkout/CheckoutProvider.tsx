@@ -26,8 +26,12 @@ export const CheckoutProvider = ({ children }: CheckoutProviderProps) => {
         setPayButtonEnabledState(value)
     }
 
+    const onSuccess = async (id: string) => {
+        await api.post('/api/checkout/order/success', { sessionId: id })
+    }
+
     return (
-        <CheckoutContext.Provider value={{ createOrder, payButtonEnabled, setPayButtonEnabled, setAddress }}>
+        <CheckoutContext.Provider value={{ createOrder, payButtonEnabled, setPayButtonEnabled, setAddress, onSuccess }}>
             {children}
         </CheckoutContext.Provider>
     )

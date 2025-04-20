@@ -50,7 +50,7 @@ function App() {
                     <Route path='cart' element={<Cart />} />
                     <Route element={<ProtectedRoute requiredRole={UserRole.USER} redirectTo='/shop/checkout' />}>
                         <Route path='checkout' element={<Checkout />} />
-                        <Route path='checkout/success' element={<CheckoutSucces/>}/>
+                        <Route path='checkout/success/:id' element={<CheckoutSucces/>}/>
                         <Route path='checkout/deny' element={<CheckoutDeny/>}/>
                     </Route>
                 </Route>
