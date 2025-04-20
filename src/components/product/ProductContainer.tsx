@@ -9,6 +9,7 @@ import { useProduct } from "@/hooks/product/useProduct"
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "../ui/breadcrumb"
 import { AlbumProps, SongProps } from "@/hooks/product/ProductContext"
 import { Skeleton } from "../ui/skeleton"
+import { ShopItem } from "@/hooks/shop/ShopContext"
 
 interface ProductContainerProps {
     type: 'song' | 'album'
@@ -18,6 +19,7 @@ export const ProductContainer = ({ type }: ProductContainerProps) => {
     const params = useParams()
     const product = useProduct()
     const [productInfo, setProductInfo] = useState<SongProps | AlbumProps | undefined>(undefined)
+    const [ related, setRelated ] = useState<ShopItem[] | undefined>(undefined)
 
     useEffect(() => {
         const id = params.id!
@@ -26,6 +28,7 @@ export const ProductContainer = ({ type }: ProductContainerProps) => {
         } else {
             product.getAlbumInfo(id).then(album => setProductInfo(album!))
         }
+        product.getProductRecommendations(id).then(recommendations => setRelated(recommendations))
     }, [params.id, product, type])
 
     if (productInfo === undefined) return <Skeleton className='w-full h-screen mt-2'/>
@@ -60,7 +63,7 @@ export const ProductContainer = ({ type }: ProductContainerProps) => {
                         {'trackList' in productInfo && <ProductContainerTrackList trackList={productInfo.trackList!} />}
                         <ProductContainerRatings />
                     </div>
-                    <ProductContainerRelatedCarousel />
+                    <ProductContainerRelatedCarousel related={related!} />
                 </div>
             </div>
         </>

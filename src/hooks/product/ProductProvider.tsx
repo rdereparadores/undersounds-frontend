@@ -1,3 +1,4 @@
+import { ShopItem } from "../shop/ShopContext"
 import {
     ProductContext,
     SongProps,
@@ -43,6 +44,16 @@ export const ProductProvider = ({ children }: ProductProviderProps) => {
         }
     }
 
+    const getProductRecommendations = async (id: string) => {
+        try {
+            const result = await api.post('/api/product/recommendations', { id })
+            if (result.data.error) return []
+            return result.data.data as ShopItem[]
+        } catch {
+            return []
+        }
+    }
+
     const getSongIdAndVersion = async(id: string, version: string) => {
         try {
             const result = await api.post('/api/song/songidandversion', {id, version})
@@ -59,6 +70,7 @@ export const ProductProvider = ({ children }: ProductProviderProps) => {
             getSongInfo,
             getAlbumInfo,
             getProductRatings,
+            getProductRecommendations,
             getSongIdAndVersion
         }}>
             {children}

@@ -1,4 +1,5 @@
 import { createContext } from "react"
+import { ShopItem } from "../shop/ShopContext"
 
 interface ProductProps {
     _id: string,
@@ -60,6 +61,7 @@ export interface ProductContextProps {
     getSongInfo: (id: string) => Promise<SongProps | null>,
     getAlbumInfo: (id: string) => Promise<AlbumProps | null>,
     getProductRatings: (id: string) => Promise<RatingProps | null>,
+    getProductRecommendations: (id: string) => Promise<ShopItem[]>,
     getSongIdAndVersion: (id: string, version: number) => Promise<SongProps | null>
 }
 
@@ -67,5 +69,6 @@ export const ProductContext = createContext<ProductContextProps>({
     getSongInfo: async () => null,
     getAlbumInfo: async () => null,
     getProductRatings: async () => null,
+    getProductRecommendations: async () => [],
     getSongIdAndVersion: async () => null,
 })
