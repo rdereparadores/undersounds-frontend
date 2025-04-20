@@ -35,13 +35,13 @@ export const ProductContainer = ({ type }: ProductContainerProps) => {
             <Breadcrumb className='mt-2'>
                 <BreadcrumbList>
                     <BreadcrumbItem>
-                        <BreadcrumbLink>
+                        <BreadcrumbLink asChild>
                             <Link to='/'>Inicio</Link>
                         </BreadcrumbLink>
                     </BreadcrumbItem>
                     <BreadcrumbSeparator />
                     <BreadcrumbItem>
-                        <BreadcrumbLink>
+                        <BreadcrumbLink asChild>
                             <Link to='/shop'>Tienda</Link>
                         </BreadcrumbLink>
                     </BreadcrumbItem>

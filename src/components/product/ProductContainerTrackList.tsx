@@ -28,7 +28,7 @@ export const ProductContainerTrackList = ({ trackList }: { trackList: Partial<So
                             <Button asChild variant='link' className="w-fit justify-start">
                                 <Link to={`/song/${track._id}`}>{track.title}</Link>
                             </Button>
-                            <Button variant='link' className="w-fit hidden sm:block">{'Quevedo'}</Button>
+                            <Button variant='link' className="w-fit hidden sm:block">{track.collaborators!.map(c => c.artistName).join(', ')}</Button>
                             <div className="flex items-center gap-2">
                                 <p className="pr-2 hidden sm:block">{parseDuration(track.duration!)}</p>
                                 <Button className="rounded-full w-10 h-10">
