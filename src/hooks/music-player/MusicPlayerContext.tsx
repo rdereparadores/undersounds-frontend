@@ -19,6 +19,7 @@ export interface MusicPlayerContextProps {
     player: undefined | AudioPlayer,
     playerProps: MusicPlayerProps | undefined,
     play: (songId: string) => Promise<void>,
+    download: (songId: string) => Promise<void>,
     quit: () => void
 }
 
@@ -26,5 +27,6 @@ export const MusicPlayerContext = createContext<MusicPlayerContextProps>({
     player: undefined,
     playerProps: undefined,
     play: async () => {},
+    download: async () => {},
     quit: () => {}
 })

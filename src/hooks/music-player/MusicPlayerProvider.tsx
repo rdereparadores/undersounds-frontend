@@ -3,6 +3,7 @@ import { MusicPlayerContext, MusicPlayerProps } from "./MusicPlayerContext"
 import { useState } from "react"
 import { useProduct } from "../product/useProduct"
 import { api } from "@/lib/api"
+import { toast } from "sonner"
 
 
 export const MusicPlayerProvider = ({ children }: { children: React.ReactNode }) => {
@@ -42,13 +43,28 @@ export const MusicPlayerProvider = ({ children }: { children: React.ReactNode })
         })
     }
 
+    const download = async (songId: string) => {
+        const result = await api.get(`/api/song/play/${songId}`, {responseType: 'blob'})
+        const disposition = result.headers['content-disposition']
+        const filename = disposition.match(/filename="(.+)"/)[1]
+        const url = window.URL.createObjectURL(new Blob([result.data]))
+        const link = document.createElement('a')
+        link.href = url
+        link.setAttribute('download', filename)
+        document.body.appendChild(link)
+        link.click()
+        link.remove()
+        URL.revokeObjectURL(url)
+        toast.info('Descarga iniciada')
+    }
+
     const quit = () => {
         setPlayerProps({ ...playerProps!, hidden: true })
         player.stop()
     }
 
     return (
-        <MusicPlayerContext.Provider value={{ player, play, playerProps, quit }}>
+        <MusicPlayerContext.Provider value={{ player, play, playerProps, quit, download }}>
             {children}
         </MusicPlayerContext.Provider>
     )

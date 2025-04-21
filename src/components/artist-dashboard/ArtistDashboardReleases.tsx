@@ -26,7 +26,7 @@ export const ArtistDashboardReleasesSongsItem = ({ song, artistData }: { song: A
                         <Button onClick={() => {musicPlayer.play(song._id)}} className="absolute bottom-2 right-2 rounded-full w-10 h-10">
                             <FaPlay className="ml-[3px]" />
                         </Button>
-                        <Button variant='secondary' className="absolute bottom-2 right-14 rounded-full w-10 h-10">
+                        <Button onClick={() => {musicPlayer.download(song._id)}} variant='secondary' className="absolute bottom-2 right-14 rounded-full w-10 h-10">
                             <FaDownload />
                         </Button>
                     </div>
@@ -49,7 +49,7 @@ export const ArtistDashboardReleasesAlbumsItemTrack = ({ song, artistData }: { s
                 <Button onClick={() => {musicPlayer.play(song._id)}} className="rounded-full w-10 h-10">
                     <FaPlay className="ml-[3px]" />
                 </Button>
-                <Button variant='secondary' className="rounded-full w-10 h-10">
+                <Button onClick={() => {musicPlayer.download(song._id)}} variant='secondary' className="rounded-full w-10 h-10">
                     <FaDownload />
                 </Button>
             </TableCell>

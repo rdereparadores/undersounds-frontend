@@ -25,7 +25,7 @@ export const UserDashboardLibrarySongItem = ({ item }: { item: LibrarySong }) =>
                 <Button onClick={() => {musicPlayer.play(item._id)}} className="absolute bottom-2 right-2 rounded-full w-10 h-10">
                     <FaPlay className="ml-[3px]" />
                 </Button>
-                <Button variant='secondary' className="absolute bottom-2 right-14 rounded-full w-10 h-10">
+                <Button onClick={() => {musicPlayer.download(item._id)}} variant='secondary' className="absolute bottom-2 right-14 rounded-full w-10 h-10">
                     <FaDownload />
                 </Button>
             </CardHeader>
@@ -45,7 +45,7 @@ export const UserDashboardLibraryAlbumItemTrack = ({ item }: { item: LibrarySong
                 <Button onClick={() => {musicPlayer.play(item._id)}} className="rounded-full w-10 h-10">
                     <FaPlay className="ml-[3px]" />
                 </Button>
-                <Button variant='secondary' className="rounded-full w-10 h-10">
+                <Button onClick={() => {musicPlayer.download(item._id)}} variant='secondary' className="rounded-full w-10 h-10">
                     <FaDownload />
                 </Button>
             </TableCell>
@@ -123,6 +123,7 @@ export const UserDashboardLibrary = () => {
     const user = useUser()
     const [songLibrary, setSongLibrary] = useState<LibrarySong[] | undefined>(undefined)
     const [albumLibrary, setAlbumLibrary] = useState<LibraryAlbum[] | undefined>(undefined)
+    const [searchQuery, setSearchQuery] = useState<string>('')
 
     useEffect(() => {
         user.getLibrarySongs().then(songs => setSongLibrary(songs))
@@ -135,7 +136,12 @@ export const UserDashboardLibrary = () => {
         <div className="grow flex flex-col flex-wrap gap-2">
             <div className="flex justify-between flex-wrap gap-2">
                 <h1 className="text-3xl font-medium">Biblioteca</h1>
-                <Input type='search' placeholder="Buscar..." className="sm:max-w-72"></Input>
+                <Input 
+                    type='search' 
+                    placeholder="Buscar..." 
+                    className="sm:max-w-72" 
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                />
             </div>
             <Tabs defaultValue="songs">
                 <TabsList className="mb-2">
@@ -144,14 +150,14 @@ export const UserDashboardLibrary = () => {
                 </TabsList>
                 <TabsContent value='songs'>
                     <div className="flex flex-wrap justify-center sm:justify-start gap-4">
-                        {songLibrary.map((item, index) => (
+                        {songLibrary.filter(item => item.title.toLowerCase().includes(searchQuery.toLowerCase())).map((item, index) => (
                             <UserDashboardLibrarySongItem key={index} item={item} />
                         ))}
                     </div>
                 </TabsContent>
                 <TabsContent value='albums'>
                     <div className="flex flex-col gap-4">
-                        {albumLibrary.map((item, index) => (
+                        {albumLibrary.filter(item => item.title.toLowerCase().includes(searchQuery.toLowerCase())).map((item, index) => (
                             <UserDashboardLibraryAlbumItem key={index} item={item} />
                         ))}
                     </div>
