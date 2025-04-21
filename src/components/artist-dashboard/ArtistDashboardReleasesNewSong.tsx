@@ -175,6 +175,7 @@ export const ArtistDashboardReleasesNewSong = () => {
                             <Button onClick={handleImageUpload}>Subir portada</Button>
                             <Button disabled={generatingImage} variant='outline' onClick={handleImageAIGeneration}>Generar con IA</Button>
                         </div>
+                        {/*TODO cargar por defecto la imagen de la BD */}
                         <Input id='upload-cover' type='file' accept='image/*' {...register('img')} className='hidden' />
                     </div>
                     <div className='flex flex-col gap-4 grow'>
@@ -194,6 +195,7 @@ export const ArtistDashboardReleasesNewSong = () => {
 
                 <div className='flex flex-col gap-4 mb-4'>
                     <div className='flex flex-col gap-2'>
+                        {/*TODO cargar por defecto el archivo de la BD */}
                         <Label htmlFor='song'>Fichero de audio</Label>
                         <Input type='file' {...register('song')} />
                         {errors.song && <span className='text-sm text-red-600'>Debes subir un fichero de audio</span>}
@@ -234,6 +236,7 @@ export const ArtistDashboardReleasesNewSong = () => {
                         </Card>
                     </div>
 
+                    {/*TODO Pasar los generos de la BD y ponerlos como selecionados */}
                     <ArtistDashboardReleasesNewSongGenreCard selectedGenreList={selectedGenreList} setSelectedGenreList={setSelectedGenreList} />
 
                 </div>
