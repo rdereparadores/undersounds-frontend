@@ -1,4 +1,4 @@
-import { Dialog, DialogTrigger, DialogContent } from '../ui/dialog'
+import { Dialog, DialogTrigger, DialogContent, DialogTitle } from '../ui/dialog'
 import { FaEdit } from "react-icons/fa";
 import { Button } from "../ui/button";
 import { ArtistDashboardReleasesEditSong } from './ArtistDashboardReleasesEditSong';
@@ -42,8 +42,9 @@ export function ArtistDashboardReleasesEditSongPopUp({ song }: { song: ArtistSon
                     <FaEdit className="ml-[2px]" />
                 </Button>
             </DialogTrigger>
-            <DialogContent className='min-w-[80%] min-h-[80%]'>
-                <ScrollArea className="h-96 min-h-full">
+            <DialogContent className='min-w-[80%] h-[80%]'>
+                <DialogTitle>Editas tus canciones</DialogTitle>
+                <ScrollArea className="h-full w-full">
                         <DropdownMenu>
                             <DropdownMenuTrigger asChild>
                                 <Button variant="outline">Versiones</Button>
@@ -51,7 +52,7 @@ export function ArtistDashboardReleasesEditSongPopUp({ song }: { song: ArtistSon
                             <DropdownMenuContent>
                                 <DropdownMenuLabel>Versiones disponibles</DropdownMenuLabel>
                                 <DropdownMenuSeparator />
-                                <DropdownMenuRadioGroup value={version.toString()} onValueChange={(version) => setVersion(Number(version))}>
+                                <DropdownMenuRadioGroup value={version.toString()} onValueChange={(version) => setVersion(Number(version))} className='flex-wrap'>
                                     {songVersionArray.map((song,index)=>(
                                         <DropdownMenuRadioItem value={song.version?.toString() || "Sin version"} key={index}>V.{song.version?.toString()}</DropdownMenuRadioItem>
                                     ))}

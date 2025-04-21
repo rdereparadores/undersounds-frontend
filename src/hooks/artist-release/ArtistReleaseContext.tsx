@@ -24,14 +24,32 @@ export interface PublishAlbumProps {
     priceCassette: number
 }
 
+export interface UpdateSongProps {
+    id: string,
+    title: string,
+    description: string,
+    img: File,
+    song: File,
+    priceDigital: number,
+    priceCd: number,
+    priceVinyl: number,
+    priceCassette: number
+    collaborators: string[],
+    genres: string[] 
+}
+
 interface ArtistReleaseContextProps {
     generateAiCover: (prompt: string) => Promise<string | null>,
     publishSong: (data: PublishSongProps) => Promise<string | null>,
-    publishAlbum: (data: PublishAlbumProps) => Promise<string | null>
+    publishAlbum: (data: PublishAlbumProps) => Promise<string | null>,
+    updateSong: (data: UpdateSongProps) => Promise<string | null>,
+    updateAlbum: (data: PublishAlbumProps) => Promise<string | null>
 }
 
 export const ArtistReleaseContext = createContext<ArtistReleaseContextProps>({
     generateAiCover: async () => '',
     publishSong: async () => '',
-    publishAlbum: async () => ''
+    publishAlbum: async () => '',
+    updateSong: async () => '',
+    updateAlbum: async () => ''
 })

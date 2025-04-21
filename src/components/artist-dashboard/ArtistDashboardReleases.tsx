@@ -137,7 +137,6 @@ export const ArtistDashboardReleases = () => {
                 <TabsContent value='songs'>
                     <div className="flex flex-wrap justify-center sm:justify-start gap-4">
                         {songList
-                            .filter((song) => song.version === undefined) // Filtra las canciones que no tienen versión
                             .map((song, index) => (
                                 <ArtistDashboardReleasesSongsItem song={song} artistData={artistData} key={index} />
                             ))}
@@ -146,7 +145,6 @@ export const ArtistDashboardReleases = () => {
                 <TabsContent value='albums'>
                     <div className="flex flex-col gap-4">
                         {albumList
-                            .filter((album) => album.version === undefined)
                             .map((album, index) => (
                             <ArtistDashboardReleasesAlbumsItem album={album} artistData={artistData} key={index} />
                         ))}

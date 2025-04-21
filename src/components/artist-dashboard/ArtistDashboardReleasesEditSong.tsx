@@ -15,9 +15,9 @@ import { ArtistDashboardReleasesNewSongGenreCard } from './ArtistDashboardReleas
 import { ArtistDashboardReleasesNewSongCollaborators } from './ArtistDashboardReleasesNewSong'
 import { useProduct } from '@/hooks/product/useProduct'
 import { SongProps } from '@/hooks/product/ProductContext'
-import { useGenre } from '@/hooks/genre/useGenre'
 
-const newSongSchema = z.object({
+const updateSongSchema = z.object({
+    id: z.string().min(1),
     title: z.string().min(1),
     description: z.string().min(1),
     img: z.any()
@@ -45,7 +45,7 @@ const newSongSchema = z.object({
     path: ['img']
 })
 
-type NewSongFormData = z.infer<typeof newSongSchema>
+type NewSongFormData = z.infer<typeof updateSongSchema>
 
 interface ArtistDashboardReleasesEditSongProps {
     id: string;
@@ -53,17 +53,16 @@ interface ArtistDashboardReleasesEditSongProps {
 }
 
 
-export const ArtistDashboardReleasesEditSong = ({id, version}: ArtistDashboardReleasesEditSongProps) => {
+export const ArtistDashboardReleasesEditSong = ({ id, version }: ArtistDashboardReleasesEditSongProps) => {
     const [selectedGenreList, setSelectedGenreList] = useState<string[]>([])
     const navigate = useNavigate()
     const artistRelease = useArtistRelease()
     const product = useProduct()
-    const genre = useGenre()
     const [previewImgLoaded, setPreviewImgLoaded] = useState(false)
     const [previewImg, setPreviewImg] = useState('')
     const [generatingImage, setGeneratingImage] = useState(false)
     const { register, handleSubmit, formState: { errors }, watch, setValue } = useForm<NewSongFormData>({
-        resolver: zodResolver(newSongSchema)
+        resolver: zodResolver(updateSongSchema)
     })
     const [datosVersion, setDatosVersion] = useState<SongProps | null>(null);
 
@@ -75,25 +74,41 @@ export const ArtistDashboardReleasesEditSong = ({id, version}: ArtistDashboardRe
         const fetchDatosVersion = async () => {
             const result = await product.getSongIdAndVersion(id, version)
             setDatosVersion(result)
-            if(result?.genres === undefined) return
-            setSelectedGenreList(result.genres)
+
+            if (result?.genres === undefined) return
+            //TODO arreglar los por defecto de genre
+            //setSelectedGenreList(result.genres)
+
+            setValue('id',id)
+            setValue('title', result.title)
+            setValue('description', result.description)
+
+            //setValue('img', result.imgUrl)
+            //setValue('song', result.songDir)
+
+            setValue('priceDigital', result.pricing.digital)
+            setValue('priceVinyl', result.pricing.vinyl)
+            setValue('priceCassette', result.pricing.cassette)
+            setValue('priceCd', result.pricing.cd)
+
+            setPreviewImg(result.imgUrl)
+            setPreviewImgLoaded(true)
+
         };
         fetchDatosVersion();
-        
-    }, [id, version])
+
+    }, [id,version])
 
     const onSubmit = async (data: NewSongFormData) => {
-        const result = await artistRelease.publishSong({
+        const result = await artistRelease.updateSong({
             ...data,
             song: data.song[0],
             img: data.img[0],
             collaborators: [],
-            genres: selectedGenreList
+            genres: selectedGenreList,
         })
-
-        if (result != null) {
-            setTimeout(() => navigate('/artist/dashboard/releases'), 1000)
-        }
+        if(result !== null) window.location.reload()
+        navigate('/artist/dashboard/releases')        
     }
 
     useEffect(() => {
@@ -133,7 +148,7 @@ export const ArtistDashboardReleasesEditSong = ({id, version}: ArtistDashboardRe
 
     return (
         <div>
-            <h1 className="text-3xl font-medium">Nueva canción</h1>
+            <h1 className="text-3xl font-medium">Editar canción</h1>
 
             <form onSubmit={handleSubmit(onSubmit)}>
                 <div className='flex gap-4 mb-4'>
@@ -145,18 +160,18 @@ export const ArtistDashboardReleasesEditSong = ({id, version}: ArtistDashboardRe
                             <Button onClick={handleImageUpload}>Subir portada</Button>
                             <Button disabled={generatingImage} variant='outline' onClick={handleImageAIGeneration}>Generar con IA</Button>
                         </div>
-                        <Input id='upload-cover' type='file' accept='image/*' {...register('img')} className='hidden'/>
+                        <Input id='upload-cover' type='file' accept='image/*' {...register('img')} className='hidden' />
                     </div>
                     <div className='flex flex-col gap-4 grow'>
                         <div className='flex flex-col gap-2'>
                             <Label htmlFor='title'>Título</Label>
-                            <Input {...register(('title'))} defaultValue={datosVersion?.title} type='text'/>
+                            <Input {...register(('title'))} defaultValue={datosVersion?.title} type='text' />
                             {errors.title && <span className='text-sm text-red-600'>El título no puede estar vacío</span>}
                         </div>
 
                         <div className='flex flex-col gap-2 grow'>
                             <Label htmlFor='description' aria-multiline='true'>Descripción</Label>
-                            <Textarea className='grow' {...register('description')} defaultValue={datosVersion?.description}/>
+                            <Textarea className='grow' {...register('description')} defaultValue={datosVersion?.description} />
                             {errors.description && <span className='text-sm text-red-600'>La descripción no puede estar vacía</span>}
                         </div>
                     </div>
@@ -165,7 +180,7 @@ export const ArtistDashboardReleasesEditSong = ({id, version}: ArtistDashboardRe
                 <div className='flex flex-col gap-4 mb-4'>
                     <div className='flex flex-col gap-2'>
                         <Label htmlFor='song'>Fichero de audio</Label>
-                        <Input type='file' {...register('song')} defaultValue={datosVersion?.songDir}/>
+                        <Input type='file' {...register('song')} defaultValue={datosVersion?.songDir} />
                         {errors.song && <span className='text-sm text-red-600'>Debes subir un fichero de audio</span>}
                     </div>
                 </div>
@@ -181,22 +196,22 @@ export const ArtistDashboardReleasesEditSong = ({id, version}: ArtistDashboardRe
                                 <div className='flex flex-col gap-4'>
                                     <div className='flex flex-col gap-2'>
                                         <Label htmlFor='priceDigital'>Digital</Label>
-                                        <Input step='0.01' type='number' {...register('priceDigital')} defaultValue={datosVersion?.pricing.digital}/>
+                                        <Input step='0.01' type='number' {...register('priceDigital')} defaultValue={datosVersion?.pricing.digital} />
                                         {errors.priceDigital && <span className='text-sm text-red-600'>El precio debe ser superior a 1</span>}
                                     </div>
                                     <div className='flex flex-col gap-2'>
                                         <Label htmlFor='priceCd'>CD</Label>
-                                        <Input step='0.01' type='number' {...register('priceCd')} defaultValue={datosVersion?.pricing.cd}/>
+                                        <Input step='0.01' type='number' {...register('priceCd')} defaultValue={datosVersion?.pricing.cd} />
                                         {errors.priceCd && <span className='text-sm text-red-600'>El precio debe ser superior a 1</span>}
                                     </div>
                                     <div className='flex flex-col gap-2'>
                                         <Label htmlFor='priceVinyl'>Vinilo</Label>
-                                        <Input step='0.01' type='number' {...register('priceVinyl')} defaultValue={datosVersion?.pricing.vinyl}/>
+                                        <Input step='0.01' type='number' {...register('priceVinyl')} defaultValue={datosVersion?.pricing.vinyl} />
                                         {errors.priceVinyl && <span className='text-sm text-red-600'>El precio debe ser superior a 1</span>}
                                     </div>
                                     <div className='flex flex-col gap-2'>
                                         <Label htmlFor='priceCasette'>Cassette</Label>
-                                        <Input step='0.01' type='number' {...register('priceCassette')} defaultValue={datosVersion?.pricing.cassette}/>
+                                        <Input step='0.01' type='number' {...register('priceCassette')} defaultValue={datosVersion?.pricing.cassette} />
                                         {errors.priceCassette && <span className='text-sm text-red-600'>El precio debe ser superior a 1</span>}
                                     </div>
                                 </div>
@@ -208,7 +223,7 @@ export const ArtistDashboardReleasesEditSong = ({id, version}: ArtistDashboardRe
 
                 </div>
                 <div className='flex justify-end mt-4'>
-                    <Button type='submit'>Publicar</Button>
+                    <Button type='submit'>Actualizar</Button>
                 </div>
             </form>
         </div>

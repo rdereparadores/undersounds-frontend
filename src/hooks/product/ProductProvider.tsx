@@ -54,9 +54,18 @@ export const ProductProvider = ({ children }: ProductProviderProps) => {
         }
     }
 
-    const getSongIdAndVersion = async(id: string, version: string) => {
+    const getSongIdAndVersion = async(id: string, version: number) => {
         try {
             const result = await api.post('/api/song/songidandversion', {id, version})
+            return result.data.data.song
+        } catch {
+            return null
+        }
+    }
+
+    const getSongVersionHistoryArray = async(id: string) => {
+        try {
+            const result = await api.post('/api/song/getversionhistoryarray', {id})
             return result.data.data.song
         } catch {
             return null
@@ -71,7 +80,8 @@ export const ProductProvider = ({ children }: ProductProviderProps) => {
             getAlbumInfo,
             getProductRatings,
             getProductRecommendations,
-            getSongIdAndVersion
+            getSongIdAndVersion,
+            getSongVersionHistoryArray
         }}>
             {children}
         </ProductContext.Provider>
