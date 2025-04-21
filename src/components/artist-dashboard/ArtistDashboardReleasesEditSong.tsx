@@ -55,7 +55,6 @@ interface ArtistDashboardReleasesEditSongProps {
 
 export const ArtistDashboardReleasesEditSong = ({ id, version }: ArtistDashboardReleasesEditSongProps) => {
     const [selectedGenreList, setSelectedGenreList] = useState<string[]>([])
-    const navigate = useNavigate()
     const artistRelease = useArtistRelease()
     const product = useProduct()
     const [previewImgLoaded, setPreviewImgLoaded] = useState(false)
