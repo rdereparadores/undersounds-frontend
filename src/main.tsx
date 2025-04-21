@@ -17,6 +17,7 @@ import { MusicPlayerProvider } from './hooks/music-player/MusicPlayerProvider'
 import {TrendingSongsProvider} from "@/hooks/trending/TrendingSongsProvider.tsx";
 import { UserStatsProvider } from './hooks/user-stats/UserStatsProvider'
 import { ArtistStatsProvider } from './hooks/artist-stats/ArtistStatsProvider'
+import { ArtistProfileProvider } from './hooks/artist-profile/ArtistProfileProvider'
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
@@ -33,8 +34,10 @@ root.render(
                                         <TrendingSongsProvider>
                                             <UserStatsProvider>
                                                 <ArtistStatsProvider>
-                                                    <App />
-                                                    <Toaster richColors />
+                                                    <ArtistProfileProvider>
+                                                        <App />
+                                                        <Toaster richColors />
+                                                    </ArtistProfileProvider>
                                                 </ArtistStatsProvider>
                                             </UserStatsProvider>
                                         </TrendingSongsProvider>

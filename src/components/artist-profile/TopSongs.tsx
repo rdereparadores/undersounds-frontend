@@ -1,22 +1,8 @@
-import { Song } from "./Song";
+import { ArtistProfileItem } from "@/hooks/artist-profile/ArtistProfileContext"
+import { Song } from "./Song"
 
-interface TopSongsProps {
-    topSongs: {
-        id: string;
-        songName: string;
-        imgURL: string;
-        artists: {
-            name: string;
-            artistId: string;
-        }[];
-        album: string;
-        albumId: string | null;
-        plays: number;
-    }[];
-}
-
-export function TopSongs({ topSongs }: TopSongsProps) {
-    if (!topSongs || topSongs.length === 0) {
+export function TopSongs({ topSongs }: { topSongs: ArtistProfileItem[] }) {
+    if (topSongs.length === 0) {
         return (
             <div className="h-full w-full flex justify-center items-center">
                 <p>No hay canciones disponibles</p>

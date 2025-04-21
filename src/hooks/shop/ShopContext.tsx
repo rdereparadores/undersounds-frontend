@@ -11,11 +11,13 @@ export interface ShopItem {
     title: string,
     author: {
         _id: string,
-        artistName: string
+        artistName: string,
+        artistUsername: string
     },
     collaborators: {
         _id: string,
-        artistName: string
+        artistName: string,
+        artistUsername: string
     }[],
     type: 'song' | 'album',
     genres: string[]

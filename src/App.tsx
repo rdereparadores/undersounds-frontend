@@ -12,7 +12,7 @@ import { GuestOnlyRoute } from './components/auth/GuestOnlyRoute.tsx'
 import { ProtectedRoute } from './components/auth/ProtectedRoute.tsx'
 import { UserRole } from './constants.ts'
 import { ProductContainer } from './components/product/ProductContainer.tsx'
-import { ArtistProfile } from './components/artistProfile/ArtistProfile.tsx';
+import { ArtistProfile } from './components/artist-profile/ArtistProfile.tsx';
 import { NotFound404 } from './routes/404.tsx';
 import { Dashboard } from './routes/Dashboard.tsx';
 import { UserDashboard } from './components/user-dashboard/UserDashboard.tsx';
@@ -57,7 +57,7 @@ function App() {
 
                 <Route path='album/:id' element={<ProductContainer type='album' />} />
                 <Route path='song/:id' element={<ProductContainer type='song' />} />
-                <Route path='profile/artist/:id' element={<ArtistProfile />} />
+                <Route path='profile/artist/:artistUsername' element={<ArtistProfile />} />
                 <Route path='legal' element={<Legal />} />
 
                 <Route path='user' element={<ProtectedRoute requiredRole={UserRole.USER} redirectTo='/user/dashboard' />}>
