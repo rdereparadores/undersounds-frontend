@@ -17,13 +17,13 @@ export const ProductContainerInfo = ({ type, productInfo }: { type: 'song' | 'al
 
     const parseArtistList = () => {
         const authorLink = (
-            <Link to={`/profile/artist/${productInfo.author._id}`}>
+            <Link to={`/profile/artist/${productInfo.author.artistUsername}`}>
                 <h3 className='text-xl mb-2'>{productInfo.author.artistName}</h3>
             </Link>
         )
         if (type !== 'song' || !('collaborators' in productInfo) || productInfo.collaborators.length === 0) return authorLink
         const collaboratorLinks = productInfo.collaborators.map((collaborator, index) => (
-            <Link key={index} to={`/profile/artist/${collaborator._id}`}>{collaborator.artistName}</Link>
+            <Link key={index} to={`/profile/artist/${collaborator.artistUsername}`}>{collaborator.artistName}</Link>
         ))
 
         return (

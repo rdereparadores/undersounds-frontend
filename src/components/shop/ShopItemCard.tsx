@@ -10,7 +10,7 @@ export const ShopItemCard = ({ item }: { item: ShopItem }) => {
     const navigate = useNavigate()
     return (
         <Link to={ `/${item.type}/${item._id}` }>
-            <Card className='max-w-[200px] w-full mx-auto'>
+            <Card className='h-full max-w-[200px] w-full mx-auto'>
                 <CardHeader className='p-2'>
                     <div className='relative w-full aspect-square'>
                         <Skeleton className='w-full h-full rounded-md' hidden={imgLoaded} />
