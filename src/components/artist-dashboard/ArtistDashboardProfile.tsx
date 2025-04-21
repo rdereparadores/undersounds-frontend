@@ -22,8 +22,8 @@ export const ArtistDashboardProfile = () => {
             <h1 className="text-3xl font-medium">Perfil</h1>
 
             <div className="relative">
-                <img src={artistData.artistBannerImgUrl} className="w-full h-48 rounded-md object-cover" />
-                <ArtistDashboardProfileEditProfilePopUp profileImgPlaceholder={artistData.artistImgUrl} bannerImgPlaceholder={artistData.artistBannerImgUrl}/>
+                <img src={artistData.artistBannerUrl} className="w-full h-48 rounded-md object-cover" />
+                <ArtistDashboardProfileEditProfilePopUp profileImgPlaceholder={artistData.artistImgUrl} bannerImgPlaceholder={artistData.artistBannerUrl}/>
                 <div className="flex flex-wrap gap-4 items-end absolute -bottom-16 w-full pl-2">
                     <img src={artistData.artistImgUrl} className="w-32 h-32 rounded-full object-cover" />
                     <div className="flex flex-col justify-end flex-wrap">

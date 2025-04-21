@@ -12,7 +12,7 @@ export interface ArtistInfoProps extends UserInfoProps {
     artistName: string,
     artistUsername: string,
     artistImgUrl: string,
-    artistBannerImgUrl: string
+    artistBannerUrl: string
 }
 
 export interface ArtistSongProps {
