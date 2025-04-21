@@ -1,94 +1,40 @@
-import { Song, SongProps } from "./Song";
+import { Song } from "./Song";
 
-export interface TopSongsProps { topSongs: SongProps[] }
+interface TopSongsProps {
+    topSongs: {
+        id: string;
+        songName: string;
+        imgURL: string;
+        artists: {
+            name: string;
+            artistId: string;
+        }[];
+        album: string;
+        albumId: string | null;
+        plays: number;
+    }[];
+}
 
-const ejemplo = [
-    {
-        songName: "Lonely Road",
-        imageUrl: "https://picsum.photos/75/75",
-        artists: [
-            {
-                name: "mgk",
-                artistId: "4190297"
-            },
-            {
-                name: "Jelly Roll",
-                artistId: "4190297"
-            }
-        ],
-        album: "Lonely Road",
-    },
-    {
-        songName: "Lonely Road",
-        imageUrl: "https://picsum.photos/75/75",
-        artists: [
-            {
-                name: "mgk",
-                artistId: "4190297"
-            },
-            {
-                name: "Jelly Roll",
-                artistId: "4190297"
-            }
-        ],
-        album: "Lonely Road",
-    },
-    {
-        songName: "Lonely Road",
-        imageUrl: "https://picsum.photos/75/75",
-        artists: [
-            {
-                name: "mgk",
-                artistId: "4190297"
-            },
-            {
-                name: "Jelly Roll",
-                artistId: "4190297"
-            }
-        ],
-        album: "Lonely Road",
-    },
-    {
-        songName: "Lonely Road",
-        imageUrl: "https://picsum.photos/75/75",
-        artists: [
-            {
-                name: "mgk",
-                artistId: "4190297"
-            },
-            {
-                name: "Jelly Roll",
-                artistId: "4190297"
-            }
-        ],
-        album: "Lonely Road",
-    },
-    {
-        songName: "Lonely Road",
-        imageUrl: "https://picsum.photos/75/75",
-        artists: [
-            {
-                name: "mgk",
-                artistId: "4190297"
-            },
-            {
-                name: "Jelly Roll",
-                artistId: "4190297"
-            }
-        ],
-        album: "Lonely Road",
-    }
-]
-
-export function TopSongs() {
-    return (
-        <>
-            <div className="h-full w-full flex flex-col flex-wrap gap-2">
-                {ejemplo.map((item, index) =>
-                    <Song key={index} songName={item.songName} imgURL={item.imageUrl}
-                        artists={item.artists} album={item.album} />
-                )}
+export function TopSongs({ topSongs }: TopSongsProps) {
+    if (!topSongs || topSongs.length === 0) {
+        return (
+            <div className="h-full w-full flex justify-center items-center">
+                <p>No hay canciones disponibles</p>
             </div>
-        </>
-    )
+        );
+    }
+
+    return (
+        <div className="h-full w-full flex flex-col flex-wrap gap-2">
+            {topSongs.map((song) => (
+                <Song
+                    key={song.id}
+                    songName={song.songName}
+                    imgURL={song.imgURL}
+                    artists={song.artists}
+                    album={song.album}
+                />
+            ))}
+        </div>
+    );
 }
