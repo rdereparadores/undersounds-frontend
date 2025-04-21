@@ -14,6 +14,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useAuth } from "@/hooks/auth/useAuth"
 import { useForm } from "react-hook-form"
 import { ForgotPassword } from "./ForgotPassword"
+import { useMusicPlayer } from "@/hooks/music-player/useMusicPlayer"
 
 const signInSchema = z.object({
     email: z.string().email({ message: 'Email inválido' }),
@@ -29,6 +30,12 @@ export const SignInCard = () => {
     const navigate = useNavigate()
     const [logInButtonDisabled, setLogInButtonDisabled] = useState(false)
     const auth = useAuth()
+    const musicPlayer = useMusicPlayer()
+
+    useEffect(() => {
+        musicPlayer.quit()
+    }, [])
+
 
     useEffect(() => {
         if (searchParams.get('redirectTo')) {

@@ -25,6 +25,33 @@ export interface AddressProps {
     alias: string
 }
 
+export interface LibrarySong {
+    _id: string,
+    imgUrl: string,
+    title: string,
+    duration: number,
+    author: {
+        _id: string,
+        artistName: string
+    },
+    collaborators: {
+        _id: string,
+        artistName: string
+    }[]
+}
+
+export interface LibraryAlbum {
+    _id: string,
+    imgUrl: string,
+    title: string,
+    duration: number,
+    author: {
+        _id: string,
+        artistName: string
+    },
+    trackList: LibrarySong[]
+}
+
 export interface UserContextProps {
     getUserInfo: () => Promise<UserInfoProps>,
     updateUserInfo: (data: Partial<UserInfoProps>) => Promise<boolean>,
@@ -36,7 +63,9 @@ export interface UserContextProps {
     setAddressAsDefault: (_id: string) => Promise<boolean>,
     isFollowing: (artistUsername: string) => Promise<boolean>,
     follow: (artistUsername: string) => Promise<boolean>,
-    unfollow: (artistUsername: string) => Promise<boolean>
+    unfollow: (artistUsername: string) => Promise<boolean>,
+    getLibrarySongs: () => Promise<LibrarySong[]>,
+    getLibraryAlbums: () => Promise<LibraryAlbum[]>
 }
 
 export const UserContext = createContext<UserContextProps>({
@@ -50,5 +79,7 @@ export const UserContext = createContext<UserContextProps>({
     setAddressAsDefault: async () => false,
     isFollowing: async () => false,
     follow: async () => false,
-    unfollow: async () => false
+    unfollow: async () => false,
+    getLibrarySongs: async () => [],
+    getLibraryAlbums: async () => []
 })

@@ -31,9 +31,9 @@ export const CartProvider = ({ children }: CartProviderProps) => {
             const product = await api.post(`/api/${item.type}/info`, query)
             return {
                 ...item,
-                imgUrl: product.data.data.song.imgUrl as string,
-                title: product.data.data.song.title as string,
-                price: product.data.data.song.pricing[item.format] as number
+                imgUrl: product.data.data[item.type].imgUrl as string,
+                title: product.data.data[item.type].title as string,
+                price: product.data.data[item.type].pricing[item.format] as number
             }
         }))
         const shippingCost = items.find(item => item.format != 'digital') ? 4.99 : 0

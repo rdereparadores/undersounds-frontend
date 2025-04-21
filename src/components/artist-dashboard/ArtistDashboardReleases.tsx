@@ -10,9 +10,11 @@ import { useNavigate } from "react-router"
 import { useArtist } from "@/hooks/artist/useArtist"
 import { ArtistAlbumProps, ArtistInfoProps, ArtistSongProps } from "@/hooks/artist/ArtistContext"
 import { ArtistDashboardReleasesEditSongPopUp } from "./ArtistDashboardReleasesEditSongPopUp"
+import { useMusicPlayer } from "@/hooks/music-player/useMusicPlayer"
 
 export const ArtistDashboardReleasesSongsItem = ({ song, artistData }: { song: ArtistSongProps, artistData: ArtistInfoProps }) => {
     const [imgLoaded, setImgLoaded] = useState(false)
+    const musicPlayer = useMusicPlayer()
 
     return (
         <Card>
@@ -21,7 +23,7 @@ export const ArtistDashboardReleasesSongsItem = ({ song, artistData }: { song: A
                     <div>
                         {!imgLoaded && <Skeleton className="w-48 h-48 rounded-xl rounded-b-none" />}
                         <img src={song.imgUrl} className={`w-48 h-48 rounded-xl rounded-b-none ${imgLoaded ? '' : 'hidden'}`} onLoad={() => setImgLoaded(true)} />
-                        <Button className="absolute bottom-2 right-2 rounded-full w-10 h-10">
+                        <Button onClick={() => {musicPlayer.play(song._id)}} className="absolute bottom-2 right-2 rounded-full w-10 h-10">
                             <FaPlay className="ml-[3px]" />
                         </Button>
                         <Button variant='secondary' className="absolute bottom-2 right-14 rounded-full w-10 h-10">
@@ -40,10 +42,11 @@ export const ArtistDashboardReleasesSongsItem = ({ song, artistData }: { song: A
 }
 
 export const ArtistDashboardReleasesAlbumsItemTrack = ({ song, artistData }: { song: ArtistSongProps, artistData: ArtistInfoProps }) => {
+    const musicPlayer = useMusicPlayer()
     return (
         <TableRow>
             <TableCell className="flex gap-2">
-                <Button className="rounded-full w-10 h-10">
+                <Button onClick={() => {musicPlayer.play(song._id)}} className="rounded-full w-10 h-10">
                     <FaPlay className="ml-[3px]" />
                 </Button>
                 <Button variant='secondary' className="rounded-full w-10 h-10">

@@ -13,7 +13,7 @@ import { CheckoutProvider } from './hooks/checkout/CheckoutProvider'
 import { UserProvider } from './hooks/user/UserProvider'
 import { ArtistProvider } from './hooks/artist/ArtistProvider'
 import { GenreProvider } from './hooks/genre/GenreProvider'
-import { SongPlayerProvider } from './hooks/song-player/SongPlayerProvider'
+import { MusicPlayerProvider } from './hooks/music-player/MusicPlayerProvider'
 import {TrendingSongsProvider} from "@/hooks/trending/TrendingSongsProvider.tsx";
 import { UserStatsProvider } from './hooks/user-stats/UserStatsProvider'
 import { ArtistStatsProvider } from './hooks/artist-stats/ArtistStatsProvider'
@@ -29,7 +29,7 @@ root.render(
                         <UserProvider>
                             <ArtistProvider>
                                 <GenreProvider>
-                                    <SongPlayerProvider>
+                                    <MusicPlayerProvider>
                                         <TrendingSongsProvider>
                                             <UserStatsProvider>
                                                 <ArtistStatsProvider>
@@ -38,7 +38,7 @@ root.render(
                                                 </ArtistStatsProvider>
                                             </UserStatsProvider>
                                         </TrendingSongsProvider>
-                                    </SongPlayerProvider>
+                                    </MusicPlayerProvider>
                                 </GenreProvider>
                             </ArtistProvider>
                         </UserProvider>
