@@ -8,6 +8,7 @@ import { UserStatsProps } from "@/hooks/user-stats/UserStatsContext"
 import { useUserStats } from "@/hooks/user-stats/useUserStats"
 
 export const UserDashboardStatsHeader = ({ stats }: { stats: UserStatsProps }) => {
+    const listeningTimePercentage = stats.listeningTime.thisMonth / stats.listeningTime.pastMonth * 100
     return (
         <div className="flex gap-4 flex-wrap">
             <Card className="grow min-w-fit">
@@ -20,7 +21,7 @@ export const UserDashboardStatsHeader = ({ stats }: { stats: UserStatsProps }) =
                         <>
                             <p className="font-bold text-3xl">{stats.listeningTime.thisMonth}<span className="font-normal text-lg"> minutos</span></p>
                             <CardDescription className="flex gap-1">
-                                <IoIosTrendingUp className="mt-1" /> {stats.listeningTime.thisMonth / stats.listeningTime.pastMonth * 100}% respecto al mes anterior
+                                <IoIosTrendingUp className="mt-1" /> {listeningTimePercentage === Infinity ? 100 : listeningTimePercentage}% respecto al mes anterior
                             </CardDescription>
                         </>
                         :
