@@ -107,8 +107,7 @@ export const ArtistDashboardReleasesEditSong = ({ id, version }: ArtistDashboard
             collaborators: [],
             genres: selectedGenreList,
         })
-        if(result !== null) window.location.reload()
-        navigate('/artist/dashboard/releases')        
+        if(result !== null) setTimeout(() => window.location.reload, 1000)
     }
 
     useEffect(() => {
