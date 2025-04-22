@@ -1,11 +1,8 @@
+import { api } from "@/lib/api"
+import { RatingsProvider } from "../ratings/RatingsProvider.tsx"
+import {AlbumProps, ProductContext, RatingProps, SongProps } from "./ProductContext"
 import { ShopItem } from "../shop/ShopContext"
-import {
-    ProductContext,
-    SongProps,
-    RatingProps,
-    AlbumProps
-} from "./ProductContext"
-import { api } from '@/lib/api'
+import React from "react";
 
 interface ProductProviderProps {
     children: React.ReactNode
@@ -72,7 +69,7 @@ export const ProductProvider = ({ children }: ProductProviderProps) => {
         }
     }
 
-    
+
 
     return (
         <ProductContext.Provider value={{
@@ -83,7 +80,9 @@ export const ProductProvider = ({ children }: ProductProviderProps) => {
             getSongIdAndVersion,
             getSongVersionHistoryArray
         }}>
-            {children}
+            <RatingsProvider>
+                {children}
+            </RatingsProvider>
         </ProductContext.Provider>
     )
 }

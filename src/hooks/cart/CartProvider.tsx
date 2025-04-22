@@ -27,6 +27,7 @@ export const CartProvider = ({ children }: CartProviderProps) => {
 
     const getPopulatedCart = async () => {
         const items = await Promise.all(cart.items.map(async (item) => {
+            console.log(item)
             const query = item.type === 'song' ? {songId: item.id} : {albumId: item.id}
             const product = await api.post(`/api/${item.type}/info`, query)
             return {
