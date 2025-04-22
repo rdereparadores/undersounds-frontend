@@ -32,8 +32,7 @@ export function ProductContainerRatingPopUp({ ratings }: { ratings: RatingProps 
                                 imgUrl={rating.authorImgUrl}
                                 title={rating.title}
                                 description={rating.description}
-                                rating={rating.rating}
-                            />
+                                rating={rating.rating} date={""} format={""}                            />
                         ))}
                     </div>
                 </ScrollArea>

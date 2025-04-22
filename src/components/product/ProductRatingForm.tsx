@@ -1,10 +1,10 @@
-import {useState, useEffect} from "react";
-import {useForm} from "react-hook-form";
-import {zodResolver} from "@hookform/resolvers/zod";
+import { useState, useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import {Button} from "@/components/ui/button";
-import {Input} from "@/components/ui/input";
-import {Textarea} from "@/components/ui/textarea";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import {
     Form,
     FormControl,
@@ -14,25 +14,19 @@ import {
     FormLabel,
     FormMessage,
 } from "@/components/ui/form";
-import {StarRating} from "./ProductStarRating";
-import {RatingItemProps} from "@/hooks/ratings/RatingsContext";
-import {useProductRating} from "@/hooks/ratings/useRatings";
-import {toast} from "sonner";
+import { StarRating } from "./ProductStarRating";
+import { RatingItemProps } from "@/hooks/ratings/RatingsContext";
+import { useProductRating } from "@/hooks/ratings/useRatings";
+import { toast } from "sonner";
 
 interface ProductContainerRatingFormProps {
-    productId: string,
-    format: string,
-    onSuccess: () => void,
-    onCancel: () => void,
-    existingRating?: RatingItemProps | null,
-    isEditing?: boolean
+    productId: string;
+    format: string;
+    onSuccess: () => void;
+    onCancel: () => void;
+    existingRating?: RatingItemProps | null;
+    isEditing?: boolean;
 }
-
-interface UserRatingResponse {
-    hasRated: boolean;
-    ratings: RatingItemProps[] | null;
-}
-
 
 const ratingFormSchema = z.object({
     title: z.string()
@@ -52,43 +46,46 @@ export const ProductContainerRatingForm = ({
                                                productId,
                                                format,
                                                onSuccess,
-                                               onCancel
+                                               onCancel,
+                                               existingRating,
+                                               isEditing = false
                                            }: ProductContainerRatingFormProps) => {
     const productRating = useProductRating();
     const [submitting, setSubmitting] = useState(false);
-    const [existingRating, setExistingRating] = useState<RatingItemProps | null>(null);
-    const [isEditing, setIsEditing] = useState(false);
 
     const form = useForm<RatingFormValues>({
         resolver: zodResolver(ratingFormSchema),
-        defaultValues: {title: "", description: "", rating: 0},
+        defaultValues: {
+            title: existingRating?.title || "",
+            description: existingRating?.description || "",
+            rating: existingRating?.rating || 0,
+        },
     });
 
     useEffect(() => {
-        const fetchUserRating = async () => {
-            try {
-                const res: UserRatingResponse = await productRating.checkUserRating(productId);
-                if (res.hasRated && res.ratings && res.ratings.length > 0) {
-                    const match = res.ratings.find(r => r.format === format) || res.ratings[0];
-                    setExistingRating(match);
-                    setIsEditing(true);
-                    form.reset({
-                        title: match.title,
-                        description: match.description,
-                        rating: match.rating,
-                    });
-                }
-            } catch (err) {
-                console.error("Error checking user rating:", err);
-            }
-        };
-        fetchUserRating();
-    }, [form, productId, productRating, format]);
+        if (existingRating) {
+            form.reset({
+                title: existingRating.title,
+                description: existingRating.description,
+                rating: existingRating.rating,
+            });
+        } else {
+            form.reset({
+                title: "",
+                description: "",
+                rating: 0,
+            });
+        }
+    }, [form, existingRating]);
 
     const onSubmit = async (data: RatingFormValues) => {
         setSubmitting(true);
         try {
-            const payload = {...data, format};
+            const payload = {
+                ...data,
+                format
+            };
+
             let success: boolean;
 
             if (isEditing && existingRating) {
@@ -101,10 +98,14 @@ export const ProductContainerRatingForm = ({
                 success = await productRating.addRating(productId, payload);
             }
 
-            if (success) onSuccess();
+            if (success) {
+                onSuccess();
+            } else {
+                toast.error(isEditing ? "Error al actualizar la valoración" : "Error al añadir la valoración");
+            }
         } catch (error) {
             console.error("Error submitting rating:", error);
-            toast.error("Error al enviar la valoración");
+            toast.error("Error al procesar la valoración");
         } finally {
             setSubmitting(false);
         }
@@ -115,14 +116,16 @@ export const ProductContainerRatingForm = ({
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
                 <div className="mb-4">
                     <h3 className="text-lg font-medium">
-                        Valorando formato: {format.charAt(0).toUpperCase() + format.slice(1)}
+                        {isEditing
+                            ? `Editando valoración para el formato ${format.charAt(0).toUpperCase() + format.slice(1)}`
+                            : `Valorando formato: ${format.charAt(0).toUpperCase() + format.slice(1)}`}
                     </h3>
                 </div>
 
                 <FormField
                     control={form.control}
                     name="rating"
-                    render={({field}) => (
+                    render={({ field }) => (
                         <FormItem>
                             <FormLabel>Puntuación</FormLabel>
                             <FormControl>
@@ -133,7 +136,7 @@ export const ProductContainerRatingForm = ({
                                 />
                             </FormControl>
                             <FormDescription>Selecciona entre 1 y 5 estrellas</FormDescription>
-                            <FormMessage/>
+                            <FormMessage />
                         </FormItem>
                     )}
                 />
@@ -141,13 +144,13 @@ export const ProductContainerRatingForm = ({
                 <FormField
                     control={form.control}
                     name="title"
-                    render={({field}) => (
+                    render={({ field }) => (
                         <FormItem>
                             <FormLabel>Título</FormLabel>
                             <FormControl>
                                 <Input placeholder="Escribe un título para tu valoración" {...field} />
                             </FormControl>
-                            <FormMessage/>
+                            <FormMessage />
                         </FormItem>
                     )}
                 />
@@ -155,7 +158,7 @@ export const ProductContainerRatingForm = ({
                 <FormField
                     control={form.control}
                     name="description"
-                    render={({field}) => (
+                    render={({ field }) => (
                         <FormItem>
                             <FormLabel>Descripción</FormLabel>
                             <FormControl>
@@ -165,7 +168,7 @@ export const ProductContainerRatingForm = ({
                                     {...field}
                                 />
                             </FormControl>
-                            <FormMessage/>
+                            <FormMessage />
                         </FormItem>
                     )}
                 />

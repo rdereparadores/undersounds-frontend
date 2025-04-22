@@ -15,21 +15,18 @@ export const StarRating = ({
                                value = 0,
                                onChange,
                                readOnly = false,
-                               size = 24,
+                               size = 24
                            }: StarRatingProps) => {
     const [hoverValue, setHoverValue] = useState<number | null>(null);
 
-    const displayValue = hoverValue !== null ? hoverValue : value;
-
-    const handleClick = (index: number) => {
+    const handleClick = (starValue: number) => {
         if (readOnly || !onChange) return;
-        onChange(index);
-        setHoverValue(null);
+        onChange(starValue);
     };
 
-    const handleMouseOver = (index: number) => {
+    const handleMouseOver = (starValue: number) => {
         if (readOnly) return;
-        setHoverValue(index);
+        setHoverValue(starValue);
     };
 
     const handleMouseLeave = () => {
@@ -37,22 +34,27 @@ export const StarRating = ({
         setHoverValue(null);
     };
 
+    const displayValue = hoverValue !== null ? hoverValue : value;
+
     return (
         <div className="flex" onMouseLeave={handleMouseLeave}>
-            {Array.from({ length: max }, (_, i) => i + 1).map((starValue) => (
-                <div
-                    key={starValue}
-                    onClick={() => handleClick(starValue)}
-                    onMouseOver={() => handleMouseOver(starValue)}
-                    className={readOnly ? "cursor-default p-1" : "cursor-pointer p-1"}
-                >
-                    {starValue <= displayValue ? (
-                        <FaStar size={size} />
-                    ) : (
-                        <FaRegStar size={size} />
-                    )}
-                </div>
-            ))}
+            {Array.from({ length: max }, (_, index) => {
+                const starValue = index + 1;
+                return (
+                    <div
+                        key={index}
+                        onClick={() => handleClick(starValue)}
+                        onMouseOver={() => handleMouseOver(starValue)}
+                        className={`${readOnly ? "cursor-default" : "cursor-pointer"} p-1`}
+                    >
+                        {starValue <= displayValue ? (
+                            <FaStar size={size} className="text-yellow-500" />
+                        ) : (
+                            <FaRegStar size={size} className="text-gray-400" />
+                        )}
+                    </div>
+                );
+            })}
         </div>
     );
 };
