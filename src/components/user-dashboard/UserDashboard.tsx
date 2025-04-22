@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react"
 import { Button } from "../ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card"
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "../ui/card"
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "../ui/carousel"
 import Autoplay from "embla-carousel-autoplay"
 import { Skeleton } from "../ui/skeleton"
 import { FeaturedArtistItem, FeaturedContentItem, UserInfoProps } from "@/hooks/user/UserContext"
 import { useUser } from "@/hooks/user/useUser"
 import { Link } from "react-router"
+import { UserDashboardFollowedArtistsPopUp } from "./UserDashboardFollowedArtistsPopUp"
 
 export const UserDashboardRecommendedArtistsItem = ({ item }: { item: FeaturedArtistItem }) => {
     const [imgLoaded, setImgLoaded] = useState(false)
@@ -50,12 +51,16 @@ export const UserDashboardRecommendedArtistsCard = () => {
         <Card className="grow 2xl:grow-0">
             <CardHeader>
                 <CardTitle className="text-xl">Artistas recomendados</CardTitle>
+                
             </CardHeader>
             <CardContent className="flex flex-col">
                 {artists.map(artist => (
                     <UserDashboardRecommendedArtistsItem item={artist} />
                 ))}
             </CardContent>
+            <CardFooter>
+                <UserDashboardFollowedArtistsPopUp/>
+            </CardFooter>
         </Card>
     )
 }

@@ -22,7 +22,7 @@ const updateSongSchema = z.object({
     img: z.any()
         .refine((file) => file.length > 0 ? file?.[0]?.type?.startsWith("image/") : true, {
             message: "La portada debe tener formato JPG o PNG",
-        }).optional(),
+        }),
 
     song: z.any()
         .refine((file) => file?.[0], {
@@ -67,35 +67,51 @@ export const ArtistDashboardReleasesEditSong = ({ id, version }: ArtistDashboard
     const imgField = watch('img')
     const title = watch('title')
 
-
     useEffect(() => {
         const fetchDatosVersion = async () => {
             const result = await product.getSongIdAndVersion(id, version)
             setDatosVersion(result)
 
             if (result?.genres === undefined) return
+
             //TODO arreglar los por defecto de genre
             //setSelectedGenreList(result.genres)
 
             setValue('id',id)
             setValue('title', result.title)
             setValue('description', result.description)
-
-            //setValue('img', result.imgUrl)
-            //setValue('song', result.songDir)
-
             setValue('priceDigital', result.pricing.digital)
             setValue('priceVinyl', result.pricing.vinyl)
             setValue('priceCassette', result.pricing.cassette)
             setValue('priceCd', result.pricing.cd)
 
-            setPreviewImg(result.imgUrl)
-            setPreviewImgLoaded(true)
+            if (result?.imgUrl) {
+                setPreviewImg(result.imgUrl)
+                setPreviewImgLoaded(true)
+                
+                const response = await fetch(result.imgUrl)
+                const blob = await response.blob()
+                const file = new File([blob], 'image.png', { type: blob.type })
+                const dataTransfer = new DataTransfer()
+                dataTransfer.items.add(file)
+                console.log(dataTransfer.files)
+                setValue('img', dataTransfer.files)
+            }
+
+            //TODO arreglar que ya este subido el archivo de audio
+            /*if (result?.songDir) {
+                const response = await fetch(result.songDir)
+                const blob = await response.blob()
+                const file = new File([blob], 'audio.mp3', { type: blob.type })
+                const dataTransfer = new DataTransfer()
+                dataTransfer.items.add(file)
+                console.log(dataTransfer.files)
+                setValue('song', dataTransfer.files)
+            }*/
 
         };
-        fetchDatosVersion();
-
-    }, [id,version])
+        fetchDatosVersion()
+    }, [id, version, setValue, product])
 
     const onSubmit = async (data: NewSongFormData) => {
         const result = await artistRelease.updateSong({
@@ -105,7 +121,8 @@ export const ArtistDashboardReleasesEditSong = ({ id, version }: ArtistDashboard
             collaborators: [],
             genres: selectedGenreList,
         })
-        if(result !== null) setTimeout(() => window.location.reload, 1000)
+        console.log(result)
+        if(result !== null) window.location.reload()
     }
 
     useEffect(() => {
@@ -177,8 +194,8 @@ export const ArtistDashboardReleasesEditSong = ({ id, version }: ArtistDashboard
                 <div className='flex flex-col gap-4 mb-4'>
                     <div className='flex flex-col gap-2'>
                         <Label htmlFor='song'>Fichero de audio</Label>
-                        <Input type='file' {...register('song')} defaultValue={datosVersion?.songDir} />
-                        {errors.song && <span className='text-sm text-red-600'>Debes subir un fichero de audio</span>}
+                        <Input type='file' {...register('song')}/>
+                        {errors.song && <span className='text-sm text-red-600' defaultValue={datosVersion?.songDir}>Debes subir un fichero de audio</span>}
                     </div>
                 </div>
 
