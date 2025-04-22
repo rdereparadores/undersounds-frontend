@@ -52,6 +52,34 @@ export interface LibraryAlbum {
     trackList: LibrarySong[]
 }
 
+export interface OrderItem {
+    imgUrl: string,
+    title: string,
+    author: string,
+    type: 'album' | 'song',
+    format: 'cd' | 'vinyl' | 'digital' | 'cassette',
+    price: number,
+    quantity: number
+}
+
+export interface Order {
+    _id: string,
+    purchaseDate: Date,
+    totalPrice: number,
+    paid: boolean,
+    status?: 'processing' | 'shipped' | 'delivered',
+    trackingCode?: string,
+    products: OrderItem[],
+    address: {
+        name: string,
+        surname: string,
+        address: string,
+        city: string,
+        zipCode: string,
+        country: string
+    }
+}
+
 export interface UserContextProps {
     getUserInfo: () => Promise<UserInfoProps>,
     updateUserInfo: (data: Partial<UserInfoProps>) => Promise<boolean>,
@@ -65,7 +93,8 @@ export interface UserContextProps {
     follow: (artistUsername: string) => Promise<boolean>,
     unfollow: (artistUsername: string) => Promise<boolean>,
     getLibrarySongs: () => Promise<LibrarySong[]>,
-    getLibraryAlbums: () => Promise<LibraryAlbum[]>
+    getLibraryAlbums: () => Promise<LibraryAlbum[]>,
+    getOrders: () => Promise<Order[]>
 }
 
 export const UserContext = createContext<UserContextProps>({
@@ -81,5 +110,6 @@ export const UserContext = createContext<UserContextProps>({
     follow: async () => false,
     unfollow: async () => false,
     getLibrarySongs: async () => [],
-    getLibraryAlbums: async () => []
+    getLibraryAlbums: async () => [],
+    getOrders: async () => {throw new Error()}
 })

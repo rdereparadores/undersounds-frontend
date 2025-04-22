@@ -1,5 +1,5 @@
 import { api } from "@/lib/api"
-import { AddressProps, LibraryAlbum, LibrarySong, UserContext, UserInfoProps } from "./UserContext"
+import { AddressProps, LibraryAlbum, LibrarySong, Order, UserContext, UserInfoProps } from "./UserContext"
 import { toast } from "sonner"
 
 export const UserProvider = ({ children }: { children: React.ReactNode }) => {
@@ -142,6 +142,16 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
         }
     }
 
+    const getOrders = async () => {
+        try {
+            const result = await api.get('/api/user/orders')
+            if (result.data.error) return []
+            return result.data.data as Order[]
+        } catch {
+            return []
+        }
+    }
+
     return (
         <UserContext.Provider
         value={{
@@ -157,7 +167,8 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
         follow, 
         unfollow,
         getLibrarySongs,
-        getLibraryAlbums
+        getLibraryAlbums,
+        getOrders
         }}>
             {children}
         </UserContext.Provider>
