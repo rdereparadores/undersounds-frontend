@@ -1,6 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { ShopItemCard } from "@/components/shop/ShopItemCard"
 import { ShopItem } from "@/hooks/shop/ShopContext"
+import { Carousel, CarouselContent, CarouselItem } from "../ui/carousel"
 
 export const ProductContainerRelatedCarousel = ({ related }: { related: ShopItem[] }) => {
 
@@ -10,9 +11,15 @@ export const ProductContainerRelatedCarousel = ({ related }: { related: ShopItem
                 <CardTitle className="text-xl">Relacionado</CardTitle>
             </CardHeader>
             <CardContent className="flex flex-wrap gap-2 flex-grow items-center justify-center">
-                {related.map((item, index) => (
-                    <ShopItemCard key={index} item={item}  />
-                ))}
+                <Carousel>
+                    <CarouselContent>
+                        {related.map((item, index) => (
+                            <CarouselItem key={index}>
+                                <ShopItemCard item={item} />
+                            </CarouselItem>
+                        ))}
+                    </CarouselContent>
+                </Carousel>
             </CardContent>
         </Card>
     )

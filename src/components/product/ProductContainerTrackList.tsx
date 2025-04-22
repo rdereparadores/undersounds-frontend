@@ -1,6 +1,5 @@
 import { Button } from "../ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card"
-import { FaPlay } from "react-icons/fa"
 import { Link } from "react-router"
 import { SongProps } from "@/hooks/product/ProductContext"
 
@@ -31,9 +30,6 @@ export const ProductContainerTrackList = ({ trackList }: { trackList: Partial<So
                             <Button variant='link' className="w-fit hidden sm:block">{track.collaborators!.map(c => c.artistName).join(', ')}</Button>
                             <div className="flex items-center gap-2">
                                 <p className="pr-2 hidden sm:block">{parseDuration(track.duration!)}</p>
-                                <Button className="rounded-full w-10 h-10">
-                                    <FaPlay className="ml-[3px]" />
-                                </Button>
                             </div>
                         </div>
                     </Card>
