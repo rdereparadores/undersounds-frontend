@@ -1,5 +1,5 @@
 import { api } from "@/lib/api"
-import { AddressProps, LibraryAlbum, LibrarySong, Order, UserContext, UserInfoProps } from "./UserContext"
+import { AddressProps, FeaturedArtistItem, FeaturedContentItem, LibraryAlbum, LibrarySong, Order, UserContext, UserInfoProps } from "./UserContext"
 import { toast } from "sonner"
 
 export const UserProvider = ({ children }: { children: React.ReactNode }) => {
@@ -152,6 +152,26 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
         }
     }
 
+    const getFeaturedContent = async () => {
+        try {
+            const result = await api.get('/api/user/featured/content')
+            if (result.data.error) return []
+            return result.data.data as FeaturedContentItem[]
+        } catch {
+            return []
+        }
+    }
+
+    const getFeaturedArtists = async () => {
+        try {
+            const result = await api.get('/api/user/featured/artists')
+            if (result.data.error) return []
+            return result.data.data as FeaturedArtistItem[]
+        } catch {
+            return []
+        }
+    }
+
     return (
         <UserContext.Provider
         value={{
@@ -168,7 +188,9 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
         unfollow,
         getLibrarySongs,
         getLibraryAlbums,
-        getOrders
+        getOrders,
+        getFeaturedArtists,
+        getFeaturedContent
         }}>
             {children}
         </UserContext.Provider>

@@ -80,6 +80,23 @@ export interface Order {
     }
 }
 
+export interface FeaturedContentItem {
+    imgUrl: string,
+    title: string,
+    type: 'song' | 'album',
+    _id: string,
+    author: {
+        artistUsername: string,
+        artistName: string
+    }
+}
+
+export interface FeaturedArtistItem {
+    imgUrl: string,
+    artistUsername: string,
+    artistName: string
+}
+
 export interface UserContextProps {
     getUserInfo: () => Promise<UserInfoProps>,
     updateUserInfo: (data: Partial<UserInfoProps>) => Promise<boolean>,
@@ -94,7 +111,9 @@ export interface UserContextProps {
     unfollow: (artistUsername: string) => Promise<boolean>,
     getLibrarySongs: () => Promise<LibrarySong[]>,
     getLibraryAlbums: () => Promise<LibraryAlbum[]>,
-    getOrders: () => Promise<Order[]>
+    getOrders: () => Promise<Order[]>,
+    getFeaturedContent: () => Promise<FeaturedContentItem[]>,
+    getFeaturedArtists: () => Promise<FeaturedArtistItem[]>
 }
 
 export const UserContext = createContext<UserContextProps>({
@@ -111,5 +130,7 @@ export const UserContext = createContext<UserContextProps>({
     unfollow: async () => false,
     getLibrarySongs: async () => [],
     getLibraryAlbums: async () => [],
-    getOrders: async () => {throw new Error()}
+    getOrders: async () => {throw new Error()},
+    getFeaturedContent: async () => [],
+    getFeaturedArtists: async () => []
 })
