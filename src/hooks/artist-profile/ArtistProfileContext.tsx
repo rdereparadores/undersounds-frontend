@@ -21,9 +21,34 @@ export interface ArtistProfileProps {
 }
 
 export interface ArtistProfileContextProps {
+    getArtistProfile: (artistUsername: string) => Promise<ArtistProfileProps>;
+    getArtistTransactions: () => Promise<Transaction[]>;
+}
+
+export interface Transaction {
+    id: string;
+    productTitle: string;
+    format: 'digital' | 'cd' | 'vinyl' | 'cassette';
+    amount: number;
+    earning: number;
+    date: Date;
+    imgUrl?: string;
+}
+
+export interface ArtistProfileContextProps {
     getArtistProfile: (artistId: string) => Promise<ArtistProfileProps>
 }
 
 export const ArtistProfileContext = createContext<ArtistProfileContextProps>({
-    getArtistProfile: async () => { throw new Error("Not implemented") }
-})
+    getArtistProfile: async () => { throw new Error("getArtistProfile not implemented"); },
+    getArtistTransactions: async () => { throw new Error("getArtistTransactions not implemented"); }
+});
+
+
+
+
+
+
+
+
+

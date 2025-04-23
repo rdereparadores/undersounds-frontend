@@ -1,47 +1,116 @@
-import { useCallback, useEffect, useState } from "react"
-import { Button } from "../ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card"
-import { DatePickerWithRange } from "../ui/date-picker-with-range"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../ui/table"
-import { DateRange } from "react-day-picker"
-import { Skeleton } from "../ui/skeleton"
-import { useArtistStats } from "@/hooks/artist-stats/useArtistStats"
-import { ArtistStatsProps } from "@/hooks/artist-stats/ArtistStatsContext"
-import { toast } from "sonner"
-import { Badge } from "../ui/badge"
+import React, { useCallback, useEffect, useState, useContext } from "react";
+import { Button } from "../ui/button";
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from "../ui/card";
+import { DatePickerWithRange } from "../ui/date-picker-with-range";
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from "../ui/table";
+import { DateRange } from "react-day-picker";
+import { Skeleton } from "../ui/skeleton";
+import { toast } from "sonner";
+import { Badge } from "../ui/badge";
+import {
+    ArtistProfileContext,
+    Transaction,
+} from "@/hooks/artist-profile/ArtistProfileContext";
 
-interface Transaction {
-    id: string
-    productTitle: string
-    format: 'digital' | 'cd' | 'vinyl' | 'cassette'
-    amount: number
-    earning: number
-    date: Date
+interface ArtistDashboardSalesTransactionItemProps {
+    transaction: Transaction;
 }
 
-export const ArtistDashboardSalesTransactionItem = ({ transaction }: { transaction: Transaction }) => {
+const ArtistDashboardSalesTransactionItem: React.FC<ArtistDashboardSalesTransactionItemProps> = ({
+                                                                                                     transaction,
+                                                                                                 }) => {
+    const [imgLoaded, setImgLoaded] = useState(false);
+
     return (
         <TableRow>
-            <TableCell>{transaction.productTitle}</TableCell>
+            <TableCell>
+                <div className="flex items-center gap-2">
+                    {!imgLoaded && <Skeleton className="w-10 h-10 rounded-md" />}
+                    <img
+                        src={
+                            transaction.imgUrl ||
+                            "/public/uploads/song/cover/generic.jpg"
+                        }
+                        alt={transaction.productTitle}
+                        className="w-10 h-10 rounded-md object-cover"
+                        onLoad={() => setImgLoaded(true)}
+                        hidden={!imgLoaded}
+                    />
+                    <span>{transaction.productTitle}</span>
+                </div>
+            </TableCell>
             <TableCell>
                 <Badge variant="outline">
-                    {transaction.format.charAt(0).toUpperCase() + transaction.format.slice(1)}
+                    {transaction.format.charAt(0).toUpperCase() +
+                        transaction.format.slice(1)}
                 </Badge>
             </TableCell>
             <TableCell>{transaction.amount.toFixed(2)} €</TableCell>
             <TableCell>{transaction.earning.toFixed(2)} €</TableCell>
             <TableCell className="text-right">
-                <Badge>{new Date(transaction.date).toLocaleDateString()}</Badge>
+                <Badge>
+                    {new Date(transaction.date).toLocaleDateString()}
+                </Badge>
             </TableCell>
         </TableRow>
-    )
+    );
+};
+
+interface ArtistDashboardSalesTransactionsListProps {
+    transactions: Transaction[];
+    isLoading: boolean;
 }
 
-export const ArtistDashboardSalesTransactionsList = ({ transactions }: { transactions: Transaction[] }) => {
-    const [visibleTransactions, setVisibleTransactions] = useState(3)
+const ArtistDashboardSalesTransactionsList: React.FC<ArtistDashboardSalesTransactionsListProps> = ({
+                                                                                                       transactions,
+                                                                                                       isLoading,
+                                                                                                   }) => {
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 10;
+    const totalPages = Math.ceil(transactions.length / itemsPerPage);
 
-    const showMore = () => {
-        setVisibleTransactions(prev => Math.min(prev + 5, transactions.length))
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    const currentTransactions = transactions.slice(startIndex, endIndex);
+
+    const goToNextPage = () => {
+        if (currentPage < totalPages) {
+            setCurrentPage((prev) => prev + 1);
+        }
+    };
+
+    const goToPrevPage = () => {
+        if (currentPage > 1) {
+            setCurrentPage((prev) => prev - 1);
+        }
+    };
+
+    if (isLoading) {
+        return (
+            <Card>
+                <CardHeader>
+                    <CardTitle>
+                        <Skeleton className="h-8 w-48" />
+                    </CardTitle>
+                </CardHeader>
+                <CardContent>
+                    <Skeleton className="h-64 w-full" />
+                </CardContent>
+            </Card>
+        );
     }
 
     return (
@@ -49,7 +118,9 @@ export const ArtistDashboardSalesTransactionsList = ({ transactions }: { transac
             <CardHeader>
                 <CardTitle>Historial de transacciones</CardTitle>
                 <CardDescription>
-                    Mostrando {Math.min(visibleTransactions, transactions.length)} de {transactions.length} transacciones
+                    Mostrando{" "}
+                    {Math.min(endIndex, transactions.length) - startIndex} de{" "}
+                    {transactions.length} transacciones
                 </CardDescription>
             </CardHeader>
             <CardContent>
@@ -65,119 +136,144 @@ export const ArtistDashboardSalesTransactionsList = ({ transactions }: { transac
                     </TableHeader>
                     <TableBody>
                         {transactions.length > 0 ? (
-                            transactions
-                                .slice(0, visibleTransactions)
-                                .map(transaction => (
-                                    <ArtistDashboardSalesTransactionItem
-                                        key={transaction.id}
-                                        transaction={transaction}
-                                    />
-                                ))
+                            currentTransactions.map((transaction, index) => (
+                                <ArtistDashboardSalesTransactionItem
+                                    key={`${transaction.id}-${index}`}
+                                    transaction={transaction}
+                                />
+                            ))
                         ) : (
                             <TableRow>
-                                <TableCell colSpan={5} className="text-center">No hay transacciones en el período seleccionado</TableCell>
+                                <TableCell
+                                    colSpan={5}
+                                    className="text-center"
+                                >
+                                    No hay transacciones en el período seleccionado
+                                </TableCell>
                             </TableRow>
                         )}
                     </TableBody>
                 </Table>
-                {visibleTransactions < transactions.length && (
-                    <Button
-                        variant='outline'
-                        className="w-full mt-2"
-                        onClick={showMore}
-                    >
-                        Ver más
-                    </Button>
+
+                {transactions.length > 0 && (
+                    <div className="flex justify-between items-center mt-4">
+                        <Button
+                            variant="outline"
+                            onClick={goToPrevPage}
+                            disabled={currentPage === 1}
+                        >
+                            Anterior
+                        </Button>
+                        <span>
+              Página {currentPage} de {totalPages}
+            </span>
+                        <Button
+                            variant="outline"
+                            onClick={goToNextPage}
+                            disabled={currentPage === totalPages}
+                        >
+                            Siguiente
+                        </Button>
+                    </div>
                 )}
             </CardContent>
         </Card>
-    )
+    );
+};
+
+interface ArtistDashboardSalesProps {
+    initialDateRange?: DateRange;
 }
 
-export const ArtistDashboardSales = () => {
-    const artistStats = useArtistStats()
-    const [stats, setStats] = useState<ArtistStatsProps | null>(null)
-    const [isLoading, setIsLoading] = useState(true)
-    const [transactions, setTransactions] = useState<Transaction[]>([])
-    const [filteredTransactions, setFilteredTransactions] = useState<Transaction[]>([])
-    const [totalEarnings, setTotalEarnings] = useState(0)
+export const ArtistDashboardSales: React.FC<ArtistDashboardSalesProps> = ({ initialDateRange }) => {
+    const { getArtistTransactions } = useContext(ArtistProfileContext);
+    const [isLoading, setIsLoading] = useState(true);
+    const [allTransactions, setAllTransactions] = useState<Transaction[]>([]);
+    const [filteredTransactions, setFilteredTransactions] = useState<Transaction[]>([]);
+    const [totalEarnings, setTotalEarnings] = useState(0);
+    const [mostSoldFormat, setMostSoldFormat] = useState<{ format: string, percentage: number } | null>(null);
+    const [dateRange, setDateRange] = useState<DateRange | undefined>(initialDateRange);
 
-    const monthAgo = new Date()
-    monthAgo.setMonth(monthAgo.getMonth() - 1)
-    const [dateRange, setDateRange] = useState<DateRange | undefined>({
-        from: monthAgo,
-        to: new Date(),
-    })
-
-    const filterTransactions = (allTransactions: Transaction[], range?: DateRange) => {
-        if (!range || !range.from) {
-            setFilteredTransactions(allTransactions)
-            calculateTotalEarnings(allTransactions)
-            return
-        }
-
-        const filtered = allTransactions.filter(transaction => {
-            const transactionDate = new Date(transaction.date)
-
-            if (range.from && !range.to) {
-                return transactionDate >= range.from
-            }
-
-            if (range.from && range.to) {
-                return transactionDate >= range.from && transactionDate <= range.to
-            }
-
-            return true
-        })
-
-        setFilteredTransactions(filtered)
-        calculateTotalEarnings(filtered)
-    }
-
-    const calculateTotalEarnings = useCallback((transactions: Transaction[]) => {
-        const total = transactions.reduce((sum, transaction) => sum + transaction.earning, 0)
-        setTotalEarnings(total)
+    const calculateTotalEarnings = useCallback((txs: Transaction[]) => {
+        const total = txs.reduce((sum, t) => sum + t.earning, 0);
+        setTotalEarnings(total);
     }, []);
 
-    const memoizedFilterTransactions = useCallback(filterTransactions, [calculateTotalEarnings]);
+    const calculateMostSoldFormat = useCallback((txs: Transaction[]) => {
+        const formatCount: Record<string, number> = {};
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                setIsLoading(true)
-                const statsData = await artistStats.getArtistStats()
-                setStats(statsData)
+        txs.forEach(t => {
+            formatCount[t.format] = (formatCount[t.format] || 0) + 1;
+        });
 
-                const generatedTransactions = generateTransactions(statsData)
-                setTransactions(generatedTransactions)
+        const total = txs.length;
+        const sortedFormats = Object.entries(formatCount).sort((a, b) => b[1] - a[1]);
 
-                memoizedFilterTransactions(generatedTransactions, dateRange)
-
-            } catch (error) {
-                console.error("Error fetching sales data:", error)
-                toast.error("Error al cargar los datos de ventas")
-            } finally {
-                setIsLoading(false)
-            }
+        if (sortedFormats.length > 0) {
+            const [format, count] = sortedFormats[0];
+            const percentage = Math.round((count / total) * 100);
+            setMostSoldFormat({ format, percentage });
+        } else {
+            setMostSoldFormat(null);
         }
+    }, []);
 
-        fetchData()
-    }, [artistStats, dateRange, memoizedFilterTransactions])
+    const fetchTransactions = useCallback(async () => {
+        try {
+            setIsLoading(true);
+            const transactions = await getArtistTransactions();
+            setAllTransactions(transactions);
+            setFilteredTransactions(transactions);
+            calculateTotalEarnings(transactions);
+            calculateMostSoldFormat(transactions);
+        } catch (error: unknown) {
+            console.error("Error fetching transactions", error);
+            const message = error instanceof Error ? error.message : "Error desconocido";
+            toast.error(`Error al cargar transacciones: ${message}`);
+        } finally {
+            setIsLoading(false);
+        }
+    }, [getArtistTransactions, calculateTotalEarnings, calculateMostSoldFormat]);
 
     const applyDateFilter = useCallback(() => {
-        memoizedFilterTransactions(transactions, dateRange)
-    }, [transactions, dateRange, memoizedFilterTransactions]);
+        if (!dateRange?.from) {
+            setFilteredTransactions(allTransactions);
+            calculateTotalEarnings(allTransactions);
+            calculateMostSoldFormat(allTransactions);
+            return;
+        }
 
-    if (isLoading) {
-        return <Skeleton className="grow gap-4 flex flex-col flex-wrap" />
-    }
+        const startDate = new Date(dateRange.from);
+        startDate.setHours(0, 0, 0, 0);
+        const endDate = dateRange.to ? new Date(dateRange.to) : new Date();
+        endDate.setHours(23, 59, 59, 999);
+
+        const filtered = allTransactions.filter(transaction => {
+            const txDate = new Date(transaction.date);
+            return txDate >= startDate && txDate <= endDate;
+        });
+
+        setFilteredTransactions(filtered);
+        calculateTotalEarnings(filtered);
+        calculateMostSoldFormat(filtered);
+    }, [allTransactions, dateRange, calculateTotalEarnings, calculateMostSoldFormat]);
+
+    useEffect(() => {
+        fetchTransactions();
+    }, [fetchTransactions]);
+
+    useEffect(() => {
+        if (allTransactions.length > 0) {
+            applyDateFilter();
+        }
+    }, [dateRange, allTransactions, applyDateFilter]);
 
     return (
         <div className="grow gap-4 flex flex-col flex-wrap">
             <div className="flex justify-between gap-4 flex-wrap">
                 <h1 className="text-3xl font-medium">Ventas</h1>
                 <div className="flex gap-2">
-                    <DatePickerWithRange date={dateRange!} setDate={setDateRange} />
+                    <DatePickerWithRange date={dateRange} setDate={setDateRange} />
                     <Button onClick={applyDateFilter}>Aplicar</Button>
                 </div>
             </div>
@@ -187,9 +283,11 @@ export const ArtistDashboardSales = () => {
                     <CardHeader>
                         <CardTitle>Ganancias</CardTitle>
                         <CardDescription>
-                            {dateRange?.from && dateRange?.to ? (
-                                `Del ${dateRange.from.toLocaleDateString()} al ${dateRange.to.toLocaleDateString()}`
-                            ) : "Período actual"}
+                            {dateRange?.from && dateRange?.to
+                                ? `Del ${dateRange.from.toLocaleDateString()} al ${dateRange.to.toLocaleDateString()}`
+                                : dateRange?.from
+                                    ? `Desde ${dateRange.from.toLocaleDateString()}`
+                                    : "Todo el período"}
                         </CardDescription>
                     </CardHeader>
                     <CardContent>
@@ -202,82 +300,24 @@ export const ArtistDashboardSales = () => {
                         <CardTitle>Formato más vendido</CardTitle>
                     </CardHeader>
                     <CardContent>
-                        <div className="flex flex-col gap-2">
-                            <p className="text-xl font-medium">{stats?.mostSoldFormat.format}</p>
-                            <p className="text-sm text-muted-foreground">
-                                Representa el {stats?.mostSoldFormat.percentage}% de tus ventas
-                            </p>
-                        </div>
+                        {mostSoldFormat ? (
+                            <div className="flex flex-col gap-2">
+                                <p className="text-xl font-medium">{mostSoldFormat.format}</p>
+                                <p className="text-sm text-muted-foreground">
+                                    Representa el {mostSoldFormat.percentage}% de tus ventas
+                                </p>
+                            </div>
+                        ) : (
+                            <p className="text-sm text-muted-foreground">No hay ventas registradas</p>
+                        )}
                     </CardContent>
                 </Card>
             </div>
 
-            <ArtistDashboardSalesTransactionsList transactions={filteredTransactions} />
+            <ArtistDashboardSalesTransactionsList
+                transactions={filteredTransactions}
+                isLoading={isLoading}
+            />
         </div>
-    )
-}
-
-function generateTransactions(stats: ArtistStatsProps | null): Transaction[] {
-    if (!stats) return []
-
-    const transactions: Transaction[] = []
-    const productNames = stats?.topProducts.map((p) => p.title) || []
-    const formats: ('digital' | 'cd' | 'vinyl' | 'cassette')[] = ['digital', 'cd', 'vinyl', 'cassette']
-
-    const endDate = new Date()
-    const startDate = new Date()
-    startDate.setMonth(startDate.getMonth() - 3)
-
-    const totalSales = stats ? (stats.copiesSold.thisMonth + stats.copiesSold.pastMonth) : 0
-
-    for (let i = 0; i < totalSales; i++) {
-        const productIndex = Math.floor(Math.pow(Math.random(), 2) * productNames.length)
-        const productTitle = productNames[productIndex % productNames.length] || "Producto desconocido"
-
-        const formatWeights = stats ? [
-            stats.salesFormat.digital,
-            stats.salesFormat.cd,
-            stats.salesFormat.vinyl,
-            stats.salesFormat.cassette
-        ] : [1, 1, 1, 1]
-        const totalWeight = formatWeights.reduce((sum, w) => sum + w, 0)
-
-        let formatIndex = 0
-        if (totalWeight > 0) {
-            const random = Math.random() * totalWeight
-            let sum = 0
-            for (let j = 0; j < formatWeights.length; j++) {
-                sum += formatWeights[j]
-                if (random <= sum) {
-                    formatIndex = j
-                    break
-                }
-            }
-        }
-
-        const format = formats[formatIndex]
-
-        const priceMap = {
-            digital: { min: 5, max: 12 },
-            cd: { min: 12, max: 20 },
-            vinyl: { min: 20, max: 35 },
-            cassette: { min: 10, max: 18 }
-        }
-
-        const price = Math.random() * (priceMap[format].max - priceMap[format].min) + priceMap[format].min
-        const earning = price * 0.7
-
-        const randomDate = new Date(startDate.getTime() + Math.random() * (endDate.getTime() - startDate.getTime()))
-
-        transactions.push({
-            id: `trans-${i}`,
-            productTitle,
-            format,
-            amount: price,
-            earning,
-            date: randomDate
-        })
-    }
-
-    return transactions.sort((a, b) => b.date.getTime() - a.date.getTime())
-}
+    );
+};

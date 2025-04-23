@@ -16,7 +16,6 @@ import { useArtistStats } from "@/hooks/artist-stats/useArtistStats"
 import { ArtistStatsProps } from "@/hooks/artist-stats/ArtistStatsContext"
 import { Link } from "react-router"
 
-
 export const ArtistDashboard = () => {
     const artist = useArtist()
     const artistStats = useArtistStats()
@@ -42,7 +41,7 @@ export const ArtistDashboard = () => {
         }
 
         fetchData()
-    }, [])
+    }, [artist, artistStats])
 
     if (isLoading || !artistData || !stats) {
         return <Skeleton className="grow gap-4 flex flex-col flex-wrap" />
@@ -133,6 +132,7 @@ export const ArtistDashboardLastSongs = ({ stats }: { stats: ArtistStatsProps })
                                     key={index}
                                     title={product.title}
                                     sales={product.sales}
+                                    imgUrl={product.imgUrl}
                                 />
                             ))
                         ) : (
@@ -147,12 +147,24 @@ export const ArtistDashboardLastSongs = ({ stats }: { stats: ArtistStatsProps })
     )
 }
 
-export const ArtistDashboardLastSongsSong = ({ title, sales }: { title: string, sales: number }) => {
+export const ArtistDashboardLastSongsSong = ({
+                                                 title,
+                                                 sales,
+                                                 imgUrl,
+                                             }: {
+    title: string
+    sales: number
+    imgUrl: string
+}) => {
     return (
         <TableRow>
             <TableCell className="font-medium">
                 <div className="flex items-center gap-2">
-                    <img className="rounded-full w-12 h-12 object-cover" src={'/default-album-cover.jpg'} alt={"Imagen de cancion"}/>
+                    <img
+                        className="rounded-full w-12 h-12 object-cover"
+                        src={imgUrl || "/default-album-cover.jpg"}
+                        alt="Imagen de producto"
+                    />
                     <span>{title}</span>
                 </div>
             </TableCell>
@@ -163,19 +175,10 @@ export const ArtistDashboardLastSongsSong = ({ title, sales }: { title: string, 
                 </div>
             </TableCell>
             <TableCell>{sales} ventas</TableCell>
-            <TableCell className="text-center">
-                <p>Formato más vendido: {getMostSoldFormat(sales)}</p>
-            </TableCell>
         </TableRow>
     )
 }
 
-const getMostSoldFormat = (sales: number) => {
-    if (sales > 100) return "Digital"
-    if (sales > 50) return "CD"
-    if (sales > 20) return "Vinilo"
-    return "Cassette"
-}
 
 export const ArtistDashboardReviewLastSong = ({ stats }: { stats: ArtistStatsProps }) => {
     return (
