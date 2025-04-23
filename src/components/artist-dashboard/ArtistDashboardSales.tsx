@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState, useContext } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Button } from "../ui/button";
 import {
     Card,
@@ -21,9 +21,10 @@ import { Skeleton } from "../ui/skeleton";
 import { toast } from "sonner";
 import { Badge } from "../ui/badge";
 import {
-    ArtistProfileContext,
     Transaction,
+    FormatStats
 } from "@/hooks/artist-profile/ArtistProfileContext";
+import { useArtistProfile } from "@/hooks/artist-profile/useArtistProfile";
 
 interface ArtistDashboardSalesTransactionItemProps {
     transaction: Transaction;
@@ -40,10 +41,7 @@ const ArtistDashboardSalesTransactionItem: React.FC<ArtistDashboardSalesTransact
                 <div className="flex items-center gap-2">
                     {!imgLoaded && <Skeleton className="w-10 h-10 rounded-md" />}
                     <img
-                        src={
-                            transaction.imgUrl ||
-                            "/public/uploads/song/cover/generic.jpg"
-                        }
+                        src={transaction.imgUrl || "/public/uploads/song/cover/generic.jpg"}
                         alt={transaction.productTitle}
                         className="w-10 h-10 rounded-md object-cover"
                         onLoad={() => setImgLoaded(true)}
@@ -80,11 +78,11 @@ const ArtistDashboardSalesTransactionsList: React.FC<ArtistDashboardSalesTransac
                                                                                                    }) => {
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 10;
-    const totalPages = Math.ceil(transactions.length / itemsPerPage);
+    const totalPages = Math.ceil((transactions?.length || 0) / itemsPerPage);
 
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
-    const currentTransactions = transactions.slice(startIndex, endIndex);
+    const currentTransactions = transactions?.slice(startIndex, endIndex) || [];
 
     const goToNextPage = () => {
         if (currentPage < totalPages) {
@@ -119,8 +117,8 @@ const ArtistDashboardSalesTransactionsList: React.FC<ArtistDashboardSalesTransac
                 <CardTitle>Historial de transacciones</CardTitle>
                 <CardDescription>
                     Mostrando{" "}
-                    {Math.min(endIndex, transactions.length) - startIndex} de{" "}
-                    {transactions.length} transacciones
+                    {Math.min(endIndex, transactions?.length || 0) - startIndex} de{" "}
+                    {transactions?.length || 0} transacciones
                 </CardDescription>
             </CardHeader>
             <CardContent>
@@ -135,7 +133,7 @@ const ArtistDashboardSalesTransactionsList: React.FC<ArtistDashboardSalesTransac
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {transactions.length > 0 ? (
+                        {transactions && transactions.length > 0 ? (
                             currentTransactions.map((transaction, index) => (
                                 <ArtistDashboardSalesTransactionItem
                                     key={`${transaction.id}-${index}`}
@@ -155,7 +153,7 @@ const ArtistDashboardSalesTransactionsList: React.FC<ArtistDashboardSalesTransac
                     </TableBody>
                 </Table>
 
-                {transactions.length > 0 && (
+                {transactions && transactions.length > 0 && (
                     <div className="flex justify-between items-center mt-4">
                         <Button
                             variant="outline"
@@ -165,8 +163,8 @@ const ArtistDashboardSalesTransactionsList: React.FC<ArtistDashboardSalesTransac
                             Anterior
                         </Button>
                         <span>
-              Página {currentPage} de {totalPages}
-            </span>
+                            Página {currentPage} de {totalPages}
+                        </span>
                         <Button
                             variant="outline"
                             onClick={goToNextPage}
@@ -186,60 +184,56 @@ interface ArtistDashboardSalesProps {
 }
 
 export const ArtistDashboardSales: React.FC<ArtistDashboardSalesProps> = ({ initialDateRange }) => {
-    const { getArtistTransactions } = useContext(ArtistProfileContext);
+    const { getArtistTransactions, calculateTransactionStats } = useArtistProfile();
     const [isLoading, setIsLoading] = useState(true);
     const [allTransactions, setAllTransactions] = useState<Transaction[]>([]);
     const [filteredTransactions, setFilteredTransactions] = useState<Transaction[]>([]);
     const [totalEarnings, setTotalEarnings] = useState(0);
-    const [mostSoldFormat, setMostSoldFormat] = useState<{ format: string, percentage: number } | null>(null);
+    const [mostSoldFormat, setMostSoldFormat] = useState<FormatStats | null>(null);
     const [dateRange, setDateRange] = useState<DateRange | undefined>(initialDateRange);
-
-    const calculateTotalEarnings = useCallback((txs: Transaction[]) => {
-        const total = txs.reduce((sum, t) => sum + t.earning, 0);
-        setTotalEarnings(total);
-    }, []);
-
-    const calculateMostSoldFormat = useCallback((txs: Transaction[]) => {
-        const formatCount: Record<string, number> = {};
-
-        txs.forEach(t => {
-            formatCount[t.format] = (formatCount[t.format] || 0) + 1;
-        });
-
-        const total = txs.length;
-        const sortedFormats = Object.entries(formatCount).sort((a, b) => b[1] - a[1]);
-
-        if (sortedFormats.length > 0) {
-            const [format, count] = sortedFormats[0];
-            const percentage = Math.round((count / total) * 100);
-            setMostSoldFormat({ format, percentage });
-        } else {
-            setMostSoldFormat(null);
-        }
-    }, []);
 
     const fetchTransactions = useCallback(async () => {
         try {
             setIsLoading(true);
             const transactions = await getArtistTransactions();
-            setAllTransactions(transactions);
-            setFilteredTransactions(transactions);
-            calculateTotalEarnings(transactions);
-            calculateMostSoldFormat(transactions);
+            setAllTransactions(transactions || []);
+            setFilteredTransactions(transactions || []);
+
+            if (transactions && transactions.length > 0) {
+                const stats = calculateTransactionStats(transactions);
+                setTotalEarnings(stats.totalEarnings);
+                setMostSoldFormat(stats.mostSoldFormat);
+            } else {
+                setTotalEarnings(0);
+                setMostSoldFormat(null);
+            }
         } catch (error: unknown) {
             console.error("Error fetching transactions", error);
             const message = error instanceof Error ? error.message : "Error desconocido";
             toast.error(`Error al cargar transacciones: ${message}`);
+
+            setAllTransactions([]);
+            setFilteredTransactions([]);
+            setTotalEarnings(0);
+            setMostSoldFormat(null);
         } finally {
             setIsLoading(false);
         }
-    }, [getArtistTransactions, calculateTotalEarnings, calculateMostSoldFormat]);
+    }, [getArtistTransactions, calculateTransactionStats]);
 
     const applyDateFilter = useCallback(() => {
+        if (!allTransactions || allTransactions.length === 0) {
+            setFilteredTransactions([]);
+            setTotalEarnings(0);
+            setMostSoldFormat(null);
+            return;
+        }
+
         if (!dateRange?.from) {
             setFilteredTransactions(allTransactions);
-            calculateTotalEarnings(allTransactions);
-            calculateMostSoldFormat(allTransactions);
+            const stats = calculateTransactionStats(allTransactions);
+            setTotalEarnings(stats.totalEarnings);
+            setMostSoldFormat(stats.mostSoldFormat);
             return;
         }
 
@@ -254,16 +248,23 @@ export const ArtistDashboardSales: React.FC<ArtistDashboardSalesProps> = ({ init
         });
 
         setFilteredTransactions(filtered);
-        calculateTotalEarnings(filtered);
-        calculateMostSoldFormat(filtered);
-    }, [allTransactions, dateRange, calculateTotalEarnings, calculateMostSoldFormat]);
+
+        if (filtered.length > 0) {
+            const stats = calculateTransactionStats(filtered);
+            setTotalEarnings(stats.totalEarnings);
+            setMostSoldFormat(stats.mostSoldFormat);
+        } else {
+            setTotalEarnings(0);
+            setMostSoldFormat(null);
+        }
+    }, [allTransactions, dateRange, calculateTransactionStats]);
 
     useEffect(() => {
         fetchTransactions();
     }, [fetchTransactions]);
 
     useEffect(() => {
-        if (allTransactions.length > 0) {
+        if (allTransactions && allTransactions.length > 0) {
             applyDateFilter();
         }
     }, [dateRange, allTransactions, applyDateFilter]);
@@ -300,7 +301,7 @@ export const ArtistDashboardSales: React.FC<ArtistDashboardSalesProps> = ({ init
                         <CardTitle>Formato más vendido</CardTitle>
                     </CardHeader>
                     <CardContent>
-                        {mostSoldFormat ? (
+                        {mostSoldFormat && mostSoldFormat.format ? (
                             <div className="flex flex-col gap-2">
                                 <p className="text-xl font-medium">{mostSoldFormat.format}</p>
                                 <p className="text-sm text-muted-foreground">

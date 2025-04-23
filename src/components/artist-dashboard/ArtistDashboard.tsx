@@ -15,24 +15,48 @@ import { ArtistInfoProps } from "@/hooks/artist/ArtistContext"
 import { useArtistStats } from "@/hooks/artist-stats/useArtistStats"
 import { ArtistStatsProps } from "@/hooks/artist-stats/ArtistStatsContext"
 import { Link } from "react-router"
+import { useArtistProfile } from "@/hooks/artist-profile/useArtistProfile"
+import { Transaction } from "@/hooks/artist-profile/ArtistProfileContext"
 
 export const ArtistDashboard = () => {
     const artist = useArtist()
     const artistStats = useArtistStats()
+    const { getArtistTransactions, calculateTransactionStats } = useArtistProfile()
     const [artistData, setArtistData] = useState<ArtistInfoProps | undefined>(undefined)
     const [stats, setStats] = useState<ArtistStatsProps | undefined>(undefined)
+    const [transactions, setTransactions] = useState<Transaction[]>([])
     const [isLoading, setIsLoading] = useState(true)
 
     useEffect(() => {
         const fetchData = async () => {
             try {
                 setIsLoading(true)
-                const [artistInfo, statsData] = await Promise.all([
-                    artist.getArtistInfo(),
-                    artistStats.getArtistStats()
-                ])
-                setArtistData(artistInfo)
-                setStats(statsData)
+                let artistInfo, statsData, transactionsData: Transaction[];
+
+                try {
+                    artistInfo = await artist.getArtistInfo();
+                } catch (error) {
+                    console.error("Error fetching artist info:", error);
+                    artistInfo = undefined;
+                }
+
+                try {
+                    statsData = await artistStats.getArtistStats();
+                } catch (error) {
+                    console.error("Error fetching artist stats:", error);
+                    statsData = undefined;
+                }
+
+                try {
+                    transactionsData = await getArtistTransactions();
+                } catch (error) {
+                    console.error("Error fetching transactions:", error);
+                    transactionsData = [];
+                }
+
+                if (artistInfo) setArtistData(artistInfo);
+                if (statsData) setStats(statsData);
+                setTransactions(transactionsData || []);
             } catch (error) {
                 console.error("Error fetching artist data:", error)
             } finally {
@@ -41,11 +65,13 @@ export const ArtistDashboard = () => {
         }
 
         fetchData()
-    }, [artist, artistStats])
+    }, [artist, artistStats, getArtistTransactions])
 
     if (isLoading || !artistData || !stats) {
         return <Skeleton className="grow gap-4 flex flex-col flex-wrap" />
     }
+
+    const transactionStats = calculateTransactionStats(transactions)
 
     return (
         <div className="grow gap-4 flex flex-col flex-wrap">
@@ -101,11 +127,14 @@ export const ArtistDashboard = () => {
                 </div>
 
                 <div className="w-full md:w-[50%] h-full">
-                    <ArtistDashboardReviewLastSong stats={stats} />
+                    <ArtistDashboardReviewLastSong
+                        mostSoldFormat={transactionStats.mostSoldFormat}
+                        salesFormat={transactionStats.salesByFormat}
+                    />
                 </div>
             </div>
             <div className="flex flex-wrap 2xl:flex-nowrap gap-4">
-                <ArtistDashboardLastSongs stats={stats} />
+                <ArtistDashboardLastSongs topProducts={transactionStats.topProducts} />
             </div>
         </div>
     )
@@ -116,7 +145,15 @@ const calculatePercentageChange = (current: number, previous: number) => {
     return Math.round(((current - previous) / previous) * 100)
 }
 
-export const ArtistDashboardLastSongs = ({ stats }: { stats: ArtistStatsProps }) => {
+interface ArtistDashboardLastSongsProps {
+    topProducts: Array<{
+        title: string;
+        sales: number;
+        imgUrl: string;
+    }>;
+}
+
+export const ArtistDashboardLastSongs: React.FC<ArtistDashboardLastSongsProps> = ({ topProducts }) => {
     return (
         <Card className="grow w-[100%]">
             <CardHeader>
@@ -126,8 +163,8 @@ export const ArtistDashboardLastSongs = ({ stats }: { stats: ArtistStatsProps })
             <CardContent className="flex flex-col gap-2">
                 <Table>
                     <TableBody>
-                        {stats.topProducts.length > 0 ? (
-                            stats.topProducts.map((product, index) => (
+                        {topProducts && topProducts.length > 0 ? (
+                            topProducts.map((product, index) => (
                                 <ArtistDashboardLastSongsSong
                                     key={index}
                                     title={product.title}
@@ -147,15 +184,17 @@ export const ArtistDashboardLastSongs = ({ stats }: { stats: ArtistStatsProps })
     )
 }
 
-export const ArtistDashboardLastSongsSong = ({
-                                                 title,
-                                                 sales,
-                                                 imgUrl,
-                                             }: {
-    title: string
-    sales: number
-    imgUrl: string
-}) => {
+interface ArtistDashboardLastSongsSongProps {
+    title: string;
+    sales: number;
+    imgUrl: string;
+}
+
+export const ArtistDashboardLastSongsSong: React.FC<ArtistDashboardLastSongsSongProps> = ({
+                                                                                              title,
+                                                                                              sales,
+                                                                                              imgUrl
+                                                                                          }) => {
     return (
         <TableRow>
             <TableCell className="font-medium">
@@ -179,8 +218,18 @@ export const ArtistDashboardLastSongsSong = ({
     )
 }
 
+interface ArtistDashboardReviewLastSongProps {
+    mostSoldFormat: {
+        format: string;
+        percentage: number;
+    };
+    salesFormat: Record<string, number>;
+}
 
-export const ArtistDashboardReviewLastSong = ({ stats }: { stats: ArtistStatsProps }) => {
+export const ArtistDashboardReviewLastSong: React.FC<ArtistDashboardReviewLastSongProps> = ({
+                                                                                                mostSoldFormat,
+                                                                                                salesFormat
+                                                                                            }) => {
     return (
         <Card className="h-full">
             <CardHeader>
@@ -198,10 +247,20 @@ export const ArtistDashboardReviewLastSong = ({ stats }: { stats: ArtistStatsPro
             </CardHeader>
             <CardContent className="flex gap-2 flex-wrap">
                 <div className="w-full">
-                    <p className="font-bold text-xl mb-2">{stats.mostSoldFormat.format} ({stats.mostSoldFormat.percentage}%)</p>
+                    {mostSoldFormat && mostSoldFormat.format ? (
+                        <p className="font-bold text-xl mb-2">
+                            {mostSoldFormat.format} ({mostSoldFormat.percentage}%)
+                        </p>
+                    ) : (
+                        <p className="font-bold text-xl mb-2">No hay datos disponibles</p>
+                    )}
                     <div className="flex flex-wrap gap-2">
-                        {Object.entries(stats.salesFormat).map(([format, amount]) => (
-                            <Badge key={format} variant={format === stats.mostSoldFormat.format.toLowerCase() ? "default" : "outline"} className="text-md">
+                        {salesFormat && Object.entries(salesFormat).map(([format, amount]) => (
+                            <Badge
+                                key={format}
+                                variant={format === (mostSoldFormat?.format || '').toLowerCase() ? "default" : "outline"}
+                                className="text-md"
+                            >
                                 {format.charAt(0).toUpperCase() + format.slice(1)}: {amount}
                             </Badge>
                         ))}
