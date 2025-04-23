@@ -82,7 +82,7 @@ export const ArtistReleaseProvider = ({ children }: { children: React.ReactNode 
             formData.append('song', data.song)
             formData.append('id',data.id)
 
-            const result = await api.post('/api/artist/update/song', formData)
+            const result = await api.post('/api/artist/songs/update', formData)
             if (result.data.error) {
                 toast.error('Error al actualizar la canción')
                 return null

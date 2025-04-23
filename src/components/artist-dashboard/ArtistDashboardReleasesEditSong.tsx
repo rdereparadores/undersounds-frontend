@@ -46,13 +46,7 @@ const updateSongSchema = z.object({
 
 type NewSongFormData = z.infer<typeof updateSongSchema>
 
-interface ArtistDashboardReleasesEditSongProps {
-    id: string;
-    version: number;
-}
-
-
-export const ArtistDashboardReleasesEditSong = ({ id, version }: ArtistDashboardReleasesEditSongProps) => {
+export const ArtistDashboardReleasesEditSong = (song: SongProps) => {
     const [selectedGenreList, setSelectedGenreList] = useState<string[]>([])
     const artistRelease = useArtistRelease()
     const product = useProduct()
@@ -62,34 +56,30 @@ export const ArtistDashboardReleasesEditSong = ({ id, version }: ArtistDashboard
     const { register, handleSubmit, formState: { errors }, watch, setValue } = useForm<NewSongFormData>({
         resolver: zodResolver(updateSongSchema)
     })
-    const [datosVersion, setDatosVersion] = useState<SongProps | null>(null);
 
     const imgField = watch('img')
     const title = watch('title')
 
     useEffect(() => {
         const fetchDatosVersion = async () => {
-            const result = await product.getSongIdAndVersion(id, version)
-            setDatosVersion(result)
 
-            if (result?.genres === undefined) return
-
+            if(song._id === undefined) return
             //TODO arreglar los por defecto de genre
             //setSelectedGenreList(result.genres)
 
-            setValue('id',id)
-            setValue('title', result.title)
-            setValue('description', result.description)
-            setValue('priceDigital', result.pricing.digital)
-            setValue('priceVinyl', result.pricing.vinyl)
-            setValue('priceCassette', result.pricing.cassette)
-            setValue('priceCd', result.pricing.cd)
+            setValue('id', song._id)
+            setValue('title', song.title )
+            setValue('description', song.description)
+            setValue('priceDigital', song.pricing.digital)
+            setValue('priceVinyl', song.pricing.vinyl)
+            setValue('priceCassette', song.pricing.cassette)
+            setValue('priceCd', song.pricing.cd)
 
-            if (result?.imgUrl) {
-                setPreviewImg(result.imgUrl)
+            if (song?.imgUrl) {
+                setPreviewImg(song.imgUrl)
                 setPreviewImgLoaded(true)
                 
-                const response = await fetch(result.imgUrl)
+                const response = await fetch(song.imgUrl)
                 const blob = await response.blob()
                 const file = new File([blob], 'image.png', { type: blob.type })
                 const dataTransfer = new DataTransfer()
@@ -111,7 +101,7 @@ export const ArtistDashboardReleasesEditSong = ({ id, version }: ArtistDashboard
 
         };
         fetchDatosVersion()
-    }, [id, version, setValue, product])
+    }, [song, setValue, product])
 
     const onSubmit = async (data: NewSongFormData) => {
         const result = await artistRelease.updateSong({
@@ -179,13 +169,13 @@ export const ArtistDashboardReleasesEditSong = ({ id, version }: ArtistDashboard
                     <div className='flex flex-col gap-4 grow'>
                         <div className='flex flex-col gap-2'>
                             <Label htmlFor='title'>Título</Label>
-                            <Input {...register(('title'))} defaultValue={datosVersion?.title} type='text' />
+                            <Input {...register(('title'))} defaultValue={song.title} type='text' />
                             {errors.title && <span className='text-sm text-red-600'>El título no puede estar vacío</span>}
                         </div>
 
                         <div className='flex flex-col gap-2 grow'>
                             <Label htmlFor='description' aria-multiline='true'>Descripción</Label>
-                            <Textarea className='grow' {...register('description')} defaultValue={datosVersion?.description} />
+                            <Textarea className='grow' {...register('description')} defaultValue={song.description} />
                             {errors.description && <span className='text-sm text-red-600'>La descripción no puede estar vacía</span>}
                         </div>
                     </div>
@@ -195,7 +185,7 @@ export const ArtistDashboardReleasesEditSong = ({ id, version }: ArtistDashboard
                     <div className='flex flex-col gap-2'>
                         <Label htmlFor='song'>Fichero de audio</Label>
                         <Input type='file' {...register('song')}/>
-                        {errors.song && <span className='text-sm text-red-600' defaultValue={datosVersion?.songDir}>Debes subir un fichero de audio</span>}
+                        {errors.song && <span className='text-sm text-red-600' defaultValue={song.songDir}>Debes subir un fichero de audio</span>}
                     </div>
                 </div>
 
@@ -210,22 +200,22 @@ export const ArtistDashboardReleasesEditSong = ({ id, version }: ArtistDashboard
                                 <div className='flex flex-col gap-4'>
                                     <div className='flex flex-col gap-2'>
                                         <Label htmlFor='priceDigital'>Digital</Label>
-                                        <Input step='0.01' type='number' {...register('priceDigital')} defaultValue={datosVersion?.pricing.digital} />
+                                        <Input step='0.01' type='number' {...register('priceDigital')} defaultValue={song.pricing.digital} />
                                         {errors.priceDigital && <span className='text-sm text-red-600'>El precio debe ser superior a 1</span>}
                                     </div>
                                     <div className='flex flex-col gap-2'>
                                         <Label htmlFor='priceCd'>CD</Label>
-                                        <Input step='0.01' type='number' {...register('priceCd')} defaultValue={datosVersion?.pricing.cd} />
+                                        <Input step='0.01' type='number' {...register('priceCd')} defaultValue={song.pricing.cd} />
                                         {errors.priceCd && <span className='text-sm text-red-600'>El precio debe ser superior a 1</span>}
                                     </div>
                                     <div className='flex flex-col gap-2'>
                                         <Label htmlFor='priceVinyl'>Vinilo</Label>
-                                        <Input step='0.01' type='number' {...register('priceVinyl')} defaultValue={datosVersion?.pricing.vinyl} />
+                                        <Input step='0.01' type='number' {...register('priceVinyl')} defaultValue={song.pricing.vinyl} />
                                         {errors.priceVinyl && <span className='text-sm text-red-600'>El precio debe ser superior a 1</span>}
                                     </div>
                                     <div className='flex flex-col gap-2'>
                                         <Label htmlFor='priceCasette'>Cassette</Label>
-                                        <Input step='0.01' type='number' {...register('priceCassette')} defaultValue={datosVersion?.pricing.cassette} />
+                                        <Input step='0.01' type='number' {...register('priceCassette')} defaultValue={song.pricing.cassette} />
                                         {errors.priceCassette && <span className='text-sm text-red-600'>El precio debe ser superior a 1</span>}
                                     </div>
                                 </div>

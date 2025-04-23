@@ -18,7 +18,7 @@ export const ArtistProvider = ({ children }: { children: React.ReactNode }) => {
         try {
             if (data.artistName || data.artistUsername) {
                 console.log(data.artistUsername)
-                const result = await api.post('/api/artist/profile/update', { 
+                const result = await api.post('/api/artist/profile/update', {
                     artistName: data.artistName,
                     artistUsername: data.artistUsername
                 })
@@ -47,7 +47,7 @@ export const ArtistProvider = ({ children }: { children: React.ReactNode }) => {
                     return false
                 }
             }
-            
+
             toast.success('Perfil actualizado con éxito')
             return true
         } catch {
@@ -73,9 +73,18 @@ export const ArtistProvider = ({ children }: { children: React.ReactNode }) => {
         }
     }
 
+    const getSongHistoryArray = async (songId: string) => {
+        try {
+            const result = await api.post('/api/artist/songs/history', { songId })
+            return result.data.data
+        } catch {
+            return null
+        }
+    }
+
     return (
-        <ArtistContext.Provider value={{ getArtistInfo, updateArtistInfo, getArtistSongs, getArtistAlbums }}>
-            { children }
+        <ArtistContext.Provider value={{ getArtistInfo, updateArtistInfo, getArtistSongs, getArtistAlbums, getSongHistoryArray }}>
+            {children}
         </ArtistContext.Provider>
     )
 }

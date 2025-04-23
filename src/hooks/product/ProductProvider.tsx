@@ -51,34 +51,12 @@ export const ProductProvider = ({ children }: ProductProviderProps) => {
         }
     }
 
-    const getSongIdAndVersion = async(id: string, version: number) => {
-        try {
-            const result = await api.post('/api/song/songidandversion', {id, version})
-            return result.data.data.song
-        } catch {
-            return null
-        }
-    }
-
-    const getSongVersionHistoryArray = async(id: string) => {
-        try {
-            const result = await api.post('/api/song/getversionhistoryarray', {id})
-            return result.data.data.song
-        } catch {
-            return null
-        }
-    }
-
-
-
     return (
         <ProductContext.Provider value={{
             getSongInfo,
             getAlbumInfo,
             getProductRatings,
             getProductRecommendations,
-            getSongIdAndVersion,
-            getSongVersionHistoryArray
         }}>
             <RatingsProvider>
                 {children}

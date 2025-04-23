@@ -62,8 +62,6 @@ export interface ProductContextProps {
     getAlbumInfo: (id: string) => Promise<AlbumProps | null>,
     getProductRatings: (id: string) => Promise<RatingProps | null>,
     getProductRecommendations: (id: string) => Promise<ShopItem[]>,
-    getSongIdAndVersion: (id: string, version: number) => Promise<SongProps | null>
-    getSongVersionHistoryArray: (id: string) => Promise<SongProps[] | null>
 }
 
 export const ProductContext = createContext<ProductContextProps>({
@@ -71,6 +69,4 @@ export const ProductContext = createContext<ProductContextProps>({
     getAlbumInfo: async () => null,
     getProductRatings: async () => null,
     getProductRecommendations: async () => [],
-    getSongIdAndVersion: async () => null,
-    getSongVersionHistoryArray: async () => []
 })
