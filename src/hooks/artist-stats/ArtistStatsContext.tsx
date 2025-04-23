@@ -20,6 +20,7 @@ export interface ArtistStatsProps {
         vinyl: number
     },
     topProducts: {
+        imgUrl: string;
         title: string,
         sales: number
     }[],
