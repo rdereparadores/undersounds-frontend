@@ -1,59 +1,36 @@
-import { createContext } from "react";
-
-export interface PurchasedProductFormat {
-    format: string;
-    purchaseDate: Date;
-}
-
-export interface RatingItemProps {
-    _id: string;
-    authorId: string;
-    authorUsername: string;
-    authorImgUrl: string;
-    title: string;
-    description: string;
-    rating: number;
-    date: string;
-    format: string;
-}
+import { createContext } from "react"
 
 export interface RatingProps {
-    ratings: RatingItemProps[];
-    averageRating: number;
-    totalRatings: number;
+    rating: number,
+    title: string,
+    description: string,
+    publishDate: Date,
+    authorUsername: string,
+    authorImgUrl: string
 }
 
-export interface UserRatingCheckResult {
-    hasRated: boolean;
-    ratings: RatingItemProps[] | null;
-    userId: string;
+export interface UserRatingProps {
+    rating?: RatingProps,
+    rateable: boolean
 }
 
-export interface PurchasedFormatsResult {
-    formats: PurchasedProductFormat[];
-    ratedFormats: string[];
-}
-
-export interface RatingFormData {
-    title: string;
-    description: string;
-    rating: number;
-    format: string;
+export interface RatingResultProps {
+    ratings: RatingProps[],
+    averageRating: number,
+    totalRatings: number
 }
 
 export interface RatingContextProps {
-    getProductRatings: (productId: string) => Promise<RatingProps>;
-    checkUserRating: (productId: string) => Promise<UserRatingCheckResult>;
-    getPurchasedFormats: (productId: string) => Promise<PurchasedFormatsResult>;
-    addRating: (productId: string, data: RatingFormData) => Promise<boolean>;
-    updateRating: (productId: string, ratingId: string, data: RatingFormData) => Promise<boolean>;
-    removeRating: (productId: string, ratingId: string) => Promise<boolean>;
+    getProductRatings: (productId: string) => Promise<RatingResultProps>,
+    checkUserRating: (productId: string) => Promise<UserRatingProps>,
+    addRating: (productId: string, data: Partial<RatingProps>) => Promise<boolean>,
+    updateRating: (productId: string, data: Partial<RatingProps>) => Promise<boolean>,
+    removeRating: (productId: string) => Promise<boolean>
 }
 
 export const RatingContext = createContext<RatingContextProps>({
-    getProductRatings: async () => ({ ratings: [], averageRating: 0, totalRatings: 0 }),
-    checkUserRating: async () => ({ hasRated: false, ratings: null, userId: '' }),
-    getPurchasedFormats: async () => ({ formats: [], ratedFormats: [] }),
+    getProductRatings: async () => {throw new Error()},
+    checkUserRating: async () => {throw new Error()},
     addRating: async () => false,
     updateRating: async () => false,
     removeRating: async () => false

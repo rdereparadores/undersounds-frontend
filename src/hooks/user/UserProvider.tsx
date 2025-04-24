@@ -71,7 +71,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
 
     const setAddressAsDefault = async (_id: string) => {
         try {
-            const result = await api.patch('/api/user/profile/address/set-default', { _id })
+            const result = await api.patch('/api/user/profile/address/set-default', { addressId: _id })
             if (result.data.error) {
                 return false
             }
