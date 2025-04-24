@@ -17,6 +17,8 @@ export const ArtistDashboardReleasesNewSongGenreCard = ({ selectedGenreList, set
     useEffect(() => {
         genre.getAll()
             .then(genres => setGenreList(genres))
+
+        selectedGenreList.forEach((g) => handleGenreAdd(g))
     }, [])
 
     const handleGenreAdd = (genre: string) => {

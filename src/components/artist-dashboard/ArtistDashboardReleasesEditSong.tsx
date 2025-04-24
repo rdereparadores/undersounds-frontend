@@ -16,15 +16,16 @@ import { useProduct } from '@/hooks/product/useProduct'
 import { SongProps } from '@/hooks/product/ProductContext'
 
 const updateSongSchema = z.object({
-    id: z.string().min(1),
-    title: z.string().min(1),
-    description: z.string().min(1),
+    id: z.string().min(1).optional(),
+    title: z.string().min(1).optional(),
+    description: z.string().min(1).optional(),
     img: z.any()
         .refine((file) => file.length > 0 ? file?.[0]?.type?.startsWith("image/") : true, {
             message: "La portada debe tener formato JPG o PNG",
-        }),
+        }).optional(),
 
     song: z.any()
+        .optional()
         .refine((file) => file?.[0], {
             message: "Debes subir el archivo de audio",
         })
@@ -32,10 +33,10 @@ const updateSongSchema = z.object({
             message: "El archivo de audio debe ser de los siguientes tipos: MP3, FLAC, WAV",
         }),
 
-    priceDigital: z.preprocess((val) => Number(val), z.number().min(1)),
-    priceVinyl: z.preprocess((val) => Number(val), z.number().min(1)),
-    priceCassette: z.preprocess((val) => Number(val), z.number().min(1)),
-    priceCd: z.preprocess((val) => Number(val), z.number().min(1))
+    priceDigital: z.preprocess((val) => Number(val), z.number().min(1)).optional(),
+    priceVinyl: z.preprocess((val) => Number(val), z.number().min(1)).optional(),
+    priceCassette: z.preprocess((val) => Number(val), z.number().min(1)).optional(),
+    priceCd: z.preprocess((val) => Number(val), z.number().min(1)).optional()
 }).refine(data => {
     if (data.img) return data.img?.[0] !== undefined
     return false
@@ -63,29 +64,20 @@ export const ArtistDashboardReleasesEditSong = (song: SongProps) => {
     useEffect(() => {
         const fetchDatosVersion = async () => {
 
-            if(song._id === undefined) return
-            //TODO arreglar los por defecto de genre
-            //setSelectedGenreList(result.genres)
+            if (song._id === undefined) return
 
-            setValue('id', song._id)
-            setValue('title', song.title )
+            setValue('title', song.title)
             setValue('description', song.description)
-            setValue('priceDigital', song.pricing.digital)
-            setValue('priceVinyl', song.pricing.vinyl)
             setValue('priceCassette', song.pricing.cassette)
             setValue('priceCd', song.pricing.cd)
+            setValue('priceDigital', song.pricing.digital)
+            setValue('priceVinyl', song.pricing.vinyl)
 
+            setSelectedGenreList(song.genres)
+            
             if (song?.imgUrl) {
                 setPreviewImg(song.imgUrl)
                 setPreviewImgLoaded(true)
-                
-                const response = await fetch(song.imgUrl)
-                const blob = await response.blob()
-                const file = new File([blob], 'image.png', { type: blob.type })
-                const dataTransfer = new DataTransfer()
-                dataTransfer.items.add(file)
-                console.log(dataTransfer.files)
-                setValue('img', dataTransfer.files)
             }
 
             //TODO arreglar que ya este subido el archivo de audio
@@ -112,7 +104,7 @@ export const ArtistDashboardReleasesEditSong = (song: SongProps) => {
             genres: selectedGenreList,
         })
         console.log(result)
-        if(result !== null) window.location.reload()
+        if (result !== null) window.location.reload()
     }
 
     useEffect(() => {
@@ -132,22 +124,24 @@ export const ArtistDashboardReleasesEditSong = (song: SongProps) => {
     const handleImageAIGeneration = async () => {
         setGeneratingImage(true)
         setPreviewImgLoaded(false)
-        const result = await artistRelease.generateAiCover(title)
-        if (result === null) {
-            toast.error('Ocurrió un error al generar la imagen')
+        if (title !== undefined) {
+            const result = await artistRelease.generateAiCover(title)
+            if (result === null) {
+                toast.error('Ocurrió un error al generar la imagen')
+                setGeneratingImage(false)
+                return
+            }
+
+            const response = await fetch(result)
+            const blob = await response.blob()
+            const file = new File([blob], 'image.png', { type: blob.type })
+            const dataTransfer = new DataTransfer()
+            dataTransfer.items.add(file)
+            setValue('img', dataTransfer.files)
+
             setGeneratingImage(false)
-            return
+            setPreviewImgLoaded(true)
         }
-
-        const response = await fetch(result)
-        const blob = await response.blob()
-        const file = new File([blob], 'image.png', { type: blob.type })
-        const dataTransfer = new DataTransfer()
-        dataTransfer.items.add(file)
-        setValue('img', dataTransfer.files)
-
-        setGeneratingImage(false)
-        setPreviewImgLoaded(true)
     }
 
     return (
@@ -169,13 +163,13 @@ export const ArtistDashboardReleasesEditSong = (song: SongProps) => {
                     <div className='flex flex-col gap-4 grow'>
                         <div className='flex flex-col gap-2'>
                             <Label htmlFor='title'>Título</Label>
-                            <Input {...register(('title'))} defaultValue={song.title} type='text' />
+                            <Input {...register(('title'))} type='text' />
                             {errors.title && <span className='text-sm text-red-600'>El título no puede estar vacío</span>}
                         </div>
 
                         <div className='flex flex-col gap-2 grow'>
                             <Label htmlFor='description' aria-multiline='true'>Descripción</Label>
-                            <Textarea className='grow' {...register('description')} defaultValue={song.description} />
+                            <Textarea className='grow' {...register('description')} />
                             {errors.description && <span className='text-sm text-red-600'>La descripción no puede estar vacía</span>}
                         </div>
                     </div>
@@ -184,7 +178,7 @@ export const ArtistDashboardReleasesEditSong = (song: SongProps) => {
                 <div className='flex flex-col gap-4 mb-4'>
                     <div className='flex flex-col gap-2'>
                         <Label htmlFor='song'>Fichero de audio</Label>
-                        <Input type='file' {...register('song')}/>
+                        <Input type='file' {...register('song')} />
                         {errors.song && <span className='text-sm text-red-600' defaultValue={song.songDir}>Debes subir un fichero de audio</span>}
                     </div>
                 </div>
@@ -200,22 +194,22 @@ export const ArtistDashboardReleasesEditSong = (song: SongProps) => {
                                 <div className='flex flex-col gap-4'>
                                     <div className='flex flex-col gap-2'>
                                         <Label htmlFor='priceDigital'>Digital</Label>
-                                        <Input step='0.01' type='number' {...register('priceDigital')} defaultValue={song.pricing.digital} />
+                                        <Input step='0.01' type='number' {...register('priceDigital')}/>
                                         {errors.priceDigital && <span className='text-sm text-red-600'>El precio debe ser superior a 1</span>}
                                     </div>
                                     <div className='flex flex-col gap-2'>
                                         <Label htmlFor='priceCd'>CD</Label>
-                                        <Input step='0.01' type='number' {...register('priceCd')} defaultValue={song.pricing.cd} />
+                                        <Input step='0.01' type='number' {...register('priceCd')}/>
                                         {errors.priceCd && <span className='text-sm text-red-600'>El precio debe ser superior a 1</span>}
                                     </div>
                                     <div className='flex flex-col gap-2'>
                                         <Label htmlFor='priceVinyl'>Vinilo</Label>
-                                        <Input step='0.01' type='number' {...register('priceVinyl')} defaultValue={song.pricing.vinyl} />
+                                        <Input step='0.01' type='number' {...register('priceVinyl')}/>
                                         {errors.priceVinyl && <span className='text-sm text-red-600'>El precio debe ser superior a 1</span>}
                                     </div>
                                     <div className='flex flex-col gap-2'>
                                         <Label htmlFor='priceCasette'>Cassette</Label>
-                                        <Input step='0.01' type='number' {...register('priceCassette')} defaultValue={song.pricing.cassette} />
+                                        <Input step='0.01' type='number' {...register('priceCassette')}/>
                                         {errors.priceCassette && <span className='text-sm text-red-600'>El precio debe ser superior a 1</span>}
                                     </div>
                                 </div>

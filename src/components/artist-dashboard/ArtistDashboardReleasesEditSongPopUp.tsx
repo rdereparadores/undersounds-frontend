@@ -15,33 +15,24 @@ import {
 import { useEffect, useState } from 'react';
 import { ArtistSongProps } from '@/hooks/artist/ArtistContext';
 import { useArtist } from '@/hooks/artist/useArtist';
-import { useProduct } from '@/hooks/product/useProduct';
 import { SongProps } from '@/hooks/product/ProductContext';
 
 export function ArtistDashboardReleasesEditSongPopUp({ song }: { song: ArtistSongProps }) {
     const artist = useArtist()
-    const product = useProduct()
     const [songVersionArray, setSongVersionArray] = useState<SongProps[]>([]);
     const [actualSong, setActualSong] = useState<SongProps>();
     const [version, setVersion] = useState<number>(-1)
 
     useEffect(() => {
         const fetchSongVersions = async () => {
-            console.log("Tamaño de vector versionHistory: " + song.versionHistory)
             const historyArray = await artist.getSongHistoryArray(song._id);
-            if (song.versionHistory) {
-                console.log("no debaria estar aqui")
-                const versions = await Promise.all(historyArray.map(async (song) => await product.getSongInfo(song._id)));
-                setSongVersionArray(versions.filter((version): version is SongProps => version != null));
-            }else{
-                const actualSong = await product.getSongInfo(song._id);
-                if (actualSong) {
-                    setActualSong(actualSong);
-                }
-            }
+            console.log(historyArray)
+            setSongVersionArray(historyArray)
+            setActualSong(historyArray[songVersionArray.length -1])
+            setVersion(songVersionArray.length -1)
         };
         fetchSongVersions();
-    }, [artist, product, song._id, song.versionHistory]);
+    }, [artist, song._id, songVersionArray.length]);
 
 
     return (
@@ -54,22 +45,22 @@ export function ArtistDashboardReleasesEditSongPopUp({ song }: { song: ArtistSon
             <DialogContent className='min-w-[80%] h-[80%]'>
                 <DialogTitle>Editas tus canciones</DialogTitle>
                 <ScrollArea className="h-full w-full">
-                        <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
-                                <Button variant="outline">Versiones</Button>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent>
-                                <DropdownMenuLabel>Versiones disponibles</DropdownMenuLabel>
-                                <DropdownMenuSeparator />
-                                <DropdownMenuRadioGroup value={version.toString()} onValueChange={(version) => {setVersion(Number(version)); setActualSong(songVersionArray[Number(version)]);}} className='flex-wrap'>
-                                    {songVersionArray.map((song,index)=>(
-                                        <DropdownMenuRadioItem value={song.version?.toString() || "Sin version"} key={index}>V.{song.version?.toString() }</DropdownMenuRadioItem>
-                                    ))}
-                                    <DropdownMenuRadioItem value={"-1"}>Versión actual</DropdownMenuRadioItem>
-                                </DropdownMenuRadioGroup>
-                            </DropdownMenuContent>
-                        </DropdownMenu>
-                        {<ArtistDashboardReleasesEditSong {...actualSong as SongProps} />}
+                    <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                            <Button variant="outline">Versiones</Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent>
+                            <DropdownMenuLabel>Versiones disponibles</DropdownMenuLabel>
+                            <DropdownMenuSeparator />
+                            <DropdownMenuRadioGroup value={version.toString()} onValueChange={(version) => { setVersion(Number(version)); setActualSong(songVersionArray[Number(version)]); }} className='flex-wrap'>
+                                {songVersionArray.filter((song) => song.version !== undefined).map((song, index) => (
+                                    <DropdownMenuRadioItem value={(song.version!).toString() || "Sin version"} key={index}>V.{song.version?.toString()}</DropdownMenuRadioItem>
+                                ))}
+                                <DropdownMenuRadioItem value={(songVersionArray.length -1).toString()}>Versión actual</DropdownMenuRadioItem>
+                            </DropdownMenuRadioGroup>
+                        </DropdownMenuContent>
+                    </DropdownMenu>
+                    {<ArtistDashboardReleasesEditSong {...actualSong as SongProps} />}
                 </ScrollArea>
             </DialogContent>
         </Dialog>
