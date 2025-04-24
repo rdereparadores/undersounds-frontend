@@ -91,6 +91,16 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
         }
     }
 
+    const following = async () => {
+        try {
+            const result = await api.get('/api/user/following')
+            if (result.data.error) return []
+            return result.data.data as FeaturedArtistItem[]
+        } catch {
+            return []
+        }
+    }
+
     const isFollowing = async (artistUsername: string) => {
         try {
             const result = await api.post('/api/user/is-following', { artistUsername })
@@ -183,6 +193,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
         getAddresses, 
         removeAddress, 
         setAddressAsDefault, 
+        following,
         isFollowing, 
         follow, 
         unfollow,
