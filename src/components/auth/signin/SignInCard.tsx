@@ -4,7 +4,6 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
 import { FaGoogle } from "react-icons/fa"
-import { RiNeteaseCloudMusicFill } from "react-icons/ri"
 import { Link, useNavigate, useSearchParams } from 'react-router'
 import { useState, useEffect } from "react"
 import { toast } from "sonner"
@@ -15,6 +14,7 @@ import { useAuth } from "@/hooks/auth/useAuth"
 import { useForm } from "react-hook-form"
 import { ForgotPassword } from "./ForgotPassword"
 import { useMusicPlayer } from "@/hooks/music-player/useMusicPlayer"
+import {GiMusicSpell} from "react-icons/gi";
 
 const signInSchema = z.object({
     email: z.string().email({ message: 'Email inválido' }),
@@ -77,7 +77,7 @@ export const SignInCard = () => {
             <CardHeader>
                 <div className='flex flex-row w-full items-center justify-center'>
                     <Link to='/'>
-                        <RiNeteaseCloudMusicFill className='size-32' />
+                        <GiMusicSpell className='size-32' />
                     </Link>
                 </div>
                 <CardTitle className='text-2xl'>Iniciar sesión</CardTitle>
