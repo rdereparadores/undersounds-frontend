@@ -17,7 +17,7 @@ import {
     SheetTrigger,
     SheetClose
 } from "@/components/ui/sheet"
-import { GiHamburgerMenu } from "react-icons/gi"
+import {GiHamburgerMenu, GiMusicSpell} from "react-icons/gi"
 import { IoCartOutline } from "react-icons/io5"
 import { Skeleton } from "../ui/skeleton"
 
@@ -62,9 +62,9 @@ export const NavBar = ({ floating }: NavBarProps) => {
     return (
         <Card className={`${floating ? '' : 'rounded-none'} w-full h-fit flex items-center justify-between p-2`}>
             <div className='grow flex gap-2 pr-2 items-center justify-start'>
-                <Button asChild>
-                    <Link to='/'>Under<br />Sounds</Link>
-                </Button>
+                <Link to='/' className='mr-3'>
+                    <GiMusicSpell className='size-10' />
+                </Link>
                 <form className='w-full sm:w-[50%]' onSubmit={onSearch}>
                     <Input name='search' type='search' placeholder='Buscar' onChange={onSearchChange}></Input>
                 </form>
