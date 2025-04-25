@@ -13,6 +13,7 @@ import { RatingProps, RatingResultProps } from "@/hooks/ratings/RatingsContext";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
+import { Textarea } from "../ui/textarea";
 
 export const ProductContainerUserRatingPopUp = () => {
     const [userRating, setUserRating] = useState<Partial<RatingProps>>({})
@@ -53,27 +54,31 @@ export const ProductContainerUserRatingPopUp = () => {
                     <DialogTitle>{editing ? 'Editar' : 'Añadir'} valoración</DialogTitle>
                 </DialogHeader>
 
-                <Input onChange={(e) => setUserRating({...userRating, title: e.target.value})} defaultValue={userRating?.title} placeholder="Título" />
-                <Input onChange={(e) => setUserRating({...userRating, description: e.target.value})} defaultValue={userRating?.description} placeholder="Descripción" />
+                <Input onChange={(e) => setUserRating({ ...userRating, title: e.target.value })} defaultValue={userRating?.title} placeholder="Título" />
+                <Textarea
+                    onChange={(e) => setUserRating({ ...userRating, description: e.target.value })} defaultValue={userRating?.description}
+                    placeholder="Descripción"
+                    className="resize-none h-32"
+                />
 
                 <div className="flex gap-1 justify-center">
-                    <Button className="w-10 h-10" onClick={() => {setUserRating({...userRating, rating: 1})}}>
-                        {userRating.rating && (userRating!.rating > 0) ? <FaStar /> : <FaRegStar/>}
+                    <Button className="w-10 h-10" onClick={() => { setUserRating({ ...userRating, rating: 1 }) }}>
+                        {userRating.rating && (userRating!.rating > 0) ? <FaStar /> : <FaRegStar />}
                     </Button>
-                    <Button className="w-10 h-10" onClick={() => {setUserRating({...userRating, rating: 2})}}>
-                        {userRating.rating && (userRating!.rating > 1) ? <FaStar /> : <FaRegStar/>}
+                    <Button className="w-10 h-10" onClick={() => { setUserRating({ ...userRating, rating: 2 }) }}>
+                        {userRating.rating && (userRating!.rating > 1) ? <FaStar /> : <FaRegStar />}
                     </Button>
-                    <Button className="w-10 h-10" onClick={() => {setUserRating({...userRating, rating: 3})}}>
-                        {userRating.rating && (userRating!.rating > 2) ? <FaStar /> : <FaRegStar/>}
+                    <Button className="w-10 h-10" onClick={() => { setUserRating({ ...userRating, rating: 3 }) }}>
+                        {userRating.rating && (userRating!.rating > 2) ? <FaStar /> : <FaRegStar />}
                     </Button>
-                    <Button className="w-10 h-10" onClick={() => {setUserRating({...userRating, rating: 4})}}>
-                        {userRating.rating && (userRating!.rating > 3) ? <FaStar /> : <FaRegStar/>}
+                    <Button className="w-10 h-10" onClick={() => { setUserRating({ ...userRating, rating: 4 }) }}>
+                        {userRating.rating && (userRating!.rating > 3) ? <FaStar /> : <FaRegStar />}
                     </Button>
-                    <Button className="w-10 h-10" onClick={() => {setUserRating({...userRating, rating: 5})}}>
-                        {userRating.rating && (userRating!.rating > 4) ? <FaStar /> : <FaRegStar/>}
+                    <Button className="w-10 h-10" onClick={() => { setUserRating({ ...userRating, rating: 5 }) }}>
+                        {userRating.rating && (userRating!.rating > 4) ? <FaStar /> : <FaRegStar />}
                     </Button>
                 </div>
-                
+
                 <div className="flex gap-2">
                     <Button className="grow" onClick={handleSubmit}>Publicar</Button>
                     {editing && <Button className="max-w-32" variant='destructive' onClick={handleRemove}>Eliminar</Button>}
@@ -108,7 +113,7 @@ export const ProductContainerRatings = () => {
                     </div>
                     <div className="flex gap-2">
                         {rateable && <ProductContainerUserRatingPopUp />}
-                        <ProductContainerRatingPopUp ratings={ratings.ratings}/>
+                        <ProductContainerRatingPopUp ratings={ratings.ratings} />
                     </div>
                 </div>
             </CardHeader>

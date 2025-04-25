@@ -182,6 +182,26 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
         }
     }
 
+    const updateEmail = async (email: string, otp: string) => {
+        try {
+            const result = await api.post('/api/user/update/email', {email, otp})
+            if (result.data.error) return false
+            return true
+        } catch {
+            return false
+        }
+    }
+
+    const updatePassword = async (password: string, otp: string) => {
+        try {
+            const result = await api.post('/api/user/update/password', {password, otp})
+            if (result.data.error) return false
+            return true
+        } catch {
+            return false
+        }
+    }
+
     return (
         <UserContext.Provider
         value={{
@@ -201,7 +221,9 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
         getLibraryAlbums,
         getOrders,
         getFeaturedArtists,
-        getFeaturedContent
+        getFeaturedContent,
+        updateEmail,
+        updatePassword
         }}>
             {children}
         </UserContext.Provider>

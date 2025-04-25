@@ -114,7 +114,9 @@ export interface UserContextProps {
     getLibraryAlbums: () => Promise<LibraryAlbum[]>,
     getOrders: () => Promise<Order[]>,
     getFeaturedContent: () => Promise<FeaturedContentItem[]>,
-    getFeaturedArtists: () => Promise<FeaturedArtistItem[]>
+    getFeaturedArtists: () => Promise<FeaturedArtistItem[]>,
+    updateEmail: (email: string, otp: string) => Promise<boolean>,
+    updatePassword: (password: string, otp: string) => Promise<boolean>
 }
 
 export const UserContext = createContext<UserContextProps>({
@@ -134,5 +136,7 @@ export const UserContext = createContext<UserContextProps>({
     getLibraryAlbums: async () => [],
     getOrders: async () => {throw new Error()},
     getFeaturedContent: async () => [],
-    getFeaturedArtists: async () => []
+    getFeaturedArtists: async () => [],
+    updateEmail: async () => false,
+    updatePassword: async () => false
 })
