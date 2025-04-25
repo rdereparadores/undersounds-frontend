@@ -24,17 +24,17 @@ export const TableFeaturedContent = ({ selectedSongsList, setSelectedSongsList }
     useEffect(() => {
         artist.getArtistSongs()
             .then(songs => setSongsList(songs || []))
+
+        selectedSongsList.forEach((s) => handleSongAdd(s))
     }, [])
 
     const handleSongAdd = (songId: string) => {
         const newSongsList = [...selectedSongsList, songId]
         setSelectedSongsList(newSongsList)
-        console.log(selectedSongsList)
     }
 
     const handleSongRemove = (songId: string) => {
         setSelectedSongsList(selectedSongsList.filter(g => g != songId))
-        console.log(selectedSongsList)
     }
 
     return (
@@ -64,6 +64,7 @@ export const TableFeaturedContent = ({ selectedSongsList, setSelectedSongsList }
                                         handleSongRemove(songs._id)
                                     }
                                 }}
+                                checked={selectedSongsList.includes(songs._id)}
                             />
                             <Label></Label>
                         </TableCell>

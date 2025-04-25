@@ -25,17 +25,29 @@ export interface PublishAlbumProps {
 }
 
 export interface UpdateSongProps {
-    id: string,
-    title: string,
-    description: string,
-    img: File,
-    song: File,
-    priceDigital: number,
-    priceCd: number,
-    priceVinyl: number,
-    priceCassette: number
-    collaborators: string[],
-    genres: string[] 
+    songId: string,
+    title?: string,
+    description?: string,
+    img?: File,
+    song?: File,
+    priceDigital?: number,
+    priceCd?: number,
+    priceVinyl?: number,
+    priceCassette?: number
+    collaborators?: string[],
+    genres?: string[] 
+}
+
+export interface UpdateAlbumProps {
+    albumId: string,
+    title?: string,
+    description?: string,
+    albumImage?: File,
+    songArray: string[],
+    priceDigital?: number,
+    priceCd?: number,
+    priceVinyl?: number,
+    priceCassette?: number,
 }
 
 interface ArtistReleaseContextProps {
@@ -43,7 +55,7 @@ interface ArtistReleaseContextProps {
     publishSong: (data: PublishSongProps) => Promise<string | null>,
     publishAlbum: (data: PublishAlbumProps) => Promise<string | null>,
     updateSong: (data: UpdateSongProps) => Promise<string | null>,
-    updateAlbum: (data: PublishAlbumProps) => Promise<string | null>
+    updateAlbum: (data: UpdateAlbumProps) => Promise<string | null>
 }
 
 export const ArtistReleaseContext = createContext<ArtistReleaseContextProps>({

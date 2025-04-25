@@ -1,6 +1,6 @@
 import { createContext } from 'react'
 import { UserInfoProps } from '../user/UserContext'
-import { SongProps } from '../product/ProductContext'
+import { AlbumProps, SongProps } from '../product/ProductContext'
 
 export interface UpdateArtistInfoProps {
     artistName: string,
@@ -29,6 +29,7 @@ export interface ArtistSongProps {
 }
 
 export interface ArtistAlbumProps {
+    _id: string,
     title: string,
     imgUrl: string,
     author: string,
@@ -43,7 +44,8 @@ export interface ArtistContextProps {
     getArtistSongs: () => Promise<ArtistSongProps[] | undefined>,
     getArtistAlbums: () => Promise<ArtistAlbumProps[] | undefined>,
     updateArtistInfo: (data: Partial<UpdateArtistInfoProps>) => Promise<boolean>,
-    getSongHistoryArray: (songId: string) => Promise<SongProps[]> 
+    getSongHistoryArray: (songId: string) => Promise<SongProps[]>,
+    getAlbumHistoryArray: (albumId: string) => Promise<AlbumProps[]> 
 }
 
 export const ArtistContext = createContext<ArtistContextProps>({
@@ -51,5 +53,6 @@ export const ArtistContext = createContext<ArtistContextProps>({
     getArtistSongs: async () => [],
     getArtistAlbums: async () => [],
     updateArtistInfo: async () => { throw new Error() },
-    getSongHistoryArray: async () => []
+    getSongHistoryArray: async () => [],
+    getAlbumHistoryArray: async () => [] 
 })

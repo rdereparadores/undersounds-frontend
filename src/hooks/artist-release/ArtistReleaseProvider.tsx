@@ -1,5 +1,5 @@
 import { toast } from "sonner"
-import { ArtistReleaseContext, PublishAlbumProps, PublishSongProps, UpdateSongProps } from "./ArtistReleaseContext"
+import { ArtistReleaseContext, PublishAlbumProps, PublishSongProps, UpdateAlbumProps, UpdateSongProps } from "./ArtistReleaseContext"
 import { api } from "@/lib/api"
 
 export const ArtistReleaseProvider = ({ children }: { children: React.ReactNode }) => {
@@ -69,18 +69,22 @@ export const ArtistReleaseProvider = ({ children }: { children: React.ReactNode 
 
     const updateSong = async (data: UpdateSongProps) => {
         try {
+            console.log(data)
             const formData = new FormData()
-            formData.append('title', data.title)
-            formData.append('description', data.description)
-            formData.append('priceCd', data.priceCd.toString())
-            formData.append('priceDigital', data.priceDigital.toString())
-            formData.append('priceVinyl', data.priceVinyl.toString())
-            formData.append('priceCassette', data.priceCassette.toString())
-            formData.append('collaborators', data.collaborators.join(','))
-            formData.append('genres', data.genres.join(','))
-            formData.append('img', data.img)
-            formData.append('song', data.song)
-            formData.append('id',data.id)
+
+            if(data.title) formData.append('title', data.title)
+            if(data.description) formData.append('description', data.description)
+            if(data.priceCd) formData.append('priceCd', data.priceCd.toString())
+            if(data.priceDigital) formData.append('priceDigital', data.priceDigital.toString())
+            if(data.priceVinyl) formData.append('priceVinyl', data.priceVinyl.toString())
+            if(data.priceCassette) formData.append('priceCassette', data.priceCassette.toString())
+            if(data.collaborators) formData.append('collaborators', data.collaborators.join(','))
+            if(data.genres) formData.append('genres', data.genres.join(','))
+            if(data.img) formData.append('img', data.img)
+            if(data.song) formData.append('song', data.song)
+            formData.append('songId',data.songId)
+
+            console.log(formData.get('songId'))
 
             const result = await api.post('/api/artist/songs/update', formData)
             if (result.data.error) {
@@ -95,25 +99,30 @@ export const ArtistReleaseProvider = ({ children }: { children: React.ReactNode 
         }
     }
 
-    const updateAlbum = async(data: PublishAlbumProps) => {
+    const updateAlbum = async(data: UpdateAlbumProps) => {
         try {
+            console.log(data)
             const formData = new FormData()
-            formData.append('title', data.title)
-            formData.append('description', data.description)
-            formData.append('priceCd', data.priceCd.toString())
-            formData.append('priceDigital', data.priceDigital.toString())
-            formData.append('priceVinyl', data.priceVinyl.toString())
-            formData.append('priceCassette', data.priceCassette.toString())
-            formData.append('albumImage', data.albumImage)
-            formData.append('songs', data.songs.join(','))
 
-            const result = await api.post('/api/artist/release/album', formData)
+            if(data.title) formData.append('title', data.title)
+            if(data.description) formData.append('description', data.description)
+            if(data.priceCd) formData.append('priceCd', data.priceCd.toString())
+            if(data.priceDigital) formData.append('priceDigital', data.priceDigital.toString())
+            if(data.priceVinyl) formData.append('priceVinyl', data.priceVinyl.toString())
+            if(data.priceCassette) formData.append('priceCassette', data.priceCassette.toString())
+            if(data.albumImage) formData.append('albumImage', data.albumImage)
+            if(data.songArray)formData.append('songArray', data.songArray.join(','))
+            formData.append('albumId',data.albumId)
+
+            console.log(formData.get('albumId'))
+
+            const result = await api.post('/api/artist/albums/update', formData)
             if (result.data.error) {
                 toast.error('Error al actualizar el álbum')
                 return null
             }
-            toast.success('Álbum actualizado con éxito')
-            return result.data.data.id
+            toast.success('Álbum actualizada con éxito')
+            return result.data.data
         } catch {
             toast.error('Error al actualizar el álbum')
             return null
