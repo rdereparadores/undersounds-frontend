@@ -25,17 +25,17 @@ export interface PublishAlbumProps {
 }
 
 export interface UpdateSongProps {
-    id: string,
-    title: string,
-    description: string,
-    img: File,
-    song: File,
-    priceDigital: number,
-    priceCd: number,
-    priceVinyl: number,
-    priceCassette: number
-    collaborators: string[],
-    genres: string[] 
+    songId: string,
+    title?: string,
+    description?: string,
+    img?: File,
+    song?: File,
+    priceDigital?: number,
+    priceCd?: number,
+    priceVinyl?: number,
+    priceCassette?: number
+    collaborators?: string[],
+    genres?: string[] 
 }
 
 interface ArtistReleaseContextProps {

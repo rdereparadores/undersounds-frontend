@@ -16,6 +16,7 @@ import { useEffect, useState } from 'react';
 import { ArtistSongProps } from '@/hooks/artist/ArtistContext';
 import { useArtist } from '@/hooks/artist/useArtist';
 import { SongProps } from '@/hooks/product/ProductContext';
+import { Skeleton } from '../ui/skeleton';
 
 export function ArtistDashboardReleasesEditSongPopUp({ song }: { song: ArtistSongProps }) {
     const artist = useArtist()
@@ -31,9 +32,12 @@ export function ArtistDashboardReleasesEditSongPopUp({ song }: { song: ArtistSon
             setActualSong(historyArray[songVersionArray.length -1])
             setVersion(songVersionArray.length -1)
         };
-        fetchSongVersions();
-    }, [artist, song._id, songVersionArray.length]);
+        if(song._id) fetchSongVersions();
+    }, [song._id, songVersionArray.length]);
 
+    if(!song._id){
+        return <Skeleton className='w-full h-full'></Skeleton>
+    }
 
     return (
         <Dialog>
@@ -52,7 +56,7 @@ export function ArtistDashboardReleasesEditSongPopUp({ song }: { song: ArtistSon
                         <DropdownMenuContent>
                             <DropdownMenuLabel>Versiones disponibles</DropdownMenuLabel>
                             <DropdownMenuSeparator />
-                            <DropdownMenuRadioGroup value={version.toString()} onValueChange={(version) => { setVersion(Number(version)); setActualSong(songVersionArray[Number(version)]); }} className='flex-wrap'>
+                            <DropdownMenuRadioGroup value={version.toString()} onValueChange={(version) => { setVersion(Number(version)); setActualSong({...songVersionArray[Number(version)]}) }} className='flex-wrap'>
                                 {songVersionArray.filter((song) => song.version !== undefined).map((song, index) => (
                                     <DropdownMenuRadioItem value={(song.version!).toString() || "Sin version"} key={index}>V.{song.version?.toString()}</DropdownMenuRadioItem>
                                 ))}
@@ -60,7 +64,7 @@ export function ArtistDashboardReleasesEditSongPopUp({ song }: { song: ArtistSon
                             </DropdownMenuRadioGroup>
                         </DropdownMenuContent>
                     </DropdownMenu>
-                    {<ArtistDashboardReleasesEditSong {...actualSong as SongProps} />}
+                    <ArtistDashboardReleasesEditSong {...actualSong as SongProps} />
                 </ScrollArea>
             </DialogContent>
         </Dialog>

@@ -69,18 +69,22 @@ export const ArtistReleaseProvider = ({ children }: { children: React.ReactNode 
 
     const updateSong = async (data: UpdateSongProps) => {
         try {
+            console.log(data)
             const formData = new FormData()
-            formData.append('title', data.title)
-            formData.append('description', data.description)
-            formData.append('priceCd', data.priceCd.toString())
-            formData.append('priceDigital', data.priceDigital.toString())
-            formData.append('priceVinyl', data.priceVinyl.toString())
-            formData.append('priceCassette', data.priceCassette.toString())
-            formData.append('collaborators', data.collaborators.join(','))
-            formData.append('genres', data.genres.join(','))
-            formData.append('img', data.img)
-            formData.append('song', data.song)
-            formData.append('id',data.id)
+
+            if(data.title) formData.append('title', data.title)
+            if(data.description) formData.append('description', data.description)
+            if(data.priceCd) formData.append('priceCd', data.priceCd.toString())
+            if(data.priceDigital) formData.append('priceDigital', data.priceDigital.toString())
+            if(data.priceVinyl) formData.append('priceVinyl', data.priceVinyl.toString())
+            if(data.priceCassette) formData.append('priceCassette', data.priceCassette.toString())
+            if(data.collaborators) formData.append('collaborators', data.collaborators.join(','))
+            if(data.genres) formData.append('genres', data.genres.join(','))
+            if(data.img) formData.append('img', data.img)
+            if(data.song) formData.append('song', data.song)
+            formData.append('songId',data.songId)
+
+            console.log(formData.get('songId'))
 
             const result = await api.post('/api/artist/songs/update', formData)
             if (result.data.error) {

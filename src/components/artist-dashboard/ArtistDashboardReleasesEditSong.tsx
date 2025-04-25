@@ -14,43 +14,44 @@ import { ArtistDashboardReleasesNewSongGenreCard } from './ArtistDashboardReleas
 import { ArtistDashboardReleasesNewSongCollaborators } from './ArtistDashboardReleasesNewSong'
 import { useProduct } from '@/hooks/product/useProduct'
 import { SongProps } from '@/hooks/product/ProductContext'
+import { FaDownload } from 'react-icons/fa'
+import { useMusicPlayer } from '@/hooks/music-player/useMusicPlayer'
 
 const updateSongSchema = z.object({
-    id: z.string().min(1).optional(),
-    title: z.string().min(1).optional(),
-    description: z.string().min(1).optional(),
+    songId: z.string().min(1),
+    title: z.string().optional(),
+    description: z.string().optional(),
     img: z.any()
-        .refine((file) => file.length > 0 ? file?.[0]?.type?.startsWith("image/") : true, {
+        .optional()
+        .refine((file) => {
+            return (file.length > 0 ? file?.[0]?.type?.startsWith("image/") : true) || (file.lenght === undefined)
+        }, {
             message: "La portada debe tener formato JPG o PNG",
-        }).optional(),
+        }),
 
     song: z.any()
         .optional()
-        .refine((file) => file?.[0], {
-            message: "Debes subir el archivo de audio",
-        })
-        .refine((file) => file?.[0]?.type?.startsWith("audio/"), {
+        .refine((file) => {
+            return (file?.[0]?.type?.startsWith("audio/") || (file.lenght === undefined))
+        }, {
             message: "El archivo de audio debe ser de los siguientes tipos: MP3, FLAC, WAV",
         }),
 
-    priceDigital: z.preprocess((val) => Number(val), z.number().min(1)).optional(),
-    priceVinyl: z.preprocess((val) => Number(val), z.number().min(1)).optional(),
-    priceCassette: z.preprocess((val) => Number(val), z.number().min(1)).optional(),
-    priceCd: z.preprocess((val) => Number(val), z.number().min(1)).optional()
-}).refine(data => {
-    if (data.img) return data.img?.[0] !== undefined
-    return false
-}, {
-    message: 'Sube una imagen',
-    path: ['img']
+    priceDigital: z.preprocess((val) => Number(val), z.number()).optional(),
+    priceVinyl: z.preprocess((val) => Number(val), z.number()).optional(),
+    priceCassette: z.preprocess((val) => Number(val), z.number()).optional(),
+    priceCd: z.preprocess((val) => Number(val), z.number()).optional()
 })
 
 type NewSongFormData = z.infer<typeof updateSongSchema>
 
 export const ArtistDashboardReleasesEditSong = (song: SongProps) => {
-    const [selectedGenreList, setSelectedGenreList] = useState<string[]>([])
     const artistRelease = useArtistRelease()
     const product = useProduct()
+    const musicPlayer = useMusicPlayer()
+    const [firstRender, setFirstRender] = useState<boolean>(true)
+    const [songId, setSongId] = useState<string>('')
+    const [selectedGenreList, setSelectedGenreList] = useState<string[]>([])
     const [previewImgLoaded, setPreviewImgLoaded] = useState(false)
     const [previewImg, setPreviewImg] = useState('')
     const [generatingImage, setGeneratingImage] = useState(false)
@@ -62,10 +63,21 @@ export const ArtistDashboardReleasesEditSong = (song: SongProps) => {
     const title = watch('title')
 
     useEffect(() => {
+        if (firstRender) {
+            setValue('songId', song._id)
+            setSongId(song._id)
+            setFirstRender(false)
+            setPreviewImg(song.imgUrl)
+            setPreviewImgLoaded(true)
+            setSelectedGenreList(song.genres)
+            return
+        }
+
         const fetchDatosVersion = async () => {
 
             if (song._id === undefined) return
 
+            setValue('songId', song._id)
             setValue('title', song.title)
             setValue('description', song.description)
             setValue('priceCassette', song.pricing.cassette)
@@ -76,6 +88,12 @@ export const ArtistDashboardReleasesEditSong = (song: SongProps) => {
             setSelectedGenreList(song.genres)
             
             if (song?.imgUrl) {
+                const response = await fetch(song.imgUrl)
+                const blob = await response.blob()
+                const file = new File([blob], 'newVersionImage.png', { type: blob.type })
+                const dataTransfer = new DataTransfer()
+                dataTransfer.items.add(file)
+                setValue('img', dataTransfer.files)
                 setPreviewImg(song.imgUrl)
                 setPreviewImgLoaded(true)
             }
@@ -98,6 +116,7 @@ export const ArtistDashboardReleasesEditSong = (song: SongProps) => {
     const onSubmit = async (data: NewSongFormData) => {
         const result = await artistRelease.updateSong({
             ...data,
+            songId,
             song: data.song[0],
             img: data.img[0],
             collaborators: [],
@@ -155,31 +174,35 @@ export const ArtistDashboardReleasesEditSong = (song: SongProps) => {
                         <img src={previewImg} className={`rounded-md w-32 h-32 ${previewImgLoaded ? '' : 'hidden'}`} onLoad={() => { setPreviewImgLoaded(true) }} />
                         {(errors.img) && <span className='text-sm text-red-600'>Sube una imagen</span>}
                         <div className='flex flex-col gap-2'>
-                            <Button onClick={handleImageUpload}>Subir portada</Button>
-                            <Button disabled={generatingImage} variant='outline' onClick={handleImageAIGeneration}>Generar con IA</Button>
+                            <Button onClick={handleImageUpload} type='button'>Subir portada</Button>
+                            <Button disabled={generatingImage} variant='outline' onClick={handleImageAIGeneration} type='button'>Generar con IA</Button>
                         </div>
                         <Input id='upload-cover' type='file' accept='image/*' {...register('img')} className='hidden' />
                     </div>
                     <div className='flex flex-col gap-4 grow'>
                         <div className='flex flex-col gap-2'>
                             <Label htmlFor='title'>Título</Label>
-                            <Input {...register(('title'))} type='text' />
+                            <Input {...register(('title'))} type='text' placeholder={song.title}/>
                             {errors.title && <span className='text-sm text-red-600'>El título no puede estar vacío</span>}
                         </div>
 
                         <div className='flex flex-col gap-2 grow'>
                             <Label htmlFor='description' aria-multiline='true'>Descripción</Label>
-                            <Textarea className='grow' {...register('description')} />
+                            <Textarea className='grow' {...register('description')} placeholder={song.description}/>
                             {errors.description && <span className='text-sm text-red-600'>La descripción no puede estar vacía</span>}
                         </div>
                     </div>
                 </div>
 
                 <div className='flex flex-col gap-4 mb-4'>
-                    <div className='flex flex-col gap-2'>
-                        <Label htmlFor='song'>Fichero de audio</Label>
+                    <Label htmlFor='song'>Fichero de audio</Label>
+                    <div className='flex flex-row gap-2'>
                         <Input type='file' {...register('song')} />
-                        {errors.song && <span className='text-sm text-red-600' defaultValue={song.songDir}>Debes subir un fichero de audio</span>}
+                        {errors.song && <span className='text-sm text-red-600'>Debes subir un fichero de audio</span>}
+                        <Button onClick={() => { musicPlayer.download(song._id) }} variant='secondary' className="rounded-full w-10 h-10">
+                            <FaDownload />
+                        </Button>
+                        <p>Descargar archivo de audio</p>
                     </div>
                 </div>
 
@@ -194,22 +217,22 @@ export const ArtistDashboardReleasesEditSong = (song: SongProps) => {
                                 <div className='flex flex-col gap-4'>
                                     <div className='flex flex-col gap-2'>
                                         <Label htmlFor='priceDigital'>Digital</Label>
-                                        <Input step='0.01' type='number' {...register('priceDigital')}/>
+                                        <Input step='0.01' type='number' {...register('priceDigital')} placeholder={song.pricing.digital.toString()}/>
                                         {errors.priceDigital && <span className='text-sm text-red-600'>El precio debe ser superior a 1</span>}
                                     </div>
                                     <div className='flex flex-col gap-2'>
                                         <Label htmlFor='priceCd'>CD</Label>
-                                        <Input step='0.01' type='number' {...register('priceCd')}/>
+                                        <Input step='0.01' type='number' {...register('priceCd')} placeholder={song.pricing.cd.toString()}/>
                                         {errors.priceCd && <span className='text-sm text-red-600'>El precio debe ser superior a 1</span>}
                                     </div>
                                     <div className='flex flex-col gap-2'>
                                         <Label htmlFor='priceVinyl'>Vinilo</Label>
-                                        <Input step='0.01' type='number' {...register('priceVinyl')}/>
+                                        <Input step='0.01' type='number' {...register('priceVinyl')} placeholder={song.pricing.vinyl.toString()}/>
                                         {errors.priceVinyl && <span className='text-sm text-red-600'>El precio debe ser superior a 1</span>}
                                     </div>
                                     <div className='flex flex-col gap-2'>
                                         <Label htmlFor='priceCasette'>Cassette</Label>
-                                        <Input step='0.01' type='number' {...register('priceCassette')}/>
+                                        <Input step='0.01' type='number' {...register('priceCassette')} placeholder={song.pricing.cassette.toString()}/>
                                         {errors.priceCassette && <span className='text-sm text-red-600'>El precio debe ser superior a 1</span>}
                                     </div>
                                 </div>
