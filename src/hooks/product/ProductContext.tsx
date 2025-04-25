@@ -35,11 +35,11 @@ export interface SongProps extends ProductProps {
         followers: number
     }[],
     version?: number
-
 }
 
 export interface AlbumProps extends ProductProps {
-    trackList: Partial<SongProps>[]
+    trackList: Partial<SongProps>[],
+    version?: number
 }
 
 export interface RatingItemProps {

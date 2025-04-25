@@ -1,6 +1,4 @@
 import { useArtist } from "@/hooks/artist/useArtist"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card"
-import { ChangeFeatureContent } from "./ArtistDashboardProfileChangeFeatureContent"
 import { ArtistDashboardProfileEditProfilePopUp } from "./ArtistDashboardProfileEditProfilePopUp"
 import { useEffect, useState } from "react"
 import { ArtistInfoProps } from "@/hooks/artist/ArtistContext"
@@ -31,28 +29,6 @@ export const ArtistDashboardProfile = () => {
                         <p className="">@{artistData.artistUsername}</p>
                     </div>
                 </div>
-            </div>
-
-            <div className="mt-16 flex justify-end">
-                <Card className="w-fit">
-                    <CardHeader>
-                        <div className="flex justify-between gap-4">
-                            <div>
-                                <CardTitle>Contenido destacado</CardTitle>
-                                <CardDescription>Destaca contenido en tu perfil</CardDescription>
-                            </div>
-                            <ChangeFeatureContent/>
-                        </div>
-                    </CardHeader>
-                    <CardContent>
-                        <div className="flex flex-col items-center">
-                            <div className="flex flex-col items-start gap-1">
-                                <img src='https://picsum.photos/400' className="w-48 h-48 rounded-md" />
-                                <p className="text-lg font-medium">Canción destacada</p>
-                            </div>
-                        </div>
-                    </CardContent>
-                </Card>
             </div>
         </div>
     )

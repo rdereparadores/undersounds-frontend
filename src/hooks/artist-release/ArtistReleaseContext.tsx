@@ -38,12 +38,24 @@ export interface UpdateSongProps {
     genres?: string[] 
 }
 
+export interface UpdateAlbumProps {
+    albumId: string,
+    title?: string,
+    description?: string,
+    albumImage?: File,
+    songArray: string[],
+    priceDigital?: number,
+    priceCd?: number,
+    priceVinyl?: number,
+    priceCassette?: number,
+}
+
 interface ArtistReleaseContextProps {
     generateAiCover: (prompt: string) => Promise<string | null>,
     publishSong: (data: PublishSongProps) => Promise<string | null>,
     publishAlbum: (data: PublishAlbumProps) => Promise<string | null>,
     updateSong: (data: UpdateSongProps) => Promise<string | null>,
-    updateAlbum: (data: PublishAlbumProps) => Promise<string | null>
+    updateAlbum: (data: UpdateAlbumProps) => Promise<string | null>
 }
 
 export const ArtistReleaseContext = createContext<ArtistReleaseContextProps>({

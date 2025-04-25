@@ -82,8 +82,17 @@ export const ArtistProvider = ({ children }: { children: React.ReactNode }) => {
         }
     }
 
+    const getAlbumHistoryArray = async (albumId: string) => {
+        try {
+            const result = await api.post('/api/artist/albums/history', { albumId })
+            return result.data.data
+        } catch {
+            return null
+        }
+    }
+
     return (
-        <ArtistContext.Provider value={{ getArtistInfo, updateArtistInfo, getArtistSongs, getArtistAlbums, getSongHistoryArray }}>
+        <ArtistContext.Provider value={{ getArtistInfo, updateArtistInfo, getArtistSongs, getArtistAlbums, getSongHistoryArray, getAlbumHistoryArray }}>
             {children}
         </ArtistContext.Provider>
     )
