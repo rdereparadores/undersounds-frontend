@@ -24,7 +24,7 @@ export const ArtistDashboardReleasesSongsItem = ({ song, artistData }: { song: A
                         {!imgLoaded && <Skeleton className="w-48 h-48 rounded-xl rounded-b-none" />}
                         <img src={song.imgUrl} className={`w-48 h-48 rounded-xl rounded-b-none ${imgLoaded ? '' : 'hidden'}`} onLoad={() => setImgLoaded(true)} />
                         <Button onClick={() => {musicPlayer.play(song._id)}} className="absolute bottom-2 right-2 rounded-full w-10 h-10">
-                            <FaPlay className="ml-[3px]" />
+                            <FaPlay className="ml-[3px]" /> 
                         </Button>
                         <Button onClick={() => {musicPlayer.download(song._id)}} variant='secondary' className="absolute bottom-2 right-14 rounded-full w-10 h-10">
                             <FaDownload />
@@ -33,7 +33,7 @@ export const ArtistDashboardReleasesSongsItem = ({ song, artistData }: { song: A
                     <ArtistDashboardReleasesEditSongPopUp song={song} />
                 </div>
             </CardHeader>
-            <CardContent className="pt-2 px-2 w-min h-min">
+            <CardContent className="pt-2 px-2 w-48 h-min">
                 <CardTitle className="">{song.title}</CardTitle>
                 <CardDescription>{artistData?.artistName}</CardDescription>
             </CardContent>
