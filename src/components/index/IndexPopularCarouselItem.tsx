@@ -22,7 +22,7 @@ export const IndexPopularCarouselItem = ({ song, position }: { song: TrendingSon
                     onClick={() => { navigate(`/song/${song._id}`) }}
                 />
 
-                <p className='font-medium'>
+                <p className='font-medium text-ellipsis max-w-48 whitespace-nowrap overflow-hidden'>
                     <Link to={`/song/${song._id}`}>
                         {song.title}
                     </Link>
