@@ -25,7 +25,13 @@ export interface ArtistSongProps {
     artistName: string,
     duration: number,
     version?: number,
-    versionHistory?: string[]
+    versionHistory?: string[],
+    collaborators?: {
+        _id: string,
+        artistUsername: string,
+        artistName: string,
+        artistImgUrl: string 
+    }[]
 }
 
 export interface ArtistAlbumProps {

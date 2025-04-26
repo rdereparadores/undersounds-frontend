@@ -37,7 +37,9 @@ export const ArtistDashboardReleasesSongsItem = ({ song, artistData }: { song: A
             </CardHeader>
             <CardContent className="pt-2 px-2 w-48 h-min">
                 <CardTitle className="">{song.title}</CardTitle>
-                <CardDescription>{artistData?.artistName}</CardDescription>
+                <CardDescription>
+                    {artistData?.artistName} {song.collaborators && song.collaborators.length > 0 ? `, ${song.collaborators.map(c => c.artistName).join(', ')}` : false}
+                </CardDescription>
             </CardContent>
         </Card>
     )

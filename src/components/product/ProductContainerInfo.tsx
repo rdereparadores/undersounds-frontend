@@ -23,12 +23,12 @@ export const ProductContainerInfo = ({ type, productInfo }: { type: 'song' | 'al
         )
         if (type !== 'song' || !('collaborators' in productInfo) || productInfo.collaborators.length === 0) return authorLink
         const collaboratorLinks = productInfo.collaborators.map((collaborator, index) => (
-            <Link key={index} to={`/profile/artist/${collaborator.artistUsername}`}>{collaborator.artistName}</Link>
+            <Link key={index} to={`/profile/artist/${collaborator.artistUsername}`}>, {collaborator.artistName}</Link>
         ))
 
         return (
             <h3 className='text-xl mb-2'>
-                <Link to={`/profile/artist/${productInfo.author._id}`}>{productInfo.author.artistName}</Link>
+                <Link to={`/profile/artist/${productInfo.author.artistUsername}`}>{productInfo.author.artistName}</Link>
                 {collaboratorLinks}
             </h3>
         )

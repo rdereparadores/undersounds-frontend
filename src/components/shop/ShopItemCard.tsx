@@ -24,7 +24,7 @@ export const ShopItemCard = ({ item }: { item: ShopItem }) => {
                         />
                     </div>
                     <CardTitle className=''>{item.title}</CardTitle>
-                    <CardDescription>{item.author.artistName}</CardDescription>
+                    <CardDescription>{item.author.artistName}{item.collaborators.map((c) => c.artistName)}</CardDescription>
                     <Badge className='w-fit'>{item.type == 'album' ? 'Álbum' : 'Canción'}</Badge>
                 </CardHeader>
                 <CardContent className='p-2 pt-0'>

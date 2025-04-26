@@ -36,8 +36,8 @@ export const MusicPlayer = () => {
                         <p className="font-medium truncate">
                             {player.playerProps?.title}
                         </p>
-                        <p>
-                            {player.playerProps?.author.artistName}
+                        <p className="text-ellipsis max-w-32 whitespace-nowrap overflow-hidden">
+                            {player.playerProps?.author.artistName} {player.playerProps && player.playerProps.collaborators.length > 0 && `, ${player.playerProps.collaborators.map(c => c.artistName).join(', ')}`}
                         </p>
                     </div>
                     <Button variant='outline' onClick={() => { player.player!.seek(0) }} className="pr-[18px] mt-1 rounded-full w-10 h-10">
