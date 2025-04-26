@@ -16,6 +16,7 @@ import { useProduct } from '@/hooks/product/useProduct'
 import { SongProps } from '@/hooks/product/ProductContext'
 import { FaDownload } from 'react-icons/fa'
 import { useMusicPlayer } from '@/hooks/music-player/useMusicPlayer'
+import { CollaboratorsFound } from '@/hooks/artist-release/ArtistReleaseContext'
 
 const updateSongSchema = z.object({
     songId: z.string().min(1),
@@ -55,6 +56,7 @@ export const ArtistDashboardReleasesEditSong = (song: SongProps) => {
     const [previewImgLoaded, setPreviewImgLoaded] = useState(false)
     const [previewImg, setPreviewImg] = useState('')
     const [generatingImage, setGeneratingImage] = useState(false)
+    const [selectedArtistList, setSelectedArtistList] = useState<CollaboratorsFound[]>([])
     const { register, handleSubmit, formState: { errors }, watch, setValue } = useForm<NewSongFormData>({
         resolver: zodResolver(updateSongSchema)
     })
@@ -70,6 +72,7 @@ export const ArtistDashboardReleasesEditSong = (song: SongProps) => {
             setPreviewImg(song.imgUrl)
             setPreviewImgLoaded(true)
             setSelectedGenreList(song.genres)
+            setSelectedArtistList(song.collaborators)
             return
         }
 
@@ -85,6 +88,7 @@ export const ArtistDashboardReleasesEditSong = (song: SongProps) => {
             setValue('priceDigital', song.pricing.digital)
             setValue('priceVinyl', song.pricing.vinyl)
 
+            setSelectedArtistList(song.collaborators)
             setSelectedGenreList(song.genres)
             
             if (song?.imgUrl) {
@@ -119,7 +123,7 @@ export const ArtistDashboardReleasesEditSong = (song: SongProps) => {
             songId,
             song: data.song[0],
             img: data.img[0],
-            collaborators: [],
+            collaborators: selectedArtistList.map((c) => c.artistUsername),
             genres: selectedGenreList,
         })
         if (result !== null) window.location.reload()
@@ -207,7 +211,7 @@ export const ArtistDashboardReleasesEditSong = (song: SongProps) => {
 
                 <div className='flex gap-4'>
                     <div className='flex flex-col gap-4 grow'>
-                        <ArtistDashboardReleasesNewSongCollaborators />
+                        <ArtistDashboardReleasesNewSongCollaborators selectedArtistList={selectedArtistList} setSelectedArtistList={setSelectedArtistList}/>
                         <Card className='grow h-fit'>
                             <CardHeader>
                                 <CardTitle>Precios</CardTitle>

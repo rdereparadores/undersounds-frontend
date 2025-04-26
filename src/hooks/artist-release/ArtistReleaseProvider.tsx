@@ -16,6 +16,8 @@ export const ArtistReleaseProvider = ({ children }: { children: React.ReactNode 
 
     const publishSong = async (data: PublishSongProps) => {
         try {
+
+            console.log(data.collaborators)
             const formData = new FormData()
             formData.append('title', data.title)
             formData.append('description', data.description)
@@ -129,8 +131,18 @@ export const ArtistReleaseProvider = ({ children }: { children: React.ReactNode 
         }
     }
 
+    const searchCollaborators = async(query: string) => {
+        try {
+            const result = await api.post('/api/profile/artist/search', {query})
+            return result.data.data
+        } catch (_err) {
+            console.log(_err)
+            return null
+        }
+    }
+
     return (
-        <ArtistReleaseContext.Provider value={{ generateAiCover, publishSong, publishAlbum, updateSong, updateAlbum}}>
+        <ArtistReleaseContext.Provider value={{ generateAiCover, publishSong, publishAlbum, updateSong, updateAlbum, searchCollaborators}}>
             {children}
         </ArtistReleaseContext.Provider>
     )

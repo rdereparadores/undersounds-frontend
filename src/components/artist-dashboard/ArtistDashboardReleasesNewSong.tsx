@@ -14,6 +14,8 @@ import { useArtistRelease } from '@/hooks/artist-release/useArtistRelease'
 import { Skeleton } from '../ui/skeleton'
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover'
 import { ArtistDashboardReleasesNewSongGenreCard } from './ArtistDashboardReleasesNewSongGenreCard'
+import { useArtist } from '@/hooks/artist/useArtist'
+import { CollaboratorsFound } from '@/hooks/artist-release/ArtistReleaseContext'
 
 const newSongSchema = z.object({
     title: z.string().min(1),
@@ -43,9 +45,52 @@ const newSongSchema = z.object({
     path: ['img']
 })
 
+
 type NewSongFormData = z.infer<typeof newSongSchema>
 
-export const ArtistDashboardReleasesNewSongCollaborators = () => {
+
+
+interface ArtistDashboardReleasesNewSongCollaboratorsProps {
+    selectedArtistList: CollaboratorsFound[],
+    setSelectedArtistList: React.Dispatch<React.SetStateAction<CollaboratorsFound[]>>
+}
+
+export const ArtistDashboardReleasesNewSongCollaborators = ({ selectedArtistList, setSelectedArtistList }: ArtistDashboardReleasesNewSongCollaboratorsProps) => {
+    const artistRelease = useArtistRelease()
+    const artist = useArtist()
+    const [collaboratorsFoundList, setCollaboratorsFoundList] = useState<CollaboratorsFound[]>([])
+    const [query, setQuery] = useState<string>('')
+    const [actualArtist, setActualArtist] = useState<string>('')
+
+    useEffect(() => {
+        const fetchArtistInfo = async () => {
+            const getActualArtist = await artist.getArtistInfo()
+            setActualArtist(getActualArtist!.artistUsername)
+        }
+        fetchArtistInfo()
+        //selectedArtistList.forEach((g) => handleCollaboratorAdd(g))
+    }, [])
+
+    const handleCollaboratorAdd = (collaborator: CollaboratorsFound) => {
+        if(actualArtist === collaborator.artistUsername){
+            toast.error("No puedes añadirte a ti mismo")
+            return
+        }
+        
+        if (selectedArtistList.some(existingCollaborator => 
+            existingCollaborator.artistUsername === collaborator.artistUsername
+        )) {
+            toast.error('Este colaborador ya ha sido añadido')
+            return
+        }
+        const newCollaboratorList = [...selectedArtistList, collaborator]
+        setSelectedArtistList(newCollaboratorList)
+    }
+
+    const handleCollaboratorRemove = (collaborator: CollaboratorsFound) => {
+        setSelectedArtistList(selectedArtistList.filter(cu => cu != collaborator))
+    }
+
     return (
         <Card className='grow'>
             <CardHeader>
@@ -53,14 +98,38 @@ export const ArtistDashboardReleasesNewSongCollaborators = () => {
                     <CardTitle>Colaboradores</CardTitle>
                     <Popover>
                         <PopoverTrigger asChild>
-                            <Button>+ Añadir colaborador</Button>
+                            <Button type='button'>+ Añadir colaborador</Button>
                         </PopoverTrigger>
-                        <PopoverContent>
+                        <PopoverContent className='w-96'>
                             <div className='flex flex-col gap-4'>
-                                <Input type='search' placeholder='@artista' />
+                                <Input onChange={(e) => setQuery(e.target.value)} type='search' placeholder='@artista' onKeyDown={async (e) => {
+                                    if (e.key === 'Enter') {
+                                        console.log("La query es: " + query)
+                                        const collaboratorsFounds = await artistRelease.searchCollaborators(query)
+                                        console.log(collaboratorsFounds)
+                                        if (collaboratorsFounds) {
+                                            setCollaboratorsFoundList(collaboratorsFounds)
+                                        }
+                                    }
+                                }} />
                                 <div className='flex items-center justify-between gap-2'>
-                                    <p>@pito</p>
-                                    <Button>+ Añadir</Button>
+                                    {collaboratorsFoundList.map((collaborator) => {
+                                        return (
+                                            <div className='w-full flex justify-between'>
+                                                <div className='flex items-center gap-1'>
+                                                    {(collaborator.artistImgUrl === '') ?
+                                                        <Skeleton className="rounded-full w-9 h-9" /> :
+                                                        <img src={collaborator.artistImgUrl} className='rounded-full w-9 h-9' />}
+                                                    <p>@{collaborator.artistUsername}</p>
+                                                </div>
+                                                <Button onClick={() => {
+                                                    handleCollaboratorAdd(collaborator)
+
+                                                }} type='button'>+ Añadir</Button>
+                                            </div>
+                                        )
+                                    })}
+
                                 </div>
                             </div>
                         </PopoverContent>
@@ -71,12 +140,23 @@ export const ArtistDashboardReleasesNewSongCollaborators = () => {
             <CardContent>
                 <Card>
                     <CardHeader>
-                        <div className='flex items-center justify-between gap-2'>
-                            <div className='flex items-center gap-2'>
-                                <img src='https://picsum.photos/200' className='rounded-full w-14 h-14' />
-                                <p>Matysitoflowbakan0</p>
-                            </div>
-                            <Button variant='destructive'>Eliminar</Button>
+                        <div className='flex flex-col items-center gap-5'>
+                            {selectedArtistList.map((collaborator) => {
+                                return (
+                                    <div className='w-full flex items-center justify-between gap-5'>
+                                        <div className='flex items-center gap-2'>
+                                            <img src={collaborator.artistImgUrl} className='rounded-full w-9 h-9' />
+                                            <div>
+                                                <p className='text-'>{collaborator.artistName}</p>
+                                                <p className='text-xs text-gray-500'>@{collaborator.artistUsername}</p>
+                                            </div>
+                                        </div>
+                                        <Button variant='destructive' type='button' onClick={() => handleCollaboratorRemove(collaborator)}>Eliminar</Button>
+                                    </div>
+                                )
+                            }
+                            )}
+
                         </div>
                     </CardHeader>
                 </Card>
@@ -86,12 +166,13 @@ export const ArtistDashboardReleasesNewSongCollaborators = () => {
 }
 
 export const ArtistDashboardReleasesNewSong = () => {
-    const [selectedGenreList, setSelectedGenreList] = useState<string[]>([])
     const navigate = useNavigate()
     const artistRelease = useArtistRelease()
+    const [selectedGenreList, setSelectedGenreList] = useState<string[]>([])
     const [previewImgLoaded, setPreviewImgLoaded] = useState(false)
     const [previewImg, setPreviewImg] = useState('')
     const [generatingImage, setGeneratingImage] = useState(false)
+    const [selectedArtistList, setSelectedArtistList] = useState<CollaboratorsFound[]>([])
     const { register, handleSubmit, formState: { errors }, watch, setValue } = useForm<NewSongFormData>({
         resolver: zodResolver(newSongSchema)
     })
@@ -103,8 +184,8 @@ export const ArtistDashboardReleasesNewSong = () => {
             ...data,
             song: data.song[0],
             img: data.img[0],
-            collaborators: [],
-            genres: selectedGenreList
+            collaborators: selectedArtistList.map((c) => c.artistUsername),
+            genres: selectedGenreList,
         })
 
         if (result != null) {
@@ -120,6 +201,8 @@ export const ArtistDashboardReleasesNewSong = () => {
             }
             reader.readAsDataURL(imgField[0])
         }
+
+
     }, [imgField])
 
     const handleImageUpload = () => {
@@ -172,10 +255,9 @@ export const ArtistDashboardReleasesNewSong = () => {
                         <img src={previewImg} className={`rounded-md w-32 h-32 ${previewImgLoaded ? '' : 'hidden'}`} onLoad={() => { setPreviewImgLoaded(true) }} />
                         {(errors.img) && <span className='text-sm text-red-600'>Sube una imagen</span>}
                         <div className='flex flex-col gap-2'>
-                            <Button onClick={handleImageUpload}>Subir portada</Button>
-                            <Button disabled={generatingImage} variant='outline' onClick={handleImageAIGeneration}>Generar con IA</Button>
+                            <Button onClick={handleImageUpload} type='button'>Subir portada</Button>
+                            <Button disabled={generatingImage} variant='outline' onClick={handleImageAIGeneration} type='button'>Generar con IA</Button>
                         </div>
-                        {/*TODO cargar por defecto la imagen de la BD */}
                         <Input id='upload-cover' type='file' accept='image/*' {...register('img')} className='hidden' />
                     </div>
                     <div className='flex flex-col gap-4 grow'>
@@ -195,7 +277,6 @@ export const ArtistDashboardReleasesNewSong = () => {
 
                 <div className='flex flex-col gap-4 mb-4'>
                     <div className='flex flex-col gap-2'>
-                        {/*TODO cargar por defecto el archivo de la BD */}
                         <Label htmlFor='song'>Fichero de audio</Label>
                         <Input type='file' {...register('song')} />
                         {errors.song && <span className='text-sm text-red-600'>Debes subir un fichero de audio</span>}
@@ -204,7 +285,7 @@ export const ArtistDashboardReleasesNewSong = () => {
 
                 <div className='flex gap-4'>
                     <div className='flex flex-col gap-4 grow'>
-                        <ArtistDashboardReleasesNewSongCollaborators />
+                        <ArtistDashboardReleasesNewSongCollaborators selectedArtistList={selectedArtistList} setSelectedArtistList={setSelectedArtistList}/>
                         <Card className='grow h-fit'>
                             <CardHeader>
                                 <CardTitle>Precios</CardTitle>
@@ -235,10 +316,7 @@ export const ArtistDashboardReleasesNewSong = () => {
                             </CardContent>
                         </Card>
                     </div>
-
-                    {/*TODO Pasar los generos de la BD y ponerlos como selecionados */}
                     <ArtistDashboardReleasesNewSongGenreCard selectedGenreList={selectedGenreList} setSelectedGenreList={setSelectedGenreList} />
-
                 </div>
                 <div className='flex justify-end mt-4'>
                     <Button type='submit'>Publicar</Button>
