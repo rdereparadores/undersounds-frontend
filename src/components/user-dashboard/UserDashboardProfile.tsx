@@ -1,7 +1,7 @@
 import { Button } from '../ui/button'
 import { Input } from '../ui/input'
 import { Separator } from '../ui/separator'
-import { Card, CardDescription, CardHeader, CardTitle } from '../ui/card'
+import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from '../ui/card'
 import { useEffect, useState } from 'react'
 import { Skeleton } from '../ui/skeleton'
 import {
@@ -21,12 +21,25 @@ import { useUser } from '@/hooks/user/useUser'
 import { UserDashboardProfileUpdateImage } from './UserDashboardProfileUpdateImage'
 import { UserDashboardProfileAddressesCard } from './UserDashboardProfileAddressesCard'
 import { UserDashboardProfileUpdateForm } from './UserDashboardProfileUpdateForm'
-import { useAuth } from "@/hooks/auth/useAuth"
-import React from 'react'
+import { toast } from 'sonner'
+import { useAuth } from '@/hooks/auth/useAuth'
 
 
 export const UserDashboardProfileEmailUpdateCard = ({ emailPlaceholder }: { emailPlaceholder: string }) => {
-    
+    const [otpValue, setOtpValue] = useState<string>('')
+    const [newEmail, setNewEmail] = useState<string>('')
+    const user = useUser()
+    const auth = useAuth()
+
+    const handleSubmit = async () => {
+        const result = await user.updateEmail(newEmail, otpValue)
+        if (!result) {
+            toast.error('Error al actualizar el correo electrónico')
+        }
+        toast.success('Correo electrónico actualizado')
+        setTimeout(() => window.location.reload(), 1000)
+    }
+
     return (
         <Card className='grow'>
             <CardHeader>
@@ -37,7 +50,7 @@ export const UserDashboardProfileEmailUpdateCard = ({ emailPlaceholder }: { emai
                     </div>
                     <Dialog>
                         <DialogTrigger asChild>
-                            <Button>Actualizar</Button>
+                            <Button onClick={() => { auth.requestOtp() }}>Actualizar</Button>
                         </DialogTrigger>
                         <DialogContent className='w-fit min-w-[25%]'>
                             <DialogHeader>
@@ -49,13 +62,28 @@ export const UserDashboardProfileEmailUpdateCard = ({ emailPlaceholder }: { emai
                             <div className='flex flex-col justify-center gap-4'>
                                 <div>
                                     <Label htmlFor="email">Nuevo correo electrónico</Label>
-                                    <Input id="newEmail" type="email" placeholder='correo@example.com'></Input>
-                                    <Label htmlFor="email">Nuevo correo electrónico</Label>
-                                    <Input id="newEmail" type="email" placeholder='correo@example.com'></Input>
+                                    <Input onChange={(e) => setNewEmail(e.target.value)} id="email" type="email" placeholder='correo@example.com' />
                                 </div>
                             </div>
                             <DialogFooter>
-                                <VerificationPopUp></VerificationPopUp>
+                                <div className='flex flex-col gap-1 items-center justify-center w-full'>
+                                    <p>Escribe el código enviado a tu correo:</p>
+                                    <InputOTP maxLength={6}
+                                        onChange={(value) => setOtpValue(value)}>
+                                        <InputOTPGroup>
+                                            <InputOTPSlot index={0} />
+                                            <InputOTPSlot index={1} />
+                                            <InputOTPSlot index={2} />
+                                        </InputOTPGroup>
+                                        <InputOTPSeparator />
+                                        <InputOTPGroup>
+                                            <InputOTPSlot index={3} />
+                                            <InputOTPSlot index={4} />
+                                            <InputOTPSlot index={5} />
+                                        </InputOTPGroup>
+                                    </InputOTP>
+                                    <Button onClick={handleSubmit} className='self-end mt-2'>Actualizar</Button>
+                                </div>
                             </DialogFooter>
                         </DialogContent>
                     </Dialog>
@@ -65,80 +93,64 @@ export const UserDashboardProfileEmailUpdateCard = ({ emailPlaceholder }: { emai
     )
 }
 
-export const VerificationPopUp = () => {
-    const auth = useAuth()
-    const [value, setValue] = React.useState("")
-
-    return (
-        <Dialog>
-            <DialogTrigger asChild>
-                <Button onClick={auth.setOtp}>Continuar</Button>
-            </DialogTrigger>
-            <DialogContent className='w-fit'>
-                <DialogHeader>
-                    <DialogTitle>Verificar usuario</DialogTitle>
-                    <DialogDescription>
-                        Introduce el código que te hemos enviado al correo.
-                    </DialogDescription>
-                </DialogHeader>
-                <div className='flex justify-center'>
-                    <InputOTP maxLength={6}
-                        value={value}
-                        onChange={(value) => setValue(value)}>
-                        <InputOTPGroup>
-                            <InputOTPSlot index={0} />
-                            <InputOTPSlot index={1} />
-                            <InputOTPSlot index={2} />
-                        </InputOTPGroup>
-                        <InputOTPSeparator />
-                        <InputOTPGroup>
-                            <InputOTPSlot index={3} />
-                            <InputOTPSlot index={4} />
-                            <InputOTPSlot index={5} />
-                        </InputOTPGroup>
-                    </InputOTP>
-                </div>
-                <DialogFooter className='gap-2'>
-                    <Button onClick={auth.setOtp}>Volver a enviar</Button>
-                    <Button onClick={() => auth.confirmOtp(value)}>Verificar</Button>
-                </DialogFooter>
-            </DialogContent>
-        </Dialog>
-    )
-}
-
 export const UserDashboardProfilePasswordUpdateCard = () => {
+    const [otpValue, setOtpValue] = useState<string>('')
+    const [newPassword, setNewPassword] = useState<string>('')
+    const user = useUser()
+    const auth = useAuth()
+
+    const handleSubmit = async () => {
+        const result = await user.updatePassword(newPassword, otpValue)
+        if (!result) {
+            toast.error('Error al actualizar la contraseña')
+        }
+        toast.success('Contraseña actualizada')
+        setTimeout(() => window.location.reload(), 1000)
+    }
+
     return (
         <Card className='grow'>
             <CardHeader>
                 <div className='flex gap-4 justify-between items-center'>
                     <div className='flex flex-col gap-1'>
                         <CardTitle>Contraseña</CardTitle>
-                        <CardDescription>Cambia tu contraseña</CardDescription>
                     </div>
                     <Dialog>
                         <DialogTrigger asChild>
-                            <Button>Cambiar</Button>
+                            <Button onClick={() => { auth.requestOtp() }}>Actualizar</Button>
                         </DialogTrigger>
                         <DialogContent className='w-fit min-w-[25%]'>
                             <DialogHeader>
                                 <DialogTitle>Cambiar contraseña</DialogTitle>
                                 <DialogDescription>
-                                    Cambia tu contraseña por otra.
+                                    Cambia tu contraseña
                                 </DialogDescription>
                             </DialogHeader>
                             <div className='flex flex-col justify-center gap-4'>
                                 <div>
                                     <Label htmlFor="password">Nueva contraseña</Label>
-                                    <Input id="newPassword" type="password" placeholder='Contraseña'></Input>
-                                    <Label htmlFor="password">Confirmar nueva contraseña</Label>
-                                    <Input id="newPassword" type="password" placeholder='Contraseña'></Input>
+                                    <Input onChange={(e) => setNewPassword(e.target.value)} id="password" type="password" />
                                 </div>
                             </div>
                             <DialogFooter>
-                                <DialogClose asChild>
-                                    <VerificationPopUp></VerificationPopUp>
-                                </DialogClose>
+                                <div className='flex flex-col gap-1 items-center justify-center w-full'>
+                                    <p>Escribe el código enviado a tu correo:</p>
+                                    <InputOTP maxLength={6}
+                                        onChange={(value) => setOtpValue(value)}>
+                                        <InputOTPGroup>
+                                            <InputOTPSlot index={0} />
+                                            <InputOTPSlot index={1} />
+                                            <InputOTPSlot index={2} />
+                                        </InputOTPGroup>
+                                        <InputOTPSeparator />
+                                        <InputOTPGroup>
+                                            <InputOTPSlot index={3} />
+                                            <InputOTPSlot index={4} />
+                                            <InputOTPSlot index={5} />
+                                        </InputOTPGroup>
+                                    </InputOTP>
+                                    <Button onClick={handleSubmit} className='self-end mt-2'>Actualizar</Button>
+                                </div>
                             </DialogFooter>
                         </DialogContent>
                     </Dialog>

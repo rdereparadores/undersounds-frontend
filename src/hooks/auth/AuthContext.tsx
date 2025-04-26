@@ -33,8 +33,7 @@ interface AuthContextProps {
     signUpGoogle: (role: string) => void,
     checkRole: () => Promise<UserRole>
     forgotPassword: (input:AuthContextForgotPassword) => Promise<boolean>,
-    setOtp: () => void,
-    confirmOtp: (input: string) => Promise<boolean>
+    requestOtp: () => Promise<boolean>
 }
 
 export const AuthContext = createContext<AuthContextProps>({
@@ -46,6 +45,5 @@ export const AuthContext = createContext<AuthContextProps>({
     signUpGoogle: async () => {},
     checkRole: async () => UserRole.GUEST,
     forgotPassword: async () => (false),
-    setOtp: async () => {},
-    confirmOtp: async() =>(false)
+    requestOtp: async () => false
 })
