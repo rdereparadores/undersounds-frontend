@@ -23,7 +23,7 @@ export const ShopPagination = ({ searchResults }: { searchResults: ShopContextRe
     }
 
     const nextPageButtonVisibility = () => {
-        if (!params.get('page')){
+        if (searchResults.itemCount <= 20) {
             return false
         } else if (parseInt(params.get('page')!) == Math.ceil(searchResults.itemCount / 20)){
             return false
