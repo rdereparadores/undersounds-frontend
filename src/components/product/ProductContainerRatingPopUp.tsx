@@ -8,12 +8,10 @@ import {
 } from "@/components/ui/dialog"
 import { ProductContainerRatingPopUpItem } from "./ProductContainerRatingPopUpItem"
 import { ScrollArea } from "@/components/ui/scroll-area"
-import { useProduct } from "@/hooks/product/useProduct"
-import { DialogDescription } from "@radix-ui/react-dialog"
+import { RatingProps } from "@/hooks/ratings/RatingsContext"
 
 
-export function ProductContainerRatingPopUp() {
-    const product = useProduct()
+export function ProductContainerRatingPopUp({ ratings }: { ratings: RatingProps[] }) {
     return (
         <Dialog>
             <DialogTrigger asChild>
@@ -22,15 +20,14 @@ export function ProductContainerRatingPopUp() {
             <DialogContent>
                 <DialogHeader className="-mt-2">
                     <DialogTitle>Valoraciones</DialogTitle>
-                    <DialogDescription>{product.queryResult && product.queryResult!.ratings.list.length} valoraciones</DialogDescription>
                 </DialogHeader>
                 <ScrollArea className="max-h-96">
                     <div className="flex flex-col gap-2">
-                        {product.queryResult?.ratings.list.map((rating, index) => (
+                        {ratings.map((rating, index) => (
                             <ProductContainerRatingPopUpItem
                                 key={index}
-                                username={rating.username}
-                                imgUrl={rating.userImgUrl}
+                                username={rating.authorUsername}
+                                imgUrl={rating.authorImgUrl}
                                 title={rating.title}
                                 description={rating.description}
                                 rating={rating.rating}

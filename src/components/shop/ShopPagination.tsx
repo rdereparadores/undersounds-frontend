@@ -1,13 +1,12 @@
 import { useSearchParams, useNavigate } from "react-router"
-import { useShop } from "@/hooks/shop/useShop"
 import { Button } from "../ui/button"
 import { GrFormPrevious } from "react-icons/gr"
 import { GrFormNext } from "react-icons/gr"
+import { ShopContextResultProps } from "@/hooks/shop/ShopContext"
 
-export const ShopPagination = () => {
+export const ShopPagination = ({ searchResults }: { searchResults: ShopContextResultProps }) => {
     const [params] = useSearchParams()
     const navigate = useNavigate()
-    const shop = useShop()
     const nextPage = () => {
         if (params.get('page')) {
             params.set('page', Number(parseInt(params.get('page')!) + 1).toString())
@@ -24,9 +23,9 @@ export const ShopPagination = () => {
     }
 
     const nextPageButtonVisibility = () => {
-        if (!params.get('page')){
+        if (searchResults.itemCount <= 20) {
             return false
-        } else if (parseInt(params.get('page')!) == Math.ceil(shop.searchResultItemCount! / 20)){
+        } else if (parseInt(params.get('page')!) == Math.ceil(searchResults.itemCount / 20)){
             return false
         } else {
             return true
@@ -48,7 +47,7 @@ export const ShopPagination = () => {
             <Button className={`w-10 h-10 ${previousPageButtonVisibility() ? '' : 'hidden'}`} onClick={previousPage}>
                 <GrFormPrevious />
             </Button>
-            <p>Página {params.get('page') ? params.get('page') : '1'} de {Math.ceil(shop.searchResultItemCount! / 20)}</p>
+            <p>Página {params.get('page') ? params.get('page') : '1'} de {Math.ceil(searchResults.itemCount / 20)}</p>
             <Button className={`w-10 h-10 ${nextPageButtonVisibility() ? '' : 'hidden'}`} onClick={nextPage}>
                 <GrFormNext />
             </Button>

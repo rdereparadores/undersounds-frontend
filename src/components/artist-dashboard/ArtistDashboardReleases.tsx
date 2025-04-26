@@ -1,78 +1,91 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Button } from "../ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card"
 import { TableCell, TableRow } from "../ui/table"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs"
-import { FaDownload, FaEdit, FaPlay } from "react-icons/fa"
+import { FaDownload, FaPlay } from "react-icons/fa"
 import { Skeleton } from "../ui/skeleton"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../ui/dropdown-menu"
 import { useNavigate } from "react-router"
+import { useArtist } from "@/hooks/artist/useArtist"
+import { ArtistAlbumProps, ArtistInfoProps, ArtistSongProps } from "@/hooks/artist/ArtistContext"
+import { ArtistDashboardReleasesEditSongPopUp } from "./ArtistDashboardReleasesEditSongPopUp"
+import { useMusicPlayer } from "@/hooks/music-player/useMusicPlayer"
+import { formatTime } from "@/lib/formatTime"
+import { ArtistDashboardReleasesEditAlbumPopUp } from "./ArtistDashboardReleasesEditAlbumPopUp"
 
-export const ArtistDashboardReleasesSongsItem = () => {
+export const ArtistDashboardReleasesSongsItem = ({ song, artistData }: { song: ArtistSongProps, artistData: ArtistInfoProps }) => {
     const [imgLoaded, setImgLoaded] = useState(false)
+    const musicPlayer = useMusicPlayer()
+
     return (
         <Card>
             <CardHeader className="p-0 relative">
-                {!imgLoaded && <Skeleton className="w-48 h-48 rounded-xl rounded-b-none" />}
-                <img src='https://picsum.photos/400' className={`w-48 h-48 rounded-xl rounded-b-none ${imgLoaded ? '' : 'hidden'}`} onLoad={() => setImgLoaded(true)} />
-                <Button className="absolute bottom-2 right-2 rounded-full w-10 h-10">
-                    <FaPlay className="ml-[3px]" />
-                </Button>
-                <Button variant='secondary' className="absolute bottom-2 right-14 rounded-full w-10 h-10">
-                    <FaDownload />
-                </Button>
-                <Button variant='secondary' className="absolute top-1 right-[11px] rounded-full w-10 h-10">
-                    <FaEdit className="ml-[2px]" />
-                </Button>
+                <div>
+                    <div>
+                        {!imgLoaded && <Skeleton className="w-48 h-48 rounded-xl rounded-b-none" />}
+                        <img src={song.imgUrl} className={`w-48 h-48 rounded-xl rounded-b-none ${imgLoaded ? '' : 'hidden'}`} onLoad={() => setImgLoaded(true)} />
+                        <Button onClick={() => { musicPlayer.play(song._id) }} className="absolute bottom-2 right-2 rounded-full w-10 h-10">
+                            <FaPlay className="ml-[3px]" />
+                        </Button>
+                        <Button onClick={() => { musicPlayer.download(song._id) }} variant='secondary' className="absolute bottom-2 right-14 rounded-full w-10 h-10">
+                            <FaDownload />
+                        </Button>
+                    </div>
+                    <ArtistDashboardReleasesEditSongPopUp song={song} />
+                </div>
             </CardHeader>
-            <CardContent className="pt-2 px-2">
-                <CardTitle>Buenas noches</CardTitle>
-                <CardDescription>Quevedo</CardDescription>
+            <CardContent className="pt-2 px-2 w-48 h-min">
+                <CardTitle className="">{song.title}</CardTitle>
+                <CardDescription>
+                    {artistData?.artistName} {song.collaborators && song.collaborators.length > 0 ? `, ${song.collaborators.map(c => c.artistName).join(', ')}` : false}
+                </CardDescription>
             </CardContent>
         </Card>
     )
 }
 
-export const ArtistDashboardReleasesAlbumsItemTrack = () => {
+export const ArtistDashboardReleasesAlbumsItemTrack = ({ song, artistData }: { song: ArtistSongProps, artistData: ArtistInfoProps }) => {
+    const musicPlayer = useMusicPlayer()
     return (
         <TableRow>
             <TableCell className="flex gap-2">
-                <Button className="rounded-full w-10 h-10">
+                <Button onClick={() => { musicPlayer.play(song._id) }} className="rounded-full w-10 h-10">
                     <FaPlay className="ml-[3px]" />
                 </Button>
-                <Button variant='secondary' className="rounded-full w-10 h-10">
+                <Button onClick={() => { musicPlayer.download(song._id) }} variant='secondary' className="rounded-full w-10 h-10">
                     <FaDownload />
                 </Button>
             </TableCell>
             <TableCell>
-                <p>Duro</p>
+                <p>{song.title}</p>
             </TableCell>
             <TableCell className="hidden sm:table-cell">
-                <p>Quevedo</p>
+                <p>{artistData?.artistName}</p>
             </TableCell>
             <TableCell className="hidden sm:table-cell">
-                <p>3:14</p>
+                <p>{song.duration}</p>
             </TableCell>
         </TableRow>
     )
 }
 
-export const ArtistDashboardReleasesAlbumsItem = () => {
+export const ArtistDashboardReleasesAlbumsItem = ({ album, artistData }: { album: ArtistAlbumProps, artistData: ArtistInfoProps }) => {
     const [imgLoaded, setImgLoaded] = useState(false)
 
     return (
         <Card>
             <CardHeader>
-                <div className="flex gap-4 flex-wrap justify-center">
+                <div className="flex gap-4 flex-wrap">
                     {!imgLoaded && <Skeleton className="w-32 h-32 rounded-xl" />}
-                    <img src='https://picsum.photos/400' className={`w-32 h-32 rounded-xl ${imgLoaded ? '' : 'hidden'}`} onLoad={() => setImgLoaded(true)} />
+                    <img src={album.imgUrl} className={`w-32 h-32 rounded-xl ${imgLoaded ? '' : 'hidden'}`} onLoad={() => setImgLoaded(true)} />
                     <div className="flex flex-col gap-1">
-                        <CardTitle>Buenas noches</CardTitle>
-                        <CardDescription>Quevedo</CardDescription>
-                        <CardDescription>5 pistas | 35:05</CardDescription>
+                        <CardTitle>{album.title}</CardTitle>
+                        <CardDescription>{artistData?.artistName}</CardDescription>
+                        <CardDescription>{album.trackList.length} pistas | {formatTime(album.duration)}</CardDescription>
                     </div>
                     <div className="flex flex-col grow items-end">
-                        <Button className="w-10 h-10 pl-4" variant='outline'><FaEdit/></Button>
+                        <ArtistDashboardReleasesEditAlbumPopUp album={album} />
                     </div>
                 </div>
             </CardHeader>
@@ -82,6 +95,25 @@ export const ArtistDashboardReleasesAlbumsItem = () => {
 
 export const ArtistDashboardReleases = () => {
     const navigate = useNavigate()
+    const artist = useArtist()
+    const [songList, setSongList] = useState<ArtistSongProps[] | undefined>()
+    const [albumList, setAlbumList] = useState<ArtistAlbumProps[] | undefined>()
+    const [artistData, setArtistData] = useState<ArtistInfoProps | undefined>(undefined)
+
+    useEffect(() => {
+        artist.getArtistSongs()
+            .then(songs => setSongList(songs))
+
+        artist.getArtistAlbums()
+            .then(albums => setAlbumList(albums))
+
+        artist.getArtistInfo()
+            .then(data => setArtistData(data))
+    }, [])
+
+    if (songList === undefined) return <Skeleton className="grow gap-4 flex flex-col flex-wrap" />
+    if (albumList === undefined) return <Skeleton className="grow gap-4 flex flex-col flex-wrap" />
+    if (artistData === undefined) return <Skeleton className="grow gap-4 flex flex-col flex-wrap" />
 
     return (
         <div className="grow gap-4 flex flex-col flex-wrap">
@@ -92,10 +124,10 @@ export const ArtistDashboardReleases = () => {
                         <Button>+ Nuevo lanzamiento</Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent>
-                        <DropdownMenuItem onClick={() => {navigate('new/song')}}>
+                        <DropdownMenuItem onClick={() => { navigate('new/song') }}>
                             Canción
                         </DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => {navigate('new/album')}}>
+                        <DropdownMenuItem onClick={() => { navigate('new/album') }}>
                             Álbum
                         </DropdownMenuItem>
                     </DropdownMenuContent>
@@ -108,19 +140,18 @@ export const ArtistDashboardReleases = () => {
                 </TabsList>
                 <TabsContent value='songs'>
                     <div className="flex flex-wrap justify-center sm:justify-start gap-4">
-                        <ArtistDashboardReleasesSongsItem />
-                        <ArtistDashboardReleasesSongsItem />
-                        <ArtistDashboardReleasesSongsItem />
-                        <ArtistDashboardReleasesSongsItem />
+                        {songList
+                            .map((song, index) => (
+                                <ArtistDashboardReleasesSongsItem song={song} artistData={artistData} key={index} />
+                            ))}
                     </div>
-                    
                 </TabsContent>
                 <TabsContent value='albums'>
                     <div className="flex flex-col gap-4">
-                        <ArtistDashboardReleasesAlbumsItem />
-                        <ArtistDashboardReleasesAlbumsItem />
-                        <ArtistDashboardReleasesAlbumsItem />
-                        <ArtistDashboardReleasesAlbumsItem />
+                        {albumList
+                            .map((album, index) => (
+                                <ArtistDashboardReleasesAlbumsItem album={album} artistData={artistData} key={index} />
+                            ))}
                     </div>
                 </TabsContent>
             </Tabs>

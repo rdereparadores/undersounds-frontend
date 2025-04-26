@@ -10,21 +10,20 @@ import {
     SelectValue,
 } from "@/components/ui/select"
 import { useShop } from "@/hooks/shop/useShop"
-import { ShopItem } from "./ShopItem"
+import { ShopItemCard } from "./ShopItemCard"
 import { ShopPagination } from "./ShopPagination"
-import { ProductContextResultShortProps } from "@/hooks/product/ProductContext"
+import { ShopContextResultProps } from "@/hooks/shop/ShopContext"
+import { Skeleton } from "../ui/skeleton"
 
 export const ShopItemsContainer = () => {
     const [params] = useSearchParams()
-    const [searchResults, setSearchResults] = useState<undefined | ProductContextResultShortProps[]>(undefined)
-    const [searchResultCount, setSearchResultCount] = useState<undefined | number>(undefined)
+    const [searchResults, setSearchResults] = useState<ShopContextResultProps | undefined>(undefined)
     const navigate = useNavigate()
     const shop = useShop()
 
     useEffect(() => {
         shop.search({ query: params.get('query') || '', filters: params }).then(results => {
-            setSearchResults(results.items)
-            setSearchResultCount(results.itemCount)
+            setSearchResults(results)
         })
     }, [params, shop])
 
@@ -33,10 +32,12 @@ export const ShopItemsContainer = () => {
         navigate('?' + params.toString())
     }
 
+    if (searchResults === undefined) return <Skeleton className='w-full h-full'/>
+
     return (
         <div className='w-full'>
             <div className='flex justify-between items-center'>
-                <p className='font-medium'>{searchResultCount} resultados</p>
+                <p className='font-medium'>{searchResults.itemCount} resultados</p>
                 <Select defaultValue={params.get('sort') ? params.get('sort')! : undefined} onValueChange={onSortChange}>
                     <SelectTrigger className='w-fit min-w-[200px]'>
                         <SelectValue placeholder='Ordenar por' />
@@ -45,20 +46,20 @@ export const ShopItemsContainer = () => {
                         <SelectGroup>
                             <SelectLabel>Ordenar por</SelectLabel>
                             <SelectItem value='relevance'>Relevancia</SelectItem>
-                            <SelectItem value='date'>Fecha de publicación</SelectItem>
+                            <SelectItem value='releaseDate'>Fecha de publicación</SelectItem>
                         </SelectGroup>
                     </SelectContent>
                 </Select>
             </div>
 
             <div className='pt-4 grid grid-cols-2 sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4'>
-                {searchResults?.map((item, index) => (
-                    <ShopItem key={index} {...item} />
+                {searchResults.items.map((item, index) => (
+                    <ShopItemCard key={index} item={item} />
                 ))}
             </div>
 
 
-            <ShopPagination />
+            <ShopPagination searchResults={ searchResults }/>
         </div>
     )
 }

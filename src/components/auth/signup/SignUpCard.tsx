@@ -1,5 +1,4 @@
 import { Card, CardContent, CardDescription, CardHeader, CardFooter, CardTitle } from "@/components/ui/card"
-import { RiNeteaseCloudMusicFill } from "react-icons/ri"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
 import { FaGoogle } from "react-icons/fa"
@@ -17,6 +16,7 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import {GiMusicSpell} from "react-icons/gi";
 
 
 export const SignUpCard = () => {
@@ -27,7 +27,7 @@ export const SignUpCard = () => {
             <CardHeader>
                 <div className='flex flex-row w-full items-center justify-center'>
                     <Link to='/'>
-                        <RiNeteaseCloudMusicFill className='size-28' />
+                        <GiMusicSpell className='size-28' />
                     </Link>
                 </div>
                 <CardTitle className='text-2xl'>Registro</CardTitle>

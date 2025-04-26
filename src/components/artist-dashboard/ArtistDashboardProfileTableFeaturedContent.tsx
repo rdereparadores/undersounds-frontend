@@ -1,7 +1,6 @@
 import {
     Table,
     TableBody,
-    TableCaption,
     TableCell,
     TableHead,
     TableHeader,
@@ -9,42 +8,68 @@ import {
 } from "@/components/ui/table"
 import { Checkbox } from "../ui/checkbox"
 import { Label } from "../ui/label"
+import { useArtist } from "@/hooks/artist/useArtist"
+import { useEffect, useState } from "react"
+import { ArtistSongProps } from "@/hooks/artist/ArtistContext"
 
-export const Entrada = () => {
-    return (
-        <TableRow>
-            <TableCell className="font-medium">
-                <img src='https://picsum.photos/50' ></img>
-            </TableCell>
-            <TableCell>El cocodrilo</TableCell>
-            <TableCell>King Africa</TableCell>
-            <TableCell></TableCell>
-            <TableCell className="text-center">
-                <Checkbox />
-                <Label></Label>
-            </TableCell>
-        </TableRow>
-    )
+interface ArtistDashboardProfileTableFeaturedContentProps {
+    selectedSongsList: string[],
+    setSelectedSongsList: React.Dispatch<React.SetStateAction<string[]>>
 }
 
+export const TableFeaturedContent = ({ selectedSongsList, setSelectedSongsList }: ArtistDashboardProfileTableFeaturedContentProps) => {
+    const artist = useArtist()
+    const [songsList, setSongsList] = useState<ArtistSongProps[]>([])
 
-export function TableFeaturedContent() {
+    useEffect(() => {
+        artist.getArtistSongs()
+            .then(songs => setSongsList(songs || []))
+
+        selectedSongsList.forEach((s) => handleSongAdd(s))
+    }, [])
+
+    const handleSongAdd = (songId: string) => {
+        const newSongsList = [...selectedSongsList, songId]
+        setSelectedSongsList(newSongsList)
+    }
+
+    const handleSongRemove = (songId: string) => {
+        setSelectedSongsList(selectedSongsList.filter(g => g != songId))
+    }
+
     return (
         <Table>
-            <TableCaption>Lista de las canciones disponibles para destacar.</TableCaption>
             <TableHeader>
                 <TableRow>
-                    <TableHead className="w-[100px]">Imagen</TableHead>
+                    <TableHead>Imagen</TableHead>
                     <TableHead>Nombre</TableHead>
                     <TableHead>Artistas</TableHead>
-                    <TableHead>Álbum</TableHead>
-                    <TableHead className="text-right">Selección</TableHead>
+                    <TableHead className="text-center">Selección</TableHead>
                 </TableRow>
             </TableHeader>
             <TableBody>
-                <Entrada></Entrada>
-                <Entrada></Entrada>
-                <Entrada></Entrada>
+                {songsList.map((songs, index) => (
+                    <TableRow key={index}>
+                        <TableCell className="font-medium">
+                            <img  src={songs.imgUrl} className="size-[50px]"></img>
+                        </TableCell>
+                        <TableCell>{songs.title}</TableCell>
+                        <TableCell>{songs.author}</TableCell>
+                        <TableCell className="text-center">
+                            <Checkbox
+                                onCheckedChange={(e) => {
+                                    if (e) {
+                                        handleSongAdd(songs._id)
+                                    } else {
+                                        handleSongRemove(songs._id)
+                                    }
+                                }}
+                                checked={selectedSongsList.includes(songs._id)}
+                            />
+                            <Label></Label>
+                        </TableCell>
+                    </TableRow>
+                ))}
             </TableBody>
         </Table>
     )

@@ -8,6 +8,7 @@ import {
     CardHeader,
     CardTitle,
 } from "../ui/card";
+import { GiMusicSpell } from "react-icons/gi";
 
 export function Footer() {
     return (
@@ -18,7 +19,7 @@ export function Footer() {
                 </CardHeader>
                 <CardContent className="flex sm:gap-32 sm:flex-row flex-col gap-14 flex-wrap sm:justify-center items-center">
                     <div>
-                        <p className="text-white w-fit">Logo UnderSounds</p>
+                        <p className="text-white w-fit"><GiMusicSpell className='size-32'/></p>
                     </div>
 
                     <div className="flex flex-col items-center gap-4">

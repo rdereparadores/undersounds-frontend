@@ -4,7 +4,6 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
 import { FaGoogle } from "react-icons/fa"
-import { RiNeteaseCloudMusicFill } from "react-icons/ri"
 import { Link, useNavigate, useSearchParams } from 'react-router'
 import { useState, useEffect } from "react"
 import { toast } from "sonner"
@@ -14,6 +13,8 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useAuth } from "@/hooks/auth/useAuth"
 import { useForm } from "react-hook-form"
 import { ForgotPassword } from "./ForgotPassword"
+import { useMusicPlayer } from "@/hooks/music-player/useMusicPlayer"
+import {GiMusicSpell} from "react-icons/gi";
 
 const signInSchema = z.object({
     email: z.string().email({ message: 'Email inválido' }),
@@ -29,6 +30,12 @@ export const SignInCard = () => {
     const navigate = useNavigate()
     const [logInButtonDisabled, setLogInButtonDisabled] = useState(false)
     const auth = useAuth()
+    const musicPlayer = useMusicPlayer()
+
+    useEffect(() => {
+        musicPlayer.quit()
+    }, [])
+
 
     useEffect(() => {
         if (searchParams.get('redirectTo')) {
@@ -50,7 +57,7 @@ export const SignInCard = () => {
     const onSubmit = async (data: SignInFormData) => {
 
         setLogInButtonDisabled(true)
-        const result = await auth.logIn({
+        const result = await auth.signIn({
             email: data.email,
             password: data.password
         })
@@ -70,7 +77,7 @@ export const SignInCard = () => {
             <CardHeader>
                 <div className='flex flex-row w-full items-center justify-center'>
                     <Link to='/'>
-                        <RiNeteaseCloudMusicFill className='size-32' />
+                        <GiMusicSpell className='size-32' />
                     </Link>
                 </div>
                 <CardTitle className='text-2xl'>Iniciar sesión</CardTitle>

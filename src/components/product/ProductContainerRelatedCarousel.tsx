@@ -1,9 +1,9 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ShopItem } from "@/components/shop/ShopItem";
-import { useProduct } from "@/hooks/product/useProduct";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { ShopItemCard } from "@/components/shop/ShopItemCard"
+import { ShopItem } from "@/hooks/shop/ShopContext"
+import { Carousel, CarouselContent, CarouselItem } from "../ui/carousel"
 
-export const ProductContainerRelatedCarousel = () => {
-    const product = useProduct()
+export const ProductContainerRelatedCarousel = ({ related }: { related: ShopItem[] }) => {
 
     return (
         <Card className="grow lg:max-w-[30%] flex flex-col">
@@ -11,9 +11,15 @@ export const ProductContainerRelatedCarousel = () => {
                 <CardTitle className="text-xl">Relacionado</CardTitle>
             </CardHeader>
             <CardContent className="flex flex-wrap gap-2 flex-grow items-center justify-center">
-                {product.queryResult?.related.map((item, index) => (
-                    <ShopItem key={index} {...item} />
-                ))}
+                <Carousel>
+                    <CarouselContent>
+                        {related.map((item, index) => (
+                            <CarouselItem key={index}>
+                                <ShopItemCard item={item} />
+                            </CarouselItem>
+                        ))}
+                    </CarouselContent>
+                </Carousel>
             </CardContent>
         </Card>
     )

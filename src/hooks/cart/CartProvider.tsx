@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { CartContext, CartProps, CartItemProps } from "./CartContext"
 import { toast } from "sonner"
-import productsShort from '@/testingDB/productsShort.json'
+import { api } from '@/lib/api'
 
 interface CartProviderProps {
     children: React.ReactNode
@@ -18,69 +18,94 @@ export const CartProvider = ({ children }: CartProviderProps) => {
             return JSON.parse(savedCart)
         }
     }
-    const [cart, setCart] = useState<CartProps | null>(initCart())
+    const [cart, setCart] = useState<CartProps>(initCart())
 
     useEffect(() => {
         if (!cart) return
         localStorage.setItem('cart', JSON.stringify(cart))
     }, [cart])
 
-    const add = (item: CartItemProps) => {
-        if (!cart) return
-        const itemAlreadyInCart = cart?.items.findIndex(cartItem => {
-            return (cartItem.format === item.format) && (cartItem.id === item.id) && (cartItem.type === item.type)
-        })
+    const getPopulatedCart = async () => {
+        const items = await Promise.all(cart.items.map(async (item) => {
+            console.log(item)
+            const query = item.type === 'song' ? {songId: item.id} : {albumId: item.id}
+            const product = await api.post(`/api/${item.type}/info`, query)
+            return {
+                ...item,
+                imgUrl: product.data.data[item.type].imgUrl as string,
+                title: product.data.data[item.type].title as string,
+                price: product.data.data[item.type].pricing[item.format] as number
+            }
+        }))
+        const shippingCost = items.find(item => item.format != 'digital') ? 4.99 : 0
+        const totalPrice = items.reduce((itemA, itemB) => itemA + (itemB.price * itemB.quantity), 0) + shippingCost
+        return {
+            items,
+            shippingCost,
+            totalPrice
+        }
+    }
 
-        if (itemAlreadyInCart != -1) {
-            if (item.format == 'digital') {
+    const add = (item: CartItemProps) => {
+        const itemAlreadyInCartIndex = cart.items.findIndex(cartItem => 
+            cartItem.id === item.id && 
+            cartItem.format === item.format)
+
+        if (itemAlreadyInCartIndex !== -1) {
+            if (item.format === 'digital') {
                 toast.info('No puedes adquirir más de una copia digital')
                 return
             }
 
-            const newCart = {
-                items: [...cart!.items]
+            const newItems = [...cart.items]
+            newItems[itemAlreadyInCartIndex] = {
+                ...newItems[itemAlreadyInCartIndex],
+                quantity: newItems[itemAlreadyInCartIndex].quantity + item.quantity
             }
-            newCart.items[itemAlreadyInCart!] = {
-                ...newCart.items[itemAlreadyInCart!],
-                quantity: newCart.items[itemAlreadyInCart!].quantity + 1
-            }
-            setCart(newCart)
+
+            setCart({ items: newItems })
         } else {
-            setCart({
-                items: [...cart!.items, item]
-            })
+            toast.success('Producto añadido al carrito')
+            setCart({ items: [...cart.items, item] })
         }
+        
     }
 
-    const remove = (item: CartItemProps) => {
-        if (!cart) return
-        const filteredItems = cart.items.filter(cartItem => 
-            !(cartItem.format === item.format && cartItem.id === item.id && cartItem.type === item.type)
+    const remove = (item: Partial<CartItemProps>) => {
+        const filteredItems = cart.items.filter(cartItem =>
+            !(cartItem.id === item.id &&
+              cartItem.format === item.format)
         )
         setCart({
             items: filteredItems
-        });
+        })
+        toast.info('Producto eliminado del carrito')
     }
 
-    const removeOne = (item: CartItemProps) => {
-        if (!cart) return
-        if (item.quantity > 1) {
-            setQuantity(item, item.quantity - 1)
+    const removeOne = (item: Partial<CartItemProps>) => {
+        const cartItem = cart.items.find(cartItem => cartItem.id === item.id && cartItem.format === item.format)
+        if (cartItem!.quantity > 1) {
+            setQuantity(cartItem!, cartItem!.quantity - 1)
         } else {
-            remove(item)
+            remove(cartItem!)
         }
     }
 
-    const setQuantity = (item: CartItemProps, quantity: number) => {
-        if (!cart) return
-        const itemIndex = cart?.items.findIndex(cartItem => {
-            return (cartItem.format === item.format) && (cartItem.id === item.id) && (cartItem.type === item.type)
-        })
+    const setQuantity = (item: Partial<CartItemProps>, quantity: number) => {
+        if (quantity < 1) {
+            remove(item)
+            return
+        }
+
+        const itemIndex = cart.items.findIndex(cartItem =>
+            cartItem.id === item.id &&
+            cartItem.format === item.format
+        )
 
         if (itemIndex !== -1) {
-            const newItems = [...cart!.items]
-            newItems[itemIndex!] = {
-                ...newItems[itemIndex!],
+            const newItems = [...cart.items]
+            newItems[itemIndex] = {
+                ...newItems[itemIndex],
                 quantity
             }
 
@@ -90,17 +115,21 @@ export const CartProvider = ({ children }: CartProviderProps) => {
         }
     }
 
-    const getUpdatedPrice = async ( item: CartItemProps ) => {
-        return productsShort.filter(product => product.id === item.id && product.type === item.type)[0].price[item.format] * item.quantity
-    }
-
-    const getShippingRate = async () => {
-        return cart?.items.some(item => item.format != 'digital') ? 4.99 : 0
+    const clear = () => {
+        setCart({items: []})
     }
 
     return (
-        <CartContext.Provider value={{ cart, add, remove, removeOne, setQuantity, getUpdatedPrice, getShippingRate }}>
-            { children }
+        <CartContext.Provider value={{
+            cart,
+            add,
+            remove,
+            removeOne,
+            setQuantity,
+            getPopulatedCart,
+            clear
+        }}>
+            {children}
         </CartContext.Provider>
     )
 }

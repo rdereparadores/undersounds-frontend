@@ -7,12 +7,12 @@ import { useAuth } from '@/hooks/auth/useAuth'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { useNavigate } from 'react-router'
 import { toast } from 'sonner'
 import { z } from 'zod'
 
 const signUpArtistSchema = z.object({
     artistName: z.string().min(1, "Nombre de artista inválido"),
+    username: z.string().min(1, 'Nombre de usuario inválido'),
     artistUsername: z.string().min(1,"Nombre de usuario de artista inválido"),
     name: z.string(),
     surname: z.string(),
@@ -31,7 +31,6 @@ const signUpArtistSchema = z.object({
 type SignUpArtistData = z.infer<typeof signUpArtistSchema>
 
 export const SignUpArtistForm = () => {
-    const navigate = useNavigate()
     const { register, handleSubmit, formState: { errors }, setValue } = useForm<SignUpArtistData>({
         resolver: zodResolver(signUpArtistSchema)
     })
@@ -55,12 +54,7 @@ export const SignUpArtistForm = () => {
     const onSubmit = async (data: SignUpArtistData) => {
         setSignUpButtonDisabled(true)
         const result = await auth.signUpArtist(data)
-        if (result) {
-            navigate('/auth/signin')
-            toast.success('Registrado con éxito')
-        } else {
-            setSignUpButtonDisabled(false)
-        }
+        if (!result) setSignUpButtonDisabled(false)
     }
 
     return (
@@ -71,8 +65,12 @@ export const SignUpArtistForm = () => {
                     <Input type='text' placeholder='Artista' {...register('artistName')} />
                 </div>
                 <div className='grid gap-2'>
-                    <Label htmlFor='artistUserName'>Nombre de usuario</Label>
+                    <Label htmlFor='artistUsername'>Nombre de usuario artístico</Label>
                     <Input type='text' placeholder='@artista' {...register('artistUsername')} />
+                </div>
+                <div className='grid gap-2'>
+                    <Label htmlFor='username'>Nombre de usuario</Label>
+                    <Input type='text' placeholder='@usuario' {...register('username')} />
                 </div>
                 <div className='flex flex-row gap-2'>
                     <div className='grid gap-2'>

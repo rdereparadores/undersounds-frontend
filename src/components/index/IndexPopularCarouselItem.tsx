@@ -1,9 +1,9 @@
 import { Skeleton } from '@/components/ui/skeleton'
-import { ProductContextResultShortProps } from '@/hooks/product/ProductContext'
+import { TrendingSong } from '@/hooks/trending/TrendingSongsContext'
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router'
 
-export const IndexPopularCarouselItem = ({ song, position }: { song: ProductContextResultShortProps, position: number }) => {
+export const IndexPopularCarouselItem = ({ song, position }: { song: TrendingSong, position: number }) => {
     const [imgLoaded, setImgLoaded] = useState(false)
     const navigate = useNavigate()
 
@@ -11,29 +11,23 @@ export const IndexPopularCarouselItem = ({ song, position }: { song: ProductCont
         <div className='flex flex-none items-center'>
             <p className='font-bold text-9xl -mr-6 -mt-16 select-none z-10 drop-shadow-[8px_8px_8px_rgba(255,255,255,1)]'>{position}</p>
             <div className='text-center'>
-                <Skeleton hidden={imgLoaded} className='w-48 h-48' />
+                {(!imgLoaded) && <Skeleton className='w-48 h-48' />}
+
                 <img
-                    alt="Imagen de una canción"
+                    alt={`Imagen de ${song?.title || 'una canción'}`}
                     hidden={!imgLoaded}
                     className='w-48 h-48 rounded-xl hover:brightness-50 transition hover:cursor-pointer'
                     onLoad={() => setImgLoaded(true)}
-                    src={song?.imgUrl}
-                    onClick={() => { navigate(`/song/${song?.id}`) }}
+                    src={song.imgUrl}
+                    onClick={() => { navigate(`/song/${song._id}`) }}
                 />
 
-                <Skeleton hidden={imgLoaded} className='w-full h-4 mt-1' />
-                <Skeleton hidden={imgLoaded} className='w-full h-4 mt-1' />
-
-                <p hidden={!imgLoaded} className='font-medium'>
-                    <Link to={`/song/${song?.id}`}>
-                        {song?.title}
+                <p className='font-medium text-ellipsis max-w-48 whitespace-nowrap overflow-hidden'>
+                    <Link to={`/song/${song._id}`}>
+                        {song.title}
                     </Link>
                 </p>
-                <p hidden={!imgLoaded}>
-                    <Link to={`/profile/artist/${song?.artists[0].id}`}>
-                        {song?.artists[0].name}
-                    </Link>
-                </p>
+                <p>{song.author.artistName}</p>
             </div>
         </div>
     )

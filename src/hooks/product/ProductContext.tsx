@@ -1,70 +1,72 @@
 import { createContext } from "react"
+import { ShopItem } from "../shop/ShopContext"
 
-export interface ProductContextQueryProps {
-    type: string,
-    id: number
-}
-
-export interface ProductContextResultShortProps {
+interface ProductProps {
+    _id: string,
     title: string,
-    id: number,
-    artists: { name: string, id: number }[],
-    type: string,
-    genres: string[],
-    duration: number,
+    releaseDate: Date,
+    description: string,
     imgUrl: string,
-    price: {
-        digital: number,
+    author: {
+        _id: string,
+        artistName: string,
+        artistImgUrl: string,
+        artistUsername: string,
+        followers: number
+    },
+    duration: number,
+    genres: string[],
+    pricing: {
         cd: number,
-        vinyl: number,
-        cassette: number
+        digital: number,
+        cassette: number,
+        vinyl: number
     }
 }
 
-export interface ProductContextResultProps {
-    product: {
-        title: string,
-        id: number,
-        type: string,
-        artists: { name: string, id: number }[],
-        duration: number,
-        date: string,
-        genres: string[],
-        description: string,
-        imgUrl: string,
-        trackList?: ProductContextResultShortProps[],
-        price: {
-            digital: number,
-            cd: number,
-            vinyl: number,
-            cassette: number
-        }
-    },
-    artist: {
-        name: string,
-        id: number,
-        followers: number,
-        isFollowing: boolean,
-        imgUrl: string
-    },
-    ratings: {
-        average: number,
-        ratingCount: { five: number, four: number, three: number, two: number, one: number },
-        list: { userImgUrl: string, username: string, title: string, description: string, rating: number }[]
-    },
-    related: ProductContextResultShortProps[]
+export interface SongProps extends ProductProps {
+    songDir: string,
+    plays: number,
+    collaborators: {
+        _id: string,
+        artistName: string,
+        artistImgUrl: string,
+        artistUsername: string,
+        followers: number
+    }[],
+    version?: number
+}
+
+export interface AlbumProps extends ProductProps {
+    trackList: Partial<SongProps>[],
+    version?: number
+}
+
+export interface RatingItemProps {
+    authorUsername: string,
+    authorImgUrl: string,
+    title: string,
+    description: string,
+    date: string,
+    rating: 1 | 2 | 3 | 4 | 5
+}
+
+export interface RatingProps {
+    ratings: RatingItemProps[],
+    averageRating: number,
+    totalRatings: number
 }
 
 export interface ProductContextProps {
-    queryProduct: ({ type, id }: ProductContextQueryProps) => Promise<void>,
-    queryProductShort: ({ type, id }: ProductContextQueryProps) => Promise<void>,
-    queryResult: undefined | ProductContextResultProps,
-    queryResultShort: undefined | ProductContextResultShortProps
+    getSongInfo: (id: string) => Promise<SongProps | null>,
+    getAlbumInfo: (id: string) => Promise<AlbumProps | null>,
+    getProductRatings: (id: string) => Promise<RatingProps | null>,
+    getProductRecommendations: (id: string) => Promise<ShopItem[]>,
 }
 
 export const ProductContext = createContext<ProductContextProps>({
-    queryProduct: async () => {},
-    queryProductShort: async () => {},
-    queryResult: undefined,
-    queryResultShort: undefined
+    getSongInfo: async () => null,
+    getAlbumInfo: async () => null,
+    getProductRatings: async () => null,
+    getProductRecommendations: async () => [],
 })

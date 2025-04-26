@@ -9,19 +9,18 @@ import {
 import { Skeleton } from '@/components/ui/skeleton'
 import { useState, useEffect } from 'react'
 import { IndexPopularCarouselItem } from './IndexPopularCarouselItem'
-import { useGlobalStats } from '@/hooks/globalStats/useGlobalStats'
-import { ProductContextResultShortProps } from '@/hooks/product/ProductContext'
 import { ProductProvider } from '@/hooks/product/ProductProvider'
+import { useTrendingSongs } from "@/hooks/trending/useTrendingSongs"
+import { TrendingSong } from '@/hooks/trending/TrendingSongsContext'
 
 export const IndexPopularCarousel = () => {
-    const globalStats = useGlobalStats()
-    const [top10Songs, setTop10Songs] = useState<undefined | ProductContextResultShortProps[]>(undefined)
+    const trendingSongs = useTrendingSongs()
+    const [songs, setSongs] = useState<TrendingSong[] | undefined>(undefined)
 
     useEffect(() => {
-        globalStats.top10Songs().then((songs) => {
-            setTop10Songs(songs)
-        })
-    }, [globalStats])
+        trendingSongs.getTrendingSongs().then(result => setSongs(result))
+    }, [trendingSongs])
+
 
     return (
         <div className='w-5/6 h-fit'>
@@ -31,20 +30,28 @@ export const IndexPopularCarousel = () => {
                 dragFree: true
             }} className='w-full relative'>
                 <CarouselContent className='w-full'>
-                    {top10Songs !== undefined ?
-                        top10Songs?.map((song, index) => (
-                            <CarouselItem key={index} className='basis-auto'>
-                                <ProductProvider>
-                                    <IndexPopularCarouselItem
-                                        song={song}
-                                        position={index + 1}
-                                    />
-                                </ProductProvider>
-                            </CarouselItem>
-                        ))
-                        :
-                        <Skeleton className='w-full h-56' />
-                    }
+                    {songs !== undefined ? (
+                        <>
+                            {songs.map((song, index) => (
+                                <CarouselItem key={index} className='basis-auto'>
+                                    <ProductProvider>
+                                        <IndexPopularCarouselItem
+                                            song={song}
+                                            position={index+1}
+                                        />
+                                    </ProductProvider>
+                                </CarouselItem>
+                            ))}
+                        </>
+                    ) : (
+                        <>
+                            {Array(10).fill(0).map((_, index) => (
+                                <CarouselItem key={`skeleton-${index}`} className='basis-auto'>
+                                    <Skeleton className='w-48 h-56' />
+                                </CarouselItem>
+                            ))}
+                        </>
+                    )}
                 </CarouselContent>
                 <CarouselPrevious className='max-sm:hidden' />
                 <CarouselNext className='max-sm:hidden' />
