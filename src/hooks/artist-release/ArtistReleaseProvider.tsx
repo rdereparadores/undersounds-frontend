@@ -92,7 +92,7 @@ export const ArtistReleaseProvider = ({ children }: { children: React.ReactNode 
                 return null
             }
             toast.success('Canción actualizada con éxito')
-            return result.data.data.id
+            return result.data.data.message
         } catch {
             toast.error('Error al actualizar la canción')
             return null
@@ -122,7 +122,7 @@ export const ArtistReleaseProvider = ({ children }: { children: React.ReactNode 
                 return null
             }
             toast.success('Álbum actualizada con éxito')
-            return result.data.data
+            return result.data.data.message
         } catch {
             toast.error('Error al actualizar el álbum')
             return null

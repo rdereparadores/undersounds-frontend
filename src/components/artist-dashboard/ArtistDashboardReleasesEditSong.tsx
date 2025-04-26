@@ -122,7 +122,6 @@ export const ArtistDashboardReleasesEditSong = (song: SongProps) => {
             collaborators: [],
             genres: selectedGenreList,
         })
-        console.log(result)
         if (result !== null) window.location.reload()
     }
 
@@ -199,7 +198,7 @@ export const ArtistDashboardReleasesEditSong = (song: SongProps) => {
                     <div className='flex flex-row gap-2'>
                         <Input type='file' {...register('song')} />
                         {errors.song && <span className='text-sm text-red-600'>Debes subir un fichero de audio</span>}
-                        <Button onClick={() => { musicPlayer.download(song._id) }} variant='secondary' className="rounded-full w-10 h-10">
+                        <Button onClick={() => { musicPlayer.download(song._id) }} variant='secondary' className="rounded-full w-10 h-10" type='button'>
                             <FaDownload />
                         </Button>
                         <p>Descargar archivo de audio</p>

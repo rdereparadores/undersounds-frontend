@@ -7,13 +7,12 @@ import { Label } from '../ui/label'
 import { Textarea } from '../ui/textarea'
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card'
 import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router'
 import { toast } from 'sonner'
 import { useArtistRelease } from '@/hooks/artist-release/useArtistRelease'
 import { Skeleton } from '../ui/skeleton'
 import { TableFeaturedContent } from './ArtistDashboardProfileTableFeaturedContent'
 import { ScrollArea } from '../ui/scroll-area'
-import { AlbumProps, SongProps } from '@/hooks/product/ProductContext'
+import { AlbumProps } from '@/hooks/product/ProductContext'
 
 const newAlbumSchema = z.object({
     albumId: z.string(),
@@ -63,6 +62,9 @@ export const ArtistDashboardReleasesEditAlbum = (album: AlbumProps) => {
 
             if (album._id === undefined) return
 
+            const songs = album.trackList.map((t) => t._id).filter( t => t !== undefined)
+            setSelectedSongsList(songs)
+
             setValue('albumId', album._id)
             setValue('title', album.title)
             setValue('description', album.description)
@@ -105,11 +107,7 @@ export const ArtistDashboardReleasesEditAlbum = (album: AlbumProps) => {
             songArray: selectedSongsList,
             albumImage: data.albumImage[0],
         })
-
-        console.log(result)
-        if (result != null) {
-            window.location.reload()
-        }
+        if (result != null) window.location.reload()
     }
 
     useEffect(() => {
