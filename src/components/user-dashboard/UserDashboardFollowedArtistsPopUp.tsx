@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { FeaturedArtistItem } from "@/hooks/user/UserContext";
 import { Skeleton } from "../ui/skeleton";
 import { CardDescription } from "../ui/card";
+import { Link } from "react-router";
 
 export const UserDashboardFollowedArtistsItem = ({ item }: { item: FeaturedArtistItem }) => {
     const [imgLoaded, setImgLoaded] = useState(false)
@@ -21,7 +22,7 @@ export const UserDashboardFollowedArtistsItem = ({ item }: { item: FeaturedArtis
     }
 
     return (
-        <div className="flex items-center justify-between sm:min-w-96 hover:bg-gray-100 hover:cursor-pointer p-2 rounded-sm transition ease-in-out">
+        <div className="flex items-center justify-between sm:min-w-96 hover:bg-gray-100 hover:cursor-pointer p-2 rounded-sm transition ease-in-out ">
             <div className="flex items-center gap-2">
                 {!imgLoaded && <Skeleton className="rounded-full w-12 h-12" />}
                 <img className={`rounded-full w-12 h-12 ${imgLoaded ? '' : 'hidden'}`} src={item.imgUrl} onLoad={() => { setImgLoaded(true) }} />
@@ -49,16 +50,20 @@ export const UserDashboardFollowedArtistsPopUp = () => {
                 <Button><LuUserCheck />Ver artistas seguidos</Button>
             </DialogTrigger>
             {following === undefined ?
-                <Skeleton className='min-w-[20%]'/>
-            :
-                <DialogContent className='min-w-[20%]'>
+                <Skeleton className='min-w-[20%]' />
+                :
+                <DialogContent className='min-w-[20%] max-h-[70%]'>
                     <DialogHeader>
                         <DialogTitle>Estos son todos los artistas a los que sigues.</DialogTitle>
                         <DialogDescription>Aquí puedes acceder a su perfíl o dejar de seguirlos.</DialogDescription>
                     </DialogHeader>
-                    {following.map((f, index) => (
-                        <UserDashboardFollowedArtistsItem key={index} item={f} />
-                    ))}
+                    <div className="h-[62%] overflow-y-auto">
+                        {following.map((f, index) => (
+                            <Link to={`/profile/artist/${f.artistUsername}`}>
+                                <UserDashboardFollowedArtistsItem key={index} item={f} />
+                            </Link>
+                        ))}
+                    </div>
                 </DialogContent>
             }
         </Dialog>

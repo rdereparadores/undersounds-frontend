@@ -104,7 +104,7 @@ export const UserDashboardLatestCard = () => {
             <CardContent>
                 <Carousel opts={{ loop: true }} plugins={[Autoplay({ delay: 15000 })]}>
                     <CarouselContent>
-                        {content.map(item => (
+                        {content.slice(0, 2).map(item => (
                             <CarouselItem>
                                 <UserDashboardLatestCardItem item={item} />
                             </CarouselItem>

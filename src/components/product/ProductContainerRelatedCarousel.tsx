@@ -6,12 +6,12 @@ import { Carousel, CarouselContent, CarouselItem } from "../ui/carousel"
 export const ProductContainerRelatedCarousel = ({ related }: { related: ShopItem[] }) => {
 
     return (
-        <Card className="grow lg:max-w-[30%] flex flex-col">
+        <Card className="grow lg:max-w-[30%] w-9 flex flex-col">
             <CardHeader>
                 <CardTitle className="text-xl">Relacionado</CardTitle>
             </CardHeader>
             <CardContent className="flex flex-wrap gap-2 flex-grow items-center justify-center">
-                <Carousel>
+                <Carousel className="w-full">
                     <CarouselContent>
                         {related.map((item, index) => (
                             <CarouselItem key={index}>
