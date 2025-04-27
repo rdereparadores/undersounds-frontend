@@ -74,7 +74,7 @@ export const UserDashboardLatestCardItem = ({ item }: { item: FeaturedContentIte
                     <div className="flex justify-center items-start gap-4 flex-wrap">
                         {!imgLoaded && <Skeleton className="rounded-md w-48 h-48 sm:w-72 sm:h-72" />}
                         <img src={item.imgUrl} className={`rounded-md w-48 h-48 sm:w-72 sm:h-72 ${imgLoaded ? '' : 'hidden'}`} onLoad={() => setImgLoaded(true)} />
-                        <div className="flex flex-col items-center sm:items-start">
+                        <div className="flex flex-col items-center sm:items-start max-w-[60%]">
                             <p className="text-2xl font-medium">{item.title}</p>
                             <p>{item.author.artistName}</p>
                         </div>
