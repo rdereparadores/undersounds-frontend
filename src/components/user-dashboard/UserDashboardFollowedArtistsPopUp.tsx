@@ -26,10 +26,12 @@ export const UserDashboardFollowedArtistsItem = ({ item }: { item: FeaturedArtis
             <div className="flex items-center gap-2">
                 {!imgLoaded && <Skeleton className="rounded-full w-12 h-12" />}
                 <img className={`rounded-full w-12 h-12 ${imgLoaded ? '' : 'hidden'}`} src={item.imgUrl} onLoad={() => { setImgLoaded(true) }} />
-                <div>
-                    <p>{item.artistName}</p>
-                    <CardDescription>@{item.artistUsername}</CardDescription>
-                </div>
+                <Link to={`/profile/artist/${item.artistUsername}`}>
+                    <div>
+                        <p>{item.artistName}</p>
+                        <CardDescription>@{item.artistUsername}</CardDescription>
+                    </div>
+                </Link>
             </div>
             <Button onClick={handleFollowToggle} variant={following ? 'outline' : 'default'} className="h-10 mr-1">{following ? 'Siguiendo' : 'Seguir'}</Button>
         </div>
@@ -52,16 +54,14 @@ export const UserDashboardFollowedArtistsPopUp = () => {
             {following === undefined ?
                 <Skeleton className='min-w-[20%]' />
                 :
-                <DialogContent className='min-w-[20%] max-h-[70%]'>
+                <DialogContent className='min-w-[20%] min-h-[20%] max-h-[70%] overflow-y-auto'>
                     <DialogHeader>
                         <DialogTitle>Estos son todos los artistas a los que sigues.</DialogTitle>
                         <DialogDescription>Aquí puedes acceder a su perfíl o dejar de seguirlos.</DialogDescription>
                     </DialogHeader>
-                    <div className="h-[62%] overflow-y-auto">
+                    <div className="flex flex-col gap-2">
                         {following.map((f, index) => (
-                            <Link to={`/profile/artist/${f.artistUsername}`}>
-                                <UserDashboardFollowedArtistsItem key={index} item={f} />
-                            </Link>
+                            <UserDashboardFollowedArtistsItem key={index} item={f} />
                         ))}
                     </div>
                 </DialogContent>
