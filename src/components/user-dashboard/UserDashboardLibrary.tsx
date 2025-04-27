@@ -30,8 +30,8 @@ export const UserDashboardLibrarySongItem = ({ item }: { item: LibrarySong }) =>
                 </Button>
             </CardHeader>
             <CardContent className="pt-2 px-2">
-                <CardTitle>{item.title}</CardTitle>
-                <CardDescription>{item.author.artistName} {item.collaborators.length > 0 && `, ${item.collaborators.map(c => c.artistName).join(', ')}`}</CardDescription>
+                <CardTitle className="text-ellipsis max-w-40 whitespace-nowrap overflow-hidden">{item.title}</CardTitle>
+                <CardDescription className="text-ellipsis max-w-40 whitespace-nowrap overflow-hidden">{item.author.artistName} {item.collaborators.length > 0 && `, ${item.collaborators.map(c => c.artistName).join(', ')}`}</CardDescription>
             </CardContent>
         </Card>
     )
